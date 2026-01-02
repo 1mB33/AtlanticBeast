@@ -29,7 +29,7 @@ Mouse movement - camera rotation<br>
 SPACE - Place a block<br>
 X - Remove a block<br>
 
-# Demonstartion with physics
+# Demonstration with physics
 <p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/2025-11-10%2003-42-03.gif?raw=true" alt="Screenshot" width="45%"/>
 </p>
