@@ -16,13 +16,9 @@ class AppResources
 
 public:
 
-    static AppResources& Get()
-    {
-        static AppResources instance;
-        return instance;
-    }
+    BEAST_API static AppResources& Get();
 
-    BEAST_API ~AppResources() = default;
+    ~AppResources() = default;
 
 public:
 

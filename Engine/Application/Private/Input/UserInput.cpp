@@ -84,14 +84,14 @@ UserInput& UserInput::operator=(UserInput&& other) noexcept
 void UserInput::StartCapturing()
 { 
     if (!this->GetWindowDesc().get()) {
-        Debug::Logger::Get()->Log(Debug::Warning, L"UserInput::StartCapturing() -> Cannot start the capture, window desc is null.");
-        Debug::Logger::Get()->Log(Debug::Warning, L"UserInput::StartCapturing() -> Setting stop on the capture for safety.");
+        Debug::Logger::Get().Log(Debug::Warning, L"UserInput::StartCapturing() -> Cannot start the capture, window desc is null.");
+        Debug::Logger::Get().Log(Debug::Warning, L"UserInput::StartCapturing() -> Setting stop on the capture for safety.");
         StopCapturing();
         return;
     }
 
     if (m_bIsCapturing)
-        Debug::Logger::Get()->Log(Debug::Warning, L"UserInput::StartCapturing() -> Already capturing.");
+        Debug::Logger::Get().Log(Debug::Warning, L"UserInput::StartCapturing() -> Already capturing.");
         
     m_bIsCapturing = true;
 }
@@ -100,7 +100,7 @@ void UserInput::StartCapturing()
 void UserInput::StopCapturing()
 {
     if (!m_bIsCapturing)
-        Debug::Logger::Get()->Log(Debug::Warning, L"UserInput::StopCapturing() -> Is NOT capturing already.");
+        Debug::Logger::Get().Log(Debug::Warning, L"UserInput::StopCapturing() -> Is NOT capturing already.");
 
     m_bIsCapturing = false; 
 }
@@ -188,17 +188,17 @@ void UserInput::Update(const float fDelta)
 void UserInput::Bind(void* pThis, ControllerObject* pCo, AbAction action, AbMouseAction mouseAction, AbInputBind bind)
 { 
     if (pCo->m_pUserInput.lock().get() != this) {
-        Debug::Logger::Get()->Log(Debug::Warning, L"Object must be signed by the UserInput, before binding.");
-        Debug::Logger::Get()->Log(Debug::Warning, L"Cannot bind the object.");
+        Debug::Logger::Get().Log(Debug::Warning, L"Object must be signed by the UserInput, before binding.");
+        Debug::Logger::Get().Log(Debug::Warning, L"Cannot bind the object.");
         return;
     }
 
     if (bind.Type & EAbBindType::Keyboard) 
     {
         if (bind.Keyboard.KeyCode <= AB_INVALID_KEY || bind.Keyboard.KeyCode >= AB_KEY_COUNT) {
-            Debug::Logger::Get()->Log(Debug::Error, L"Key code is an invalid code (code outside of boundries for keys).");
-            Debug::Logger::Get()->Log(Debug::Error, L"Can't bind the action for the keyboard.");
-            Debug::Logger::Get()->Log(Debug::Error, L"Action wasn't bound.");
+            Debug::Logger::Get().Log(Debug::Error, L"Key code is an invalid code (code outside of boundries for keys).");
+            Debug::Logger::Get().Log(Debug::Error, L"Can't bind the action for the keyboard.");
+            Debug::Logger::Get().Log(Debug::Error, L"Action wasn't bound.");
             return;
         }
 
@@ -214,9 +214,9 @@ void UserInput::Bind(void* pThis, ControllerObject* pCo, AbAction action, AbMous
                 m_pImpl->KeyContinuous.BindAction(bind, pThis, action, nullptr);
                 break;
             default:
-                Debug::Logger::Get()->Log(Debug::Error, 
-                                          L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
-                                          bind.Keyboard.KeyState);
+                Debug::Logger::Get().Log(Debug::Error, 
+                                         L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
+                                         bind.Keyboard.KeyState);
         }
     }
     else if (bind.Type & EAbBindType::Mouse) {
@@ -233,9 +233,9 @@ void UserInput::Unbind(ControllerObject* pCo)
     const auto& handle = m_BindsHandles.find(pCo);
     
     if (handle == m_BindsHandles.end()) {
-        Debug::Logger::Get()->Log(Debug::Warning, 
-                                  L"Cannot unbind this bind from this UserInput, because UserInput doesn't handles it. "
-                                  "[Controller address: %p]", pCo);
+        Debug::Logger::Get().Log(Debug::Warning, 
+                                 L"Cannot unbind this bind from this UserInput, because UserInput doesn't handles it. "
+                                 "[Controller address: %p]", pCo);
         return;
     }
     AB_LOG(Core::Debug::Info, L"Unbind [Controller address: %p]", pCo);
@@ -257,9 +257,9 @@ void UserInput::Unbind(ControllerObject* pCo)
                     m_pImpl->KeyContinuous.UnbindAction(bind, bindHandle.pThis);
                     break;
                 default:
-                    Debug::Logger::Get()->Log(Debug::Error, 
-                                              L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
-                                              bind.Keyboard.KeyState);
+                    Debug::Logger::Get().Log(Debug::Error, 
+                                             L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
+                                             bind.Keyboard.KeyState);
             }
         }
         else if (bind.Type & EAbBindType::Mouse) {

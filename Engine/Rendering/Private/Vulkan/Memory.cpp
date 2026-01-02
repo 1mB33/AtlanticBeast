@@ -97,8 +97,8 @@ void Memory::UploadOnStreamBuffer(const void* pUpload,
 
     if (onSet.Type != UploadDescriptor::EUploadType::StreamBuffer)
     {
-        ::Core::Debug::Logger::Get()->Log(::Core::Debug::Error,
-                                          L"UploadOnStreamBuffer, type of buffer is invalid type");
+        ::Core::Debug::Logger::Get().Log(::Core::Debug::Error,
+                                         L"UploadOnStreamBuffer, type of buffer is invalid type");
         return;
     }
     

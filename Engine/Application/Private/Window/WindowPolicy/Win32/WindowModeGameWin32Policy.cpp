@@ -117,6 +117,12 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             pWd->InputStruct.push(is);
 
+            RECT clientPos;
+            GetWindowRect(this->GetWindowDesc()->Hwnd, &clientPos);
+
+            SetCursorPos(clientPos.left + ((clientPos.right  - clientPos.left) * 0.5f), 
+                         clientPos.top  + ((clientPos.bottom - clientPos.top)  * 0.5f));
+
             return;
         }
 

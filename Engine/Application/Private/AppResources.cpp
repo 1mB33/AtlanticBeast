@@ -14,6 +14,13 @@ AppResources::AppResources()
     , m_strExePathA(InternalGetExecutablePathA())
 { }
 
+// ---------------------------------------------------------------------------------------------------------------------
+AppResources& AppResources::Get()
+{
+    static AppResources instance;
+    return instance;
+}
+
 #ifdef __linux__
 
 // ---------------------------------------------------------------------------------------------------------------------

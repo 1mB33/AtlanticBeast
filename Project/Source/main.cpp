@@ -14,13 +14,15 @@ using namespace App;
 
 int main()
 {
-    EmptyCanvas renderWindow;
-    const auto& input = renderWindow.GetInput();
-    Voxels::Renderer render = { };
-    ::std::shared_ptr<Game> g = ::std::make_shared<Game>();
-    DeltaTime dt = { };
-    FpsLimiter fl(1000.f / 120.f);
-
+    EmptyCanvas             renderWindow    = EmptyCanvas();
+    const auto&             input           = renderWindow.GetInput();
+    Voxels::Renderer        render          = { };
+    ::std::shared_ptr<Game> g               = ::std::make_shared<Game>();
+    DeltaTime               dt              = { };
+    FpsLimiter              fl(1000.f / 120.f);
+    float                   fFps            = 0.f;
+    double                  dAvgSessionFps  = 0.;
+    double                  dFrame          = 0.;
 
     ::std::shared_ptr<PlayablePaper> pwc = ::std::make_shared<PlayablePaper>();
 	const auto& pc = pwc->GetCharacter();
@@ -52,17 +54,33 @@ int main()
         render.Render();
         const float fBlock = fl.Block(dt.DeltaMs(), fDeltaMs);
 
+        // Skip the first 
+        if (dFrame == 0) {
+            dFrame = 1;
+            continue;
+        }
 
-        ::Core::Debug::Logger::Get()->Log(::Core::Debug::Info, 
-                                          L"Fps: %f Frame duration: %fms Blocked for: %fms",
-                                          1000.f / fDeltaMs,
-                                          fDeltaMs,
-                                          fBlock);
+        fFps = 1000.f / fDeltaMs;
+
+        if (dFrame <= INFINITY)
+        {
+            dAvgSessionFps = dAvgSessionFps * dFrame + fFps;
+            dAvgSessionFps /= ++dFrame;
+        }
+
+        ::Core::Debug::Logger::Get().Log(::Core::Debug::Info, 
+                                         L"AvgSessionFps: %lf Fps: %f Frame duration: %fms Blocked for: %fms",
+                                         dAvgSessionFps,
+                                         fFps,
+                                         fDeltaMs,
+                                         fBlock);
     }
+
+    ::Core::Debug::Logger::Get().Log(::Core::Debug::Info, L"AvgFps: %lf Frames: %lf", dAvgSessionFps, dFrame);
 
     AB_LOG(Core::Debug::Info, L"App is closing...");
 
     render.Destroy();
 
-    // Core::Debug::Logger::Get()->~Logger();
+    ::Core::Debug::Logger::Get().Flush();
 }

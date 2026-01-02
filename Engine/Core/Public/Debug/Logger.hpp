@@ -2,7 +2,6 @@
 #define AB_LOGGER_H
 
 #include "CoreMinimal.h"
-#include <condition_variable>
 
 namespace Core::Debug
 {
@@ -16,7 +15,6 @@ enum ESeverity
 
 class Logger
 {
-
     using Clock             = ::std::chrono::system_clock;
     using ClockTimePoint    = ::std::chrono::time_point<Clock>;
 
@@ -37,7 +35,7 @@ class Logger
 
 public:
 
-    BEAST_API static Logger* Get();
+    BEAST_API static Logger& Get();
     
     BEAST_API ~Logger();
 

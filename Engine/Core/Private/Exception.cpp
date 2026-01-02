@@ -109,8 +109,8 @@ void Exception::LogAndReturnMessage(const char* pszMessage, size_t uMesLen) cons
     mbstowcs (wc, pszMessage, uMesLen);
     
     try {
-        ::Core::Debug::Logger::Get()->Log(Debug::ESeverity::Error, wc);
-        ::Core::Debug::Logger::Get()->Flush();
+        ::Core::Debug::Logger::Get().Log(Debug::ESeverity::Error, wc);
+        ::Core::Debug::Logger::Get().Flush();
     }
     catch (...) 
     { }

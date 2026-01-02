@@ -14,9 +14,6 @@ namespace Voxels
 
 class VoxelPipeline
 {
-
-    friend class Renderer;
-
 public:
 
     enum EShaderResource

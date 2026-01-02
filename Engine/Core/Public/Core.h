@@ -21,7 +21,7 @@ static const char szLogPostfix[] = "_AtlanticBeast.log";
 #include "Debug/Logger.hpp"
 
 #ifdef _DEBUG
-#   define AB_LOG(...) ::Core::Debug::Logger::Get()->Log(__VA_ARGS__)
+#   define AB_LOG(...) ::Core::Debug::Logger::Get().Log(__VA_ARGS__)
 #else
 #   define AB_LOG(...) 
 #endif // !_DEBUG
