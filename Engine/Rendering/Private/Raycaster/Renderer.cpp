@@ -408,7 +408,7 @@ void Renderer::DestroyFrameResources()
 void Renderer::RecreateSwapChain()
 {
     AB_LOG(Core::Debug::Info, L"Recreating swapchain");
-    if (m_pWindowDesc->IsAlive == false) {
+    if (m_pWindowDesc->bIsAlive == false) {
         return;
     }
 

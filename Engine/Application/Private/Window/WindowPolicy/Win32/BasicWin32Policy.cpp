@@ -12,9 +12,11 @@ using namespace Core;
 uint32_t BasicWin32WindowPolicy::CreateImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd != NULL);
-    AB_ASSERT(pWd->Hwnd == NULL);
-    AB_ASSERT(!pWd->IsAlive);
+    AB_ASSERT(pWd->hWnd == NULL);
+    AB_ASSERT(!pWd->bIsAlive);
 
+    HWND hWnd;
+    
     m_pWindowDesc = pWd;
 
     this->OnPreWcex();
@@ -39,30 +41,30 @@ uint32_t BasicWin32WindowPolicy::CreateImpl(WindowDesc* pWd)
 
     this->OnPreRegister();
 
-    if (m_pWindowDesc->Hwnd == NULL)
+    if (m_pWindowDesc->hWnd == NULL)
     {
-        HWND hwnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
-                                   pWd->pwszClassName,
-                                   pWd->Name.c_str(),
-                                   WS_OVERLAPPEDWINDOW,
-                                   CW_USEDEFAULT,
-                                   CW_USEDEFAULT,
-                                   pWd->Width,
-                                   pWd->Height,
-                                   NULL,
-                                   NULL,
-                                   GetModuleHandle(NULL),
-                                   this);
+        hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
+                              pWd->pwszClassName,
+                              pWd->Name.c_str(),
+                              WS_OVERLAPPEDWINDOW,
+                              CW_USEDEFAULT,
+                              CW_USEDEFAULT,
+                              pWd->Width,
+                              pWd->Height,
+                              NULL,
+                              NULL,
+                              GetModuleHandle(NULL),
+                              this);
 
-        if (hwnd == NULL) {
+        if (hWnd == NULL) {
             AB_LOG(Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError());
             return -1;
         }
 
-        pWd->Hwnd = hwnd;
+        pWd->hWnd = hWnd;
     }
 
-    ShowWindow(m_pWindowDesc->Hwnd, SW_SHOW);
+    ShowWindow(m_pWindowDesc->hWnd, SW_SHOW);
 
     return 0;
 }
@@ -71,29 +73,29 @@ uint32_t BasicWin32WindowPolicy::CreateImpl(WindowDesc* pWd)
 void BasicWin32WindowPolicy::ShowImpl(WindowDesc* pWd)
 { 
     AB_ASSERT(pWd != NULL);
-    AB_ASSERT(pWd->Hwnd != NULL);
+    AB_ASSERT(pWd->hWnd != NULL);
 
-    ShowWindow(pWd->Hwnd, SW_SHOW);
+    ShowWindow(pWd->hWnd, SW_SHOW);
 } 
 
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::HideImpl(WindowDesc* pWd)
 { 
     AB_ASSERT(pWd != NULL);
-    AB_ASSERT(pWd->Hwnd != NULL);
+    AB_ASSERT(pWd->hWnd != NULL);
 
-    ShowWindow(pWd->Hwnd, SW_HIDE);
+    ShowWindow(pWd->hWnd, SW_HIDE);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::DestroyImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd != NULL);
-    AB_ASSERT(pWd->Hwnd != NULL);
-    AB_ASSERT(pWd->IsAlive);
+    AB_ASSERT(pWd->hWnd != NULL);
+    AB_ASSERT(pWd->bIsAlive);
 
-    if (DestroyWindow(pWd->Hwnd)) {
-        pWd->Hwnd = NULL;
+    if (DestroyWindow(pWd->hWnd)) {
+        pWd->hWnd = NULL;
     }
 
     AbAskToCloseWindowClass(pWd->pwszClassName);
@@ -103,10 +105,10 @@ void BasicWin32WindowPolicy::DestroyImpl(WindowDesc* pWd)
 void BasicWin32WindowPolicy::UpdateImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd != NULL);
-    AB_ASSERT(pWd->IsAlive);
+    AB_ASSERT(pWd->bIsAlive);
 
     MSG msg;
-    while (PeekMessage(&msg, pWd->Hwnd, 0, 0, PM_REMOVE) != 0) {
+    while (PeekMessage(&msg, pWd->hWnd, 0, 0, PM_REMOVE) != 0) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }

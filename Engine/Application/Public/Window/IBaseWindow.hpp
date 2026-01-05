@@ -66,7 +66,7 @@ public:
     {
         AB_ASSERT(m_pWindowDesc != nullptr);
 
-        bool bWasAlive = this->m_pWindowDesc->IsAlive;
+        bool bWasAlive = this->m_pWindowDesc->bIsAlive;
         ::std::unique_ptr<DefaultSystemWindowPolicy> pNewPolicy = ::std::make_unique<NewPolicy>();
         m_Policy.swap(pNewPolicy);
         
@@ -119,7 +119,7 @@ public:
         AB_ASSERT(m_pWindowDesc != nullptr);
 		AB_ASSERT(m_Policy != nullptr);
 
-        if (m_pWindowDesc->IsAlive) {
+        if (m_pWindowDesc->bIsAlive) {
             AB_LOG(Core::Debug::Warning, L"Cannot create alive window");
             return;
         }
@@ -130,7 +130,7 @@ public:
             throw AB_EXCEPT("Couldn't create the window");
         }
 
-        m_pWindowDesc->IsAlive = true;
+        m_pWindowDesc->bIsAlive = true;
     }
 
     void Show()
@@ -154,7 +154,7 @@ public:
         AB_ASSERT(m_pWindowDesc != nullptr);
         AB_ASSERT(m_Policy != nullptr);
 
-        if (!m_pWindowDesc->IsAlive) {
+        if (!m_pWindowDesc->bIsAlive) {
             AB_LOG(Core::Debug::Warning, L"Cannot destroy dead window");
             return;
         }
@@ -163,7 +163,7 @@ public:
         
         m_Policy->WindowPolicyDestroy(m_pWindowDesc.get());
         
-        m_pWindowDesc->IsAlive = false;
+        m_pWindowDesc->bIsAlive = false;
     }
 
     void Update(const float fDelta)
@@ -171,7 +171,7 @@ public:
         AB_ASSERT(m_pWindowDesc != nullptr);
         AB_ASSERT(m_Policy != nullptr);
 
-        if (!m_pWindowDesc->IsAlive) {
+        if (!m_pWindowDesc->bIsAlive) {
             return;
         }
 

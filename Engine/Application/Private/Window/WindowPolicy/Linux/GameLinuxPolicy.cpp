@@ -10,7 +10,7 @@ using namespace Core;
 // ---------------------------------------------------------------------------------------------------------------------
 void GameLinuxWindowPolicy::OnCreate(WindowDesc* pWd)
 {
-    Display*        pDisplay   = pWd->DisplayHandle;
+    Display*        pDisplay   = pWd->pDisplayHandle;
     Window          window     = RootWindow(pDisplay, pWd->Screen);
     XIEventMask     evmask;
     unsigned char   pMask[(XI_LASTEVENT + 7) / 8] = { 0 };
@@ -48,7 +48,7 @@ void GameLinuxWindowPolicy::OnCreate(WindowDesc* pWd)
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t GameLinuxWindowPolicy::OnUpdate(WindowDesc* pWd, XEvent& event)
 {
-    Display* pDisplay = pWd->DisplayHandle;
+    Display* pDisplay = pWd->pDisplayHandle;
 
     if (event.xcookie.type      == GenericEvent &&
         event.xcookie.extension == m_OpCode     &&
@@ -102,7 +102,7 @@ void GameLinuxWindowPolicy::HandleRawInput(WindowDesc* pWd, XEvent& event)
 
     pWd->InputStruct.push(is);
 
-    XWarpPointer(pWd->DisplayHandle, 
+    XWarpPointer(pWd->pDisplayHandle, 
                  None, 
                  pWd->WindowHandle,
                  0, 0, 
@@ -114,7 +114,7 @@ void GameLinuxWindowPolicy::HandleRawInput(WindowDesc* pWd, XEvent& event)
 void GameLinuxWindowPolicy::HandleFocusIn(WindowDesc* pWd)
 { 
     static char pEmptyData[8] = { 0 };
-    Display* pDisplay   = pWd->DisplayHandle;
+    Display* pDisplay   = pWd->pDisplayHandle;
     Window   window     = pWd->WindowHandle;
 
     XGrabPointer(pDisplay, 

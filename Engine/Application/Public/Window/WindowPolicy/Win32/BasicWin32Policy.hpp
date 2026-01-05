@@ -49,25 +49,25 @@ public:
 public:
 
     template<class Policy = BasicWin32WindowPolicy>
-    static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         Policy* pPolicy = NULL;
 
         if (uMsg == WM_NCCREATE) {
             CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
             pPolicy = reinterpret_cast<Policy*>(pCreate->lpCreateParams);
-            SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pPolicy));
+            SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pPolicy));
 
-            pPolicy->m_pWindowDesc->Hwnd = hwnd;
+            pPolicy->m_pWindowDesc->hWnd = hWnd;
         }
         else
-            pPolicy = reinterpret_cast<Policy*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+            pPolicy = reinterpret_cast<Policy*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
 
         if (pPolicy)
             pPolicy->OnUpdate(uMsg, wParam, lParam);
 
-        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 
 protected:

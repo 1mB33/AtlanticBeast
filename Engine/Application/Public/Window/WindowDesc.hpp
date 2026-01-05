@@ -17,15 +17,15 @@ struct WindowDesc
 	const wchar_t*                  pwszClassName;
     int32_t                         Width;
     int32_t                         Height;
-    bool                            IsAlive;
+    bool                            bIsAlive;
     EAbWindowEventsFlags            LastEvent;
     ::std::queue<AbInputStruct>     InputStruct;
 
 #ifdef _WIN32
-    HWND            Hwnd;
+    HWND            hWnd;
     WNDCLASSEX      Wcex;
 #elif __linux__
-    Display*        DisplayHandle;
+    Display*        pDisplayHandle;
     Window          WindowHandle;
     int32_t         Screen;
 #endif // !_WIN32
@@ -42,14 +42,14 @@ WindowDesc CreateWindowDesc(U&& wstrName,
 	wd.pwszClassName    = NULL;    
     wd.Width            = width;
     wd.Height           = height;
-    wd.IsAlive          = false;
+    wd.bIsAlive         = false;
     wd.LastEvent        &= 0;
    
 #ifdef _WIN32
-    wd.Hwnd = NULL;
+    wd.hWnd = NULL;
 	wd.Wcex = { };
 #elif __linux__
-    wd.DisplayHandle    = NULL;
+    wd.pDisplayHandle   = NULL;
     wd.WindowHandle     = 0;
     wd.Screen           = 0;
 #endif // !_WIN32

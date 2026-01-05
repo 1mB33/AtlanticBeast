@@ -16,16 +16,16 @@ using namespace Core;
 uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
 {
     XSetErrorHandler(X11HandleError);
-    pWd->DisplayHandle = AbAskForDisplayLinux(NULL);
+    pWd->pDisplayHandle = AbAskForDisplayLinux(NULL);
 
-    if (pWd->DisplayHandle == NULL) {
-        throw AB_EXCEPT("DisplayHandle is null!");
+    if (pWd->pDisplayHandle == NULL) {
+        throw AB_EXCEPT("pDisplayHandle is null!");
     }
 
-    int screen = DefaultScreen(pWd->DisplayHandle);
-    Display* pDisplay = pWd->DisplayHandle;
+    int screen = DefaultScreen(pWd->pDisplayHandle);
+    Display* pDisplay = pWd->pDisplayHandle;
 
-    Window window = XCreateSimpleWindow(pWd->DisplayHandle,
+    Window window = XCreateSimpleWindow(pWd->pDisplayHandle,
                                         RootWindow(pDisplay, screen),
                                         100, 100,
                                         pWd->Width, pWd->Height,
@@ -78,37 +78,37 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
 void BasicLinuxWindowPolicy::ShowImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd);
-    AB_ASSERT(pWd->IsAlive);
-    AB_ASSERT(pWd->DisplayHandle);
+    AB_ASSERT(pWd->bIsAlive);
+    AB_ASSERT(pWd->pDisplayHandle);
     AB_ASSERT(pWd->WindowHandle);
 
-    XMapWindow(pWd->DisplayHandle, pWd->WindowHandle);
+    XMapWindow(pWd->pDisplayHandle, pWd->WindowHandle);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::HideImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd);
-    AB_ASSERT(pWd->IsAlive);
-    AB_ASSERT(pWd->DisplayHandle);
+    AB_ASSERT(pWd->bIsAlive);
+    AB_ASSERT(pWd->pDisplayHandle);
     AB_ASSERT(pWd->WindowHandle);
 
-    XUnmapWindow(pWd->DisplayHandle, pWd->WindowHandle);
+    XUnmapWindow(pWd->pDisplayHandle, pWd->WindowHandle);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::DestroyImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd);
-    AB_ASSERT(pWd->IsAlive);
-    AB_ASSERT(pWd->DisplayHandle);
+    AB_ASSERT(pWd->bIsAlive);
+    AB_ASSERT(pWd->pDisplayHandle);
     AB_ASSERT(pWd->WindowHandle);
 
-    XDestroyWindow(pWd->DisplayHandle, pWd->WindowHandle);
+    XDestroyWindow(pWd->pDisplayHandle, pWd->WindowHandle);
     AbAskToCloseDisplayLinux(NULL);
 
     pWd->WindowHandle   = 0;
-    pWd->DisplayHandle  = NULL;
+    pWd->pDisplayHandle  = NULL;
     pWd->Screen         = 0;
 }
 
@@ -116,15 +116,15 @@ void BasicLinuxWindowPolicy::DestroyImpl(WindowDesc* pWd)
 void BasicLinuxWindowPolicy::UpdateImpl(WindowDesc* pWd)
 {
     AB_ASSERT(pWd);
-    AB_ASSERT(pWd->IsAlive);
-    AB_ASSERT(pWd->DisplayHandle);
+    AB_ASSERT(pWd->bIsAlive);
+    AB_ASSERT(pWd->pDisplayHandle);
     AB_ASSERT(pWd->WindowHandle);
 
-    Display*    display = pWd->DisplayHandle;
+    Display*    display = pWd->pDisplayHandle;
     Window      window  = pWd->WindowHandle;
     XEvent      event;
 
-    while(XPending(pWd->DisplayHandle))
+    while(XPending(pWd->pDisplayHandle))
     {
         XPeekEvent(display, &event);
 
@@ -150,7 +150,7 @@ void BasicLinuxWindowPolicy::UpdateImpl(WindowDesc* pWd)
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicLinuxWindowPolicy::OnUpdate(WindowDesc* pWd, XEvent& event)
 {
-    Display* display = pWd->DisplayHandle;
+    Display* display = pWd->pDisplayHandle;
     Window   window  = pWd->WindowHandle;
 
     switch (event.type) {

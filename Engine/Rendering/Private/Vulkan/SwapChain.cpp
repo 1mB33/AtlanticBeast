@@ -63,7 +63,7 @@ VkSurfaceKHR Swapchain::CreateSurface(shared_ptr<const Instance>& pInstance, sha
     createInfo.pNext     = NULL;
     createInfo.flags     = 0;
     createInfo.hinstance = GetModuleHandle(NULL);
-    createInfo.hwnd      = pWindowDesc->Hwnd;
+    createInfo.hwnd      = pWindowDesc->hWnd;
 
     THROW_IF_FAILED(vkCreateWin32SurfaceKHR(pInstance->GetInstance(),
                                             &createInfo,
@@ -74,7 +74,7 @@ VkSurfaceKHR Swapchain::CreateSurface(shared_ptr<const Instance>& pInstance, sha
     createInfo.sType    = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
     createInfo.pNext    = NULL;
     createInfo.flags    = 0;
-    createInfo.dpy      = pWindowDesc->DisplayHandle;
+    createInfo.dpy      = pWindowDesc->pDisplayHandle;
     createInfo.window   = pWindowDesc->WindowHandle;
 
     THROW_IF_FAILED(vkCreateXlibSurfaceKHR(pInstance->GetInstance(),

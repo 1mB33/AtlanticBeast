@@ -34,11 +34,12 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
         case WM_SETFOCUS:
         {
             RAWINPUTDEVICE rid;
+            RECT rect;
 
             rid.usUsagePage = 0x01;
             rid.usUsage = 0x02;
             rid.dwFlags = 0;
-            rid.hwndTarget = pWd->Hwnd;
+            rid.hwndTarget = pWd->hWnd;
 
             if (!RegisterRawInputDevices(&rid, 1, sizeof(rid))) {
                 AB_LOG(Core::Debug::Error, L"Couldn't register raw input");
@@ -46,8 +47,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             ShowCursor(FALSE);
 
-            RECT rect;
-            GetWindowRect(pWd->Hwnd, &rect);
+            GetWindowRect(pWd->hWnd, &rect);
             ClipCursor(&rect);
             SetCursorPos(static_cast<int>(rect.left + 0.5f * pWd->Width),
                          static_cast<int>(rect.top + 0.5f * pWd->Height));
@@ -120,17 +120,13 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             pWd->InputStruct.push(is);
 
-            GetWindowRect(this->GetWindowDesc()->Hwnd, &clientPos);
+            GetWindowRect(this->GetWindowDesc()->hWnd, &clientPos);
 
             SetCursorPos(clientPos.left + ((clientPos.right  - clientPos.left) * 0.5f), 
                          clientPos.top  + ((clientPos.bottom - clientPos.top)  * 0.5f));
 
             return;
         }
-
-        case WM_SIZE:
-            BasicWin32WindowPolicy::OnUpdate(uMsg, wParam, lParam);
-            return;
 
         case WM_MOUSEMOVE:
             return;

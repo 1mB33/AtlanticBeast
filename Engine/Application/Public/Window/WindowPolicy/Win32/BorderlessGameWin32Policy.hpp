@@ -47,7 +47,7 @@ public:
     {
         WindowDesc* pWd = this->GetWindowDesc();
 
-        HWND hwnd = CreateWindowEx(WS_EX_APPWINDOW,
+        HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW,
                                    pWd->pwszClassName,
                                    pWd->Name.c_str(),
                                    WS_POPUP,
@@ -60,12 +60,12 @@ public:
                                    GetModuleHandle(NULL),
                                    this);
 
-        if (hwnd == NULL) {
+        if (hWnd == NULL) {
             AB_LOG(Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError());
             return;
         }
 
-        pWd->Hwnd = hwnd;
+        pWd->hWnd = hWnd;
     }
 };
 
