@@ -75,7 +75,13 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
         case WM_INPUT:
         {
-            UINT cbSize;
+            static ::std::vector<BYTE>  vRi         = { };
+            AbInputStruct               is          = { };
+            UINT                        cbSize;
+            UINT                        cbSize2;
+            size_t                      uRiRead;
+            RAWINPUT*                   pRi;
+            RECT                        clientPos;
 
             if (GetRawInputBuffer(NULL, &cbSize, sizeof(RAWINPUTHEADER)) != 0) {
                 AB_LOG(Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
@@ -85,13 +91,11 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
             if (cbSize == 0)
                 break;
 
-            UINT cbSize2 = cbSize * 16; 
-
-            static ::std::vector<BYTE> vRi(cbSize2);
+            cbSize2 = cbSize * 16; 
             if (vRi.size() < cbSize2)
                 vRi.resize(cbSize2);
 
-            size_t uRiRead = GetRawInputBuffer(reinterpret_cast<PRAWINPUT>(&vRi[0]), &cbSize2, sizeof(RAWINPUTHEADER));
+            uRiRead = GetRawInputBuffer(reinterpret_cast<PRAWINPUT>(&vRi[0]), &cbSize2, sizeof(RAWINPUTHEADER));
             if (uRiRead == static_cast<UINT>(-1)) {
                 AB_LOG(Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
                 break;
@@ -99,9 +103,8 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             pWd->LastEvent |= EAbWindowEvents::Input;
 
-            AbInputStruct is = { };
             is.Event = EAbInputEvents::AbMotion;
-            RAWINPUT* pRi = reinterpret_cast<PRAWINPUT>(&vRi[0]);
+            pRi = reinterpret_cast<PRAWINPUT>(&vRi[0]);
             for (size_t i = 0; 
                  i < uRiRead; 
                  ++i, pRi = NEXTRAWINPUTBLOCK(pRi))
@@ -117,42 +120,11 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             pWd->InputStruct.push(is);
 
-            RECT clientPos;
             GetWindowRect(this->GetWindowDesc()->Hwnd, &clientPos);
 
             SetCursorPos(clientPos.left + ((clientPos.right  - clientPos.left) * 0.5f), 
                          clientPos.top  + ((clientPos.bottom - clientPos.top)  * 0.5f));
 
-            return;
-        }
-
-        case WM_KEYDOWN: {
-            bool bIsRepeated = (lParam & (static_cast<uint64_t>(1) << 30)) != 0;
-            if (bIsRepeated) {
-                return;
-            }
-
-            pWd->LastEvent |= EAbWindowEvents::Input;
-
-            AbInputStruct is = { };
-            uint32_t scanCode = (lParam >> 16) & 0xFF;
-
-            is.Event = EAbInputEvents::AbKeyPress;
-            is.Keyboard.KeyId = scanCode;
-
-            pWd->InputStruct.push(is);
-            return;
-        }
-
-        case WM_KEYUP: {
-            pWd->LastEvent |= EAbWindowEvents::Input;
-            AbInputStruct is = { };
-            uint32_t scanCode = (lParam >> 16) & 0xFF;
-
-            is.Event = EAbInputEvents::AbKeyRelease;
-            is.Keyboard.KeyId = scanCode;
-
-            pWd->InputStruct.push(is);
             return;
         }
 

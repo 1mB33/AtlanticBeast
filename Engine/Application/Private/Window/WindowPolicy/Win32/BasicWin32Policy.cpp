@@ -116,40 +116,37 @@ void BasicWin32WindowPolicy::UpdateImpl(WindowDesc* pWd)
 void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg) {
-        case WM_KEYDOWN: {
-            bool bIsRepeated = (lParam & (static_cast<uint64_t>(1) << 30)) != 0;
-            if (bIsRepeated) {
+    case WM_KEYDOWN: {
+            // UserInput class handles continuos press by itself, no need to spam
+            WORD wKeyFlags = HIWORD(lParam);
+            if (wKeyFlags & KF_REPEAT) {
                 return;
             }
 
+            AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-            AbInputStruct is;
-            uint32_t scanCode = (lParam >> 16) & 0xFF;
-
             is.Event = EAbInputEvents::AbKeyPress;
-            is.Keyboard.KeyId = scanCode;
+            is.Keyboard.KeyId = LOWORD(wKeyFlags);
 
             m_pWindowDesc->InputStruct.push(is);
             return;
         }
 
         case WM_KEYUP: {
+            AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
-            AbInputStruct is;
-            uint32_t scanCode = (lParam >> 16) & 0xFF;
 
             is.Event = EAbInputEvents::AbKeyRelease;
-            is.Keyboard.KeyId = scanCode;
+            is.Keyboard.KeyId = LOWORD(HIWORD(lParam));
 
             m_pWindowDesc->InputStruct.push(is);
             return;
         }
 
         case WM_MOUSEMOVE: {
+            AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
-            AbInputStruct is;
-            uint32_t scanCode = (lParam >> 16) & 0xFF;
 
             is.Event = EAbInputEvents::AbMotion;
             is.Mouse.MouseX = GET_X_LPARAM(lParam);
