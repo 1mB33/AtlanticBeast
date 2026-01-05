@@ -35,21 +35,6 @@ SET(BEE_RENDERING_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Voxels.hpp"
 )
 
-IF (MSVC)
-
-    ADD_COMPILE_OPTIONS("/permissive-")
-    ADD_COMPILE_OPTIONS("/GR-")
-
-ELSE()
-
-    IF (NOT CMAKE_BUILD_TYPE=="Debug")
-
-        ADD_COMPILE_OPTIONS("-O2")
-
-    ENDIF()
-
-ENDIF()
-
 ADD_LIBRARY(BeeRendering SHARED 
     "${BEE_RENDERING_SOURCE}"
     "${BEE_RENDERING_HEADRES}"
@@ -57,14 +42,14 @@ ADD_LIBRARY(BeeRendering SHARED
 
 IF (MSVC)
 
-    TARGET_COMPILE_OPTIONS(BeeRendering PRIVATE "/permissive-")
-    TARGET_COMPILE_OPTIONS(BeeRendering PRIVATE "/GR-")
+    TARGET_COMPILE_OPTIONS(BeeRendering PUBLIC "/permissive-")
+    TARGET_COMPILE_OPTIONS(BeeRendering PUBLIC "/GR-")
 
 ELSE()
 
     IF (NOT CMAKE_BUILD_TYPE=="Debug")
 
-        TARGET_COMPILE_OPTIONS(BeeRendering PRIVATE "-O2")
+        TARGET_COMPILE_OPTIONS(BeeRendering PUBLIC "-O2")
 
     ENDIF()
 
