@@ -1,3 +1,4 @@
-SET(BUILD_SHARED_LIBS ON CACHE BOOL "Compile Jolt as a shared library" FORCE)
+OPTION(BUILD_SHARED_LIBS "Compile Jolt as a shared library" ON)
+OPTION(CPP_RTTI_ENABLED "Enable C++ RTTI" OFF)
 
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/JoltPhysics/Build)

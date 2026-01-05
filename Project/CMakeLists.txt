@@ -8,6 +8,21 @@ ADD_EXECUTABLE(AtlBee
     "${PRJT_SOURCE}"
 )
 
+IF (MSVC)
+
+    TARGET_COMPILE_OPTIONS(AtlBee PRIVATE "/permissive-")
+    TARGET_COMPILE_OPTIONS(AtlBee PRIVATE "/GR-")
+
+ELSE()
+
+    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+
+        TARGET_COMPILE_OPTIONS(AtlBee PRIVATE "-O2")
+
+    ENDIF()
+
+ENDIF()
+
 TARGET_LINK_LIBRARIES(AtlBee PRIVATE 
     BeeCore
     BeeApp
