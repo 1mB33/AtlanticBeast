@@ -24,9 +24,7 @@ public:
 public:
 
     void SetGrid(::std::shared_ptr<Game> vg)
-    {
-        m_g = vg;
-    }
+    { m_g = vg; }
 
 public:
 

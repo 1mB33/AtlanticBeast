@@ -85,7 +85,8 @@ void Renderer::Update(const float)
                                    rotVec, 
                                    cameraRight,
                                    cameraUp,
-                                   m_pVoxelGrid->GetGridWidth());
+                                   m_pVoxelGrid->GetGridWidth(),
+                                   m_bDebugMode ? 1 : 0);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

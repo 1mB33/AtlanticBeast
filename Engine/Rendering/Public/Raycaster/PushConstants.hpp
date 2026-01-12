@@ -14,7 +14,7 @@ struct alignas(16) VoxelPushConstants
     Vec3        CameraRight;
     Vec3        CameraUp;
     float       fFov;
-    uint32_t    _Padding1;
+    uint32_t    uMode;
     uint32_t    _Padding2;
     uint32_t    _Padding3;
 };

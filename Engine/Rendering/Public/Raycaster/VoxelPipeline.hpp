@@ -41,7 +41,8 @@ public:
                            Vec3 cameraLookDir,
                            Vec3 cameraRight,
                            Vec3 cameraUp,
-                           int32_t gridWidth)
+                           int32_t gridWidth,
+                           uint32_t uDebugMode)
     {
         m_Vpc.CameraPos     = cameraPos;
         m_Vpc.CameraLookDir = cameraLookDir;
@@ -49,6 +50,7 @@ public:
         m_Vpc.CameraUp      = cameraUp;
         m_Vpc.fFov          = fFov;
         m_Vpc.GridSize      = iVec3(gridWidth, gridWidth, gridWidth);
+        m_Vpc.uMode         = uDebugMode;
     }
 
 public:

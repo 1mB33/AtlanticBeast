@@ -30,6 +30,7 @@ public:
         , m_CommandPool(VK_NULL_HANDLE)
         , m_uCurrentFrame(0)
         , m_vFrames()
+        , m_bDebugMode(false)
     { }
 
     ~Renderer()
@@ -39,6 +40,9 @@ public:
 
     void SetCurrentCamera(::std::shared_ptr<Camera> camera)
     { m_pCamera = camera; }
+
+    void SetDebugMode(const bool bMode)
+    { m_bDebugMode = bMode; }
 
 public:
 
@@ -54,6 +58,9 @@ public:
 
     ::std::shared_ptr<IWorldGrid>& GetGrid()
     { return m_pVoxelGrid; }
+
+    bool GetDebugMode()
+    { return m_bDebugMode; }
 
 public:
 
@@ -114,6 +121,8 @@ private:
     ::std::shared_ptr<GPUBuffer>    m_CubeBuffer;    
     ::std::shared_ptr<GPUStreamBuffer> m_StageVoxelBuffer;
     ::std::shared_ptr<GPUStreamBuffer> m_StageCubeBuffer;
+
+    bool m_bDebugMode;
 };
 
 } // !Voxels
