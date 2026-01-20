@@ -139,9 +139,12 @@ public:
                              area,
                              uObjectId);
     
-        for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj)
-            if (&(*itObj) == &obj)
+        for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj) {
+            if (&(*itObj) == &obj) {
                 m_StoredObjects.erase(itObj);
+                break;
+            }
+        }
     }
 
     void UpdatePos(const Vec3& newPos, size_t uObjectId)

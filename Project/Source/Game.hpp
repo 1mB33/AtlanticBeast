@@ -7,18 +7,17 @@
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/PhysicsSettings.h>
 #include <Jolt/Physics/PhysicsSystem.h>
-#include <Jolt/Physics/Collision/Shape/BoxShape.h>
-#include <Jolt/Physics/Collision/Shape/SphereShape.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
-#include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayer.h>
 #include <Jolt/Physics/Body/BodyID.h>
-#include <memory>
+#include <Jolt/Physics/Collision/Shape/BoxShape.h>
+#include <Jolt/Physics/Collision/Shape/SphereShape.h>
+#include <Jolt/Physics/Collision/ObjectLayer.h>
+#include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayer.h>
+#include <Jolt/Geometry/AABox.h>
+#include <Jolt/Math/Real.h>
 
 #include "Core.h"
-#include "Jolt/Geometry/AABox.h"
-#include "Jolt/Math/Real.h"
-#include "Jolt/Physics/Collision/ObjectLayer.h"
 #include "Primitives/ColoredCube.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
@@ -453,6 +452,8 @@ public:
 
     void GenerateCube(const Voxels::iVec3& p)
     {
+        AB_LOG(::Core::Debug::Info, L"Generating cube");
+
         ::Voxels::ColoredCube   cc = ::Voxels::ColoredCube();
         ::Voxels::Vec3          setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
         ::Voxels::Vec3          setH(cc.GetHalfSize());
@@ -474,6 +475,8 @@ public:
 
     void RemoveCube(size_t uCubeId)
     {
+        AB_LOG(::Core::Debug::Info, L"Removing cube %d", uCubeId);
+
         InWorldCube* pWC = nullptr;
 
         if (uCubeId == -1) {
@@ -500,6 +503,7 @@ public:
         for (auto itObj = m_vInWorldObjects.begin(); itObj != m_vInWorldObjects.end(); ++itObj) {
             if (&(*itObj) == pWC) {
                 m_vInWorldObjects.erase(itObj);
+                break;
             }
         }
 
