@@ -130,6 +130,20 @@ public:
         return uId;
     }
 
+    void RemoveObject(const size_t uObjectId)
+    {
+        const StoredObjectType  obj     = this->GetById(uObjectId);
+        const iVec3             area    = iVec3::ToiVec3(obj.GetHalfSize() + 1);
+
+        this->RemoveFromGrid(iVec3::ToiVec3(obj.GetPosition()), 
+                             area,
+                             uObjectId);
+    
+        for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj)
+            if (&(*itObj) == &obj)
+                m_StoredObjects.erase(itObj);
+    }
+
     void UpdatePos(const Vec3& newPos, size_t uObjectId)
     {
         StoredObjectType& obj = m_StoredObjects[uObjectId];
@@ -195,7 +209,7 @@ private:
 private:
 
     ::std::vector<StoredObjectType> m_StoredObjects;
-    size_t m_uObjectsCount = -1;
+    size_t                          m_uObjectsCount = -1;
 
 };
 

@@ -42,16 +42,15 @@ public:
 
     void RemoveBlock(const float)
     {
-        Voxels::Vec3 rot = this->GetRotation();
-        Voxels::Vec3 lookDir = Voxels::Normalize(Voxels::RotateY(Voxels::RotateX(Voxels::Vec3{ 0.f, 0.f, 1.f }, 
-                                                                                 rot.x), 
-                                                                 rot.y));
+        Voxels::Vec3 rot        = this->GetRotation();
+        Voxels::Vec3 lookDir    = Voxels::Normalize(Voxels::RotateY(Voxels::RotateX(Voxels::Vec3{ 0.f, 0.f, 1.f }, 
+                                                                                    rot.x), 
+                                                                    rot.y));
 
         Voxels::HitResult hr = Voxels::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
 
-        if (hr.bHit) {
-            m_g->GetIdFromPos(hr.iHitCoords);
-        }
+        if (hr.bHit) 
+            m_g->RemoveCube(m_g->GetIdFromPos(hr.iHitCoords));
     }
 
     void Push(const float, const float fForceMul)

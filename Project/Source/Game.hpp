@@ -13,9 +13,13 @@
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayer.h>
 #include <Jolt/Physics/Body/BodyID.h>
+#include <memory>
 
 #include "Core.h"
-#include "Debug/Logger.hpp"
+#include "Jolt/Geometry/AABox.h"
+#include "Jolt/Math/Real.h"
+#include "Jolt/Physics/Collision/ObjectLayer.h"
+#include "Primitives/ColoredCube.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
 
@@ -142,6 +146,26 @@ public:
 
 public:
 
+    Voxels::Vec3 GetCubePos(const JPH::BodyID& id)
+    {
+        AB_ASSERT(m_pPhysicsSystem != nullptr);
+
+        auto cubePos = m_pPhysicsSystem->GetBodyInterface().GetCenterOfMassPosition(id);
+        
+        return Voxels::Vec3(cubePos.GetX(), cubePos.GetY(), cubePos.GetZ());
+    }
+
+    Voxels::Rot3 GetCubeRot(const JPH::BodyID& id)
+    {
+        AB_ASSERT(m_pPhysicsSystem != nullptr);
+
+        auto rotEuler = m_pPhysicsSystem->GetBodyInterface().GetRotation(id).GetEulerAngles();
+        
+        return Voxels::Rot3(rotEuler.GetX(), rotEuler.GetY(), rotEuler.GetZ());
+    }
+
+public:
+
     void InitializeJolt()
     {
         JPH::RegisterDefaultAllocator();
@@ -205,7 +229,6 @@ public:
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
         const auto epsilon = 0.008_r;
-
         JPH::BodyCreationSettings boxSettings(new JPH::BoxShape(JPH::Vec3(epsilon + h.x, 
                                                                           epsilon + h.y,
                                                                           epsilon + h.z)),
@@ -217,23 +240,20 @@ public:
         return m_pPhysicsSystem->GetBodyInterface().CreateAndAddBody(boxSettings, JPH::EActivation::Activate);
     }
 
-
-    Voxels::Vec3 GetCubePos(const JPH::BodyID& id)
+    void DestroyCube(const ::JPH::BodyID& id, const Voxels::Vec3& h)
     {
+        using namespace JPH::literals;
+
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
-        auto cubePos = m_pPhysicsSystem->GetBodyInterface().GetCenterOfMassPosition(id);
-        
-        return Voxels::Vec3(cubePos.GetX(), cubePos.GetY(), cubePos.GetZ());
-    }
+        const auto epsilon  = 0.008_r;
+        JPH::RVec3 position = m_pPhysicsSystem->GetBodyInterface().GetPosition(id);
 
-    Voxels::Rot3 GetCubeRot(const JPH::BodyID& id)
-    {
-        AB_ASSERT(m_pPhysicsSystem != nullptr);
-
-        auto rotEuler = m_pPhysicsSystem->GetBodyInterface().GetRotation(id).GetEulerAngles();
-        
-        return Voxels::Rot3(rotEuler.GetX(), rotEuler.GetY(), rotEuler.GetZ());
+        m_pPhysicsSystem->GetBodyInterface().RemoveBody(id);
+        m_pPhysicsSystem->GetBodyInterface().ActivateBodiesInAABox(::JPH::AABox(position, ::std::max(::std::max(h.x, h.y), h.z) + epsilon),
+                                                                   ::JPH::DefaultBroadPhaseLayerFilter(m_Ovbplfi, Layers::NON_MOVING),
+                                                                   ::JPH::DefaultObjectLayerFilter(m_Olpfi, Layers::MOVING));
+        m_pPhysicsSystem->GetBodyInterface().DestroyBody(id);
     }
 
 private:
@@ -316,11 +336,11 @@ public:
 
     InWorldCube(const ::std::shared_ptr<World>& pW, 
                 size_t uC,
-                Physics* pP,
+                ::std::weak_ptr<Physics> pP,
                 JPH::BodyID physicsId) 
         : m_pWorld(pW)
-        , m_uCubeId(uC)
         , m_pPhysics(pP)
+        , m_uCubeId(uC)
         , m_PhysicsId(std::move(physicsId))
     { }
 
@@ -345,19 +365,6 @@ public:
     const JPH::BodyID& GetPhysicsId() const
     { return m_PhysicsId; }
 
-public:
-
-    void Update(float fDelta)
-    { 
-        auto newPos = m_pPhysics->GetCubePos(m_PhysicsId);
-        auto newRot = m_pPhysics->GetCubeRot(m_PhysicsId);
-
-        if (auto pLock = m_pWorld.lock()) {
-            pLock->UpdatePos(newPos, m_uCubeId);
-            pLock->UpdateRot(newRot, m_uCubeId);
-        }
-    }
-
     Voxels::Vec3 GetPos()
     {
         if (auto pLock = m_pWorld.lock()) {
@@ -367,14 +374,31 @@ public:
         throw AB_EXCEPT("Couldn't lock the world or the cube has wrong id.");
     }
 
+public:
+
+    void Update(float fDelta)
+    { 
+        if (m_pPhysics.expired()) {
+            AB_LOG(::Core::Debug::Info, L"InWorldCube update, physics expired");
+            return;
+        }
+
+        auto pPhysics   = m_pPhysics.lock();
+        auto newPos     = pPhysics->GetCubePos(m_PhysicsId);
+        auto newRot     = pPhysics->GetCubeRot(m_PhysicsId);
+
+        if (auto pLock = m_pWorld.lock()) {
+            pLock->UpdatePos(newPos, m_uCubeId);
+            pLock->UpdateRot(newRot, m_uCubeId);
+        }
+    }
+
 private:
 
-    ::std::weak_ptr<World> m_pWorld;
+    ::std::weak_ptr<World>      m_pWorld;
+    ::std::weak_ptr<Physics>    m_pPhysics;
 
-    size_t m_uCubeId = -1;
-
-    Physics* m_pPhysics = nullptr;
-
+    size_t      m_uCubeId       = -1;
     JPH::BodyID m_PhysicsId;
 
 };
@@ -387,6 +411,7 @@ public:
     Game()
         : m_pWorld(::std::make_shared<World>())
         , m_vInWorldObjects()
+        , m_pPhysics(::std::make_shared<Physics>())
     { }
 
     ~Game() = default;
@@ -404,60 +429,93 @@ public:
     ::std::shared_ptr<World> GetWorld() const
     { return m_pWorld; }
 
+    size_t GetIdFromPos(const Voxels::iVec3& pos)
+    {
+        for (auto& c : m_vInWorldObjects) 
+            if (Voxels::iVec3::ToiVec3(c.GetPos()) == pos) 
+                return c.GetId();
+
+        return -1;
+    }
+
 public:
 
     void Initialize()
-    {
-        m_Physics.InitializeJolt();
-    }
+    { m_pPhysics->InitializeJolt(); }
 
     void Update(float fDelta)
     { 
         for (auto& inWorldCube : m_vInWorldObjects) 
             inWorldCube.Update(fDelta);
 
-        m_Physics.Update(fDelta);
+        m_pPhysics->Update(fDelta);
     }
-
-public:
 
     void GenerateCube(const Voxels::iVec3& p)
     {
-        auto cc = ::Voxels::ColoredCube();
+        ::Voxels::ColoredCube   cc = ::Voxels::ColoredCube();
+        ::Voxels::Vec3          setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
+        ::Voxels::Vec3          setH(cc.GetHalfSize());
+        size_t uCubeId;
+
         cc.SetHalfSize(::Voxels::Vec3(0.5f, 0.5f, 0.5f));
-        Voxels::Vec3 setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
-        Voxels::Vec3 setH(cc.GetHalfSize());
         cc.SetColor(0x99211200);
-        size_t uCubeId = m_pWorld->GenerateObjectAtVoxel(p, std::move(cc));
+
+        uCubeId = m_pWorld->GenerateObjectAtVoxel(p, std::move(cc));
         
         m_vInWorldObjects.push_back(InWorldCube(m_pWorld,
                                                 uCubeId,
-                                                &m_Physics,
-                                                m_Physics.CreateCube(setP, 
-                                                                     setH)));
+                                                m_pPhysics,
+                                                m_pPhysics->CreateCube(setP, 
+                                                                       setH)));
 
 		m_pWorld->ForceUpload();
     }
 
-public:
-
-    size_t GetIdFromPos(const Voxels::iVec3& pos)
-    {
-        for (auto& c : m_vInWorldObjects) 
-        {
-            if (Voxels::iVec3::ToiVec3(c.GetPos()) == pos) 
-                return c.GetId();
-        }
-
-        return -1;
-    }
-
-    void PushCube(size_t uCubeId, const Voxels::Vec3& normal, const float fForceMul) 
+    void RemoveCube(size_t uCubeId)
     {
         InWorldCube* pWC = nullptr;
 
-        for (auto& c : m_vInWorldObjects) 
-        {
+        if (uCubeId == -1) {
+            AB_LOG(Core::Debug::Info, L"Invalid id on push");
+            return;
+        }
+
+        for (auto& c : m_vInWorldObjects) {
+            if (c.GetId() != uCubeId) 
+                continue;
+
+            pWC = &c;
+            break;
+        }
+
+        if (!pWC) {
+            AB_LOG(::Core::Debug::Info, L"Invalid id on push");
+            return;
+        }
+
+        m_pPhysics->DestroyCube(pWC->GetPhysicsId(), m_pWorld->GetById(pWC->GetId()).GetHalfSize());
+        m_pWorld->RemoveObject(pWC->GetId());
+
+        for (auto itObj = m_vInWorldObjects.begin(); itObj != m_vInWorldObjects.end(); ++itObj) {
+            if (&(*itObj) == pWC) {
+                m_vInWorldObjects.erase(itObj);
+            }
+        }
+
+        m_pWorld->ForceUpload();
+    }
+
+    void PushCube(size_t uCubeId, const ::Voxels::Vec3& normal, const float fForceMul) 
+    {
+        InWorldCube* pWC = nullptr;
+
+        if (uCubeId == -1) {
+            AB_LOG(Core::Debug::Info, L"Invalid id on push");
+            return;
+        }
+
+        for (auto& c : m_vInWorldObjects) {
             if (c.GetId() != uCubeId) 
                 continue;
 
@@ -470,13 +528,13 @@ public:
             return;
         }
 
-        m_Physics.PushCube(pWC->GetPhysicsId(), normal, fForceMul);
+        m_pPhysics->PushCube(pWC->GetPhysicsId(), normal, fForceMul);
     }
 
 private:
 
-    ::std::shared_ptr<World> m_pWorld = nullptr;
-    ::std::vector<InWorldCube> m_vInWorldObjects;
-    Physics m_Physics;
+    ::std::shared_ptr<World>    m_pWorld            = nullptr;
+    ::std::vector<InWorldCube>  m_vInWorldObjects;
+    ::std::shared_ptr<Physics>  m_pPhysics;
 
 };
