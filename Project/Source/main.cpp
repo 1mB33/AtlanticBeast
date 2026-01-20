@@ -21,6 +21,7 @@ int main()
     ::std::shared_ptr<Game>                     g               = ::std::make_shared<Game>();
     GameMasterPuppet                            gameMaster      = GameMasterPuppet(render);
     DeltaTime                                   dt              = { };
+    DeltaTime                                   dttime          = { };
     FpsLimiter                                  fl(1000.f / 120.f);
     float                                       fFps            = 0.f;
     double                                      dAvgSessionFps  = 0.;
@@ -50,11 +51,15 @@ int main()
     dt.SetReferenceFrame();
     while (AppStatus::GetAppCurrentStatus()) 
     {   
+        dttime.FetchMs();
         const float fDeltaMs = dt.FetchMs();
         renderWindow.Update(fDeltaMs);
+        const float fWindowTimeMs = dttime.FetchMs();
         g->Update(fDeltaMs);
+        const float fGameTimeMs = dttime.FetchMs();
         render->Update(fDeltaMs);
         render->Render();
+        const float fRenderTimeMs = dttime.FetchMs();
         const float fBlock = fl.Block(dt.DeltaMs(), fDeltaMs);
 
         // Skip the first 
@@ -72,11 +77,14 @@ int main()
         }
 
         ::Core::Debug::Logger::Get().Log(::Core::Debug::Info, 
-                                         L"AvgSessionFps: %lf Fps: %f Frame duration: %fms Blocked for: %fms",
+                                         L"AvgSessionFps: %lf Fps: %f Frame duration: %fms Blocked for: %fms WindowTime: %fms GameTime: %fms RenderTime: %fms",
                                          dAvgSessionFps,
                                          fFps,
                                          fDeltaMs,
-                                         fBlock);
+                                         fBlock,
+                                         fWindowTimeMs,
+                                         fGameTimeMs,
+                                         fRenderTimeMs);
     }
 
     ::Core::Debug::Logger::Get().Log(::Core::Debug::Info, L"AvgFps: %lf Frames: %lf", dAvgSessionFps, dFrame);
