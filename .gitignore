@@ -4,6 +4,7 @@
 compile_commands.json
 Bin/
 Build/
+BuildDebug/
 out/
 Lib/
 

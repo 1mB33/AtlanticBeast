@@ -26,8 +26,11 @@ Q - Fly down<br>
 Mouse movement - camera rotation<br>
 
 ### Interactions:
-SPACE - Place a block<br>
-X - Remove a block<br>
+SPACE or LEFT MOUSE BUTTON - Place a block<br>
+X or RIGTH MOUSE BUTTON - Remove a block<br>
+1 - Weak push<br>
+2 - Medium push<br>
+3 - Strong push<br>
 
 # Demonstration with physics
 <p float="left">
