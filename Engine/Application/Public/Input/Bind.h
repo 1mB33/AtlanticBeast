@@ -36,6 +36,7 @@ typedef struct AbKeyboardBind {
 
 typedef struct AbMouseButtonBind {
     EAbOnState ButtonState;
+    AbKeyId ButtonCode;
 } AbMouseButtonBind;
 
 typedef struct AbInputBind {

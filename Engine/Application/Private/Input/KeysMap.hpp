@@ -21,6 +21,8 @@ class KeysMap : public IBindMap<KeysMap>
 public:
     
     KeysMap();
+    
+    explicit KeysMap(size_t uAmountOfBindableKeys);
 
 public:
 

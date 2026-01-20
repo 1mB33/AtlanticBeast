@@ -23,6 +23,10 @@ typedef struct AbInputStruct
             int32_t MouseX;
             int32_t MouseY;
         } Mouse;
+
+        struct {
+            AbKeyId KeyId;
+        } MouseButton;
     };
 } AbInputStruct;
 

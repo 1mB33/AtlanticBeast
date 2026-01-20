@@ -2,6 +2,7 @@
 
 #include "Input/UserInput.hpp"
 
+#include "Input/MouseButtonList.hpp"
 #include "MouseMap.hpp"
 #include "KeysMap.hpp"
 #include "Input/InputEvents.h"
@@ -19,8 +20,8 @@ struct UserInput::UserInputImpl
     KeysMap KeyReleaseMap;
     KeysMap KeyPressMap;
     KeysMap KeyContinuous;
-    KeysMap ButtonReleaseMap;
-    KeysMap ButtonPressMap;
+    KeysMap ButtonReleaseMap = KeysMap(4);
+    KeysMap ButtonPressMap = KeysMap(4);
     MouseMap MotionMouseMap;
 };
 
@@ -164,17 +165,32 @@ void UserInput::Update(const float fDelta)
                 break;
             }
 
-            case EAbInputEvents::AbButtonPress:
-            case EAbInputEvents::AbButtonRelease:
-                AB_LOG(Debug::Error, L"Mouse button press/release aren't implemented yet");
-                AB_ASSERT(false); 
-                break;
+            case EAbInputEvents::AbButtonPress: {
+                AbKeyId button = is.Keyboard.KeyId;
 
-            case EAbInputEvents::AbMotion:
+                if (button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT)
+                    break;
+
+                m_pImpl->ButtonPressMap.PlayAction(fDelta, button);
+                break;
+            }
+
+            case EAbInputEvents::AbButtonRelease: {
+                AbKeyId button = is.Keyboard.KeyId;
+
+                if (button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT)
+                    break;
+
+                m_pImpl->ButtonReleaseMap.PlayAction(fDelta, button);
+                break;
+            }
+
+            case EAbInputEvents::AbMotion: {
                 m_pImpl->MotionMouseMap.PlayAction(fDelta, is.Mouse.MouseX, is.Mouse.MouseY);
                 is.Mouse.MouseX = 0;
                 is.Mouse.MouseY = 0;
                 break;
+            }
         }
 
 		// Consume the input event
@@ -216,6 +232,21 @@ void UserInput::Bind(void* pThis, ControllerObject* pCo, AbAction action, AbMous
             default:
                 Debug::Logger::Get().Log(Debug::Error, 
                                          L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
+                                         bind.Keyboard.KeyState);
+        }
+    }
+    else if (bind.Type & EAbBindType::MouseButton) {
+        switch (bind.Keyboard.KeyState)
+        {
+            case EAbOnState::Press:
+                m_pImpl->ButtonPressMap.BindAction(bind, pThis, action, nullptr);
+                break;
+            case EAbOnState::Release:
+                m_pImpl->ButtonReleaseMap.BindAction(bind, pThis, action, nullptr);
+                break;
+            default:
+                Debug::Logger::Get().Log(Debug::Error, 
+                                         L"Button state wasn't valid? Coulnd't map the bind. [ButtonState: %d]",
                                          bind.Keyboard.KeyState);
         }
     }

@@ -35,6 +35,7 @@ SET(BEE_APPLICATION_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Input/Bind.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Input/InputEvents.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Input/KeyList.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Input/MouseButtonList.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Input/ControllerObject.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/EmptyWindow.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/EmptyCanvas.hpp"

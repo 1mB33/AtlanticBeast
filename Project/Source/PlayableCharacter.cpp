@@ -25,13 +25,13 @@ void PlayablePaper::BindToInput(const ::std::shared_ptr<App::UserInput>& pInput)
     ib.Keyboard.KeyCode = App::AB_KEY_E;
     pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionMoveDown, nullptr, ib);
 
-    ib.Keyboard.KeyCode = App::AB_KEY_SPACE;
-    ib.Keyboard.KeyState = Press;
-    pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionPlaceBlock, nullptr, ib);
-
     ib.Keyboard.KeyCode = App::AB_KEY_X;
     ib.Keyboard.KeyState = Press;
     pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionRemoveBlock, nullptr, ib);
+
+    ib.Keyboard.KeyCode = App::AB_KEY_SPACE;
+    ib.Keyboard.KeyState = Press;
+    pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionPlaceBlock, nullptr, ib);
 
     ib.Keyboard.KeyCode = App::AB_KEY_1;
     ib.Keyboard.KeyState = Press;
@@ -55,4 +55,13 @@ void PlayablePaper::BindToInput(const ::std::shared_ptr<App::UserInput>& pInput)
 
     ib.Type = Mouse; 
     pInput->Bind(m_Character.get(), &m_Controller, nullptr, &PaperController::UseActionMouse, ib);
+
+    AbInputBind ibMouse;
+    ibMouse.Type = EAbBindType::MouseButton;
+    ibMouse.MouseButton.ButtonState = EAbOnState::Press;
+    ibMouse.MouseButton.ButtonCode = App::AB_LEFT_MOUSE_BUTTON;
+    pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionPlaceBlock, nullptr, ibMouse);
+
+    ibMouse.MouseButton.ButtonCode = App::AB_RIGTH_MOUSE_BUTTON;
+    pInput->Bind(m_Character.get(), &m_Controller, &PaperController::UseActionRemoveBlock, nullptr, ibMouse);
 }

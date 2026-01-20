@@ -42,6 +42,8 @@ private:
 
     void HandleKey(WindowDesc* pWd, XEvent& event, EAbInputEvents ie);
 
+    void HandleMouseButton(WindowDesc* pWd, XEvent& event, EAbInputEvents ie);
+
 };
 
 } // !App

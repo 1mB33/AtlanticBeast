@@ -5,6 +5,7 @@
 #include "Window/WindowListener.hpp"
 #include "Input/Bind.h"
 #include "Input/KeyList.hpp"
+#include "Input/MouseButtonList.hpp"
 
 namespace App
 {

@@ -12,10 +12,18 @@ KeysMap::KeysMap()
     memset(m_vKeys.data(), 0, sizeof(ActionReplayData) * m_vKeys.size());
 }
 
+
+// --------------------------------------------------------------------------------------------------------------------
+KeysMap::KeysMap(size_t uAmountOfBindableKeys)
+    : m_vKeys(uAmountOfBindableKeys)
+{
+    memset(m_vKeys.data(), 0, sizeof(ActionReplayData) * m_vKeys.size());
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 void KeysMap::BindActionImpl(const AbInputBind& ib, void* pThis, AbAction a, AbMouseAction ma)
 {
-	AB_ASSERT(ib.Type == EAbBindType::Keyboard);
+	AB_ASSERT(ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton);
     AB_ASSERT(ib.Keyboard.KeyCode > AB_INVALID_KEY && ib.Keyboard.KeyCode < AB_KEY_COUNT);
     AB_ASSERT(m_vKeys[ib.Keyboard.KeyCode].pThis == nullptr);
     AB_ASSERT(ma == nullptr);
@@ -27,7 +35,7 @@ void KeysMap::BindActionImpl(const AbInputBind& ib, void* pThis, AbAction a, AbM
 // ---------------------------------------------------------------------------------------------------------------------
 void KeysMap::UnbindActionImpl(const AbInputBind& ib, void* pThis)
 {
-	AB_ASSERT(ib.Type == EAbBindType::Keyboard);
+	AB_ASSERT(ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton);
 	AB_ASSERT(ib.Keyboard.KeyCode > AB_INVALID_KEY && ib.Keyboard.KeyCode < AB_KEY_COUNT);
     AB_ASSERT(pThis != nullptr);
 

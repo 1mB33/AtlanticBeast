@@ -1,3 +1,4 @@
+#include "Input/InputEvents.h"
 #ifdef __linux__
 
 #include "Core.h"
@@ -163,11 +164,11 @@ uint32_t BasicLinuxWindowPolicy::OnUpdate(WindowDesc* pWd, XEvent& event)
             return 0;
 
         case ButtonPress:
-            pWd->LastEvent |= Input;
+            HandleMouseButton(pWd, event, AbButtonPress);
             return 0;
 
         case ButtonRelease:
-            pWd->LastEvent |= Input;
+            HandleMouseButton(pWd, event, AbButtonRelease);
             return 0;
 
         case MotionNotify:
@@ -235,6 +236,18 @@ void BasicLinuxWindowPolicy::HandleKey(WindowDesc* pWd, XEvent& event, EAbInputE
     AbInputStruct is;
     is.Event = ie;
     is.Keyboard.KeyId = event.xkey.keycode - 8;
+
+    pWd->InputStruct.push(is);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+void BasicLinuxWindowPolicy::HandleMouseButton(WindowDesc* pWd, XEvent& event, EAbInputEvents ie)
+{
+    pWd->LastEvent |= Input;
+
+    AbInputStruct is;
+    is.Event = ie;
+    is.MouseButton.KeyId = event.xbutton.button;
 
     pWd->InputStruct.push(is);
 }
