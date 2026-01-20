@@ -77,7 +77,7 @@ int main()
         }
 
         ::Core::Debug::Logger::Get().Log(::Core::Debug::Info, 
-                                         L"AvgSessionFps: %3.2lf Fps: %3.2f Frame duration: %3.2fms Blocked for: %3.2fms WindowTime: %3.2fms GameTime: %3.2fms RenderTime: %3.2fms",
+                                         L"AvgSessionFps: %6.2lf Fps: %6.2f Frame duration: %6.2fms Blocked for: %6.2fms WindowTime: %6.2fms GameTime: %6.2fms RenderTime: %6.2fms",
                                          dAvgSessionFps,
                                          fFps,
                                          fDeltaMs,
