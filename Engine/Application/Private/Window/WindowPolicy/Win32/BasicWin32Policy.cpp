@@ -146,6 +146,36 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
             return;
         }
 
+        case WM_LBUTTONDOWN:
+            AbInputStruct is = { };
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+
+            is.Event = ie;
+            is.MouseButton.KeyId = 1;
+
+            m_pWindowDesc->InputStruct.push(is);
+            break;
+
+        case WM_RBUTTONDOWN:
+            AbInputStruct is = { };
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+
+            is.Event = ie;
+            is.MouseButton.KeyId = 3;
+
+            m_pWindowDesc->InputStruct.push(is);
+            break;
+
+        case WM_MBUTTONDOWN:
+            AbInputStruct is = { };
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+
+            is.Event = ie;
+            is.MouseButton.KeyId = 2;
+
+            m_pWindowDesc->InputStruct.push(is);
+            break;
+
         case WM_MOUSEMOVE: {
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
