@@ -146,7 +146,7 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
             return;
         }
 
-        case WM_LBUTTONDOWN:
+        case WM_LBUTTONDOWN: {
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
@@ -155,8 +155,9 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             m_pWindowDesc->InputStruct.push(is);
             break;
+        }
 
-        case WM_RBUTTONDOWN:
+        case WM_RBUTTONDOWN: {
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
@@ -165,8 +166,9 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             m_pWindowDesc->InputStruct.push(is);
             break;
+        }
 
-        case WM_MBUTTONDOWN:
+        case WM_MBUTTONDOWN: {
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
@@ -175,6 +177,7 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             m_pWindowDesc->InputStruct.push(is);
             break;
+        }
 
         case WM_MOUSEMOVE: {
             AbInputStruct is = { };
