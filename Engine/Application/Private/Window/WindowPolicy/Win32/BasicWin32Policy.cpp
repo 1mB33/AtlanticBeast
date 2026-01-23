@@ -150,7 +150,7 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-            is.Event = ie;
+            is.Event = EAbInputEvents::AbButtonPress;
             is.MouseButton.KeyId = 1;
 
             m_pWindowDesc->InputStruct.push(is);
@@ -161,7 +161,7 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-            is.Event = ie;
+            is.Event = EAbInputEvents::AbButtonPress;
             is.MouseButton.KeyId = 3;
 
             m_pWindowDesc->InputStruct.push(is);
@@ -172,7 +172,7 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbInputStruct is = { };
             m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-            is.Event = ie;
+            is.Event = EAbInputEvents::AbButtonPress;
             is.MouseButton.KeyId = 2;
 
             m_pWindowDesc->InputStruct.push(is);
