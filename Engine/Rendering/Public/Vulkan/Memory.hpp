@@ -1,8 +1,6 @@
 #ifndef AB_MEMORY_H
 #define AB_MEMORY_H
 
-#include "B33Rendering.hpp"
-
 #include "WrapperHardware.hpp"
 #include "WrapperAdapter.hpp"
 #include "GPUBuffer.hpp"

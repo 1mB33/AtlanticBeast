@@ -1,8 +1,6 @@
 #ifndef AB_IMATERIAL_PROPERTIES_H
 #define AB_IMATERIAL_PROPERTIES_H
 
-#include "B33Rendering.hpp"
-
 namespace B33::Rendering
 {
 

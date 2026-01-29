@@ -6,6 +6,7 @@
 #include "Vulkan/MinimalHardware.hpp"
 #include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/SwapChain.hpp"
+#include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Primitives/Camera.hpp"
 

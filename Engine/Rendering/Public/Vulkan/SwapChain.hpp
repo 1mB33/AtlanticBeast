@@ -1,7 +1,6 @@
 #ifndef AB_SWAPCHAIN_H
 #define AB_SWAPCHAIN_H
 
-#include "B33Rendering.hpp"
 #include "Instance.hpp"
 #include "WrapperHardware.hpp"
 #include "WrapperAdapter.hpp"

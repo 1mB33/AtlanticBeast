@@ -1,8 +1,6 @@
 #ifndef AB_REFLECTION_PROPERTY_H
 #define AB_REFLECTION_PROPERTY_H
 
-#include "B33Rendering.hpp"
-
 namespace B33::Rendering
 {
 

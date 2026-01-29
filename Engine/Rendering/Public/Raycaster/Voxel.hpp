@@ -1,8 +1,6 @@
 #ifndef AB_VOXEL_H
 #define AB_VOXEL_H
 
-#include "B33Rendering.hpp"
-
 namespace B33::Rendering
 {
 

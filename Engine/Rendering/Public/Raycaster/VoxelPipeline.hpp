@@ -5,7 +5,6 @@
 #include "Vulkan/SwapChain.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Raycaster/PushConstants.hpp"
-#include "Raycaster/VoxelGrid.hpp"
 
 namespace B33::Rendering
 {

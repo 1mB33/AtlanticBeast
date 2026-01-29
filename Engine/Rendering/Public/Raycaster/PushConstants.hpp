@@ -1,8 +1,6 @@
 #ifndef AB_PUSH_CONSTANTS_H
 #define AB_PUSH_CONSTANTS_H
 
-#include "B33Rendering.hpp"
-
 namespace B33::Rendering
 {
 

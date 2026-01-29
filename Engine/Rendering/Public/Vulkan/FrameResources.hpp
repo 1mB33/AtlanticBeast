@@ -1,8 +1,6 @@
 #ifndef AB_FRAME_RESOURCES_H
 #define AB_FRAME_RESOURCES_H
 
-#include "B33Rendering.hpp"
-
 namespace B33::Rendering
 {
 
