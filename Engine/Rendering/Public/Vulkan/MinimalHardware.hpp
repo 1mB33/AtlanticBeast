@@ -4,7 +4,7 @@
 #include "WrapperHardware.hpp"
 #include "Instance.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class MinimalHardware : public HardwareWrapper
@@ -19,6 +19,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_MINIMAL_HARDWARE_H

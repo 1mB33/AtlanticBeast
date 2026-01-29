@@ -9,12 +9,13 @@
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Primitives/Camera.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class Renderer
 {
-    using FrameResourcesArray = ::std::array<FrameResources, Voxels::FrameResources::MAX_FRAMES_IN_FLIGHT>;
+    using FramesArray = ::std::array<::B33::Rendering::Frame, 
+                                     ::B33::Rendering::Frame::MAX_FRAMES_IN_FLIGHT>;
 
 public:
 
@@ -34,29 +35,21 @@ public:
     { }
 
     ~Renderer()
-    { Destroy();}
+    { Destroy(); }
 
 public:
 
-    void SetCurrentCamera(::std::shared_ptr<Camera> camera)
-    { m_pCamera = camera; }
-
-    void SetDebugMode(const bool bMode)
-    { m_bDebugMode = bMode; }
-
-public:
-
-    ::std::shared_ptr<Camera>& GetCurrentCamera()
+    ::std::shared_ptr<::B33::Rendering::Camera>& GetCurrentCamera()
     {
         if (m_pCamera == nullptr) {
-            AB_LOG(Core::Debug::Warning, L"Renderer doesn't have a camera. Recreating camera for getter.");
-            m_pCamera = ::std::make_shared<Camera>();
+            AB_LOG(::Core::Debug::Warning, L"Renderer doesn't have a camera. Recreating default camera on fly.");
+            m_pCamera = ::std::make_shared<::B33::Rendering::Camera>();
         }
 
         return m_pCamera;
     }
 
-    ::std::shared_ptr<IWorldGrid>& GetGrid()
+    ::std::shared_ptr<::B33::Rendering::IWorldGrid>& GetGrid()
     { return m_pVoxelGrid; }
 
     bool GetDebugMode()
@@ -64,10 +57,18 @@ public:
 
 public:
 
-    BEAST_API void Initialize(::std::shared_ptr<const WindowDesc> wd,
-                              ::std::shared_ptr<IWorldGrid> vg);
+    void SetCurrentCamera(::std::shared_ptr<::B33::Rendering::Camera> camera)
+    { m_pCamera = camera; }
 
-    BEAST_API void Update(const float);
+    void SetDebugMode(const bool bMode)
+    { m_bDebugMode = bMode; }
+
+public:
+
+    BEAST_API void Initialize(::std::shared_ptr<const ::WindowDesc> wd,
+                              ::std::shared_ptr<::B33::Rendering::IWorldGrid> vg);
+
+    BEAST_API void Update(const float fDelta);
 
     BEAST_API void Render();
 
@@ -75,24 +76,24 @@ public:
 
 private:
 
-    VkCommandPool CreateCommandPool(::std::shared_ptr<const AdapterWrapper> da,
-                                    uint32_t uQueueFamily);
+    ::VkCommandPool CreateCommandPool(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+                                      ::uint32_t uQueueFamily);
 
-    VkCommandBuffer CreateCommandBuffer(::std::shared_ptr<const AdapterWrapper> da,
-                                        VkCommandPool cmdPool);
+    ::VkCommandBuffer CreateCommandBuffer(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+                                        ::VkCommandPool cmdPool);
 
-    FrameResourcesArray CreateFrameResources(const ::std::shared_ptr<const AdapterWrapper>& da,
-                                             const ::std::unique_ptr<Memory>& memory,
-                                             const ::std::shared_ptr<const IWorldGrid>& vg,
-                                             VkCommandPool cmdPool,
-                                             size_t uFrames);
+    FramesArray CreateFrameResources(const ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>& da,
+                                     const ::std::unique_ptr<::B33::Rendering::Memory>& memory,
+                                     const ::std::shared_ptr<const ::B33::Rendering::IWorldGrid>& vg,
+                                     ::VkCommandPool cmdPool,
+                                     ::size_t uFrames);
 
-    void RecordCommands(VkCommandBuffer& cmdBuff,
-                        const ::std::shared_ptr<VoxelPipeline>& pipeline, 
-                        uint32_t uImageIndex);
+    void RecordCommands(::VkCommandBuffer& cmdBuff,
+                        const ::std::shared_ptr<::B33::Rendering::VoxelPipeline>& pipeline, 
+                        ::uint32_t uImageIndex);
 
-    void RecordVoxelesCommands(VkCommandBuffer& cmdBuffer,
-                               const ::std::shared_ptr<VoxelPipeline>& pipeline);
+    void RecordVoxelesCommands(::VkCommandBuffer& cmdBuffer,
+                               const ::std::shared_ptr<::B33::Rendering::VoxelPipeline>& pipeline);
 
 private:
 
@@ -102,29 +103,28 @@ private:
 
 private:
 
-    ::std::shared_ptr<Instance>             m_pInstance         = nullptr;
-    ::std::shared_ptr<MinimalHardware>      m_pHardware         = nullptr;
-    ::std::shared_ptr<ComputeAdapter>       m_pDeviceAdapter    = nullptr;
-    ::std::shared_ptr<const WindowDesc>     m_pWindowDesc       = nullptr;
-    ::std::shared_ptr<IWorldGrid>           m_pVoxelGrid        = nullptr;
-    ::std::shared_ptr<Camera>               m_pCamera           = nullptr;
-    ::std::unique_ptr<Swapchain>            m_pSwapChain        = nullptr;
-    ::std::unique_ptr<Memory>               m_pMemory           = nullptr;
-    ::std::shared_ptr<VoxelPipeline>        m_pPipeline         = nullptr;
+    ::std::shared_ptr<::B33::Rendering::Instance>               m_pInstance         = nullptr;
+    ::std::shared_ptr<::B33::Rendering::MinimalHardware>        m_pHardware         = nullptr;
+    ::std::shared_ptr<::B33::Rendering::ComputeAdapter>         m_pDeviceAdapter    = nullptr;
+    ::std::shared_ptr<const ::WindowDesc>                       m_pWindowDesc       = nullptr;
+    ::std::shared_ptr<::B33::Rendering::IWorldGrid>             m_pVoxelGrid        = nullptr;
+    ::std::shared_ptr<::B33::Rendering::Camera>                 m_pCamera           = nullptr;
+    ::std::unique_ptr<::B33::Rendering::Swapchain>              m_pSwapChain        = nullptr;
+    ::std::unique_ptr<::B33::Rendering::Memory>                 m_pMemory           = nullptr;
+    ::std::shared_ptr<::B33::Rendering::VoxelPipeline>          m_pPipeline         = nullptr;
 
-    VkCommandPool m_CommandPool = VK_NULL_HANDLE;
+    ::VkCommandPool m_CommandPool = VK_NULL_HANDLE;
 
-    size_t m_uCurrentFrame;
-    ::std::unique_ptr<FrameResourcesArray> m_vFrames = nullptr;
+    ::size_t                        m_uCurrentFrame;
+    ::std::unique_ptr<FramesArray>  m_vFrames = nullptr;
 
-    ::std::shared_ptr<GPUBuffer>    m_VoxelBuffer;
-    ::std::shared_ptr<GPUBuffer>    m_CubeBuffer;    
-    ::std::shared_ptr<GPUStreamBuffer> m_StageVoxelBuffer;
-    ::std::shared_ptr<GPUStreamBuffer> m_StageCubeBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_VoxelBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_CubeBuffer;    
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageVoxelBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageCubeBuffer;
 
     bool m_bDebugMode;
 };
 
-} // !Voxels
-
+} // !B33::Rendering
 #endif // !AB_RENDERER_H

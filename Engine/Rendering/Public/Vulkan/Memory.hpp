@@ -1,14 +1,14 @@
 #ifndef AB_MEMORY_H
 #define AB_MEMORY_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "WrapperHardware.hpp"
 #include "WrapperAdapter.hpp"
 #include "GPUBuffer.hpp"
 #include "GPUStreamBuffer.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 struct UploadDescriptor
@@ -131,6 +131,6 @@ private:
 
 };
 
-} //!Voxels
+} //!B33::Rendering
 
 #endif //!AB_MEMORY_H

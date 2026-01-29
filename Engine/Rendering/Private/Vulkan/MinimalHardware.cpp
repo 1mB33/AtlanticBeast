@@ -1,8 +1,8 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/MinimalHardware.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -44,4 +44,4 @@ VkPhysicalDevice MinimalHardware::ChooseGPU(const ::std::shared_ptr<const Instan
     return chosenPhysicalDevice;
 }
 
-} // !Voxels
+} // !B33::Rendering

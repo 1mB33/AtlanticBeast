@@ -1,13 +1,12 @@
 #ifndef AB_COLOR_PROPERTY_H
 #define AB_COLOR_PROPERTY_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
-#include "IMaterialProperties.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
+// FIXME: Some compilers add one byte in the empty IMaterialProperties class
 class alignas(4) ColorProperty // : public IMaterialProperties
 {
 public:
@@ -18,20 +17,20 @@ public:
 
 public:
 
-    void SetColor(uint32_t uColor) 
+    void SetColor(::uint32_t uColor) 
     { m_uColor = (uColor & 0xFFFFFF00) | (m_uColor & 0x000000FF); }
 
-    void SetAlpha(uint32_t uAlpha) 
+    void SetAlpha(::uint32_t uAlpha) 
     { m_uColor = (uAlpha & 0x000000FF) | (m_uColor & 0xFFFFFF00); }
 
-    void SetColorAndAlpha(uint32_t uHexValue) 
+    void SetColorAndAlpha(::uint32_t uHexValue) 
     { m_uColor = uHexValue; }
 
 private:
 
-    uint32_t m_uColor;  
+    ::uint32_t m_uColor;  
 
 };
 
-} // !Voxels
-#endif //!AB_COLOR_PROPERTY_H
+} // !B33::Rendering
+#endif // !AB_COLOR_PROPERTY_H

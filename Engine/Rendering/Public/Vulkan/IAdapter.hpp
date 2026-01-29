@@ -1,7 +1,7 @@
 #ifndef AB_WRAPPER_H
 #define AB_WRAPPER_H
 
-namespace Voxels 
+namespace B33::Rendering 
 {
 
 template<class Derived>
@@ -31,6 +31,6 @@ public:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_WRAPPER_H

@@ -145,22 +145,22 @@ public:
 
 public:
 
-    Voxels::Vec3 GetCubePos(const JPH::BodyID& id)
+    B33::Math::Vec3 GetCubePos(const JPH::BodyID& id)
     {
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
         auto cubePos = m_pPhysicsSystem->GetBodyInterface().GetCenterOfMassPosition(id);
         
-        return Voxels::Vec3(cubePos.GetX(), cubePos.GetY(), cubePos.GetZ());
+        return B33::Math::Vec3(cubePos.GetX(), cubePos.GetY(), cubePos.GetZ());
     }
 
-    Voxels::Rot3 GetCubeRot(const JPH::BodyID& id)
+    B33::Math::Rot3 GetCubeRot(const JPH::BodyID& id)
     {
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
         auto rotEuler = m_pPhysicsSystem->GetBodyInterface().GetRotation(id).GetEulerAngles();
         
-        return Voxels::Rot3(rotEuler.GetX(), rotEuler.GetY(), rotEuler.GetZ());
+        return B33::Math::Rot3(rotEuler.GetX(), rotEuler.GetY(), rotEuler.GetZ());
     }
 
 public:
@@ -206,7 +206,7 @@ public:
 
 public:
 
-    void PushCube(const JPH::BodyID& bodyId, const Voxels::Vec3& normal, const float fForceMul) 
+    void PushCube(const JPH::BodyID& bodyId, const B33::Math::Vec3& normal, const float fForceMul) 
     {
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
@@ -221,7 +221,7 @@ public:
         m_pPhysicsSystem->GetBodyInterface().SetLinearVelocity(bodyId, force);
     }
 
-    JPH::BodyID CreateCube(const Voxels::Vec3& p, const Voxels::Vec3& h)
+    JPH::BodyID CreateCube(const B33::Math::Vec3& p, const B33::Math::Vec3& h)
     {
         using namespace JPH::literals;
 
@@ -239,7 +239,7 @@ public:
         return m_pPhysicsSystem->GetBodyInterface().CreateAndAddBody(boxSettings, JPH::EActivation::Activate);
     }
 
-    void DestroyCube(const ::JPH::BodyID& id, const Voxels::Vec3& h)
+    void DestroyCube(const ::JPH::BodyID& id, const B33::Math::Vec3& h)
     {
         using namespace JPH::literals;
 
@@ -302,12 +302,12 @@ private:
 };
 
 // --------------------------------------------------------------------------------------------------------------------
-class World : public ::Voxels::CubeWorld 
+class World : public ::B33::Rendering::CubeWorld 
 {
 public:
 
     World()
-        : ::Voxels::CubeWorld()
+        : ::B33::Rendering::CubeWorld()
     { GenerateFloor(); }
 
 private:
@@ -315,12 +315,12 @@ private:
     void GenerateFloor()
     {
         const size_t uDim = this->GetGridWidth();
-        ::Voxels::ColoredCube cc = { };
+        ::B33::Rendering::ColoredCube cc = { };
 
         for (uint32_t z = 0; z < uDim; ++z) {
             for (uint32_t y = 0; y < 2; ++y) {
                 for (uint32_t x = 0; x < uDim; ++x) {
-                    this->SetVoxel(Voxels::iVec3(x, y, z), 0x101010FF);
+                    this->SetVoxel(B33::Math::iVec3(x, y, z), 0x101010FF);
                 }
             }
         }
@@ -364,7 +364,7 @@ public:
     const JPH::BodyID& GetPhysicsId() const
     { return m_PhysicsId; }
 
-    Voxels::Vec3 GetPos()
+    B33::Math::Vec3 GetPos()
     {
         if (auto pLock = m_pWorld.lock()) {
             return pLock->GetById(m_uCubeId).GetPosition();
@@ -428,10 +428,10 @@ public:
     ::std::shared_ptr<World> GetWorld() const
     { return m_pWorld; }
 
-    size_t GetIdFromPos(const Voxels::iVec3& pos)
+    size_t GetIdFromPos(const B33::Math::iVec3& pos)
     {
         for (auto& c : m_vInWorldObjects) 
-            if (Voxels::iVec3::ToiVec3(c.GetPos()) == pos) 
+            if (B33::Math::iVec3::ToiVec3(c.GetPos()) == pos) 
                 return c.GetId();
 
         return -1;
@@ -450,16 +450,16 @@ public:
         m_pPhysics->Update(fDelta);
     }
 
-    void GenerateCube(const Voxels::iVec3& p)
+    void GenerateCube(const B33::Math::iVec3& p)
     {
         AB_LOG(::Core::Debug::Info, L"Generating cube");
 
-        ::Voxels::ColoredCube   cc = ::Voxels::ColoredCube();
-        ::Voxels::Vec3          setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
-        ::Voxels::Vec3          setH(cc.GetHalfSize());
+        ::B33::Rendering::ColoredCube   cc = ::B33::Rendering::ColoredCube();
+        ::B33::Math::Vec3          setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
+        ::B33::Math::Vec3          setH(cc.GetHalfSize());
         size_t uCubeId;
 
-        cc.SetHalfSize(::Voxels::Vec3(0.5f, 0.5f, 0.5f));
+        cc.SetHalfSize(::B33::Math::Vec3(0.5f, 0.5f, 0.5f));
         cc.SetColor(0x99211200);
 
         uCubeId = m_pWorld->GenerateObjectAtVoxel(p, std::move(cc));
@@ -510,7 +510,7 @@ public:
         m_pWorld->ForceUpload();
     }
 
-    void PushCube(size_t uCubeId, const ::Voxels::Vec3& normal, const float fForceMul) 
+    void PushCube(size_t uCubeId, const ::B33::Math::Vec3& normal, const float fForceMul) 
     {
         InWorldCube* pWC = nullptr;
 

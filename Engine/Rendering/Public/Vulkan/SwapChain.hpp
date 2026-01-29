@@ -1,13 +1,13 @@
 #ifndef AB_SWAPCHAIN_H
 #define AB_SWAPCHAIN_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Instance.hpp"
 #include "WrapperHardware.hpp"
 #include "WrapperAdapter.hpp"
 #include "Window/WindowDesc.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class Swapchain
@@ -103,5 +103,5 @@ private:
 
  };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_SWAPCHAIN_H

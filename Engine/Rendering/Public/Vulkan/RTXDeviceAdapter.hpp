@@ -5,7 +5,7 @@
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class RTXDeviceAdapter : public AdapterWrapper
@@ -28,5 +28,5 @@ public:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_DEVICE_ADAPTER_H

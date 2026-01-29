@@ -1,8 +1,8 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/ComputeAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;

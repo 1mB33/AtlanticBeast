@@ -1,4 +1,4 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/SwapChain.hpp"
 
@@ -6,7 +6,7 @@
 #include "Vulkan/WrapperHardware.hpp"
 
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -266,4 +266,4 @@ uint32_t Swapchain::GetNumberOfSwapChainImages(::std::shared_ptr<const AdapterWr
     return swapChainImages;
 }
 
-} // !Voxels
+} // !B33::Rendering

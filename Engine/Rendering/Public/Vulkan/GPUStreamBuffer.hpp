@@ -1,10 +1,10 @@
 #ifndef AB_GPU_STREAM_BUFFER_H
 #define AB_GPU_STREAM_BUFFER_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Vulkan/GPUBuffer.hpp"
 
-namespace Voxels 
+namespace B33::Rendering 
 {
 
 class GPUStreamBuffer : public GPUBuffer 
@@ -78,5 +78,5 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_GPU_STREAM_BUFFER_H

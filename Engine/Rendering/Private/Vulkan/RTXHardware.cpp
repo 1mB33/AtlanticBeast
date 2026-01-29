@@ -1,8 +1,8 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/RTXHardware.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -72,4 +72,4 @@ VkPhysicalDevice RTXHardware::ChooseGPU(const shared_ptr<const Instance>& pInsta
     return chosenPhysicalDevice;
 }
 
-} // !Voxels
+} // !B33::Rendering

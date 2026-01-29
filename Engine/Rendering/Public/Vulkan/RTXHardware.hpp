@@ -4,7 +4,7 @@
 #include "Instance.hpp"
 #include "WrapperHardware.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 /**
@@ -25,6 +25,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_RTX_HARDWARE_H

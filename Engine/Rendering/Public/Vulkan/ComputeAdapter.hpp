@@ -5,7 +5,7 @@
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class ComputeAdapter : public AdapterWrapper 
@@ -33,5 +33,5 @@ private:
 
 };
 
-} //!Voxels
+} //!B33::Rendering
 #endif // !AB_COMPUTE_DEVICE_ADAPTER_H

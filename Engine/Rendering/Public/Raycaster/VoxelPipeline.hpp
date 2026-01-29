@@ -1,15 +1,13 @@
 #ifndef AB_PIPELINE_H
 #define AB_PIPELINE_H
 
-#include "Voxels.hpp"
-
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/SwapChain.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Raycaster/PushConstants.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class VoxelPipeline
@@ -37,19 +35,19 @@ public:
     BEAST_API void LoadImage(VkImage image);
 
     void LoadPushConstants(float fFov,
-                           Vec3 cameraPos, 
-                           Vec3 cameraLookDir,
-                           Vec3 cameraRight,
-                           Vec3 cameraUp,
-                           int32_t gridWidth,
-                           uint32_t uDebugMode)
+                           ::B33::Math::Vec3 cameraPos, 
+                           ::B33::Math::Vec3 cameraLookDir,
+                           ::B33::Math::Vec3 cameraRight,
+                           ::B33::Math::Vec3 cameraUp,
+                           ::int32_t gridWidth,
+                           ::uint32_t uDebugMode)
     {
         m_Vpc.CameraPos     = cameraPos;
         m_Vpc.CameraLookDir = cameraLookDir;
         m_Vpc.CameraRight   = cameraRight;
         m_Vpc.CameraUp      = cameraUp;
         m_Vpc.fFov          = fFov;
-        m_Vpc.GridSize      = iVec3(gridWidth, gridWidth, gridWidth);
+        m_Vpc.GridSize      = ::B33::Math::iVec3(gridWidth, gridWidth, gridWidth);
         m_Vpc.uMode         = uDebugMode;
     }
 
@@ -106,7 +104,7 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_PIPELINE_H
 

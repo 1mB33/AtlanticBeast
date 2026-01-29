@@ -1,9 +1,8 @@
-#include "Debug/Logger.hpp"
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/Instance.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -102,7 +101,7 @@ VkInstance Instance::CreateInstance()
 
     VkApplicationInfo appInfo = { };
     appInfo.sType               = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    appInfo.pApplicationName    = "Voxels";
+    appInfo.pApplicationName    = "B33::Rendering";
     appInfo.applicationVersion  = VK_MAKE_VERSION(0, 1, 5);
     appInfo.pEngineName         = "AtlanticBeast";
     appInfo.engineVersion       = VK_MAKE_VERSION(0, 2, 0);
@@ -134,5 +133,5 @@ VkInstance Instance::CreateInstance()
     return instance;
 }
 
-} // !Voxels
+} // !B33::Rendering
 

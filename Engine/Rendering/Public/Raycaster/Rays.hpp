@@ -1,22 +1,27 @@
 #ifndef AB_RAYS_H
 #define AB_RAYS_H
 
-#include "Math.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 struct HitResult 
 {
-    bool    bHit;
-    iVec3   iHitCoords;
-    size_t  uHitIndex;
-    float   fDistance;
-    Vec3    Normal;
+    using Vec   = ::B33::Math::Vec3;
+    using iVec  = ::B33::Math::iVec3;
+
+    bool        bHit;
+    iVec        iHitCoords;
+    ::size_t    uHitIndex;
+    float       fDistance;
+    Vec         Normal;
 };
 
-BEAST_API HitResult MarchTheRay(const IWorldGrid* vg, const Vec3& ro, const Vec3& rd, size_t maxSteps);
+BEAST_API HitResult MarchTheRay(const ::B33::Rendering::IWorldGrid* worldGrid, 
+                                const ::B33::Math::Vec3& rayOrigin,
+                                const ::B33::Math::Vec3& rayDestination,
+                                ::size_t maxSteps);
      
-} //!Voxels
+} //!B33::Rendering
 #endif //!AB_RAYS_H

@@ -1,7 +1,7 @@
 #ifndef AB_MAT4_H
 #define AB_MAT4_H
 
-namespace Voxels
+namespace B33::Math
 {
 
 struct alignas(16) Mat4
@@ -9,7 +9,7 @@ struct alignas(16) Mat4
     float m[16];
 };
 
-} // !Voxels
+} // !B33::Math
   
 #endif // !AB_MAT4_H
 

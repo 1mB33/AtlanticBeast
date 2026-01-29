@@ -1,13 +1,12 @@
 #ifndef AB_ROUGHNESS_PROPERTY_H
 #define AB_ROUGHNESS_PROPERTY_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
-#include "IMaterialProperties.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
+// FIXME: Some compilers add one byte in the empty IMaterialProperties class
 class alignas(4) RoughnessProperty // : public IMaterialProperties
 {
 public:
@@ -24,7 +23,6 @@ public:
             m_fRoughness = 0.25f;
             return;
         }
-
         m_fRoughness = fRef * 0.25f; 
     }
 
@@ -34,5 +32,5 @@ private:
 
 };
 
-} // !Voxels
-#endif //!AB_ROUGHNESS_PROPERTY_H
+} // !B33::Rendering
+#endif // !AB_ROUGHNESS_PROPERTY_H

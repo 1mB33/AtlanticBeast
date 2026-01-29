@@ -1,10 +1,10 @@
 #ifndef AB_WRAPPER_ADAPTER_H
 #define AB_WRAPPER_ADAPTER_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Vulkan/WrapperHardware.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class AdapterWrapper
@@ -75,6 +75,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_WRAPPER_ADAPTER_H
 

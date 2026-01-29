@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Game.hpp"
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Input/ControllerObject.hpp"
 #include "Input/UserInput.hpp"
 #include "Input/KeyList.hpp"
@@ -10,7 +10,7 @@
 #include "Raycaster/Rays.hpp"
 #include "Math.hpp"
 
-class PaperCharacter : public Voxels::Camera
+class PaperCharacter : public ::B33::Rendering::Camera
 {
 public:
 
@@ -30,24 +30,30 @@ public:
 
     void PlaceBlock(const float)
     {
-        Voxels::Vec3 rot = this->GetRotation();
-        Voxels::Vec3 lookDir = Voxels::Normalize(Voxels::RotateY(Voxels::RotateX(Voxels::Vec3{ 0.f, 0.f, 1.f }, rot.x), rot.y));
+        B33::Math::Vec3 rot = this->GetRotation();
+        B33::Math::Vec3 lookDir = B33::Math::Normalize(B33::Math::RotateY(B33::Math::RotateX(B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.x), rot.y));
 
-        Voxels::HitResult hr = Voxels::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
+        B33::Rendering::HitResult hr = ::B33::Rendering::MarchTheRay(m_g->GetWorld().get(),
+                                                                     this->GetPosition(),
+                                                                     lookDir,
+                                                                     10);
 
         if (hr.bHit) {
-            m_g->GenerateCube(Voxels::iVec3(hr.iHitCoords + hr.Normal));
+            m_g->GenerateCube(B33::Math::iVec3(hr.iHitCoords + hr.Normal));
         }
     }
 
     void RemoveBlock(const float)
     {
-        Voxels::Vec3 rot        = this->GetRotation();
-        Voxels::Vec3 lookDir    = Voxels::Normalize(Voxels::RotateY(Voxels::RotateX(Voxels::Vec3{ 0.f, 0.f, 1.f }, 
-                                                                                    rot.x), 
-                                                                    rot.y));
+        B33::Math::Vec3 rot        = this->GetRotation();
+        B33::Math::Vec3 lookDir    = ::B33::Math::Normalize(::B33::Math::RotateY(::B33::Math::RotateX(::B33::Math::Vec3{ 0.f, 0.f, 1.f }, 
+                                                                                                      rot.x), 
+                                                                                 rot.y));
 
-        Voxels::HitResult hr = Voxels::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
+        B33::Rendering::HitResult hr = ::B33::Rendering::MarchTheRay(m_g->GetWorld().get(),
+                                                      this->GetPosition(),
+                                                      lookDir,
+                                                      10);
 
         if (hr.bHit) 
             m_g->RemoveCube(m_g->GetIdFromPos(hr.iHitCoords));
@@ -55,12 +61,12 @@ public:
 
     void Push(const float, const float fForceMul)
     {
-        Voxels::Vec3 rot = this->GetRotation();
-        Voxels::Vec3 lookDir = Voxels::Normalize(Voxels::RotateY(Voxels::RotateX(Voxels::Vec3{ 0.f, 0.f, 1.f }, 
-                                                                                 rot.x), 
-                                                                 rot.y));
+        B33::Math::Vec3 rot = this->GetRotation();
+        B33::Math::Vec3 lookDir = ::B33::Math::Normalize(::B33::Math::RotateY(::B33::Math::RotateX(::B33::Math::Vec3{ 0.f, 0.f, 1.f }, 
+                                                                                                   rot.x), 
+                                                                              rot.y));
 
-        Voxels::HitResult hr = Voxels::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
+        B33::Rendering::HitResult hr = ::B33::Rendering::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
 
         if (hr.bHit) {
             m_g->PushCube(m_g->GetIdFromPos(hr.iHitCoords), hr.Normal, fForceMul);
@@ -69,26 +75,26 @@ public:
 
     void MoveForwardBackwards(const float fDelta, float fDir)
     {
-        Voxels::Rot3 rot = this->GetRotation();
-        Voxels::Vec3 lookDir = Voxels::RotateY(Voxels::Vec3{ 0.f, 0.f, 1.f }, rot.y);
+        B33::Math::Rot3 rot = this->GetRotation();
+        B33::Math::Vec3 lookDir = ::B33::Math::RotateY(::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.y);
 
         this->AddPositon(lookDir * fDir * (fDelta * m_fSpeed));
     }
 
     void Strafe(const float fDelta, float fDir)
     {
-        Voxels::Rot3 rot = this->GetRotation();
-        Voxels::Vec3 lookDir = Voxels::RotateY(Voxels::Vec3{ 0.f, 0.f, 1.f }, rot.y + (90.f * Voxels::AB_DEG_TO_RAD));
+        B33::Math::Rot3 rot = this->GetRotation();
+        B33::Math::Vec3 lookDir = ::B33::Math::RotateY(::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.y + (90.f * ::B33::Math::AB_DEG_TO_RAD));
 
         this->AddPositon(lookDir * fDir * (fDelta * m_fSpeed));
     }
 
     void MouseMove(const float, int32_t fX, int32_t fY)
     {
-        this->AddRotation(Voxels::Rot3{ 0.00085f * fY, 0.00085f * fX, 0.f });
+        this->AddRotation(B33::Math::Rot3{ 0.00085f * fY, 0.00085f * fX, 0.f });
     }
 
-    void Move(const float fDelta, const Voxels::Vec3& dir)
+    void Move(const float fDelta, const B33::Math::Vec3& dir)
     {
         this->AddPositon(dir * (fDelta * m_fSpeed));
     }
@@ -133,9 +139,9 @@ public:
 
     AB_DECL_ACTION(PaperCharacter, MoveForwardBackwards, MoveBack, -0.1f);
 
-    AB_DECL_ACTION(PaperCharacter, Move, MoveUp, Voxels::Vec3{ 0.f, -0.1f, 0.f });
+    AB_DECL_ACTION(PaperCharacter, Move, MoveUp, B33::Math::Vec3{ 0.f, -0.1f, 0.f });
 
-    AB_DECL_ACTION(PaperCharacter, Move, MoveDown, Voxels::Vec3{ 0.f, 0.1f, 0.f });
+    AB_DECL_ACTION(PaperCharacter, Move, MoveDown, B33::Math::Vec3{ 0.f, 0.1f, 0.f });
 
     AB_DECL_ACTION(PaperCharacter, PlaceBlock, PlaceBlock);
 

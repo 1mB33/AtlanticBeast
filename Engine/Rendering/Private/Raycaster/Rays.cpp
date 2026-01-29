@@ -1,13 +1,17 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Raycaster/Rays.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-using namespace std;
+using namespace ::std;
+using namespace ::B33::Math;
 
-HitResult MarchTheRay(const IWorldGrid* vg, const Vec3& ro, const Vec3& rd, size_t maxSteps)
+HitResult MarchTheRay(const IWorldGrid* vg,
+                      const Vec3& ro,
+                      const Vec3& rd,
+                      size_t maxSteps)
 {
     HitResult result;
     result.bHit         = false;

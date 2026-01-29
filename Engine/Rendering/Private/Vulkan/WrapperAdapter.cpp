@@ -1,10 +1,10 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/WrapperAdapter.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 
-namespace Voxels 
+namespace B33::Rendering 
 {
 
 using namespace std;
@@ -85,4 +85,4 @@ VkQueue AdapterWrapper::CreateQueue(VkDevice dv, const uint32_t uQueueIndex) con
     return graphicsQueue;
 }
 
-} // !Voxels
+} // !B33::Rendering

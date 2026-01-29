@@ -3,7 +3,7 @@
 
 #include "Core.h"
 
-namespace Voxels
+namespace B33::Math
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -147,6 +147,6 @@ public:
     inline iVec3 operator*(const uint32_t vB) const;
 };
 
-} // !Voxels
+} // !B33::Math
 
 #endif // !AB_VEC3_H

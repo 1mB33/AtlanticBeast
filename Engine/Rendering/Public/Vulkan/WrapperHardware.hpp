@@ -1,10 +1,10 @@
 #ifndef AB_WRAPPER_HARDWARE_H
 #define AB_WRAPPER_HARDWARE_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Instance.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class HardwareWrapper
@@ -51,6 +51,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_WRAPPER_HARDWARE_H

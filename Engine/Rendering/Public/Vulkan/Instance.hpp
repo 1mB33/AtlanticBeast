@@ -1,9 +1,9 @@
 #ifndef AB_INSTANCE_H
 #define AB_INSTANCE_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class Instance
@@ -47,7 +47,7 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 
 #endif // !AB_INSTANCE_H

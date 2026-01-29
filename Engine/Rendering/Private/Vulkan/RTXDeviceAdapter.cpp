@@ -1,8 +1,8 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/RTXDeviceAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -71,5 +71,5 @@ void* RTXDeviceAdapter::GetFeaturesImpl() const
     return &bufferDeviceAddressFeatures;
 }
 
-} // !Voxels
+} // !B33::Rendering
 

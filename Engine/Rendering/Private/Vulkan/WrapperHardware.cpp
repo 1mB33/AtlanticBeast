@@ -1,9 +1,9 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/ErrorHandling.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -31,5 +31,5 @@ vector<VkPhysicalDevice> HardwareWrapper::GetPhysicalDevices(VkInstance instance
     return vPhysicalDevices;
 }
 
-} // !Voxels
+} // !B33::Rendering
 

@@ -1,4 +1,4 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Raycaster/VoxelPipeline.hpp"
 
@@ -8,10 +8,11 @@
 #include "Vulkan/SwapChain.hpp"
 #include <vulkan/vulkan_core.h>
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-using namespace std;
+using namespace ::std;
+using namespace ::B33::Math;
 
 // ---------------------------------------------------------------------------------------------------------------------
 VoxelPipeline::VoxelPipeline(::std::shared_ptr<const HardwareWrapper> hw, 
@@ -291,5 +292,5 @@ VkPipeline VoxelPipeline::CreateComputePipeline(shared_ptr<const AdapterWrapper>
     return pipeline;
 }
 
-} // !Voxels
+} // !B33::Rendering
 

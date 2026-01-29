@@ -3,7 +3,7 @@
 
 #include "Math.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
 
 /**
@@ -52,6 +52,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Math
 
 #endif // !AB_OBJECT_H

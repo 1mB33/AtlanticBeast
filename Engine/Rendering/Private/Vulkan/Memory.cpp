@@ -1,10 +1,10 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/Memory.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -144,4 +144,4 @@ uint32_t Memory::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags prope
     throw AB_EXCEPT("Failed to find suitable memory type!");
 }
 
-} //!Voxels
+} //!B33::Rendering

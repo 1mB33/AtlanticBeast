@@ -1,10 +1,10 @@
 #ifndef AB_GPU_BUFFER_H
 #define AB_GPU_BUFFER_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "WrapperAdapter.hpp"
 
-namespace Voxels 
+namespace B33::Rendering 
 {
 
 class GPUBuffer 
@@ -90,5 +90,5 @@ protected:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif //!AB_GPU_BUFFER_H

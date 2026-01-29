@@ -4,7 +4,7 @@
 #include "Math.hpp"
 #include "Primitives/Object.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
 
 class alignas(16) Cube : public WorldObject
@@ -32,5 +32,5 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Math
 #endif // !AB_CUBE_H

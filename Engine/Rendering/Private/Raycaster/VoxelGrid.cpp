@@ -1,7 +1,12 @@
+#include "B33Rendering.hpp"
+
 #include "Raycaster/VoxelGrid.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
+
+using namespace ::std;
+using namespace ::B33::Math;
 
 // --------------------------------------------------------------------------------------------------------------------
 void IWorldGrid::SetVoxel(const iVec3& pos, uint32_t uColor)
@@ -88,4 +93,4 @@ void IWorldGrid::RemoveFromGrid(const iVec3& pos, const iVec3& area, const size_
     }
 }
 
-} //!Voxels
+} //!B33::Rendering

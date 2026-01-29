@@ -1,12 +1,12 @@
 #ifndef AB_FRAME_RESOURCES_H
 #define AB_FRAME_RESOURCES_H
 
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-struct FrameResources
+struct Frame
 {
     constexpr static size_t MAX_FRAMES_IN_FLIGHT = 2;
 
@@ -16,6 +16,6 @@ struct FrameResources
 	VkCommandBuffer CommandBuffer;
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_FRAME_RESOURCES_H

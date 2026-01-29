@@ -2,7 +2,7 @@
 
 #include "Primitives/Object.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -21,4 +21,4 @@ void WorldObject::AddPositon(const Vec3& pos)
 void WorldObject::AddRotation(const Rot3& rot)
 { m_vRotation += rot; }
 
-} // !Voxels
+} // !B33::Math
