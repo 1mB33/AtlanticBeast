@@ -15,7 +15,7 @@ public:
 
     RTXDeviceAdapter(::std::shared_ptr<const HardwareWrapper> pGpu)
         : AdapterWrapper(pGpu,
-                         VK_QUEUE_COMPUTE_BIT | VK_QUEUE_GRAPHICS_BIT,
+                         ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT,
                          GetExtensionsImpl(),
                          GetFeaturesImpl())
     { }

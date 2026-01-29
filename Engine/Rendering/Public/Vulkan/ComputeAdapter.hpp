@@ -15,7 +15,7 @@ public:
 
     ComputeAdapter(::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> gpu)
         : ::B33::Rendering::AdapterWrapper(gpu, 
-                                           VK_QUEUE_COMPUTE_BIT | VK_QUEUE_GRAPHICS_BIT,
+                                           ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT,
                                            GetExtensions(),
                                            GetFeaturesImpl())
         , m_pGPU(gpu)
