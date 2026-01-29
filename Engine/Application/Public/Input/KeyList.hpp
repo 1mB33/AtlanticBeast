@@ -3,7 +3,7 @@
 
 #include "Bind.h"
 
-namespace App
+namespace B33::App
 {
 
 constexpr const AbKeyId AB_INVALID_KEY	  = 0;
@@ -98,6 +98,5 @@ constexpr const AbKeyId AB_KEY_LEFTMETA	  = 125;
 constexpr const AbKeyId AB_KEY_RIGHTMETA  = 126;
 constexpr const AbKeyId AB_KEY_COUNT      = AB_KEY_RIGHTMETA + 1;
 
-} // !App
-
+} // !B33::App
 #endif // !AB_KEY_LIST_H

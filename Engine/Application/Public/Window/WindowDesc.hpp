@@ -57,4 +57,3 @@ WindowDesc CreateWindowDesc(U&& wstrName,
 }
 
 #endif // !AB_WINDOW_DESC_H
-

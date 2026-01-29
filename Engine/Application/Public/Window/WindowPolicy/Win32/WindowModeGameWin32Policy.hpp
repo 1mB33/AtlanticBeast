@@ -4,7 +4,7 @@
 
 #include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -21,6 +21,6 @@ public:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_GAME_POLICY_H
 #endif // _WIN32

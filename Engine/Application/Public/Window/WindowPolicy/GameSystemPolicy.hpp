@@ -8,7 +8,7 @@
 #   include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
 #endif // !_WIN32
 
-namespace App
+namespace B33::App
 {
 
 typedef 
@@ -19,6 +19,6 @@ typedef
 #endif // !_WIN32
 	DefaultGameSystemWindowPolicy;
 
-} // !App
+} // !B33::App
 #endif // !AB_GAME_SYSTEM_POLICY_H
 

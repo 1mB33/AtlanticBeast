@@ -1,12 +1,13 @@
-#include "App.h"
+#include "B33App.h"
 
 #include "AppResources.hpp"
 
-namespace App
+namespace B33::App
 {
 
-using namespace std;
-using namespace B33::Core;
+using namespace ::std;
+using namespace ::B33::Core;
+using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 AppResources::AppResources()
@@ -24,13 +25,13 @@ AppResources& AppResources::Get()
 #ifdef __linux__
 
 // ---------------------------------------------------------------------------------------------------------------------
-::std::wstring AppResources::InternalGetExecutablePathW() const
+wstring AppResources::InternalGetExecutablePathW() const
 {
     char sPath[AB_LONG_STRING];
     ssize_t uLen = readlink("/proc/self/exe", sPath, sizeof(sPath) - 1);
 
     if (uLen == -1) {
-        AB_LOG(Debug::Error, L"Couldn't get path to executable!!! Falling back to `./`");
+        AB_LOG(Error, L"Couldn't get path to executable!!! Falling back to `./`");
         return wstring(L"./");
     }
     
@@ -46,7 +47,7 @@ AppResources& AppResources::Get()
 #elif _WIN32
 
 // --------------------------------------------------------------------------------------------------------------------
-::std::wstring AppResources::InternalGetExecutablePathW() const
+wstring AppResources::InternalGetExecutablePathW() const
 {
     return wstring(L"./");
 }
@@ -54,7 +55,7 @@ AppResources& AppResources::Get()
 #endif // !__linux__
 
 // --------------------------------------------------------------------------------------------------------------------
-::std::string AppResources::InternalGetExecutablePathA() const
+string AppResources::InternalGetExecutablePathA() const
 {
     size_t len = std::wcstombs(nullptr, m_wstrExePathW.c_str(), 0);
     
@@ -67,4 +68,4 @@ AppResources& AppResources::Get()
     return "./";
 }
 
-} // !App
+} // !B33::App

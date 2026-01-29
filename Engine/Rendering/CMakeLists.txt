@@ -66,7 +66,7 @@ TARGET_LINK_LIBRARIES(B33Rendering PUBLIC
     "${Vulkan_LIBRARIES}"
     B33Core
     B33Math
-    BeeApp
+    B33App
 )
 
 TARGET_PRECOMPILE_HEADERS(B33Rendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp")

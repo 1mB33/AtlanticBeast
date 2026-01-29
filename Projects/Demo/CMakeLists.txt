@@ -25,7 +25,7 @@ ENDIF()
 
 TARGET_LINK_LIBRARIES(AtlBee PRIVATE 
     B33Core
-    BeeApp
+    B33App
     B33Rendering
     Jolt
 )

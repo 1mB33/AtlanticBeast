@@ -7,7 +7,7 @@
 #include "Input/KeyList.hpp"
 #include "Input/MouseButtonList.hpp"
 
-namespace App
+namespace B33::App
 {
 
 class ControllerObject;
@@ -98,8 +98,5 @@ private:
 
 };
 
-} // !App
-
-
-
+} // !B33::App
 #endif // !AB_USER_INPUT_H

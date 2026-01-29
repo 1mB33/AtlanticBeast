@@ -4,7 +4,7 @@
 #include "B33Core.h"
 #include "Window/WindowDesc.hpp"
 
-namespace App
+namespace B33::App
 {
 
 enum EAppStatus
@@ -60,5 +60,4 @@ private:
 
 
 } // !Core
-
 #endif // !AB_APPSTATUS_H

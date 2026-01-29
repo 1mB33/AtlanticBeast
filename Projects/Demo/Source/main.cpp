@@ -10,7 +10,7 @@
 
 
 using namespace ::std;
-using namespace ::App;
+using namespace ::B33::App;
 using namespace ::B33::Core;
 using namespace ::B33::Core::Debug;
 using namespace ::B33::Math;

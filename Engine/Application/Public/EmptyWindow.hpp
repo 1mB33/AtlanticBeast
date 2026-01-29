@@ -3,13 +3,13 @@
 
 #include "Window/IBaseWindow.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
  * Basic empty window implementation.
  * */
-class EmptyWindow : public ::App::IBaseWindow<EmptyWindow>
+class EmptyWindow : public ::B33::App::IBaseWindow<EmptyWindow>
 {
 	friend class IBaseWindow<EmptyWindow>;
 
@@ -33,5 +33,5 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_EMPTYWINDOW_H

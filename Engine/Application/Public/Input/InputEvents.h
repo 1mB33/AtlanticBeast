@@ -31,4 +31,3 @@ typedef struct AbInputStruct
 } AbInputStruct;
 
 #endif // !AB_INPUT_EVENTS_H
-

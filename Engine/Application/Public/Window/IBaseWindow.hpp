@@ -7,7 +7,7 @@
 #include "Window/WindowPolicy/BasicSystemPolicy.hpp"
 #include "AppStatus.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -124,7 +124,7 @@ public:
             return;
         }
         
-        App::AppStatus::Get().SendOpenWindowSignal(m_pWindowDesc);
+        B33::App::AppStatus::Get().SendOpenWindowSignal(m_pWindowDesc);
 
         if (m_Policy->WindowPolicyCreate(m_pWindowDesc.get()) != 0) {
             throw AB_EXCEPT("Couldn't create the window");
@@ -159,7 +159,7 @@ public:
             return;
         }
         
-        App::AppStatus::Get().SendCloseWindowSignal(m_pWindowDesc);
+        B33::App::AppStatus::Get().SendCloseWindowSignal(m_pWindowDesc);
         
         m_Policy->WindowPolicyDestroy(m_pWindowDesc.get());
         
@@ -215,5 +215,5 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_IBASEWINDOW_H

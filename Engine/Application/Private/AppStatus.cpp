@@ -1,12 +1,13 @@
-#include "App.h"
+#include "B33App.h"
 
 #include "AppStatus.hpp"
 
-namespace App
+namespace B33::App
 {
 
-using namespace std;
-using namespace B33::Core;
+using namespace ::std;
+using namespace ::B33::Core;
+using namespace ::B33::Core::Debug;
 
 // --------------------------------------------------------------------------------------------------------------------
 EAppStatus AppStatus::m_AppCurrentStatus = EAppStatus::Dead;
@@ -35,7 +36,7 @@ EAppStatus AppStatus::GetAppCurrentStatus()
 // --------------------------------------------------------------------------------------------------------------------
 uint32_t AppStatus::SendOpenWindowSignal(shared_ptr<WindowDesc> pWd)
 {
-    AB_LOG(Debug::Info, L"Got new window signal");
+    AB_LOG(Info, L"Got new window signal");
 
     ++m_uNumberOfWindows;
 
@@ -48,7 +49,7 @@ uint32_t AppStatus::SendOpenWindowSignal(shared_ptr<WindowDesc> pWd)
 // --------------------------------------------------------------------------------------------------------------------
 uint32_t AppStatus::SendCloseWindowSignal(shared_ptr<WindowDesc> pWd)
 {
-    AB_LOG(Debug::Info, L"Got close window signal");
+    AB_LOG(Info, L"Got close window signal");
 
     m_uNumberOfWindows = m_uNumberOfWindows > 0 ? --m_uNumberOfWindows : m_uNumberOfWindows;
     UpdateStatus();
@@ -60,7 +61,7 @@ uint32_t AppStatus::SendCloseWindowSignal(shared_ptr<WindowDesc> pWd)
 // --------------------------------------------------------------------------------------------------------------------
 void AppStatus::UpdateStatus()
 {
-	AB_LOG(Debug::ESeverity::Info, L"AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows);
+	AB_LOG(Info, L"B33::AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows);
 
     if (m_uNumberOfWindows == 0) {
         m_AppCurrentStatus = EAppStatus::Dead;
@@ -70,4 +71,4 @@ void AppStatus::UpdateStatus()
     m_AppCurrentStatus = EAppStatus::Running;
 }
 
-} // !App
+} // !B33::App

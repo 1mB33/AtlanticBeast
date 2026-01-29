@@ -3,7 +3,7 @@
 
 #include "Input/Bind.h"
 
-namespace App
+namespace B33::App
 {
 
 template<class Map>

@@ -11,7 +11,7 @@
 #include <vulkan/vulkan_core.h>
 
 #include "B33Core.h"
-#include "App.h"
+#include "B33App.h"
 
 #ifdef __cplusplus
 #   include "B33Math.hpp"

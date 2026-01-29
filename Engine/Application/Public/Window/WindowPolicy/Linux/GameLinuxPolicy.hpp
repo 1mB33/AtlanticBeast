@@ -4,7 +4,7 @@
 
 #include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -31,7 +31,7 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_GAME_WINDOW_POLICY_H
 #endif // __linux__
 

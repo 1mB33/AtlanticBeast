@@ -3,7 +3,7 @@
 
 #include "B33Core.h"
 
-namespace App
+namespace B33::App
 {
 
 class AppResources
@@ -41,6 +41,5 @@ private:
 
 };
 
-} // !App
-
+} // !B33::App
 #endif // !AB_APP_RESOURCES_H

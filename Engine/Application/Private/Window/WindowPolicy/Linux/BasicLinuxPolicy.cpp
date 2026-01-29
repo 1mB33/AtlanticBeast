@@ -8,10 +8,11 @@
 #include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 #include "AppStatus.hpp"
 
-namespace App
+namespace B33::App
 {
 
-using namespace B33::Core;
+using namespace ::B33::Core;
+using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
@@ -48,7 +49,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
     int bSupported;
     XkbSetDetectableAutoRepeat(pDisplay, True, &bSupported);
     if (!bSupported) {
-        AB_LOG(Debug::Error, L"Detectable auto repeat ISN`T SUPPORTED!");
+        AB_LOG(Error, L"Detectable auto repeat ISN`T SUPPORTED!");
     }
 
     XSelectInput(pDisplay, window, FocusChangeMask |
@@ -134,7 +135,7 @@ void BasicLinuxWindowPolicy::UpdateImpl(WindowDesc* pWd)
             event.type != DestroyNotify &&
             event.type != GenericEvent) 
         {
-            for (const auto& handle : App::AppStatus::Get().GetWindowHandles()) {
+            for (const auto& handle : B33::App::AppStatus::Get().GetWindowHandles()) {
                 if (event.xany.window == handle->WindowHandle) {
                     return;
                 }
@@ -252,5 +253,5 @@ void BasicLinuxWindowPolicy::HandleMouseButton(WindowDesc* pWd, XEvent& event, E
     pWd->InputStruct.push(is);
 }
 
-} // !App
+} // !B33::App
 #endif // !__linux__
