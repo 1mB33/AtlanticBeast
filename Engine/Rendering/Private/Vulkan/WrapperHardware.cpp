@@ -1,6 +1,7 @@
 #include "B33Rendering.hpp"
 
 #include "Vulkan/WrapperHardware.hpp"
+
 #include "Vulkan/ErrorHandling.hpp"
 
 namespace B33::Rendering
