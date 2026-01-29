@@ -1,8 +1,6 @@
 #ifndef AB_LOGGER_H
 #define AB_LOGGER_H
 
-#include "B33CoreMinimal.h"
-
 namespace B33::Core::Debug
 {
 

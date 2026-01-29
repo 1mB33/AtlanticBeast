@@ -5,7 +5,8 @@
 namespace B33::Core
 {
 
-using namespace std;
+using namespace ::std;
+using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 Exception::Exception(const char* szMessage,
@@ -109,8 +110,8 @@ void Exception::LogAndReturnMessage(const char* pszMessage, size_t uMesLen) cons
     mbstowcs (wc, pszMessage, uMesLen);
     
     try {
-        ::B33::Core::Debug::Logger::Get().Log(Debug::ESeverity::Error, wc);
-        ::B33::Core::Debug::Logger::Get().Flush();
+        Logger::Get().Log(Error, wc);
+        Logger::Get().Flush();
     }
     catch (...) 
     { }

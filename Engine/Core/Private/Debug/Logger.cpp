@@ -8,9 +8,9 @@
 namespace B33::Core::Debug
 {
  
-using namespace std;
-using namespace B33::Core;
-using namespace chrono_literals;
+using namespace ::std;
+using namespace ::std::chrono_literals;
+using namespace ::B33::Core;
 
 // Logger // -----------------------------------------------------------------------------------------------------------
 Logger::Logger()

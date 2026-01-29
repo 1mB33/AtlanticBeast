@@ -1,8 +1,6 @@
 #ifndef AB_FPS_LIMITER_H
 #define AB_FPS_LIMITER_H
 
-#include "B33CoreMinimal.h"
-
 namespace B33::Core
 {
 
