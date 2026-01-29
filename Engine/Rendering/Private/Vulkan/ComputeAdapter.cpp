@@ -8,9 +8,9 @@ namespace B33::Rendering
 using namespace std;
 
 // --------------------------------------------------------------------------------------------------------------------
-const ::std::vector<const char*>& ComputeAdapter::GetExtensionsImpl() const
+const vector<const char*>& ComputeAdapter::GetExtensionsImpl() const
 {
-    static const std::vector<const char*> vpszDeviceExtensions = {
+    static const vector<const char*> vpszDeviceExtensions = {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
     };
 

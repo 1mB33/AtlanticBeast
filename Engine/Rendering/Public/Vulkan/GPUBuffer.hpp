@@ -1,7 +1,6 @@
 #ifndef AB_GPU_BUFFER_H
 #define AB_GPU_BUFFER_H
 
-#include "B33Rendering.hpp"
 #include "WrapperAdapter.hpp"
 
 namespace B33::Rendering 
@@ -18,10 +17,10 @@ public:
         , m_uSizeInBytes(0)
     { }
 
-    GPUBuffer(::std::shared_ptr<const AdapterWrapper> da,
-              VkDeviceMemory deviceMemory,
-              VkBuffer buffer,
-              size_t sizeInBytes) 
+    GPUBuffer(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+              ::VkDeviceMemory deviceMemory,
+              ::VkBuffer buffer,
+              ::size_t sizeInBytes) 
         : m_pDeviceAdapter(da)
         , m_DeviceMemory(deviceMemory)
         , m_Buffer(buffer)
@@ -34,10 +33,10 @@ public:
             return;
         }
         if (m_Buffer != VK_NULL_HANDLE) {
-            vkDestroyBuffer(m_pDeviceAdapter->GetAdapterHandle(), m_Buffer, NULL);
+            ::vkDestroyBuffer(m_pDeviceAdapter->GetAdapterHandle(), m_Buffer, NULL);
         }
         if (m_DeviceMemory != VK_NULL_HANDLE) {
-            vkFreeMemory(m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory, NULL);
+            ::vkFreeMemory(m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory, NULL);
         }
 		m_pDeviceAdapter = nullptr;
     }
@@ -72,21 +71,21 @@ public:
 
 public:
 
-    VkDeviceMemory GetMemoryHandle() const 
+    ::VkDeviceMemory GetMemoryHandle() const 
     { return m_DeviceMemory; }
 
-    VkBuffer GetBufferHandle() const 
+    ::VkBuffer GetBufferHandle() const 
     { return m_Buffer; }
 
-    size_t GetSizeInBytes() const 
+    ::size_t GetSizeInBytes() const 
     { return m_uSizeInBytes; }
 
 protected:
 
-    ::std::shared_ptr<const AdapterWrapper> m_pDeviceAdapter = nullptr;
-    VkDeviceMemory  m_DeviceMemory  = VK_NULL_HANDLE;
-    VkBuffer        m_Buffer        = VK_NULL_HANDLE;
-    size_t          m_uSizeInBytes  = 0;
+    ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
+    ::VkDeviceMemory  m_DeviceMemory  = VK_NULL_HANDLE;
+    ::VkBuffer        m_Buffer        = VK_NULL_HANDLE;
+    ::size_t          m_uSizeInBytes  = 0;
 
 };
 

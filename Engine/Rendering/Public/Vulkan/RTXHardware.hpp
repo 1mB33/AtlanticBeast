@@ -13,18 +13,17 @@ namespace B33::Rendering
 * - accelerationStructure
 * - bufferDeviceAddress
 **/
-class RTXHardware : public HardwareWrapper
+class RTXHardware : public ::B33::Rendering::HardwareWrapper
 {
 public:
 
-    BEAST_API RTXHardware(::std::shared_ptr<const Instance> pInstance);
+    BEAST_API RTXHardware(::std::shared_ptr<const ::B33::Rendering::Instance> pInstance);
 
 private:
     
-    VkPhysicalDevice ChooseGPU(const ::std::shared_ptr<const Instance>& pInstance);
+    VkPhysicalDevice ChooseGPU(const ::std::shared_ptr<const ::B33::Rendering::Instance>& pInstance);
 
 };
 
 } // !B33::Rendering
-
 #endif // !AB_RTX_HARDWARE_H

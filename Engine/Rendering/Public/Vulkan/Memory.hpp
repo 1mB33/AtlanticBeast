@@ -83,8 +83,8 @@ public:
 
 public:
 
-    VkDescriptorBufferInfo BufferInfo;
-    VkWriteDescriptorSet Write;
+    ::VkDescriptorBufferInfo BufferInfo;
+    ::VkWriteDescriptorSet Write;
     EUploadType Type;
     ::std::shared_ptr<GPUBuffer> Buffer;
 
@@ -97,8 +97,8 @@ public:
     
     Memory() = default;
 
-    Memory(::std::shared_ptr<const HardwareWrapper> pHardware,
-           ::std::shared_ptr<const AdapterWrapper> pAdapter);
+    Memory(::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> pHardware,
+           ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pAdapter);
 
     ~Memory() = default;
 
@@ -112,25 +112,24 @@ public:
 
 public:
 
-    BEAST_API ::std::shared_ptr<GPUStreamBuffer> ReserveStagingBuffer(const size_t uSizeInBytes);
+    BEAST_API ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> ReserveStagingBuffer(const ::size_t uSizeInBytes);
 
-    BEAST_API ::std::shared_ptr<GPUBuffer> ReserveGPUBuffer(const size_t uSizeInBytes);
+    BEAST_API ::std::shared_ptr<::B33::Rendering::GPUBuffer> ReserveGPUBuffer(const ::size_t uSizeInBytes);
 
     BEAST_API void UploadOnStreamBuffer(const void* pUpload, 
-                                        const size_t uUploadSize,
-                                        UploadDescriptor& onSet);
+                                        const ::size_t uUploadSize,
+                                        ::B33::Rendering::UploadDescriptor& onSet);
 
 private:
 
-    uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+    ::uint32_t FindMemoryType(::uint32_t typeFilter, ::VkMemoryPropertyFlags properties);
 
 private:
 
-    ::std::shared_ptr<const HardwareWrapper> m_pHardware = nullptr;
-    ::std::shared_ptr<const AdapterWrapper> m_pAdapter = nullptr;
+    ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper>  m_pHardware = nullptr;
+    ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>   m_pAdapter  = nullptr;
 
 };
 
 } //!B33::Rendering
-
 #endif //!AB_MEMORY_H

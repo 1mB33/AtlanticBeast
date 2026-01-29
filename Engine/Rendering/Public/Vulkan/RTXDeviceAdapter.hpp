@@ -8,8 +8,8 @@
 namespace B33::Rendering
 {
 
-class RTXDeviceAdapter : public AdapterWrapper
-                       , public IAdapter<RTXDeviceAdapter>
+class RTXDeviceAdapter : public ::B33::Rendering::AdapterWrapper
+                       , public ::B33::Rendering::IAdapter<::B33::Rendering::RTXDeviceAdapter>
 {
 public:
 

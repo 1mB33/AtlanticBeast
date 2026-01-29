@@ -13,7 +13,7 @@ MinimalHardware::MinimalHardware(shared_ptr<const Instance> pInstance)
 { }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkPhysicalDevice MinimalHardware::ChooseGPU(const ::std::shared_ptr<const Instance>& pInstance)
+VkPhysicalDevice MinimalHardware::ChooseGPU(const shared_ptr<const Instance>& pInstance)
 { 
     VkPhysicalDevice            chosenPhysicalDevice    = VK_NULL_HANDLE;
     vector<VkPhysicalDevice>    vPhysicalDevices        = GetPhysicalDevices(pInstance->GetInstance());

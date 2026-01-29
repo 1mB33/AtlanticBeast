@@ -9,9 +9,9 @@ using namespace ::std;
 using namespace ::B33::Math;
 
 // --------------------------------------------------------------------------------------------------------------------
-void IWorldGrid::SetVoxel(const iVec3& pos, uint32_t uColor)
+void IWorldGrid::SetVoxel(const iVec& pos, uint32_t uColor)
 {
-    ::std::vector<Voxel>& voxelsGrid = this->GetGrid();
+    vector<Voxel>& voxelsGrid = this->GetGrid();
     const size_t uDim   = this->GetGridWidth(); 
     const size_t uIndex = CalcIndex(pos);
 
@@ -23,7 +23,7 @@ void IWorldGrid::SetVoxel(const iVec3& pos, uint32_t uColor)
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-size_t IWorldGrid::CalcIndex(const iVec3& pos) const
+size_t IWorldGrid::CalcIndex(const iVec& pos) const
 {
     return pos.x + 
            pos.y * m_uGridDim +
@@ -31,7 +31,7 @@ size_t IWorldGrid::CalcIndex(const iVec3& pos) const
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void IWorldGrid::PlaceOnGrid(const iVec3& pos, const iVec3& area,const size_t uId)
+void IWorldGrid::PlaceOnGrid(const iVec& pos, const iVec& area,const size_t uId)
 {
     // Incremeant the type on connected voxels'
     size_t uCornerIndex;
@@ -39,7 +39,7 @@ void IWorldGrid::PlaceOnGrid(const iVec3& pos, const iVec3& area,const size_t uI
         for (int32_t y = -area.y; y <= area.y; ++y) {
             for (int32_t z = -area.z; z <= area.z; ++z)
             {
-                uCornerIndex = CalcIndex(iVec3(pos.x + x, pos.y + y, pos.z + z));
+                uCornerIndex = CalcIndex(iVec(pos.x + x, pos.y + y, pos.z + z));
                 
                 if (uCornerIndex >= m_VoxelGrid.size()) 
                     continue;
@@ -61,7 +61,7 @@ void IWorldGrid::PlaceOnGrid(const iVec3& pos, const iVec3& area,const size_t uI
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void IWorldGrid::RemoveFromGrid(const iVec3& pos, const iVec3& area, const size_t uId)
+void IWorldGrid::RemoveFromGrid(const iVec& pos, const iVec& area, const size_t uId)
 {
     // Decremeant the type on connected voxels
     size_t uCornerIndex;
@@ -71,7 +71,7 @@ void IWorldGrid::RemoveFromGrid(const iVec3& pos, const iVec3& area, const size_
         for (int32_t y = -area.y; y <= area.y; ++y) {
             for (int32_t z = -area.z; z <= area.z; ++z)
             {
-                uCornerIndex = CalcIndex(iVec3(pos.x + x, pos.y + y, pos.z + z));
+                uCornerIndex = CalcIndex(iVec(pos.x + x, pos.y + y, pos.z + z));
                 
                 if (uCornerIndex >= m_VoxelGrid.size()) 
                     continue;

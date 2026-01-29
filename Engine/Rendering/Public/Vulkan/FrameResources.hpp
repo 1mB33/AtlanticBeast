@@ -10,12 +10,11 @@ struct Frame
 {
     constexpr static size_t MAX_FRAMES_IN_FLIGHT = 2;
 
-	VkFence			InFlightFence;
-	VkSemaphore		ImageAvailable;
-	VkSemaphore		RenderFinished;
-	VkCommandBuffer CommandBuffer;
+	::VkFence			InFlightFence;
+	::VkSemaphore		ImageAvailable;
+	::VkSemaphore		RenderFinished;
+	::VkCommandBuffer   CommandBuffer;
 };
 
 } // !B33::Rendering
-
 #endif // !AB_FRAME_RESOURCES_H

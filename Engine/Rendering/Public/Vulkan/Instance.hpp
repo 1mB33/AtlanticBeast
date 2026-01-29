@@ -34,20 +34,18 @@ public:
 
 public:
 
-    VkInstance GetInstance() const
+    ::VkInstance GetInstance() const
     { return m_Instance; }
 
 private:
 
-    VkInstance CreateInstance();
+    ::VkInstance CreateInstance();
     
 private:
 
-    VkInstance m_Instance = VK_NULL_HANDLE;
+    ::VkInstance m_Instance = VK_NULL_HANDLE;
 
 };
 
 } // !B33::Rendering
-
-
 #endif // !AB_INSTANCE_H

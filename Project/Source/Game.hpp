@@ -431,7 +431,7 @@ public:
     size_t GetIdFromPos(const B33::Math::iVec3& pos)
     {
         for (auto& c : m_vInWorldObjects) 
-            if (B33::Math::iVec3::ToiVec3(c.GetPos()) == pos) 
+            if (B33::Math::iVec3::ToVec(c.GetPos()) == pos) 
                 return c.GetId();
 
         return -1;

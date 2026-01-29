@@ -10,6 +10,10 @@ namespace B33::Rendering
 
 class IWorldGrid : public ::B33::Rendering::MemoryUploadTracker
 {
+
+    using Vec   = ::B33::Math::Vec3;
+    using iVec  = ::B33::Math::iVec3;
+
 protected:
 
     static constexpr size_t DefaultVoxelGridDim = 64;
@@ -49,22 +53,22 @@ public:
 
 public:
 
-    BEAST_API void SetVoxel(const ::B33::Math::iVec3& pos, uint32_t uColor);
+    BEAST_API void SetVoxel(const iVec& pos, uint32_t uColor);
 
 public:
 
-    virtual bool CheckIfVoxelOccupied(const ::B33::Math::iVec3& pos) const = 0;
+    virtual bool CheckIfVoxelOccupied(const iVec& pos) const = 0;
 
 protected:
 
-    BEAST_API ::size_t CalcIndex(const ::B33::Math::iVec3& pos) const;
+    BEAST_API ::size_t CalcIndex(const iVec& pos) const;
 
-    BEAST_API void PlaceOnGrid(const ::B33::Math::iVec3& pos,
-                               const ::B33::Math::iVec3& area,
+    BEAST_API void PlaceOnGrid(const iVec& pos,
+                               const iVec& area,
                                const ::size_t uId);
 
-    BEAST_API void RemoveFromGrid(const ::B33::Math::iVec3& pos, 
-                                  const ::B33::Math::iVec3& area,
+    BEAST_API void RemoveFromGrid(const iVec& pos, 
+                                  const iVec& area,
                                   const ::size_t uId);
 
 private:
@@ -77,6 +81,11 @@ private:
 template<class StoredObjectType>
 class WorldGrid : public IWorldGrid
 {
+
+    using Vec   = ::B33::Math::Vec3;
+    using iVec  = ::B33::Math::iVec3;
+    using Rot   = ::B33::Math::Rot3;
+
 public:
 
     explicit WorldGrid(size_t uGridWidth = IWorldGrid::DefaultVoxelGridDim)
@@ -104,19 +113,19 @@ public:
 
 public:
 
-    virtual bool CheckIfVoxelOccupied(const ::B33::Math::iVec3& pos) const override
+    virtual bool CheckIfVoxelOccupied(const iVec& pos) const override
     { 
-        const ::std::vector<Voxel>& voxelsGrid = this->GetGrid();
-        const size_t uDim = this->GetGridWidth(); 
-        const size_t uIndex = CalcIndex(pos);
+        AB_ASSERT(CalcIndex(pos) < voxelsGrid.size());
 
-        AB_ASSERT(uIndex < voxelsGrid.size());
+        const ::std::vector<Voxel>& voxelsGrid  = this->GetGrid();
+        const ::size_t              uDim        = this->GetGridWidth(); 
+        const ::size_t              uIndex      = CalcIndex(pos);
 
         if (voxelsGrid[uIndex].Type == 0)
             return false;
 
         for (::uint32_t i = 0; i < voxelsGrid[uIndex].Type; ++i)
-            if (::B33::Math::iVec3::ToiVec3(m_StoredObjects[voxelsGrid[uIndex].Id[i]].GetPosition()) == pos) 
+            if (iVec::ToVec(m_StoredObjects[voxelsGrid[uIndex].Id[i]].GetPosition()) == pos) 
                 return true;
         
         return false;
@@ -125,7 +134,7 @@ public:
 public:
 
     template<class U>
-    size_t GenerateObjectAtVoxel(const ::B33::Math::iVec3& pos, U&& sot)
+    size_t GenerateObjectAtVoxel(const iVec& pos, U&& sot)
     {
         size_t uId = GenerateObject(pos, this->GetGrid(), ::std::forward<U>(sot));
         this->ForceUpload();
@@ -134,10 +143,10 @@ public:
 
     void RemoveObject(const size_t uObjectId)
     {
-        const StoredObjectType      obj     = this->GetById(uObjectId);
-        const ::B33::Math::iVec3    area    = ::B33::Math::iVec3::ToiVec3(obj.GetHalfSize() + 1);
+        const StoredObjectType  obj     = this->GetById(uObjectId);
+        const iVec              area    = iVec::ToVec(obj.GetHalfSize() + 1);
 
-        this->RemoveFromGrid(::B33::Math::iVec3::ToiVec3(obj.GetPosition()), 
+        this->RemoveFromGrid(iVec::ToVec(obj.GetPosition()), 
                              area,
                              uObjectId);
     
@@ -149,7 +158,7 @@ public:
         }
     }
 
-    void UpdatePos(const ::B33::Math::Vec3& newPos, size_t uObjectId)
+    void UpdatePos(const Vec& newPos, size_t uObjectId)
     {
         StoredObjectType& obj = m_StoredObjects[uObjectId];
 
@@ -161,20 +170,20 @@ public:
         if (obj.GetPosition() == newPos)
             return;
     
-        const ::B33::Math::iVec3 area = ::B33::Math::iVec3::ToiVec3(obj.GetHalfSize() + 1);
-        this->RemoveFromGrid(::B33::Math::iVec3::ToiVec3(obj.GetPosition()), 
+        const iVec area = iVec::ToVec(obj.GetHalfSize() + 1);
+        this->RemoveFromGrid(iVec::ToVec(obj.GetPosition()), 
                              area,
                              uObjectId);
 
         obj.SetPositon(newPos);
-        this->PlaceOnGrid(::B33::Math::iVec3::ToiVec3(newPos), 
+        this->PlaceOnGrid(iVec::ToVec(newPos), 
                           area,
                           uObjectId);
 
         this->ForceUpload();
     }
 
-    void UpdateRot(const ::B33::Math::Rot3& newRot, size_t uId)
+    void UpdateRot(const Rot& newRot, ::size_t uId)
     {
         if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
             AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
@@ -192,7 +201,7 @@ public:
 private:
 
     template<class U>
-    ::size_t GenerateObject(::B33::Math::iVec3 pos, ::std::vector<Voxel>& voxelsGrid, U&& sot)
+    ::size_t GenerateObject(iVec pos, ::std::vector<Voxel>& voxelsGrid, U&& sot)
     { 
         const size_t uObjId = m_uObjectsCount;
         
@@ -201,10 +210,10 @@ private:
             return -1;
         }
 
-        sot.SetPositon(::B33::Math::Vec3::ToVec3(pos));
+        sot.SetPositon(Vec::ToVec(pos));
 
-        this->PlaceOnGrid(::B33::Math::iVec3::ToiVec3(sot.GetPosition()), 
-                          ::B33::Math::iVec3::ToiVec3(sot.GetHalfSize() + 1),
+        this->PlaceOnGrid(iVec::ToVec(sot.GetPosition()), 
+                          iVec::ToVec(sot.GetHalfSize() + 1),
                           uObjId);
         
         m_StoredObjects[m_uObjectsCount++] = ::std::forward<U>(sot);

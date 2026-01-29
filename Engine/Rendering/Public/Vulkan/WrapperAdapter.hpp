@@ -1,7 +1,6 @@
 #ifndef AB_WRAPPER_ADAPTER_H
 #define AB_WRAPPER_ADAPTER_H
 
-#include "B33Rendering.hpp"
 #include "Vulkan/WrapperHardware.hpp"
 
 namespace B33::Rendering

@@ -42,7 +42,7 @@ public:
 public:
 
     template<typename Vector>
-    static Vec3 ToVec3(Vector v)
+    static Vec3 ToVec(Vector v)
     { return Vec3(v.x, v.y, v.z); }
 
 public:
@@ -106,7 +106,7 @@ public:
 public:
 
     template<typename Vector>
-    static iVec3 ToiVec3(Vector v)
+    static iVec3 ToVec(Vector v)
     { return iVec3(v.x, v.y, v.z); }
     
 public:

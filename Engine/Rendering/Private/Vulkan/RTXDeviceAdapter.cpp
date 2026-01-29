@@ -8,9 +8,9 @@ namespace B33::Rendering
 using namespace std;
 
 // --------------------------------------------------------------------------------------------------------------------
-const ::std::vector<const char*> RTXDeviceAdapter::GetExtensionsImpl() const
+const vector<const char*> RTXDeviceAdapter::GetExtensionsImpl() const
 {
-    static const std::vector<const char*> vpszDeviceExtensions = {
+    static const vector<const char*> vpszDeviceExtensions = {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
         VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
         VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,

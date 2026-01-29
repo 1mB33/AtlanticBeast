@@ -32,5 +32,4 @@ public:
 };
 
 } // !B33::Rendering
-
 #endif // !AB_WRAPPER_H

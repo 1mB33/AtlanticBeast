@@ -1,7 +1,6 @@
 #ifndef AB_WRAPPER_HARDWARE_H
 #define AB_WRAPPER_HARDWARE_H
 
-#include "B33Rendering.hpp"
 #include "Instance.hpp"
 
 namespace B33::Rendering
@@ -13,7 +12,7 @@ public:
 
     HardwareWrapper() = delete;
 
-    explicit HardwareWrapper(::std::shared_ptr<const Instance> pInstance,
+    explicit HardwareWrapper(::std::shared_ptr<const B33::Rendering::Instance> pInstance,
                              VkPhysicalDevice physicalDevice)
         : m_pInstance(pInstance)
         , m_PhysicalDevice(physicalDevice)

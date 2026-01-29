@@ -40,9 +40,9 @@ uint32_t AdapterWrapper::ChooseQueueFamily(VkPhysicalDevice gpu, const uint32_t 
 
 // --------------------------------------------------------------------------------------------------------------------
 VkDevice AdapterWrapper::CreateDevice(VkPhysicalDevice gpu,
-                               const std::vector<const char*>& vExtensions,
-                               const void* pFeatures,
-                               const uint32_t uFamilyIndex) const
+                                      const vector<const char*>& vExtensions,
+                                      const void* pFeatures,
+                                      const uint32_t uFamilyIndex) const
 {
     VkDevice    device              = VK_NULL_HANDLE;
     float       queuePriorities[]   = { 1. };
@@ -51,7 +51,7 @@ VkDevice AdapterWrapper::CreateDevice(VkPhysicalDevice gpu,
     queueCreateInfo.sType               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
     queueCreateInfo.queueFamilyIndex    = uFamilyIndex;
     queueCreateInfo.pQueuePriorities    = queuePriorities;
-    queueCreateInfo.queueCount          = std::size(queuePriorities);
+    queueCreateInfo.queueCount          = size(queuePriorities);
 
     VkPhysicalDeviceFeatures deviceFeatures = { };
     deviceFeatures.fragmentStoresAndAtomics         = VK_TRUE;

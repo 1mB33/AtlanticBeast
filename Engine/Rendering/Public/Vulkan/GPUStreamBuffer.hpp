@@ -1,13 +1,12 @@
 #ifndef AB_GPU_STREAM_BUFFER_H
 #define AB_GPU_STREAM_BUFFER_H
 
-#include "B33Rendering.hpp"
 #include "Vulkan/GPUBuffer.hpp"
 
 namespace B33::Rendering 
 {
 
-class GPUStreamBuffer : public GPUBuffer 
+class GPUStreamBuffer : public ::B33::Rendering::GPUBuffer 
 {
 public:
 
@@ -30,7 +29,7 @@ public:
             return;
         }
         if (m_pData != nullptr) {
-            vkUnmapMemory(m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory);
+            ::vkUnmapMemory(m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory);
             m_pData = nullptr;
         }
 
@@ -68,7 +67,7 @@ public:
 
     void Reset()
     {
-        vkUnmapMemory(this->m_pDeviceAdapter->GetAdapterHandle(), this->GetMemoryHandle());
+        ::vkUnmapMemory(this->m_pDeviceAdapter->GetAdapterHandle(), this->GetMemoryHandle());
         m_pData = nullptr;
     }
 
