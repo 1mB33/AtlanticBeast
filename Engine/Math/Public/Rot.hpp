@@ -11,5 +11,4 @@ typedef Vec3 Rot3;
 typedef Vec4 Rot4;
 
 } // !B33::Math
-
 #endif // !AB_ROT3_H

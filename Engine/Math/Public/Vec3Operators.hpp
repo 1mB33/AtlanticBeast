@@ -101,5 +101,5 @@ inline iVec3 iVec3::operator*(const uint32_t vB) const
     return Multiply(n, iVec3(vB, vB, vB));
 }
 
-} //!Volxes
-#endif //!AB_VEC3_OPERATORS_H
+} // !B33::Math
+#endif // !AB_VEC3_OPERATORS_H

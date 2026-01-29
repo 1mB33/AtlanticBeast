@@ -19,13 +19,15 @@ public:
 		, m_vRotation(Rot3())
 	{ }
 
+    ~WorldObject() = default;
+
+public:
+
     WorldObject(WorldObject&&) = default;
     WorldObject(const WorldObject&) = default;
 
     WorldObject& operator=(const WorldObject&) noexcept = default;
     WorldObject& operator=(WorldObject&&) noexcept = default;
-
-    ~WorldObject() = default;
 
 public:
 
@@ -53,5 +55,4 @@ private:
 };
 
 } // !B33::Math
-
 #endif // !AB_OBJECT_H

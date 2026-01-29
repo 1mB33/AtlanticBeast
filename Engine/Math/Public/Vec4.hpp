@@ -147,6 +147,4 @@ public:
 };
 
 } // !B33::Math
-  
 #endif // !AB_VEC4_H
-

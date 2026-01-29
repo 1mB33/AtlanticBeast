@@ -212,6 +212,4 @@ inline iVec3 MultiplyScalar(const iVec3& vA, const float vB)
 }
 
 } // !B33::Math
-  
 #endif // !AB_OPERATIONS_H
-

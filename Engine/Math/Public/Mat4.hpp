@@ -10,6 +10,4 @@ struct alignas(16) Mat4
 };
 
 } // !B33::Math
-  
 #endif // !AB_MAT4_H
-
