@@ -4,7 +4,7 @@
 
 #include "Window/WindowPolicy/IWindowPolicy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -46,6 +46,6 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_WINDOW_POLICY_H
 #endif // __linux__

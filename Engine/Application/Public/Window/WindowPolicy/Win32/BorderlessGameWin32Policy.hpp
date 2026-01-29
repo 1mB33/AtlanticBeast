@@ -4,7 +4,7 @@
 
 #include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -69,6 +69,6 @@ public:
     }
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_BORDERLESS_GAME_WIN32_POLICY_H
 #endif // !_WIN32

@@ -3,7 +3,7 @@
 
 #include "Window/WindowDesc.hpp"
 
-namespace App
+namespace B33::App
 {
 
 template<class Policy>
@@ -42,6 +42,5 @@ public:
 
 };
 
-} // !App
-
+} // !B33::App
 #endif // !AB_IWINDOW_POLICY_H

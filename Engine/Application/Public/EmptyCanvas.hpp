@@ -5,7 +5,7 @@
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
 #include "Input/UserInput.hpp"
 
-namespace App
+namespace B33::App
 {
 
 /**
@@ -16,7 +16,7 @@ namespace App
  * @param GamePolicy - policy that defines window behaviour on different os level events. Defaults to DefaultGameSystemWindowPolicy
  * */
 template<bool bManualInputUpdate = false, class GamePolicy = DefaultGameSystemWindowPolicy>
-class EmptyCanvas : public ::App::IBaseWindow<EmptyCanvas<bManualInputUpdate>, GamePolicy>
+class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdate>, GamePolicy>
 {
 
 	friend class IBaseWindow<EmptyCanvas<bManualInputUpdate>, GamePolicy>;
@@ -57,6 +57,6 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 #endif // !AB_EMPTYCANVAS_H
 

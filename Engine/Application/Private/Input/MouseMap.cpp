@@ -2,7 +2,7 @@
 
 #include "MouseMap.hpp"
 
-namespace App
+namespace B33::App
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -42,4 +42,4 @@ void MouseMap::PlayAction(const float fDelta, int32_t fX, int32_t fY)
     }
 }
 
-} // !App
+} // !B33::App

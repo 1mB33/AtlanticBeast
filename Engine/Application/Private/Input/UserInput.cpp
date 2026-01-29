@@ -8,7 +8,7 @@
 #include "Input/InputEvents.h"
 #include "Input/ControllerObject.hpp"
 
-namespace App
+namespace B33::App
 {
 
 using namespace std;
@@ -301,4 +301,4 @@ void UserInput::Unbind(ControllerObject* pCo)
     m_BindsHandles.erase(handle);
 }
 
-} // !App
+} // !B33::App

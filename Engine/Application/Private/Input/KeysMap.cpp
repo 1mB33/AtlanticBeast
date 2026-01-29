@@ -2,7 +2,7 @@
 
 #include "KeysMap.hpp"
 
-namespace App
+namespace B33::App
 {
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -54,4 +54,4 @@ void KeysMap::PlayAction(const float fDelta, AbKeyId keyCode)
     }
 }
 
-} // !App
+} // !B33::App

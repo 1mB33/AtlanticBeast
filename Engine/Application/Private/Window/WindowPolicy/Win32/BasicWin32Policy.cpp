@@ -3,7 +3,7 @@
 #include "Window/BaseWindowDetails.h"
 #include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 using namespace B33::Core;
@@ -207,5 +207,5 @@ void BasicWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
 }
 
-} // !App
+} // !B33::App
 #endif // !_WIN32

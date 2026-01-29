@@ -121,7 +121,7 @@ private:
 
 };
 
-class PaperController : public App::ControllerObject
+class PaperController : public B33::App::ControllerObject
 {
 public:
 
@@ -174,7 +174,7 @@ public:
 
 public:
 
-    void BindToInput(const ::std::shared_ptr<App::UserInput>& pInput);
+    void BindToInput(const ::std::shared_ptr<B33::App::UserInput>& pInput);
 
     ::std::shared_ptr<PaperCharacter>& GetCharacter()
     {

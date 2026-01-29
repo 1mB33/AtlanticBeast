@@ -3,7 +3,7 @@
 
 #include "IBindMap.hpp"
 
-namespace App
+namespace B33::App
 {
 
 class MouseMap : public IBindMap<MouseMap>
@@ -34,7 +34,7 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 
 #endif // !AB_MOUSE_MAP_H
 

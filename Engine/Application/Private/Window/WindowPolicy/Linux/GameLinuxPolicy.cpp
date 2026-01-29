@@ -2,7 +2,7 @@
 
 #include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 using namespace B33::Core;
@@ -147,5 +147,5 @@ void GameLinuxWindowPolicy::HandleFocusIn(WindowDesc* pWd)
     XFlush(pDisplay);
 }
 
-} // !App
+} // !B33::App
 #endif // !__linux__

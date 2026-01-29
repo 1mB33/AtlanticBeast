@@ -5,7 +5,7 @@
 
 #include "Window/WindowDesc.hpp"
 
-namespace App
+namespace B33::App
 {
 
 class WindowListener
@@ -62,6 +62,5 @@ private:
 
 };
 
-} // !App
-
+} // !B33::App
 #endif //!AB_WINDOW_LISTENER_H

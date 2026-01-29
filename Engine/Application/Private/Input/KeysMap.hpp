@@ -4,7 +4,7 @@
 #include "IBindMap.hpp"
 #include "Input/KeyList.hpp"
 
-namespace App
+namespace B33::App
 {
 
 class KeysMap : public IBindMap<KeysMap>
@@ -43,7 +43,5 @@ private:
 
 };
 
-} // !App
-
+} // !B33::App
 #endif // !AB_KEYS_MAP_H
-

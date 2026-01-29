@@ -7,7 +7,7 @@
 #	include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 #endif // !_WIN32
 
-namespace App
+namespace B33::App
 {
 
 typedef 
@@ -18,5 +18,5 @@ typedef
 #endif // !_WIN32
 	DefaultSystemWindowPolicy;
 
-} // !App
+} // !B33::App
 #endif // !AB_BASIC_SYSTEM_POLICY_H

@@ -2,7 +2,7 @@
 
 #include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"
 
-namespace App
+namespace B33::App
 {
 
 using namespace std;
@@ -136,5 +136,5 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 }
 
 
-} // !App
+} // !B33::App
 #endif // !_WIN32

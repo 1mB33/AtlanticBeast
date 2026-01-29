@@ -3,7 +3,7 @@
 
 #include "Bind.h"
 
-namespace App
+namespace B33::App
 {
 
 constexpr const AbKeyId AB_INVALID_BUTTON = 0;
@@ -11,7 +11,5 @@ constexpr const AbKeyId AB_LEFT_MOUSE_BUTTON = 1;
 constexpr const AbKeyId AB_RIGTH_MOUSE_BUTTON = 3;
 constexpr const AbKeyId AB_MOUSE_BUTTONS_COUNT = 4;
 
-} // !App
-
+} // !B33::App
 #endif // !AB_MOUSE_BUTTON_LIST_H
-

@@ -5,7 +5,7 @@
 #include "Input/UserInput.hpp"
 #include "Bind.h"
 
-namespace App
+namespace B33::App
 {
 
 class ControllerObject
@@ -52,7 +52,7 @@ private:
 
 };
 
-} // !App
+} // !B33::App
 
 
 
@@ -79,4 +79,3 @@ private:
 
 
 #endif // !AB_CONTROLLER_OBJECT_H
-

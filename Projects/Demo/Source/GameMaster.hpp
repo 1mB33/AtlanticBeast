@@ -29,7 +29,7 @@ private:
     std::shared_ptr<B33::Rendering::Renderer> m_pRenderer;
 };
 
-class GameMasterController : public App::ControllerObject
+class GameMasterController : public B33::App::ControllerObject
 {
 public:
 
@@ -54,7 +54,7 @@ public:
 
 public:
 
-    void BindToInput(const ::std::shared_ptr<App::UserInput>& pInput);
+    void BindToInput(const ::std::shared_ptr<B33::App::UserInput>& pInput);
 
     ::std::shared_ptr<GameMaster>& GetCharacter()
     { return m_pGm; }
