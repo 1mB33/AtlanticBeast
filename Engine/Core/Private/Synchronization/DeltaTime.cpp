@@ -1,8 +1,8 @@
-#include "Core.h"
+#include "B33Core.h"
 
 #include "Synchronization/DeltaTime.hpp"
 
-namespace Core
+namespace B33::Core
 {
 
 using namespace ::std;
@@ -34,4 +34,4 @@ float DeltaTime::DeltaMs()
     return diff; 
 }
 
-} //!Core
+} //!B33::Core

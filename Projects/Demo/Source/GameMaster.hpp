@@ -9,7 +9,7 @@
 #include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/Rays.hpp"
 #include "Raycaster/Renderer.hpp"
-#include "Math.hpp"
+#include "B33Math.hpp"
 
 class GameMaster
 {

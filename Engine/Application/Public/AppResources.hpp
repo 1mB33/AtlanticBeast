@@ -1,7 +1,7 @@
 #ifndef AB_APP_RESOURCES_H
 #define AB_APP_RESOURCES_H
 
-#include "Core.h"
+#include "B33Core.h"
 
 namespace App
 {

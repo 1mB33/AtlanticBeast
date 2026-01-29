@@ -8,7 +8,7 @@
 #include "Primitives/Camera.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/Rays.hpp"
-#include "Math.hpp"
+#include "B33Math.hpp"
 
 class PaperCharacter : public ::B33::Rendering::Camera
 {

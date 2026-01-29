@@ -24,8 +24,8 @@ ELSE()
 ENDIF()
 
 TARGET_LINK_LIBRARIES(AtlBee PRIVATE 
-    BeeCore
+    B33Core
     BeeApp
-    BeeRendering
+    B33Rendering
     Jolt
 )

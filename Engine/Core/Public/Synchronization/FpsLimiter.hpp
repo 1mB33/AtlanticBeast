@@ -1,9 +1,9 @@
 #ifndef AB_FPS_LIMITER_H
 #define AB_FPS_LIMITER_H
 
-#include "CoreMinimal.h"
+#include "B33CoreMinimal.h"
 
-namespace Core
+namespace B33::Core
 {
 
 class FpsLimiter
@@ -42,5 +42,5 @@ private:
 
 };
 
-} //!Core
+} //!B33::Core
 #endif //!AB_FPS_LIMITER_H

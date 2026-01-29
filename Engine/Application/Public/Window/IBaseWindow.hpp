@@ -1,7 +1,7 @@
 #ifndef AB_IBASEWINDOW_H
 #define AB_IBASEWINDOW_H
 
-#include "Core.h"
+#include "B33Core.h"
 #include "Window/WindowDesc.hpp"
 #include "Window/WindowEvents.h"
 #include "Window/WindowPolicy/BasicSystemPolicy.hpp"

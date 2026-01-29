@@ -1,8 +1,8 @@
-#include "Core.h"
+#include "B33Core.h"
 
 #include "Synchronization/FpsLimiter.hpp"
 
-namespace Core
+namespace B33::Core
 {
 
 using namespace ::std;
@@ -31,4 +31,4 @@ float FpsLimiter::Block(const float fDeltaMs, const float fFetchMs)
     return fTotalWait;
 }
 
-} //!Core
+} //!B33::Core

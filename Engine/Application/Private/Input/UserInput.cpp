@@ -1,4 +1,4 @@
-#include "Core.h"
+#include "B33Core.h"
 
 #include "Input/UserInput.hpp"
 
@@ -12,7 +12,7 @@ namespace App
 {
 
 using namespace std;
-using namespace Core;
+using namespace B33::Core;
 
 // --------------------------------------------------------------------------------------------------------------------
 struct UserInput::UserInputImpl 
@@ -255,7 +255,7 @@ void UserInput::Bind(void* pThis, ControllerObject* pCo, AbAction action, AbMous
     }
 
     m_BindsHandles[pCo].push_back({ bind, pThis });
-    AB_LOG(Core::Debug::Info, L"New bind [Controller address: %p] [Bind type: %d]", pCo, bind.Type);
+    AB_LOG(B33::Core::Debug::Info, L"New bind [Controller address: %p] [Bind type: %d]", pCo, bind.Type);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ void UserInput::Unbind(ControllerObject* pCo)
                                  "[Controller address: %p]", pCo);
         return;
     }
-    AB_LOG(Core::Debug::Info, L"Unbind [Controller address: %p]", pCo);
+    AB_LOG(B33::Core::Debug::Info, L"Unbind [Controller address: %p]", pCo);
 
     for (const auto& bindHandle : handle->second) 
     {
