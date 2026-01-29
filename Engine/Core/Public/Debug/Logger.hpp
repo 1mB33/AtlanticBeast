@@ -1,9 +1,7 @@
 #ifndef AB_LOGGER_H
 #define AB_LOGGER_H
 
-#include "CoreMinimal.h"
-
-namespace Core::Debug
+namespace B33::Core::Debug
 {
 
 enum ESeverity 
@@ -76,6 +74,5 @@ private:
 
 };
 
-} // !Core
-
+} // !B33::Core
 #endif // !AB_LOGGER_H

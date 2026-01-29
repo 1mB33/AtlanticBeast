@@ -1,7 +1,7 @@
 #ifndef AB_CUBE_H
 #define AB_CUBE_H
 
-#include "Math.hpp"
+#include "B33Math.hpp"
 #include "Primitives/Object.hpp"
 
 namespace B33::Math

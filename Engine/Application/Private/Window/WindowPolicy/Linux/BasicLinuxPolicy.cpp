@@ -1,7 +1,7 @@
 #include "Input/InputEvents.h"
 #ifdef __linux__
 
-#include "Core.h"
+#include "B33Core.h"
 
 #include "X11ErrorHandling.hpp"
 #include "Window/BaseWindowDetails.h"
@@ -11,7 +11,7 @@
 namespace App
 {
 
-using namespace Core;
+using namespace B33::Core;
 
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)

@@ -1,11 +1,12 @@
-#include "Core.h"
+#include "B33Core.h"
 
 #include "Exception.hpp"
 
-namespace Core
+namespace B33::Core
 {
 
-using namespace std;
+using namespace ::std;
+using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 Exception::Exception(const char* szMessage,
@@ -109,12 +110,11 @@ void Exception::LogAndReturnMessage(const char* pszMessage, size_t uMesLen) cons
     mbstowcs (wc, pszMessage, uMesLen);
     
     try {
-        ::Core::Debug::Logger::Get().Log(Debug::ESeverity::Error, wc);
-        ::Core::Debug::Logger::Get().Flush();
+        Logger::Get().Log(Error, wc);
+        Logger::Get().Flush();
     }
     catch (...) 
     { }
 }
 
-} // !Core
-
+} // !B33::Core

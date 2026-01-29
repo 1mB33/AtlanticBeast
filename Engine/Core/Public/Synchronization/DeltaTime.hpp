@@ -1,9 +1,7 @@
 #ifndef AB_DELTA_TIME_H
 #define AB_DELTA_TIME_H
 
-#include "CoreMinimal.h"
-
-namespace Core
+namespace B33::Core
 {
 
 class DeltaTime
@@ -51,5 +49,5 @@ private:
 
 };
 
-} // !Core
+} // !B33::Core
 #endif //!AB_DELTA_TIME_H

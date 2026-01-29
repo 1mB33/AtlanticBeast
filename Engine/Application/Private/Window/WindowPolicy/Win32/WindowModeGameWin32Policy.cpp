@@ -6,7 +6,7 @@ namespace App
 {
 
 using namespace std;
-using namespace Core;
+using namespace B33::Core;
 
 // ---------------------------------------------------------------------------------------------------------------------
 void WindowModeGameWin32WindowPolicy::OnPreWcex()
@@ -42,7 +42,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
             rid.hwndTarget = pWd->hWnd;
 
             if (!RegisterRawInputDevices(&rid, 1, sizeof(rid))) {
-                AB_LOG(Core::Debug::Error, L"Couldn't register raw input");
+                AB_LOG(B33::Core::Debug::Error, L"Couldn't register raw input");
             }
 
             ShowCursor(FALSE);
@@ -84,7 +84,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
             RECT                        clientPos;
 
             if (GetRawInputBuffer(NULL, &cbSize, sizeof(RAWINPUTHEADER)) != 0) {
-                AB_LOG(Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
+                AB_LOG(B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
                 break;
             }
 
@@ -97,7 +97,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate(UINT uMsg, WPARAM wParam, LPARAM 
 
             uRiRead = GetRawInputBuffer(reinterpret_cast<PRAWINPUT>(&vRi[0]), &cbSize2, sizeof(RAWINPUTHEADER));
             if (uRiRead == static_cast<UINT>(-1)) {
-                AB_LOG(Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
+                AB_LOG(B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError());
                 break;
             }
 

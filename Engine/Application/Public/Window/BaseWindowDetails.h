@@ -1,7 +1,7 @@
 #ifndef AB_BASE_WINDOW_DETAILS_H
 #define AB_BASE_WINDOW_DETAILS_H
 
-#include "Core.h"
+#include "B33Core.h"
 
 #ifdef __cplusplus
 #ifdef __linux__

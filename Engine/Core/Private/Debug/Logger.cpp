@@ -1,15 +1,16 @@
-#include "Core.h"
+#include "B33Core.h"
 
 #include "Debug/Logger.hpp"
 
 #include <iostream>
 #include <cstdarg>
 
-namespace Core::Debug
+namespace B33::Core::Debug
 {
  
-using namespace std;
-using namespace chrono_literals;
+using namespace ::std;
+using namespace ::std::chrono_literals;
+using namespace ::B33::Core;
 
 // Logger // -----------------------------------------------------------------------------------------------------------
 Logger::Logger()
@@ -147,4 +148,4 @@ void Logger::WriteLoop()
     }
 }
 
-} // !Core
+} // !B33::Core

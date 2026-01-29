@@ -11,13 +11,13 @@ using namespace std;
 Instance::Instance()
     : m_Instance(CreateInstance())
 {
-    AB_LOG(Core::Debug::Info, L"Creating an instance!");
+    AB_LOG(B33::Core::Debug::Info, L"Creating an instance!");
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 Instance::~Instance()
 { 
-    AB_LOG(Core::Debug::Info, L"Destroying instance");
+    AB_LOG(B33::Core::Debug::Info, L"Destroying instance");
     if (m_Instance != VK_NULL_HANDLE) {
         vkDestroyInstance(m_Instance, NULL);
         m_Instance = VK_NULL_HANDLE;
@@ -37,7 +37,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
         L"[Vulkan]: %s";
 #endif // !_WIN32
 
-    ::Core::Debug::Logger::Get().Log(Core::Debug::Info, pwszFormat, pCallbackData->pMessage);
+    ::B33::Core::Debug::Logger::Get().Log(Core::Debug::Info, pwszFormat, pCallbackData->pMessage);
     return VK_FALSE;
 }
 
@@ -126,7 +126,7 @@ VkInstance Instance::CreateInstance()
                               &instance);
 
     if (result != VK_SUCCESS) {
-        AB_LOG(Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! Error code is: %d", result);
+        AB_LOG(B33::Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! Error code is: %d", result);
         throw AB_EXCEPT("Ohh nooo... Vulkan isn't working!!!");
     }
 

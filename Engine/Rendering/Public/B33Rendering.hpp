@@ -10,11 +10,11 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-#include "Core.h"
+#include "B33Core.h"
 #include "App.h"
 
 #ifdef __cplusplus
-#   include "Math.hpp"
+#   include "B33Math.hpp"
 #   include <vulkan/vulkan.hpp>
 #   ifdef _WIN32
 #      undef LoadImage

@@ -8,6 +8,8 @@ namespace B33::Rendering
 {
 
 using namespace std;
+using namespace B33::Core;
+using namespace B33::Core::Debug;
 
 // --------------------------------------------------------------------------------------------------------------------
 Memory::Memory(shared_ptr<const HardwareWrapper> pHardware, 
@@ -19,7 +21,7 @@ Memory::Memory(shared_ptr<const HardwareWrapper> pHardware,
 // --------------------------------------------------------------------------------------------------------------------
 shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer(const size_t uSizeInBytes)
 {
-    AB_LOG(Core::Debug::Info, L"Reserving staging buffer of %llu bytes", uSizeInBytes);
+    AB_LOG(Info, L"Reserving staging buffer of %llu bytes", uSizeInBytes);
 
     const VkDevice da = m_pAdapter->GetAdapterHandle();
     VkMemoryRequirements    memRequirements;
@@ -55,7 +57,7 @@ shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer(const size_t uSizeInByt
 // --------------------------------------------------------------------------------------------------------------------
 shared_ptr<GPUBuffer> Memory::ReserveGPUBuffer(const size_t uSizeInBytes)
 {
-    AB_LOG(Core::Debug::Info, L"Reserving gpu buffer of %llu bytes", uSizeInBytes);
+    AB_LOG(Info, L"Reserving gpu buffer of %llu bytes", uSizeInBytes);
 
     const VkDevice da = m_pAdapter->GetAdapterHandle();
     VkMemoryRequirements    memRequirements;
@@ -97,8 +99,7 @@ void Memory::UploadOnStreamBuffer(const void* pUpload,
 
     if (onSet.Type != UploadDescriptor::EUploadType::StreamBuffer)
     {
-        ::Core::Debug::Logger::Get().Log(::Core::Debug::Error,
-                                         L"UploadOnStreamBuffer, type of buffer is invalid type");
+        Logger::Get().Log(Error, L"UploadOnStreamBuffer, type of buffer is invalid type");
         return;
     }
     

@@ -6,7 +6,7 @@ namespace App
 {
 
 using namespace std;
-using namespace Core;
+using namespace B33::Core;
 
 // ---------------------------------------------------------------------------------------------------------------------
 AppResources::AppResources()

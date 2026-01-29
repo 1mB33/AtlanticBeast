@@ -1,7 +1,7 @@
 #ifndef AB_VEC3_H
 #define AB_VEC3_H
 
-#include "Core.h"
+#include "B33Core.h"
 
 namespace B33::Math
 {

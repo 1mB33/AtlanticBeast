@@ -1,4 +1,5 @@
 function(compileShaders SHADERS_PATH COMPILE_TARGET)
+
     SET(SHADER_SRC_DIR "${SHADERS_PATH}")
     SET(SHADER_BIN_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/Shaders")
 
@@ -33,6 +34,9 @@ function(compileShaders SHADERS_PATH COMPILE_TARGET)
         )
 
     ELSE()
+
         MESSAGE(WARNING "No .comp shaders found in: ${SHADER_SRC_DIR}")
+
     ENDIF()
+
 endfunction()

@@ -6,7 +6,7 @@
 namespace App
 {
 
-using namespace Core;
+using namespace B33::Core;
 
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicWin32WindowPolicy::CreateImpl(WindowDesc* pWd)
@@ -57,7 +57,7 @@ uint32_t BasicWin32WindowPolicy::CreateImpl(WindowDesc* pWd)
                               this);
 
         if (hWnd == NULL) {
-            AB_LOG(Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError());
+            AB_LOG(B33::Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError());
             return -1;
         }
 

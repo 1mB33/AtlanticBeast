@@ -1,7 +1,7 @@
 #ifndef AB_OBJECT_H
 #define AB_OBJECT_H
 
-#include "Math.hpp"
+#include "B33Math.hpp"
 
 namespace B33::Math
 {

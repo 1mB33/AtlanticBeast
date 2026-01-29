@@ -17,7 +17,7 @@
 #include <Jolt/Geometry/AABox.h>
 #include <Jolt/Math/Real.h>
 
-#include "Core.h"
+#include "B33Core.h"
 #include "Primitives/ColoredCube.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
