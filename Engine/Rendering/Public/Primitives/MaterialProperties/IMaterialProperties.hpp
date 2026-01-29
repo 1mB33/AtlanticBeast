@@ -1,9 +1,7 @@
 #ifndef AB_IMATERIAL_PROPERTIES_H
 #define AB_IMATERIAL_PROPERTIES_H
 
-#include "Voxels.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
 class alignas(4) IMaterialProperties
@@ -24,5 +22,5 @@ public:
 
 };
 
-} // !Voxels
-#endif //!AB_IMATERIAL_PROPERTIES
+} // !B33::Rendering
+#endif // !AB_IMATERIAL_PROPERTIES

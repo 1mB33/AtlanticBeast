@@ -1,4 +1,4 @@
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Vulkan/SwapChain.hpp"
 
@@ -6,7 +6,7 @@
 #include "Vulkan/WrapperHardware.hpp"
 
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 using namespace std;
@@ -119,7 +119,7 @@ uint32_t Swapchain::GetImageCountInternal(const VkSurfaceCapabilitiesKHR& capabi
 
 // ---------------------------------------------------------------------------------------------------------------------
 VkExtent2D Swapchain::GetExtentInternal(const VkSurfaceCapabilitiesKHR& capabilities,
-                                        ::std::shared_ptr<const WindowDesc> pWindowDesc )
+                                        shared_ptr<const WindowDesc> pWindowDesc )
 {
     VkExtent2D extent = capabilities.currentExtent;
 
@@ -241,8 +241,8 @@ VkPresentModeKHR Swapchain::PickPresentationMode(shared_ptr<const HardwareWrappe
 }
  
 // ---------------------------------------------------------------------------------------------------------------------
-uint32_t Swapchain::GetNumberOfSwapChainImages(::std::shared_ptr<const AdapterWrapper>& pAdapter, 
-                                                  VkSwapchainKHR swapchain)
+uint32_t Swapchain::GetNumberOfSwapChainImages(shared_ptr<const AdapterWrapper>& pAdapter, 
+                                               VkSwapchainKHR swapchain)
 {
     uint32_t uImageCount = 0;
 
@@ -252,9 +252,9 @@ uint32_t Swapchain::GetNumberOfSwapChainImages(::std::shared_ptr<const AdapterWr
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-::std::vector<VkImage> Swapchain::CreateSwapChainImages(::std::shared_ptr<const AdapterWrapper>& pAdapter,
-                                                        VkSwapchainKHR swapchain,
-                                                        uint32_t uAmount)
+vector<VkImage> Swapchain::CreateSwapChainImages(shared_ptr<const AdapterWrapper>& pAdapter,
+                                                 VkSwapchainKHR swapchain,
+                                                 uint32_t uAmount)
 {
     vector<VkImage> swapChainImages(uAmount);
 
@@ -266,4 +266,4 @@ uint32_t Swapchain::GetNumberOfSwapChainImages(::std::shared_ptr<const AdapterWr
     return swapChainImages;
 }
 
-} // !Voxels
+} // !B33::Rendering

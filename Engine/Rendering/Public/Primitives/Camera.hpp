@@ -3,14 +3,14 @@
 
 #include "Primitives/Object.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 /**
  * Basic camera.
  * Fov is horizontal, stored in degrees.
  * */
-class Camera : public WorldObject
+class Camera : public ::B33::Math::WorldObject
 {
 public:
 
@@ -39,5 +39,5 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_CAMERA_H

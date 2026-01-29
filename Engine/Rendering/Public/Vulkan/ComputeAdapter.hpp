@@ -5,19 +5,19 @@
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-class ComputeAdapter : public AdapterWrapper 
-                     , public IAdapter<ComputeAdapter>
+class ComputeAdapter : public ::B33::Rendering::AdapterWrapper 
+                     , public ::B33::Rendering::IAdapter<::B33::Rendering::ComputeAdapter>
 {
 public:
 
-    ComputeAdapter(::std::shared_ptr<const HardwareWrapper> gpu)
-        : AdapterWrapper(gpu, 
-                         VK_QUEUE_COMPUTE_BIT | VK_QUEUE_GRAPHICS_BIT,
-                         GetExtensions(),
-                         GetFeaturesImpl())
+    ComputeAdapter(::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> gpu)
+        : ::B33::Rendering::AdapterWrapper(gpu, 
+                                           ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT,
+                                           GetExtensions(),
+                                           GetFeaturesImpl())
         , m_pGPU(gpu)
     { }
 
@@ -29,9 +29,9 @@ public:
 
 private:
 
-    ::std::shared_ptr<const HardwareWrapper> m_pGPU = nullptr;
+    ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> m_pGPU = nullptr;
 
 };
 
-} //!Voxels
+} //!B33::Rendering
 #endif // !AB_COMPUTE_DEVICE_ADAPTER_H

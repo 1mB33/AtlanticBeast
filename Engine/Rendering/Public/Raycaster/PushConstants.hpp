@@ -1,23 +1,24 @@
 #ifndef AB_PUSH_CONSTANTS_H
 #define AB_PUSH_CONSTANTS_H
 
-#include "Voxels.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
 struct alignas(16) VoxelPushConstants
 {
-    Vec3        CameraPos;
-    iVec3       GridSize;
-    Vec3        CameraLookDir;
-    Vec3        CameraRight;
-    Vec3        CameraUp;
+    using Vec   = ::B33::Math::Vec3;
+    using iVec  = ::B33::Math::iVec3;
+
+    Vec         CameraPos;
+    iVec        GridSize;
+    Vec         CameraLookDir;
+    Vec         CameraRight;
+    Vec         CameraUp;
     float       fFov;
-    uint32_t    uMode;
-    uint32_t    _Padding2;
-    uint32_t    _Padding3;
+    ::uint32_t  uMode;
+    ::uint32_t  _Padding2;
+    ::uint32_t  _Padding3;
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_PUSH_CONSTANTS_H

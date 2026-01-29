@@ -12,12 +12,14 @@
 using namespace std;
 using namespace Core;
 using namespace App;
+using namespace ::B33::Math;
+using namespace ::B33::Rendering;
 
 int main()
 {
     EmptyCanvas                                 renderWindow    = EmptyCanvas();
     const auto&                                 input           = renderWindow.GetInput();
-    ::std::shared_ptr<Voxels::Renderer>         render          = ::std::make_shared<Voxels::Renderer>();
+    ::std::shared_ptr<Renderer>                 render          = ::std::make_shared<Renderer>();
     ::std::shared_ptr<Game>                     g               = ::std::make_shared<Game>();
     GameMasterPuppet                            gameMaster      = GameMasterPuppet(render);
     DeltaTime                                   dt              = { };
@@ -38,11 +40,11 @@ int main()
 
     input->StartCapturing();
 
-    render->SetCurrentCamera(::std::static_pointer_cast<Voxels::Camera>(pc));
+    render->SetCurrentCamera(::std::static_pointer_cast<Camera>(pc));
     render->Initialize(renderWindow.GetWindowDesc(), g->GetWorld());
     
-    pc->SetRotation(Voxels::Vec3 { -0.5f, 1.25f, 0.f });
-    pc->SetPositon(Voxels::Vec3 { 14.5f, 2.25f, 25.f });
+    pc->SetRotation(Vec3 { -0.5f, 1.25f, 0.f });
+    pc->SetPositon(Vec3 { 14.5f, 2.25f, 25.f });
     pc->SetGrid(g); 
 
     g->Initialize();

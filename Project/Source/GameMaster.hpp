@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Game.hpp"
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 #include "Input/ControllerObject.hpp"
 #include "Input/UserInput.hpp"
 #include "Input/KeyList.hpp"
@@ -15,7 +15,7 @@ class GameMaster
 {
 public:
 
-    explicit GameMaster(std::shared_ptr<Voxels::Renderer> pRenderer)
+    explicit GameMaster(std::shared_ptr<B33::Rendering::Renderer> pRenderer)
         : m_pRenderer(pRenderer)
     { }
 
@@ -26,7 +26,7 @@ public:
 
 private:
 
-    std::shared_ptr<Voxels::Renderer> m_pRenderer;
+    std::shared_ptr<B33::Rendering::Renderer> m_pRenderer;
 };
 
 class GameMasterController : public App::ControllerObject
@@ -47,7 +47,7 @@ class GameMasterPuppet
 {
 public:
 
-    explicit GameMasterPuppet(std::shared_ptr<Voxels::Renderer> pRenderer)
+    explicit GameMasterPuppet(std::shared_ptr<B33::Rendering::Renderer> pRenderer)
         : m_pGm(::std::make_shared<GameMaster>(pRenderer))
         , m_Controller()
     { }

@@ -3,7 +3,7 @@
 
 #include "Vec3.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -211,7 +211,5 @@ inline iVec3 MultiplyScalar(const iVec3& vA, const float vB)
     return r;
 }
 
-} // !Voxels
-  
+} // !B33::Math
 #endif // !AB_OPERATIONS_H
-

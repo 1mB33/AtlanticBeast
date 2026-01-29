@@ -1,9 +1,7 @@
 #ifndef AB_INSTANCE_H
 #define AB_INSTANCE_H
 
-#include "Voxels.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
 class Instance
@@ -34,20 +32,18 @@ public:
 
 public:
 
-    VkInstance GetInstance() const
+    ::VkInstance GetInstance() const
     { return m_Instance; }
 
 private:
 
-    VkInstance CreateInstance();
+    ::VkInstance CreateInstance();
     
 private:
 
-    VkInstance m_Instance = VK_NULL_HANDLE;
+    ::VkInstance m_Instance = VK_NULL_HANDLE;
 
 };
 
-} // !Voxels
-
-
+} // !B33::Rendering
 #endif // !AB_INSTANCE_H

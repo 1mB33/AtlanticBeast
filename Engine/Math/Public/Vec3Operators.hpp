@@ -4,7 +4,7 @@
 #include "Vec3.hpp"
 #include "Operations.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
     
 // --------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ inline Vec3 Vec3::operator+(const Vec3& vB) const
 inline Vec3 Vec3::operator+(const iVec3& vB) const
 {
     Vec3 n(*this);
-    n = AddAssign(n, Vec3::ToVec3(vB));
+    n = AddAssign(n, Vec3::ToVec(vB));
     return n;
 }
 
@@ -101,5 +101,5 @@ inline iVec3 iVec3::operator*(const uint32_t vB) const
     return Multiply(n, iVec3(vB, vB, vB));
 }
 
-} //!Volxes
-#endif //!AB_VEC3_OPERATORS_H
+} // !B33::Math
+#endif // !AB_VEC3_OPERATORS_H

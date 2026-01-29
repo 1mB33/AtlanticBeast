@@ -5,17 +5,17 @@
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-class RTXDeviceAdapter : public AdapterWrapper
-                       , public IAdapter<RTXDeviceAdapter>
+class RTXDeviceAdapter : public ::B33::Rendering::AdapterWrapper
+                       , public ::B33::Rendering::IAdapter<::B33::Rendering::RTXDeviceAdapter>
 {
 public:
 
     RTXDeviceAdapter(::std::shared_ptr<const HardwareWrapper> pGpu)
         : AdapterWrapper(pGpu,
-                         VK_QUEUE_COMPUTE_BIT | VK_QUEUE_GRAPHICS_BIT,
+                         ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT,
                          GetExtensionsImpl(),
                          GetFeaturesImpl())
     { }
@@ -28,5 +28,5 @@ public:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 #endif // !AB_DEVICE_ADAPTER_H

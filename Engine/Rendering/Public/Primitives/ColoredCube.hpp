@@ -6,17 +6,16 @@
 #include "Primitives/MaterialProperties/ReflectionProperty.hpp"
 #include "Primitives/MaterialProperties/RoughnessProperty.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-class alignas(16) ColoredCube : public Voxels::Cube
-                              , public Voxels::ColorProperty
-                              , public Voxels::ReflectionProperty
-                              , public Voxels::RoughnessProperty
+class alignas(16) ColoredCube : public B33::Math::Cube
+                              , public B33::Rendering::ColorProperty
+                              , public B33::Rendering::ReflectionProperty
+                              , public B33::Rendering::RoughnessProperty
 { 
 	uint32_t m_uPadding;
 };
 
-}
-
-#endif //!AB_COLORED_CUBE_AB
+} // !B33::Rendering
+#endif // !AB_COLORED_CUBE_AB

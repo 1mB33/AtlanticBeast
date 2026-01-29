@@ -1,22 +1,21 @@
-#include "Consts.hpp"
-#include "Debug/Logger.hpp"
-#include "Voxels.hpp"
+#include "B33Rendering.hpp"
 
 #include "Raycaster/Renderer.hpp"
 
 #include "Raycaster/VoxelGrid.hpp"
-#include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/ErrorHandling.hpp"
+#include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/MinimalHardware.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
-using namespace std;
+using namespace ::std;
+using namespace ::B33::Math;
 
 // ---------------------------------------------------------------------------------------------------------------------
 void Renderer::Initialize(shared_ptr<const WindowDesc> wd,
@@ -95,7 +94,7 @@ void Renderer::Render()
     VkResult result;
     VkDevice device = m_pDeviceAdapter->GetAdapterHandle();
     uint32_t uImageIndex;
-    FrameResources& frame = (*m_vFrames.get())[m_uCurrentFrame];
+    Frame& frame = (*m_vFrames.get())[m_uCurrentFrame];
 
     THROW_IF_FAILED(vkWaitForFences(device, 1, &frame.InFlightFence, VK_TRUE, UINT64_MAX));
     THROW_IF_FAILED(vkResetFences(device, 1, &frame.InFlightFence));
@@ -146,7 +145,7 @@ void Renderer::Render()
         return;
     }
 
-    m_uCurrentFrame = (++m_uCurrentFrame) % FrameResources::MAX_FRAMES_IN_FLIGHT;
+    m_uCurrentFrame = (++m_uCurrentFrame) % Frame::MAX_FRAMES_IN_FLIGHT;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -210,14 +209,14 @@ VkCommandBuffer Renderer::CreateCommandBuffer(shared_ptr<const AdapterWrapper> d
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-Renderer::FrameResourcesArray Renderer::CreateFrameResources(const shared_ptr<const AdapterWrapper>& da,
+Renderer::FramesArray Renderer::CreateFrameResources(const shared_ptr<const AdapterWrapper>& da,
                                                              const unique_ptr<Memory>& memory,
                                                              const shared_ptr<const IWorldGrid>& vg,
                                                              VkCommandPool cmdPool,
                                                              size_t uFrames)
 {
     VkDevice device = da->GetAdapterHandle();
-    FrameResourcesArray result;
+    FramesArray result;
 
     VkSemaphoreCreateInfo semaphoreInfo = { };
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -421,11 +420,11 @@ void Renderer::RecreateSwapChain()
                                           static_pointer_cast<AdapterWrapper>(m_pDeviceAdapter),
                                           m_pWindowDesc);
 
-    m_vFrames = make_unique<FrameResourcesArray>(std::move(CreateFrameResources(m_pDeviceAdapter,
+    m_vFrames = make_unique<FramesArray>(std::move(CreateFrameResources(m_pDeviceAdapter,
                                                                                 m_pMemory,
                                                                                 m_pVoxelGrid,
                                                                                 m_CommandPool,
-                                                                                FrameResources::MAX_FRAMES_IN_FLIGHT)));
+                                                                                Frame::MAX_FRAMES_IN_FLIGHT)));
     m_uCurrentFrame = 0;
     AB_LOG(Core::Debug::Info, L"Swapchain recreated");
 }

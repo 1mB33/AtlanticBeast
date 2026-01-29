@@ -4,12 +4,11 @@
 #include "Vec3.hpp"
 #include "Vec4.hpp"
 
-namespace Voxels
+namespace B33::Math
 {
 
 typedef Vec3 Rot3;
 typedef Vec4 Rot4;
 
-} // !Voxels
-
+} // !B33::Math
 #endif // !AB_ROT3_H

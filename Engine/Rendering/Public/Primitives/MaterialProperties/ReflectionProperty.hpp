@@ -1,13 +1,10 @@
 #ifndef AB_REFLECTION_PROPERTY_H
 #define AB_REFLECTION_PROPERTY_H
 
-#include "Voxels.hpp"
-
-#include "IMaterialProperties.hpp"
-
-namespace Voxels
+namespace B33::Rendering
 {
 
+// FIXME: Some compilers add one byte in the empty IMaterialProperties class
 class alignas(4) ReflectionProperty //: public IMaterialProperties
 {
 public:
@@ -33,5 +30,5 @@ private:
 
 };
 
-} // !Voxels
-#endif //!AB_REFLECTION_PROPERTY_H
+} // !B33::Rendering
+#endif // !AB_REFLECTION_PROPERTY_H

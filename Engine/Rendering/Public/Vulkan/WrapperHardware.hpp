@@ -1,10 +1,9 @@
 #ifndef AB_WRAPPER_HARDWARE_H
 #define AB_WRAPPER_HARDWARE_H
 
-#include "Voxels.hpp"
 #include "Instance.hpp"
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 class HardwareWrapper
@@ -13,7 +12,7 @@ public:
 
     HardwareWrapper() = delete;
 
-    explicit HardwareWrapper(::std::shared_ptr<const Instance> pInstance,
+    explicit HardwareWrapper(::std::shared_ptr<const B33::Rendering::Instance> pInstance,
                              VkPhysicalDevice physicalDevice)
         : m_pInstance(pInstance)
         , m_PhysicalDevice(physicalDevice)
@@ -51,6 +50,6 @@ private:
 
 };
 
-} // !Voxels
+} // !B33::Rendering
 
 #endif // !AB_WRAPPER_HARDWARE_H

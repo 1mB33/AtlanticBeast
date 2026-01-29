@@ -1,7 +1,7 @@
 #ifndef AB_MEMORY_UPLOAD_TRACKER_H 
 #define AB_MEMORY_UPLOAD_TRACKER_H
 
-namespace Voxels
+namespace B33::Rendering
 {
 
 enum EReupload
@@ -68,5 +68,5 @@ private:
 
 };
 
-} //!Voxels
+} //!B33::Rendering
 #endif //!AB_MEMORY_UPLOAD_TRACKER_H

@@ -12,7 +12,7 @@ SET(BEE_RENDERING_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelPipeline.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelGrid.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/Renderer.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Voxels.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/B33Rendering.cpp"
 )
 SET(BEE_RENDERING_HEADRES 
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Primitives/Camera.hpp"
@@ -28,11 +28,11 @@ SET(BEE_RENDERING_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/FrameResources.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/VoxelPipeline.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/PushConstants.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/SingleVoxel.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Voxel.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/VoxelGrid.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Renderer.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Rays.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Voxels.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp"
 )
 
 ADD_LIBRARY(BeeRendering SHARED 
@@ -69,7 +69,7 @@ TARGET_LINK_LIBRARIES(BeeRendering PUBLIC
     BeeApp
 )
 
-TARGET_PRECOMPILE_HEADERS(BeeRendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Public/Voxels.hpp")
+TARGET_PRECOMPILE_HEADERS(BeeRendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp")
 
 TARGET_COMPILE_DEFINITIONS(BeeRendering PRIVATE _BEAST_EXPORTS)
 
