@@ -11,7 +11,8 @@
 namespace B33::App
 {
 
-using namespace B33::Core;
+using namespace ::B33::Core;
+using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
@@ -48,7 +49,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl(WindowDesc* pWd)
     int bSupported;
     XkbSetDetectableAutoRepeat(pDisplay, True, &bSupported);
     if (!bSupported) {
-        AB_LOG(Debug::Error, L"Detectable auto repeat ISN`T SUPPORTED!");
+        AB_LOG(Error, L"Detectable auto repeat ISN`T SUPPORTED!");
     }
 
     XSelectInput(pDisplay, window, FocusChangeMask |

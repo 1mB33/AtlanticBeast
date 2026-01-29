@@ -6,6 +6,7 @@ namespace B33::App
 {
 
 using namespace B33::Core;
+using namespace B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 void GameLinuxWindowPolicy::OnCreate(WindowDesc* pWd)
@@ -21,15 +22,15 @@ void GameLinuxWindowPolicy::OnCreate(WindowDesc* pWd)
     XSync(pDisplay, False);
 
     if (!XQueryExtension(pDisplay, "XInputExtension", &m_OpCode, &event, &error)) {
-        AB_LOG(B33::Core::Debug::Error, L"XInput2 not available.");
+        AB_LOG(Error, L"XInput2 not available.");
         return;
     }
 
     if (XIQueryVersion(pDisplay, &major, &minor) == BadRequest) {
-        AB_LOG(B33::Core::Debug::Error, L"XInput2 isn't available. Need at least 2.0.");
+        AB_LOG(Error, L"XInput2 isn't available. Need at least 2.0.");
         return;
     }
-    AB_LOG(Debug::Info, L"XInput2 version: %d.%d", major, minor);
+    AB_LOG(Info, L"XInput2 version: %d.%d", major, minor);
 
     XISetMask(pMask, XI_RawMotion);
 
@@ -39,7 +40,7 @@ void GameLinuxWindowPolicy::OnCreate(WindowDesc* pWd)
 
     int status = XISelectEvents(pDisplay, window, &evmask, 1);
     if (status != Success) {
-        AB_LOG(B33::Core::Debug::Error, L"XISelectEvents failed.");
+        AB_LOG(Error, L"XISelectEvents failed.");
     }
 
     XFlush(pDisplay);
