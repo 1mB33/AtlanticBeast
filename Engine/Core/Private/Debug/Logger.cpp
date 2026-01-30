@@ -131,9 +131,9 @@ void Logger::WriteLoop()
             continue;
         }
 
-        m_InstanceLock.unlock();
-
         auto& stamp = m_MessageQueue.front();
+
+        m_InstanceLock.unlock();
 
         wstring wstrStringified = Stringify(stamp);
 
