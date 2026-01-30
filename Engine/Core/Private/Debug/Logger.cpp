@@ -95,11 +95,12 @@ const wchar_t* Logger::GetTag(const ESeverity sev) const
 const wstring Logger::Stringify(const LogStruct& ls) const
 {
     time_t  timeStamp   = Clock::to_time_t(ls.TimeStamp);
-    tm      lTime       = { 0 };
+    tm      lTime       = { };
     tm*     lTimeResult = 
     #ifdef _WIN32
         nullptr;
-        localtime_s(&lTime, &timeStamp);
+        if (localtime_s(&lTime, &timeStamp) == 0) 
+            lTimeResult = &lTime;
     #else
         localtime_r(&timeStamp, &lTime);
     #endif // !_WIN32
