@@ -98,7 +98,7 @@ const wstring Logger::Stringify(const LogStruct& ls) const
     tm      lTime       = { 0 };
     tm*     lTimeResult = 
     #ifdef _WIN32
-        localtime_s(&timeStamp, &lTime);
+        localtime_s(&lTime, &timeStamp);
     #else
         localtime_r(&timeStamp, &lTime);
     #endif // !_WIN32
