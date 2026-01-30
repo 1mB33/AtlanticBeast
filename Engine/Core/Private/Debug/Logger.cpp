@@ -2,6 +2,7 @@
 
 #include "Debug/Logger.hpp"
 
+#include <ctime>
 #include <iostream>
 #include <cstdarg>
 
@@ -91,12 +92,26 @@ const wchar_t* Logger::GetTag(const ESeverity sev) const
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-const ::std::wstring Logger::Stringify(const LogStruct& ls) const
+const wstring Logger::Stringify(const LogStruct& ls) const
 {
     time_t  timeStamp   = Clock::to_time_t(ls.TimeStamp);
-    tm      lTime       = *localtime(&timeStamp);
+    tm      lTime       = { 0 };
+    tm*     lTimeResult = 
+    #ifdef _WIN32
+        localtime_s(&timeStamp, &lTime);
+    #else
+        localtime_r(&timeStamp, &lTime);
+    #endif // !_WIN32
 
-    return (wstringstream() << L'[' << put_time(&lTime, L"%H:%M:%S") << L"][" 
+    if (lTimeResult == nullptr) 
+    {
+        lTime.tm_hour   = -1;
+        lTime.tm_min    = -1;
+        lTime.tm_sec    = -1;
+        lTimeResult = &lTime;
+    }
+
+    return (wstringstream() << L'[' << put_time(lTimeResult, L"%H:%M:%S") << L"][" 
             << GetTag(ls.Sev) << "]: " << ls.pwszMessage).str();
 }
 
