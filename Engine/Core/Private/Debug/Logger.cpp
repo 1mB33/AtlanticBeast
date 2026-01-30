@@ -91,7 +91,7 @@ const wchar_t* Logger::GetTag(const ESeverity sev) const
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-const ::std::wstring Logger::Stringify(LogStruct& ls) const
+const ::std::wstring Logger::Stringify(const LogStruct& ls) const
 {
     time_t  timeStamp   = Clock::to_time_t(ls.TimeStamp);
     tm      lTime       = *localtime(&timeStamp);
@@ -131,7 +131,8 @@ void Logger::WriteLoop()
             continue;
         }
 
-        auto& stamp = m_MessageQueue.front();
+        LogStruct stamp = m_MessageQueue.front();
+        m_MessageQueue.pop();
 
         m_InstanceLock.unlock();
 
@@ -144,7 +145,6 @@ void Logger::WriteLoop()
         woFile.close();
 
         delete[] stamp.pwszMessage;
-        m_MessageQueue.pop();
     }
 }
 

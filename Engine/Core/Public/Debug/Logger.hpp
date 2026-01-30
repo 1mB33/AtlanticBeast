@@ -56,7 +56,7 @@ private:
 
     const wchar_t* GetTag(const ESeverity sev) const;
 
-    const ::std::wstring Stringify(LogStruct& ls) const; 
+    const ::std::wstring Stringify(const LogStruct& ls) const; 
     
     void WriteLoop();
 
