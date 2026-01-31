@@ -471,12 +471,22 @@ void main()
     float   fRoughness;
     if (MarchTheRay(ro, rd, maxSteps, hitPos, index, fDistance, normal, hitType)) 
     {
-        if (hitType == HIT_TYPE_VOXEL) {
+        if (uDebugMode == 1) 
+        {
+            finalColor = abs(vec4(normal.xyz, 1.0));
+            vec3 shaded = PhongShadows(CameraPos.xyz, 
+                                       hitPos,
+                                       normal,
+                                       int(distance(hitPos, lightPos) * 1.5)) * finalColor.xyz;
+            finalColor = vec4(shaded, finalColor.w);
+            imageStore(outputImage, iPixelCoord, finalColor);
+            return;
+        }
+        if (hitType == HIT_TYPE_VOXEL) 
+        {
             finalColor      = ExtractColorInt(VoxelData[index].Color);
             reflectionPower = 0.1;
             fRoughness      = 0.;
-            if (uDebugMode == 1) 
-                finalColor = abs(vec4(normal.xyz, 1.0));
         }
         if (hitType == HIT_TYPE_OBJECT) {
             finalColor      = ExtractColorInt(CubeData[index].Color); 
