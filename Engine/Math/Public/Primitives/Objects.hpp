@@ -15,9 +15,12 @@ public:
 
 	explicit WorldObjects()
 		: m_uRollingIndex(0)
-        , m_vPositions(64 * 64 * 64)
-		, m_vRotations(64 * 64 * 64)
-	{ }
+        , m_vPositions({ })
+		, m_vRotations({ })
+	{
+        m_vPositions.reserve(64 * 64 * 64);
+        m_vRotations.reserve(64 * 64 * 64);
+    }
 
     ~WorldObjects() = default;
 
@@ -59,8 +62,11 @@ public:
     { 
         ::size_t i = m_uRollingIndex++; 
 
-        m_vPositions[i] = Vec3();
-        m_vRotations[i] = Vec3();
+        m_vPositions.push_back(Vec3());
+        m_vRotations.push_back(Vec3());
+
+        AB_ASSERT(i == m_vPositions.size());
+        AB_ASSERT(i == m_vRotations.size());
 
         return i;
     }

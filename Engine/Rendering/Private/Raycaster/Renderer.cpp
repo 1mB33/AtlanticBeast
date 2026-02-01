@@ -38,13 +38,13 @@ void Renderer::Initialize(shared_ptr<const WindowDesc> wd,
                                       m_pDeviceAdapter->GetQueueFamilyIndex());
 
     m_StageVoxelBuffer          = std::move(m_pMemory->ReserveStagingBuffer(vg->GetVoxelsSizeInBytes()));
-    m_StagePositonsBuffer       = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3)));
-    m_StageRotationsBuffer      = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3)));
-    m_StageHalfSizesBuffer      = std::move(m_pMemory->ReserveStagingBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3)));
+    m_StagePositonsBuffer       = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3)));
+    m_StageRotationsBuffer      = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3)));
+    m_StageHalfSizesBuffer      = std::move(m_pMemory->ReserveStagingBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3)));
     m_VoxelBuffer       = std::move(m_pMemory->ReserveGPUBuffer(vg->GetVoxelsSizeInBytes()));
-    m_PositionsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3)));
-    m_RotationsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3)));
-    m_HalfSizesBuffer   = std::move(m_pMemory->ReserveGPUBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3)));
+    m_PositionsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3)));
+    m_RotationsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3)));
+    m_HalfSizesBuffer   = std::move(m_pMemory->ReserveGPUBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3)));
 
     // Recreating swap chain also creates frame resources and initializes swap chain
     RecreateSwapChain();
@@ -70,17 +70,17 @@ void Renderer::Update(const float)
                                                                        VoxelPipeline::EShaderResource::VoxelGrid));
 
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().data(),
-                                        m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3),
+                                        m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3),
                                         m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
                                                                        VoxelPipeline::EShaderResource::ObjectPositions));
 
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().data(),
-                                        m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3),
+                                        m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3),
                                         m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
                                                                        VoxelPipeline::EShaderResource::ObjectRotations));
 
         m_pMemory->UploadOnStreamBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().data(),
-                                        (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3),
+                                        (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3),
                                         m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
                                                                        VoxelPipeline::EShaderResource::ObjectHalfSizes));
     }

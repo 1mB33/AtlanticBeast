@@ -13,8 +13,10 @@ public:
 
     Cubes() 
         : WorldObjects()
-        , m_vHalfSizes(64 * 64 * 64)
-    { }
+        , m_vHalfSizes({ })
+    { 
+        m_vHalfSizes.reserve(64 * 64 * 64);
+    }
 
 public:
 
@@ -34,7 +36,10 @@ public:
     virtual ::size_t AddObject() override 
     { 
         ::size_t i = WorldObjects::AddObject(); 
-        m_vHalfSizes[i] = Vec3();
+        m_vHalfSizes.push_back(Vec3());
+
+        AB_ASSERT(i == m_vHalfSizes.size());
+
         return i;
     }
 

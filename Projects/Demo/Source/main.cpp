@@ -79,15 +79,15 @@ int main()
             dAvgSessionFps /= ++dFrame;
         }
 
-        // Logger::Get().Log(Info, 
-        //                   L"AvgSessionFps: %7.2lf Fps: %7.2f Frame duration: %7.2fms Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
-        //                   dAvgSessionFps,
-        //                   fFps,
-        //                   fDeltaMs,
-        //                   fBlock,
-        //                   fWindowTimeMs,
-        //                   fGameTimeMs,
-        //                   fRenderTimeMs);
+        Logger::Get().Log(Info, 
+                          L"AvgSessionFps: %7.2lf Fps: %7.2f Frame duration: %7.2fms Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
+                          dAvgSessionFps,
+                          fFps,
+                          fDeltaMs,
+                          fBlock,
+                          fWindowTimeMs,
+                          fGameTimeMs,
+                          fRenderTimeMs);
     }
 
     Logger::Get().Log(Info, L"AvgFps: %lf Frames: %lf", dAvgSessionFps, dFrame);

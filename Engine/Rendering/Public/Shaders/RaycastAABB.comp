@@ -118,9 +118,16 @@ bool TestObjects(in const Voxel onVoxel,
     float fLastHitMin;
     float fLastHitMax;
     vec3 lastNormal;
+    vec3 roPosDiff;
     for (uint k = 0; k < onVoxel.Type; ++k) 
     {
         uLastId = onVoxel.Id[k];
+        roPosDiff = Positions[uLastId].xyz - ro;
+
+        // Object position is in oposite direction (more then 90 degrees)
+        if (dot(rd, roPosDiff) < 0)
+            continue;
+
         if (!RayIntersectsAABB(ro, 
                                rd,
                                uLastId,
@@ -455,8 +462,8 @@ vec3 Reflection(in vec3         from,
         if (hitType == HIT_TYPE_OBJECT) {
             // FIXME: CubeColored c = CubeData[index];
             hitBaseColor    = ExtractColorInt(0xFFFFFFFF);
-            fLocalReflect   = 0.8;
-            fRoughness      = 0.3;
+            fLocalReflect   = 0.25;
+            fRoughness      = 0.08;
         } 
         
         reflectedColor = mix(reflectedColor, 
@@ -524,8 +531,8 @@ void main()
         }
         if (hitType == HIT_TYPE_OBJECT) {
             // FIXME: finalColor      = ExtractColorInt(CubeData[index].Color); 
-            reflectionPower = 0.7;
-            fRoughness      = 0.2;
+            reflectionPower = 0.25;
+            fRoughness      = 0.08;
         }
 
         if (fDistance <= maxSteps) 
