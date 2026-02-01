@@ -367,7 +367,7 @@ public:
     B33::Math::Vec3 GetPos()
     {
         if (auto pLock = m_pWorld.lock()) {
-            return pLock->GetById(m_uCubeId).GetPosition();
+            return pLock->GetStoredObjects().GetPosition(m_uCubeId);
         }
 
         throw AB_EXCEPT("Couldn't lock the world or the cube has wrong id.");
@@ -378,7 +378,7 @@ public:
     void Update(float fDelta)
     { 
         if (m_pPhysics.expired()) {
-            AB_LOG(::Core::Debug::Info, L"InWorldCube update, physics expired");
+            AB_LOG(::B33::Core::Debug::Info, L"InWorldCube update, physics expired");
             return;
         }
 
@@ -452,7 +452,7 @@ public:
 
     void GenerateCube(const B33::Math::iVec3& p)
     {
-        AB_LOG(::Core::Debug::Info, L"Generating cube");
+        AB_LOG(::B33::Core::Debug::Info, L"Generating cube");
 
         ::B33::Rendering::ColoredCube   cc = ::B33::Rendering::ColoredCube();
         ::B33::Math::Vec3          setP(0.5f + p.x, 0.5f + p.y, 0.5f + p.z); 
@@ -460,7 +460,7 @@ public:
         size_t uCubeId;
 
         cc.SetHalfSize(::B33::Math::Vec3(0.5f, 0.5f, 0.5f));
-        cc.SetColor(0x99211200);
+        // cc.SetColor(0x99211200);
 
         uCubeId = m_pWorld->GenerateObjectAtVoxel(p, std::move(cc));
         
@@ -475,12 +475,12 @@ public:
 
     void RemoveCube(size_t uCubeId)
     {
-        AB_LOG(::Core::Debug::Info, L"Removing cube %d", uCubeId);
+        AB_LOG(::B33::Core::Debug::Info, L"Removing cube %d", uCubeId);
 
         InWorldCube* pWC = nullptr;
 
         if (uCubeId == -1) {
-            AB_LOG(Core::Debug::Info, L"Invalid id on push");
+            AB_LOG(::B33::Core::Debug::Info, L"Invalid id on push");
             return;
         }
 
@@ -493,11 +493,11 @@ public:
         }
 
         if (!pWC) {
-            AB_LOG(::Core::Debug::Info, L"Invalid id on push");
+            AB_LOG(::B33::Core::Debug::Info, L"Invalid id on push");
             return;
         }
 
-        m_pPhysics->DestroyCube(pWC->GetPhysicsId(), m_pWorld->GetById(pWC->GetId()).GetHalfSize());
+        m_pPhysics->DestroyCube(pWC->GetPhysicsId(), (/*FIX ME:*/(B33::Rendering::ColoredCubes&)m_pWorld->GetStoredObjects()).GetHalfSize(pWC->GetId()));
         m_pWorld->RemoveObject(pWC->GetId());
 
         for (auto itObj = m_vInWorldObjects.begin(); itObj != m_vInWorldObjects.end(); ++itObj) {
@@ -515,7 +515,7 @@ public:
         InWorldCube* pWC = nullptr;
 
         if (uCubeId == -1) {
-            AB_LOG(Core::Debug::Info, L"Invalid id on push");
+            AB_LOG(::B33::Core::Debug::Info, L"Invalid id on push");
             return;
         }
 
@@ -528,7 +528,7 @@ public:
         }
 
         if (!pWC) {
-            AB_LOG(Core::Debug::Info, L"Invalid id on push");
+            AB_LOG(::B33::Core::Debug::Info, L"Invalid id on push");
             return;
         }
 

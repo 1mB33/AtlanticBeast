@@ -5,28 +5,28 @@ namespace B33::Rendering
 {
 
 // FIXME: Some compilers add one byte in the empty IMaterialProperties class
-class alignas(4) RoughnessProperty // : public IMaterialProperties
+class alignas(8) RoughnessProperty // : public IMaterialProperties
 {
 public:
 
     RoughnessProperty() 
-        : m_fRoughness(0.08f)
+        : m_fRoughness({ })
     { }
 
 public:
 
-    void SetReflection(float fRef) 
+    void SetReflection(float fRef, ::size_t uIndex) 
     { 
         if (fRef >= 0.25f) {
-            m_fRoughness = 0.25f;
+            m_fRoughness[uIndex] = 0.25f;
             return;
         }
-        m_fRoughness = fRef * 0.25f; 
+        m_fRoughness[uIndex] = fRef * 0.25f; 
     }
 
 private:
 
-    float m_fRoughness;  
+    ::std::vector<float> m_fRoughness;  
 
 };
 

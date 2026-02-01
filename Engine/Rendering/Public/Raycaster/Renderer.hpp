@@ -43,7 +43,7 @@ public:
     ::std::shared_ptr<::B33::Rendering::Camera>& GetCurrentCamera()
     {
         if (m_pCamera == nullptr) {
-            AB_LOG(::Core::Debug::Warning, L"Renderer doesn't have a camera. Recreating default camera on fly.");
+            AB_LOG(::B33::Core::Debug::Warning, L"Renderer doesn't have a camera. Recreating default camera on fly.");
             m_pCamera = ::std::make_shared<::B33::Rendering::Camera>();
         }
 
@@ -120,9 +120,13 @@ private:
     ::std::unique_ptr<FramesArray>  m_vFrames = nullptr;
 
     ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_VoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_CubeBuffer;    
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_PositionsBuffer;    
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_RotationsBuffer;    
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>          m_HalfSizesBuffer;    
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageVoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageCubeBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StagePositonsBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageRotationsBuffer;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageHalfSizesBuffer;
 
     bool m_bDebugMode;
 };

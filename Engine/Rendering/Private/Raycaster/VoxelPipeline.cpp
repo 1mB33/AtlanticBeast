@@ -132,7 +132,7 @@ void VoxelPipeline::LoadImage(VkImage image)
 // Private // ----------------------------------------------------------------------------------------------------------
 VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout(shared_ptr<const AdapterWrapper>& da)
 {
-    array<VkDescriptorSetLayoutBinding, 3>  bindings    = { };
+    array<VkDescriptorSetLayoutBinding, 5>  bindings    = { };
     VkDescriptorSetLayout                   descriptorSetLayout;
 
     bindings[0].binding             = 0;
@@ -145,10 +145,20 @@ VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout(shared_ptr<const Ada
     bindings[1].descriptorCount     = 1;
     bindings[1].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
 
-    bindings[2].binding             = VoxelPipeline::EShaderResource::Cubes;
+    bindings[2].binding             = VoxelPipeline::EShaderResource::ObjectPositions;
     bindings[2].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
     bindings[2].descriptorCount     = 1;
     bindings[2].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
+
+    bindings[3].binding             = VoxelPipeline::EShaderResource::ObjectRotations;
+    bindings[3].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    bindings[3].descriptorCount     = 1;
+    bindings[3].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
+
+    bindings[4].binding             = VoxelPipeline::EShaderResource::ObjectHalfSizes;
+    bindings[4].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    bindings[4].descriptorCount     = 1;
+    bindings[4].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
 
     VkDescriptorSetLayoutCreateInfo layoutCreateInfo = { };
     layoutCreateInfo.sType          = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -169,6 +179,8 @@ VkDescriptorPool VoxelPipeline::CreateDescriptorPool(shared_ptr<const AdapterWra
     const vector<VkDescriptorPoolSize> poolSizes = {
         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,  1 },
         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 2 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 3 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 4 },
     };
 
     VkDescriptorPool descriptorPool;

@@ -27,9 +27,17 @@ layout(std430, binding = 1) readonly buffer Voxels
 {
     Voxel VoxelData[]; 
 };
-layout(std430, binding = 2) readonly buffer Cubes 
+layout(std430, binding = 2) readonly buffer ObjectPositions
 {
-    CubeColored CubeData[]; 
+    vec4 Positions[]; 
+};
+layout(std430, binding = 3) readonly buffer ObjectRotations
+{
+    vec4 Rotations[]; 
+};
+layout(std430, binding = 4) readonly buffer ObjectHalfSizes
+{
+    vec4 HalfSizes[]; 
 };
 layout(push_constant) uniform PushConstants 
 {
@@ -70,6 +78,32 @@ const float phongShininess          = 256.0;
 
 
 // --------------------------------------------------------------------------------------------------------------------
+bool RayIntersectsAABB(in const vec3 ro, 
+                       in const vec3 rd,
+                       in const uint uIndexCube, 
+                       out float    fHitMin,
+                       out float    fHitMax,
+                       out vec3     normal)
+{
+    const mat3 cubeRot = RotationMatrix(Rotations[uIndexCube].xyz);
+    const vec3 lro = cubeRot * (ro - Positions[uIndexCube].xyz);
+    const vec3 lrd = cubeRot * rd;
+
+    if (!IntersectRayAABB(lro, 
+                          lrd,
+                          HalfSizes[uIndexCube].xyz,
+                          fHitMin,
+                          fHitMax)) 
+    {
+        return false;
+    }
+
+    normal = normalize(inverse(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
+
+    return true;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 bool TestObjects(in const Voxel onVoxel,
                  in const vec3  ro,
                  in const vec3  rd,
@@ -89,7 +123,7 @@ bool TestObjects(in const Voxel onVoxel,
         uLastId = onVoxel.Id[k];
         if (!RayIntersectsAABB(ro, 
                                rd,
-                               CubeData[uLastId].Geometry,
+                               uLastId,
                                fLastHitMin,
                                fLastHitMax,
                                lastNormal)) 
@@ -419,10 +453,10 @@ vec3 Reflection(in vec3         from,
             fRoughness      = 0.0;
         }
         if (hitType == HIT_TYPE_OBJECT) {
-            CubeColored c = CubeData[index];
-            hitBaseColor    = ExtractColorInt(c.Color);
-            fLocalReflect   = c.Reflection;
-            fRoughness      = c.Roughness;
+            // FIXME: CubeColored c = CubeData[index];
+            hitBaseColor    = ExtractColorInt(0xFFFFFFFF);
+            fLocalReflect   = 0.8;
+            fRoughness      = 0.3;
         } 
         
         reflectedColor = mix(reflectedColor, 
@@ -489,9 +523,9 @@ void main()
             fRoughness      = 0.;
         }
         if (hitType == HIT_TYPE_OBJECT) {
-            finalColor      = ExtractColorInt(CubeData[index].Color); 
-            reflectionPower = CubeData[index].Reflection;
-            fRoughness      = CubeData[index].Roughness;
+            // FIXME: finalColor      = ExtractColorInt(CubeData[index].Color); 
+            reflectionPower = 0.7;
+            fRoughness      = 0.2;
         }
 
         if (fDistance <= maxSteps) 
