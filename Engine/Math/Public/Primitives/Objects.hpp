@@ -14,7 +14,8 @@ class alignas(16) WorldObjects
 public:
 
 	explicit WorldObjects()
-		: m_vPositions(64 * 64 * 64)
+		: m_uRollingIndex(0)
+        , m_vPositions(64 * 64 * 64)
 		, m_vRotations(64 * 64 * 64)
 	{ }
 
@@ -55,13 +56,14 @@ public:
 public:
 
     virtual ::size_t AddObject() 
-    { return 0; }
+    { return ++m_uRollingIndex; }
 
     virtual void RemoveObject(::size_t uIndex) 
     { }
 
 private:
 
+    ::size_t            m_uRollingIndex;
 	::std::vector<Vec3> m_vPositions;
 	::std::vector<Rot3> m_vRotations;
 
