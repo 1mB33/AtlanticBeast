@@ -64,33 +64,25 @@ void Renderer::Update(const float)
 
     if (m_pVoxelGrid->ReuploadStatus() & EReupload::RequestStaging) 
     {
-         UploadDescriptor ud1 = m_pPipeline->GetUniformUploadDescriptor(m_StageVoxelBuffer, 
-                                                                       VoxelPipeline::EShaderResource::VoxelGrid);
-
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetGrid().data(), 
                                         m_pVoxelGrid->GetVoxelsSizeInBytes(),
-                                        ud1);
-
-        UploadDescriptor ud2 = m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectPositions);
+                                        m_pPipeline->GetUniformUploadDescriptor(m_StageVoxelBuffer, 
+                                                                       VoxelPipeline::EShaderResource::VoxelGrid));
 
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().data(),
                                         m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3),
-                                        ud2);
-
-        UploadDescriptor ud3 = m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectRotations);
+                                        m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
+                                                                       VoxelPipeline::EShaderResource::ObjectPositions));
 
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().data(),
                                         m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3),
-                                        ud3);
-
-        UploadDescriptor ud4 = m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectHalfSizes);
+                                        m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
+                                                                       VoxelPipeline::EShaderResource::ObjectRotations));
 
         m_pMemory->UploadOnStreamBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().data(),
                                         (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3),
-                                        ud3);
+                                        m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
+                                                                       VoxelPipeline::EShaderResource::ObjectHalfSizes));
     }
 
     Vec3 rot = m_pCamera->GetRotation();
@@ -402,7 +394,7 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
         mmr4.size = VK_WHOLE_SIZE;
 
         VkMappedMemoryRange mmrs[4] = { mmr, mmr2, mmr3, mmr4 };
-        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), 2, mmrs);
+        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), 4, mmrs);
     }
 
     VkBufferMemoryBarrier bufferBarriers[4] = { };
@@ -429,7 +421,7 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                          0,
                          0, NULL,
-                         2, bufferBarriers,
+                         4, bufferBarriers,
                          0, NULL);
 
     const uint32_t groupCountX = (m_pWindowDesc->Width + 31) / 32;
@@ -476,10 +468,10 @@ void Renderer::RecreateSwapChain()
                                           m_pWindowDesc);
 
     m_vFrames = make_unique<FramesArray>(std::move(CreateFrameResources(m_pDeviceAdapter,
-                                                                                m_pMemory,
-                                                                                m_pVoxelGrid,
-                                                                                m_CommandPool,
-                                                                                Frame::MAX_FRAMES_IN_FLIGHT)));
+                                                                        m_pMemory,
+                                                                        m_pVoxelGrid,
+                                                                        m_CommandPool,
+                                                                        Frame::MAX_FRAMES_IN_FLIGHT)));
     m_uCurrentFrame = 0;
     AB_LOG(Core::Debug::Info, L"Swapchain recreated");
 }

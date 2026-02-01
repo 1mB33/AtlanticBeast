@@ -20,9 +20,9 @@ public:
     enum EShaderResource
     {
         VoxelGrid = 1,
-        ObjectPositions = VoxelGrid << 1,
-        ObjectRotations = ObjectPositions << 1,
-        ObjectHalfSizes = ObjectRotations << 1,
+        ObjectPositions = VoxelGrid + 1,
+        ObjectRotations = ObjectPositions + 1,
+        ObjectHalfSizes = ObjectRotations + 1,
     };
 
 public:

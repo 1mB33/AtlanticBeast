@@ -81,9 +81,9 @@ const float phongShininess          = 256.0;
 bool RayIntersectsAABB(in const vec3 ro, 
                        in const vec3 rd,
                        in const uint uIndexCube, 
-                       out float    fHitMin,
-                       out float    fHitMax,
-                       out vec3     normal)
+                       out float     fHitMin,
+                       out float     fHitMax,
+                       out vec3      normal)
 {
     const mat3 cubeRot = RotationMatrix(Rotations[uIndexCube].xyz);
     const vec3 lro = cubeRot * (ro - Positions[uIndexCube].xyz);

@@ -1,6 +1,7 @@
 #ifndef AB_VOXEL_GRID_H
 #define AB_VOXEL_GRID_H
 
+#include "B33Core.h"
 #include "Primitives/Object.hpp"
 #include "Vulkan/MemoryUploadTracker.hpp"
 #include "Raycaster/Voxel.hpp"
@@ -173,8 +174,10 @@ public:
         //     return;
         // }
 
-        if (m_StoredObjects.GetRotation(uId) == newRot)
+        if (m_StoredObjects.GetRotation(uId) == newRot) {
+            // AB_LOG(::B33::Core::Debug::Info, L"New rotation is equal to old one");
 			return;
+        }
 
         m_StoredObjects.SetRotation(newRot, uId);
 

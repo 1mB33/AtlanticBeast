@@ -9,7 +9,7 @@ namespace B33::Math
 /**
  * Holds positon of an object and rotation in radians.
  * */
-class alignas(16) WorldObjects
+class WorldObjects
 {
 public:
 
@@ -56,7 +56,14 @@ public:
 public:
 
     virtual ::size_t AddObject() 
-    { return ++m_uRollingIndex; }
+    { 
+        ::size_t i = m_uRollingIndex++; 
+
+        m_vPositions[i] = Vec3();
+        m_vRotations[i] = Vec3();
+
+        return i;
+    }
 
     virtual void RemoveObject(::size_t uIndex) 
     { }

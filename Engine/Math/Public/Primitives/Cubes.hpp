@@ -7,39 +7,43 @@
 namespace B33::Math
 {
 
-class alignas(16) Cubes : public WorldObjects
+class Cubes : public WorldObjects
 {
 public:
 
     Cubes() 
         : WorldObjects()
-        , m_fHalfSizes(64 * 64 * 64)
+        , m_vHalfSizes(64 * 64 * 64)
     { }
 
 public:
 
     const ::std::vector<Vec3>& GetHalfSizes() const
-    { return m_fHalfSizes; }
+    { return m_vHalfSizes; }
 
     Vec3 GetHalfSize(::size_t uIndex) const
-    { return m_fHalfSizes[uIndex]; }
+    { return m_vHalfSizes[uIndex]; }
 
 public:
 
     void SetHalfSize(Vec3 halfSize, ::size_t uIndex)
-    { m_fHalfSizes[uIndex] = halfSize; }
+    { m_vHalfSizes[uIndex] = halfSize; }
 
 public:
 
     virtual ::size_t AddObject() override 
-    { return WorldObjects::AddObject(); }
+    { 
+        ::size_t i = WorldObjects::AddObject(); 
+        m_vHalfSizes[i] = Vec3();
+        return i;
+    }
 
     virtual void RemoveObject(::size_t uIndex) override
     { WorldObjects::RemoveObject(uIndex); }
 
 private:
 
-    ::std::vector<Vec3> m_fHalfSizes;
+    ::std::vector<Vec3> m_vHalfSizes;
 
 };
 

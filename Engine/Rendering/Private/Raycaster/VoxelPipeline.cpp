@@ -6,7 +6,6 @@
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
-#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -105,7 +104,7 @@ void VoxelPipeline::LoadImage(VkImage image)
 
     THROW_IF_FAILED(vkCreateImageView(m_pDeviceAdapter->GetAdapterHandle(), 
                                       &viewInfo,
-                                      nullptr,
+                                      NULL,
                                       &m_ImageView));
 
     VkDescriptorImageInfo imageInfo = { };
@@ -125,7 +124,7 @@ void VoxelPipeline::LoadImage(VkImage image)
                            1,
                            &imageWrite,
                            0,
-                           nullptr);
+                           NULL);
 }
 
 
@@ -178,8 +177,6 @@ VkDescriptorPool VoxelPipeline::CreateDescriptorPool(shared_ptr<const AdapterWra
 {
     const vector<VkDescriptorPoolSize> poolSizes = {
         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,  1 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 2 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 3 },
         { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 4 },
     };
 
@@ -295,11 +292,11 @@ VkPipeline VoxelPipeline::CreateComputePipeline(shared_ptr<const AdapterWrapper>
     pipelineInfo.layout             = pipelineLayout;
 
     THROW_IF_FAILED(vkCreateComputePipelines(device,
-                                           VK_NULL_HANDLE,
-                                           1,
-                                           &pipelineInfo,
-                                           NULL,
-                                           &pipeline));
+                                             VK_NULL_HANDLE,
+                                             1,
+                                             &pipelineInfo,
+                                             NULL,
+                                             &pipeline));
 
     return pipeline;
 }
