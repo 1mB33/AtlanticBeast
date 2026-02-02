@@ -396,27 +396,18 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
         mmrs.push_back(mmr);
         
         if (m_uStorageBuffersFlags & EGridChanged::Position) {
-            VkMappedMemoryRange mmr2 = { };
-            mmr2.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            VkMappedMemoryRange mmr2 = mmr;
             mmr2.memory = m_PositionsBuffer->GetMemoryHandle();
-            mmr2.offset = 0;
-            mmr2.size = VK_WHOLE_SIZE;
             mmrs.push_back(mmr2);
         }
         if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
-            VkMappedMemoryRange mmr3 = { };
-            mmr3.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            VkMappedMemoryRange mmr3 = mmr;
             mmr3.memory = m_RotationsBuffer->GetMemoryHandle();
-            mmr3.offset = 0;
-            mmr3.size = VK_WHOLE_SIZE;
             mmrs.push_back(mmr3);
         }
         if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
-            VkMappedMemoryRange mmr4 = { };
-            mmr4.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            VkMappedMemoryRange mmr4 = mmr;
             mmr4.memory = m_HalfSizesBuffer->GetMemoryHandle();
-            mmr4.offset = 0;
-            mmr4.size = VK_WHOLE_SIZE;
             mmrs.push_back(mmr4);
         }
 
