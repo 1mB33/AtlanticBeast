@@ -38,7 +38,7 @@ public:
         ::size_t i = WorldObjects::AddObject(); 
         m_vHalfSizes.push_back(Vec3());
 
-        AB_ASSERT(i == m_vHalfSizes.size());
+        AB_ASSERT(i == m_vHalfSizes.size() - 1);
 
         return i;
     }

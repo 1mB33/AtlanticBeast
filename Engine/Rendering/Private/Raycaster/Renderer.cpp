@@ -64,31 +64,39 @@ void Renderer::Update(const float)
 
     if (m_pVoxelGrid->ReuploadStatus() & EReupload::RequestStaging) 
     {
+        m_uStorageBuffersFlags = m_pVoxelGrid->GetChanged();
+            
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetGrid().data(), 
                                         m_pVoxelGrid->GetVoxelsSizeInBytes(),
                                         m_pPipeline->GetUniformUploadDescriptor(m_StageVoxelBuffer, 
-                                                                       VoxelPipeline::EShaderResource::VoxelGrid));
+                                                                                VoxelPipeline::EShaderResource::VoxelGrid));
 
-        m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().data(),
-                                        m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3),
-                                        m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectPositions));
+        if (m_uStorageBuffersFlags & EGridChanged::Position) {
+            m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().data(),
+                                            m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3),
+                                            m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
+                                                                                    VoxelPipeline::EShaderResource::ObjectPositions));
+        }
 
-        m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().data(),
-                                        m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3),
-                                        m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectRotations));
+        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
+            m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().data(),
+                                            m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3),
+                                            m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
+                                                                                    VoxelPipeline::EShaderResource::ObjectRotations));
+        }
 
-        m_pMemory->UploadOnStreamBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().data(),
-                                        (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3),
-                                        m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
-                                                                       VoxelPipeline::EShaderResource::ObjectHalfSizes));
+        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
+            m_pMemory->UploadOnStreamBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().data(),
+                                            (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3),
+                                            m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
+                                                                                    VoxelPipeline::EShaderResource::ObjectHalfSizes));
+        }
     }
 
-    Vec3 rot = m_pCamera->GetRotation();
-    Vec3 rotVec = Normalize(RotateY(RotateX(Vec3 { 0.f, 0.f, 1.f }, rot.x), rot.y));
-    Vec3 cameraRight = Normalize(Cross(rotVec, Vec3 { 0.f, -1.f, 0.f }));
-    Vec3 cameraUp = Cross(cameraRight, rotVec);
+    Vec3 rot            = m_pCamera->GetRotation();
+    Vec3 rotVec         = Normalize(RotateY(RotateX(Vec3 { 0.f, 0.f, 1.f }, rot.x), rot.y));
+    Vec3 cameraRight    = Normalize(Cross(rotVec, Vec3 { 0.f, -1.f, 0.f }));
+    Vec3 cameraUp       = Cross(cameraRight, rotVec);
 
     m_pPipeline->LoadPushConstants(m_pCamera->GetFov() * AB_DEG_TO_RAD,
                                    m_pCamera->GetPosition(), 
@@ -351,50 +359,69 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
                         1,
                         &copyRegion);
 
-        copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3);
-        vkCmdCopyBuffer(cmdBuffer, 
-                        m_StagePositonsBuffer->GetBufferHandle(), 
-                        m_PositionsBuffer->GetBufferHandle(), 
-                        1,
-                        &copyRegion);
+        if (m_uStorageBuffersFlags & EGridChanged::Position) {
+            copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3);
+            vkCmdCopyBuffer(cmdBuffer, 
+                            m_StagePositonsBuffer->GetBufferHandle(), 
+                            m_PositionsBuffer->GetBufferHandle(), 
+                            1,
+                            &copyRegion);
+        } 
 
-        copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3);
-        vkCmdCopyBuffer(cmdBuffer, 
-                        m_StageRotationsBuffer->GetBufferHandle(), 
-                        m_RotationsBuffer->GetBufferHandle(), 
-                        1,
-                        &copyRegion);
+        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
+            copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3);
+            vkCmdCopyBuffer(cmdBuffer, 
+                            m_StageRotationsBuffer->GetBufferHandle(), 
+                            m_RotationsBuffer->GetBufferHandle(), 
+                            1,
+                            &copyRegion);
+        }
 
-        copyRegion.size = (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3);
-        vkCmdCopyBuffer(cmdBuffer, 
-                        m_StageHalfSizesBuffer->GetBufferHandle(), 
-                        m_HalfSizesBuffer->GetBufferHandle(), 
-                        1,
-                        &copyRegion);
+        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
+            copyRegion.size = (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3);
+            vkCmdCopyBuffer(cmdBuffer, 
+                            m_StageHalfSizesBuffer->GetBufferHandle(), 
+                            m_HalfSizesBuffer->GetBufferHandle(), 
+                            1,
+                            &copyRegion);
+        }
 
+        vector<VkMappedMemoryRange> mmrs = { };
+       
         VkMappedMemoryRange mmr = { };
         mmr.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
         mmr.memory = m_VoxelBuffer->GetMemoryHandle();
         mmr.offset = 0;
         mmr.size = VK_WHOLE_SIZE;
-        VkMappedMemoryRange mmr2 = { };
-        mmr2.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-        mmr2.memory = m_PositionsBuffer->GetMemoryHandle();
-        mmr2.offset = 0;
-        mmr2.size = VK_WHOLE_SIZE;
-        VkMappedMemoryRange mmr3 = { };
-        mmr3.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-        mmr3.memory = m_RotationsBuffer->GetMemoryHandle();
-        mmr3.offset = 0;
-        mmr3.size = VK_WHOLE_SIZE;
-        VkMappedMemoryRange mmr4 = { };
-        mmr4.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-        mmr4.memory = m_HalfSizesBuffer->GetMemoryHandle();
-        mmr4.offset = 0;
-        mmr4.size = VK_WHOLE_SIZE;
+        mmrs.push_back(mmr);
+        
+        if (m_uStorageBuffersFlags & EGridChanged::Position) {
+            VkMappedMemoryRange mmr2 = { };
+            mmr2.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            mmr2.memory = m_PositionsBuffer->GetMemoryHandle();
+            mmr2.offset = 0;
+            mmr2.size = VK_WHOLE_SIZE;
+            mmrs.push_back(mmr2);
+        }
+        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
+            VkMappedMemoryRange mmr3 = { };
+            mmr3.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            mmr3.memory = m_RotationsBuffer->GetMemoryHandle();
+            mmr3.offset = 0;
+            mmr3.size = VK_WHOLE_SIZE;
+            mmrs.push_back(mmr3);
+        }
+        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
+            VkMappedMemoryRange mmr4 = { };
+            mmr4.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+            mmr4.memory = m_HalfSizesBuffer->GetMemoryHandle();
+            mmr4.offset = 0;
+            mmr4.size = VK_WHOLE_SIZE;
+            mmrs.push_back(mmr4);
+        }
 
-        VkMappedMemoryRange mmrs[4] = { mmr, mmr2, mmr3, mmr4 };
-        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), 4, mmrs);
+        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), mmrs.size(), mmrs.data());
+        m_uStorageBuffersFlags &= 0;
     }
 
     VkBufferMemoryBarrier bufferBarriers[4] = { };

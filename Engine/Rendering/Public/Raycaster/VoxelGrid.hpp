@@ -10,6 +10,14 @@
 namespace B33::Rendering
 {
 
+enum EGridChanged
+{
+    NoChanges = 1,
+    Position = NoChanges << 1,
+    Rotation = Position << 1,
+    HalfSize = Rotation << 1,
+};
+
 class IWorldGrid : public ::B33::Rendering::MemoryUploadTracker
 {
 
@@ -25,6 +33,7 @@ public:
     explicit IWorldGrid(size_t uGridWidth = DefaultVoxelGridDim)
         : m_uGridDim(uGridWidth)
         , m_VoxelGrid(uGridWidth * uGridWidth * uGridWidth)
+        , m_uChanged(NoChanges)
     { }
 
 public:
@@ -46,6 +55,13 @@ public:
 
     ::size_t GetVoxels() const
     { return m_VoxelGrid.size(); }
+
+    uint32_t GetChanged() 
+    {
+        uint32_t r = m_uChanged;
+        m_uChanged &= 0;
+        return r; 
+    }
 
     virtual const ::B33::Math::WorldObjects& GetStoredObjects() const = 0;
 
@@ -69,10 +85,20 @@ protected:
                                   const iVec& area,
                                   const ::size_t uId);
 
+    void SetPositionChanged() 
+    { m_uChanged |= EGridChanged::Position; }
+
+    void SetRotationChanged() 
+    { m_uChanged |= EGridChanged::Rotation; }
+
+    void SetHalfSizeChanged() 
+    { m_uChanged |= EGridChanged::HalfSize; }
+
 private:
 
-    ::size_t m_uGridDim = -1;
-    ::std::vector<::B33::Rendering::Voxel> m_VoxelGrid;
+    ::size_t                                m_uGridDim      = -1;
+    ::std::vector<::B33::Rendering::Voxel>  m_VoxelGrid;
+    ::uint32_t                              m_uChanged;
 
 };
 
@@ -124,6 +150,9 @@ public:
     {
         size_t uId = GenerateObject(pos, this->GetGrid(), ::std::forward<U>(sot));
         this->ForceUpload();
+        this->SetPositionChanged();
+        this->SetRotationChanged();
+        this->SetHalfSizeChanged();
         return uId;
     }
 
@@ -135,6 +164,9 @@ public:
                              area,
                              uObjectId);
     
+        this->SetPositionChanged();
+        this->SetRotationChanged();
+        this->SetHalfSizeChanged();
         m_StoredObjects.RemoveObject(uObjectId);
         // for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj) {
         //     if (&(*itObj) == &obj) {
@@ -165,6 +197,7 @@ public:
                           uObjectId);
 
         this->ForceUpload();
+        this->SetPositionChanged();
     }
 
     void UpdateRot(const Rot& newRot, ::size_t uId)
@@ -182,6 +215,7 @@ public:
         m_StoredObjects.SetRotation(newRot, uId);
 
         this->ForceUpload();
+        this->SetRotationChanged();
     }
 
 private:

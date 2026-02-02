@@ -65,8 +65,8 @@ public:
         m_vPositions.push_back(Vec3());
         m_vRotations.push_back(Vec3());
 
-        AB_ASSERT(i == m_vPositions.size());
-        AB_ASSERT(i == m_vRotations.size());
+        AB_ASSERT(i == m_vPositions.size() - 1);
+        AB_ASSERT(i == m_vRotations.size() - 1);
 
         return i;
     }

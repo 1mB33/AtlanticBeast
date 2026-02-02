@@ -118,14 +118,12 @@ bool TestObjects(in const Voxel onVoxel,
     float fLastHitMin;
     float fLastHitMax;
     vec3 lastNormal;
-    vec3 roPosDiff;
-    for (uint k = 0; k < onVoxel.Type; ++k) 
+    for (uint k = 0; k < onVoxel.Type && k < 64; ++k) 
     {
         uLastId = onVoxel.Id[k];
-        roPosDiff = Positions[uLastId].xyz - ro;
 
         // Object position is in oposite direction (more then 90 degrees)
-        if (dot(rd, roPosDiff) < 0)
+        if (dot(rd, Positions[uLastId].xyz - ro) < 0.)
             continue;
 
         if (!RayIntersectsAABB(ro, 

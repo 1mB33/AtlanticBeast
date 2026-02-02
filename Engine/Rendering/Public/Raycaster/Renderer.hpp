@@ -32,6 +32,7 @@ public:
         , m_CommandPool(VK_NULL_HANDLE)
         , m_uCurrentFrame(0)
         , m_vFrames()
+        , m_uStorageBuffersFlags(0)
         , m_bDebugMode(false)
     { }
 
@@ -127,6 +128,8 @@ private:
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StagePositonsBuffer;
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageRotationsBuffer;
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer>    m_StageHalfSizesBuffer;
+
+    uint32_t m_uStorageBuffersFlags;
 
     bool m_bDebugMode;
 };
