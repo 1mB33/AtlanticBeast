@@ -54,7 +54,7 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen06.jpg?raw=true" alt="Screenshot" width="49%"/>
 </p>
 
-# Build
+# Building
 
 Build dependencies:
   - Vulkan SDK
@@ -65,7 +65,7 @@ Build dependencies:
 
 ## Linux
 
-## Get necessary libraries and headers 
+### Get necessary libraries and headers 
 
 ### Arch linux based systems
 ``` sh
@@ -77,7 +77,7 @@ sudo pacman -S --needed cmake make libx11 libxrandr libxinerama libxcursor libxi
 sudo apt update && sudo apt install -y cmake make libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev vulkan-tools libvulkan-dev vulkan-utility-libraries-dev glslang-tools spirv-tools
 ```
 
-## Download and build the project
+### Download and build the project
 
 ``` sh
 git clone --recurse-submodules -j8 https://github.com/Im-Bee/AtlanticBeast.git &&
@@ -87,6 +87,8 @@ cd Build &&
 cmake .. -DCMAKE_BUILD_TYPE=Release &&
 cmake --build .
 ```
+
+Run project from a bin directory that is created in root directory of the project **Bin/TARGET_ARCH/BUILD_TYPE/**.
 
 ## Windows
 
@@ -106,5 +108,7 @@ cd Build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ```
+
+Run project from a bin directory that is created in root directory of the project **Bin/TARGET_ARCH/BUILD_TYPE/**.
 
 
