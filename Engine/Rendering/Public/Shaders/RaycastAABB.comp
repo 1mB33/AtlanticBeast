@@ -311,10 +311,10 @@ float SoftShadowRay(in const vec3   from,
     
     const float sampleStep  = TWO_PI / samples;
     const float mixFactor   = 0.015;
+    const float shadowConst = 1. / samples;
 
     float angle;
     vec3 offset;
-    const float shadowConst = 1. / samples;
     for (int i = 0; i < samples; ++i)
     {
         angle   = float(i) * sampleStep;
