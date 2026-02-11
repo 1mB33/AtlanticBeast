@@ -32,7 +32,7 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
 2 - Medium push<br>
 3 - Strong push<br>
 
-# Demonstration with physics
+# Physics demo
 <p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/PROMO_1.gif?raw=true" alt="Screenshot" width="98%"/>
 </p>
