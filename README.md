@@ -2,7 +2,7 @@
 
 - [About the project](#atlanticbeast)
 - [About demo](#about-demo)
-- [Physics showcase](#physics-showcase)
+- [Physics showcase](#demos-physics-showcase)
 - [Screenshots](#screenshots)
 - [Demo keybinds](#current-demo-keybinds)
 - [Building the project](#building-the-project)
@@ -29,10 +29,10 @@ Features a low-latency input system and a fully custom Vulkan-based compute rend
 
 # About demo
 
-In demo we can play a simple minecraft lookalike game where you can place and remove blocks.
+In demo we can play a simple minecraft lookalike game where you can place and remove blocks. Uses Jolt Physics to enhance the experience and showcase functionality. 
 
 
-# Physics showcase
+# Demos physics showcase
 <p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/PROMO_1.gif?raw=true" alt="Screenshot" width="98%"/>
 </p>
@@ -71,6 +71,8 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
 1 - Weak push<br>
 2 - Medium push<br>
 3 - Strong push<br>
+Z - Debug view<br>
+
 
 # Building the project
 
