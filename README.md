@@ -2,9 +2,9 @@
 
 - [About the project](#atlanticbeast)
 - [About demo](#about-demo)
-- [Demo keybinds](#current-demo-keybinds)
 - [Physics showcase](#physics-showcase)
 - [Screenshots](#screenshots)
+- [Demo keybinds](#current-demo-keybinds)
 - [Building the project](#building-the-project)
 
 # AtlanticBeast
@@ -31,23 +31,6 @@ Features a low-latency input system and a fully custom Vulkan-based compute rend
 
 In demo we can play a simple minecraft lookalike game where you can place and remove blocks.
 
-# Current demo keybinds:
-
-### Movement:
-W - Move forward<br>
-S - Move backward<br>
-D - Strafe right<br>
-A - Strafe left<br>
-E - Fly up<br>
-Q - Fly down<br>
-Mouse movement - camera rotation<br>
-
-### Interactions:
-SPACE or LEFT MOUSE BUTTON - Place a block<br>
-X or RIGHT MOUSE BUTTON - Remove a block<br>
-1 - Weak push<br>
-2 - Medium push<br>
-3 - Strong push<br>
 
 # Physics showcase
 <p float="left">
@@ -70,6 +53,24 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen05.jpg?raw=true" alt="Screenshot" width="49%"/>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen06.jpg?raw=true" alt="Screenshot" width="49%"/>
 </p>
+
+# Current demo keybinds:
+
+### Movement:
+W - Move forward<br>
+S - Move backward<br>
+D - Strafe right<br>
+A - Strafe left<br>
+E - Fly up<br>
+Q - Fly down<br>
+Mouse movement - camera rotation<br>
+
+### Interactions:
+SPACE or LEFT MOUSE BUTTON - Place a block<br>
+X or RIGHT MOUSE BUTTON - Remove a block<br>
+1 - Weak push<br>
+2 - Medium push<br>
+3 - Strong push<br>
 
 # Building the project
 
