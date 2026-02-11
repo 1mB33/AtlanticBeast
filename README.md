@@ -90,6 +90,9 @@ cmake --build .
 
 ## Windows
 
+Download Vulkan SDK from a place like [LunarG](https://vulkan.lunarg.com/sdk/home).
+If you are using Visual Studio make sure to have CMake support installed.
+
 ### Visual Studio 
 
 Open root directory of the project with Visual Studio. Wait for cmake to build. Select AtlBee project as a build target.
