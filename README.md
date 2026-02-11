@@ -57,14 +57,27 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
 # Build
 
 Build dependencies:
-  - Vulkan SDK (vulkan-headers and spirv-tools on linux )
+  - Vulkan SDK
   - CMake or Visual Studio with CMake support
   - Compiler that supports at least C++17
   - Windows or Linux operating system
+  - X11 libraries [Only on linux]
 
 ## Linux
 
-### CMake
+## Get necessary libraries and headers 
+
+### Arch linux based systems
+``` sh
+sudo pacman -S --needed cmake make libx11 libxrandr libxinerama libxcursor libxi vulkan-tools vulkan-headers vulkan-utility-libraries glslang spirv-tools
+```
+
+### Ubuntu/Debian based systems
+``` sh
+sudo apt update && sudo apt install -y cmake make libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev vulkan-tools libvulkan-dev vulkan-utility-libraries-dev glslang-tools spirv-tools
+```
+
+## Download and build the project
 
 ``` sh
 git clone --recurse-submodules -j8 https://github.com/Im-Bee/AtlanticBeast.git &&
