@@ -1,20 +1,37 @@
+# Table of content
+
+- [About the project](#atlanticbeast)
+- [About demo](#about-demo)
+- [Demo keybinds](#current-demo-keybinds)
+- [Physics showcase](#physics-showcase)
+- [Screenshots](#screenshots)
+- [Building the project](#building-the-project)
+
 # AtlanticBeast
 
-Realtime GPU ray tracer with custom acceleration structure based on a simplistic voxel grid in vulkan and Minecraft alike demo game. <br>
+Realtime GPU ray tracer with custom acceleration structure based on a simplistic voxel grid in vulkan.<br>
+Project is separated into several libraries. For demonstration purpose a Minecraft alike demo game was created.
 
-Project uses voxel traversal algorithm implementation based on <br>
-'A Fast Voxel Traversal Algorithm for Ray Tracing'<br>
-by John Amanatides and Andrew Woo (1987) and Blinn-Phong Reflection lighting.<br>
+### Engine libraries:
+- Core (Fundamental functionality, including debugging tools, correct choosen system headers)
+- Application (Windows managment, input managment, etc.)
+- Math (Vector math, primitive geometrical structures, matrices and vector struckts)
+- Rendering (Vulkan C++ wrappers, rendering logic, shaders and tracer renderer)
 
-Implements a custom cross-platform window management system with runtime switchable behavior.<br>
 
-Features a low-latency input system and a fully custom Vulkan-based compute rendering pipeline.<br>
+Project uses voxel traversal algorithm implementation based on 
+'A Fast Voxel Traversal Algorithm for Ray Tracing'
+by John Amanatides and Andrew Woo (1987) and Blinn-Phong Reflection lighting.
+
+
+Implements a custom cross-platform window management system with runtime switchable behavior.
+Features a low-latency input system and a fully custom Vulkan-based compute rendering pipeline.
 
 # About demo
 
 In demo we can play a simple minecraft lookalike game where you can place and remove blocks.
 
-## Current default demo keybinds:
+# Current demo keybinds:
 
 ### Movement:
 W - Move forward<br>
@@ -32,7 +49,7 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
 2 - Medium push<br>
 3 - Strong push<br>
 
-# Physics demo
+# Physics showcase
 <p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/PROMO_1.gif?raw=true" alt="Screenshot" width="98%"/>
 </p>
@@ -54,7 +71,7 @@ X or RIGHT MOUSE BUTTON - Remove a block<br>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen06.jpg?raw=true" alt="Screenshot" width="49%"/>
 </p>
 
-# Building
+# Building the project
 
 Build dependencies:
   - Vulkan SDK
