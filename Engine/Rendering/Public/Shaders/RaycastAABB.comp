@@ -298,8 +298,8 @@ float SoftShadowRay(in const vec3   from,
                     in const vec3   normal, 
                     in const int    maxDistance)
 {
-    const float r = 4.;
-    const float samples = 12;
+    const float r = 2.;
+    const float samples = 4;
 
     vec3    dir = normalize(to - from);
     vec3    dummyHit;
@@ -529,6 +529,7 @@ void main()
         }
         if (hitType == HIT_TYPE_OBJECT) {
             // FIXME: finalColor      = ExtractColorInt(CubeData[index].Color); 
+            finalColor      = ExtractColorInt(0xFFFFFFFF);
             reflectionPower = 0.25;
             fRoughness      = 0.08;
         }
