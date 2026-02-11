@@ -27,14 +27,17 @@ Mouse movement - camera rotation<br>
 
 ### Interactions:
 SPACE or LEFT MOUSE BUTTON - Place a block<br>
-X or RIGTH MOUSE BUTTON - Remove a block<br>
+X or RIGHT MOUSE BUTTON - Remove a block<br>
 1 - Weak push<br>
 2 - Medium push<br>
 3 - Strong push<br>
 
 # Demonstration with physics
 <p float="left">
-  <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/2025-11-10%2003-42-03.gif?raw=true" alt="Screenshot" width="45%"/>
+  <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/PROMO_1.gif?raw=true" alt="Screenshot" width="98%"/>
+</p>
+<p float="left">
+  <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/PROMO_2.gif?raw=true" alt="Screenshot" width="98%"/>
 </p>
 
 # Screenshots
@@ -54,7 +57,7 @@ X or RIGTH MOUSE BUTTON - Remove a block<br>
 # Build
 
 Build dependencies:
-  - Vulkan SDK
+  - Vulkan SDK (vulkan-headers and spirv-tools on linux )
   - CMake or Visual Studio with CMake support
   - Compiler that supports at least C++17
   - Windows or Linux operating system
