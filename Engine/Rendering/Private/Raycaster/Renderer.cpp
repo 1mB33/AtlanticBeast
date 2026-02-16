@@ -297,7 +297,7 @@ void Renderer::RecordCommands(VkCommandBuffer& cmdBuff,
     barrier.subresourceRange    = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier(cmdBuff,
-                         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+                         VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                          0,
                          0, NULL,
