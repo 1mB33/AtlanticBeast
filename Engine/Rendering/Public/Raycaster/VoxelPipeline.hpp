@@ -20,7 +20,9 @@ public:
     enum EShaderResource
     {
         VoxelGrid = 1,
-        Cubes = VoxelGrid << 1,
+        ObjectPositions = VoxelGrid + 1,
+        ObjectRotations = ObjectPositions + 1,
+        ObjectHalfSizes = ObjectRotations + 1,
     };
 
 public:
@@ -75,11 +77,11 @@ private:
     ::VkDescriptorPool CreateDescriptorPool(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>& da);
 
     ::VkDescriptorSet CreateDescriptorSet(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>& da,
-                                          VkDescriptorPool dp,
-                                          VkDescriptorSetLayout dLayout);
+                                          ::VkDescriptorPool dp,
+                                          ::VkDescriptorSetLayout dLayout);
 
     ::VkPipelineLayout CreatePipelineLayout(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>& da,
-                                            VkDescriptorSetLayout descriptorSetLayout);
+                                            ::VkDescriptorSetLayout descriptorSetLayout);
 
     ::VkShaderModule LoadShader(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>& da, 
                                 const ::std::string& strPath);

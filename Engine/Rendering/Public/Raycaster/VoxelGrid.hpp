@@ -1,12 +1,22 @@
 #ifndef AB_VOXEL_GRID_H
 #define AB_VOXEL_GRID_H
 
+#include "B33Core.h"
+#include "Primitives/Object.hpp"
 #include "Vulkan/MemoryUploadTracker.hpp"
 #include "Raycaster/Voxel.hpp"
-#include "Primitives/ColoredCube.hpp"
+#include "Primitives/ColoredCubes.hpp"
 
 namespace B33::Rendering
 {
+
+enum EGridChanged
+{
+    NoChanges = 1,
+    Position = NoChanges << 1,
+    Rotation = Position << 1,
+    HalfSize = Rotation << 1,
+};
 
 class IWorldGrid : public ::B33::Rendering::MemoryUploadTracker
 {
@@ -23,6 +33,7 @@ public:
     explicit IWorldGrid(size_t uGridWidth = DefaultVoxelGridDim)
         : m_uGridDim(uGridWidth)
         , m_VoxelGrid(uGridWidth * uGridWidth * uGridWidth)
+        , m_uChanged(NoChanges)
     { }
 
 public:
@@ -45,11 +56,14 @@ public:
     ::size_t GetVoxels() const
     { return m_VoxelGrid.size(); }
 
-    virtual const void* GetObjectsPtr() const = 0;
-    
-    virtual ::size_t GetObjectsSizeInBytes() const = 0;
+    uint32_t GetChanged() 
+    {
+        uint32_t r = m_uChanged;
+        m_uChanged &= 0;
+        return r; 
+    }
 
-    virtual ::size_t GetUsedObjectsSizeInBytes() const = 0;
+    virtual const ::B33::Math::WorldObjects& GetStoredObjects() const = 0;
 
 public:
 
@@ -71,10 +85,20 @@ protected:
                                   const iVec& area,
                                   const ::size_t uId);
 
+    void SetPositionChanged() 
+    { m_uChanged |= EGridChanged::Position; }
+
+    void SetRotationChanged() 
+    { m_uChanged |= EGridChanged::Rotation; }
+
+    void SetHalfSizeChanged() 
+    { m_uChanged |= EGridChanged::HalfSize; }
+
 private:
 
-    ::size_t m_uGridDim = -1;
-    ::std::vector<::B33::Rendering::Voxel> m_VoxelGrid;
+    ::size_t                                m_uGridDim      = -1;
+    ::std::vector<::B33::Rendering::Voxel>  m_VoxelGrid;
+    ::uint32_t                              m_uChanged;
 
 };
 
@@ -90,32 +114,20 @@ public:
 
     explicit WorldGrid(size_t uGridWidth = IWorldGrid::DefaultVoxelGridDim)
         : IWorldGrid(uGridWidth)
-        , m_StoredObjects(this->GetVoxelsSizeInBytes() / sizeof(Voxel))
+        , m_StoredObjects() // TODO: this->GetVoxelsSizeInBytes() / sizeof(Voxel))
         , m_uObjectsCount(0)
     { }
 
 public:
 
-    virtual const void* GetObjectsPtr() const override 
-    { return m_StoredObjects.data(); }
+    virtual const ::B33::Math::WorldObjects& GetStoredObjects() const override 
+    { return m_StoredObjects; }
     
-    virtual size_t GetObjectsSizeInBytes() const override 
-    { return m_StoredObjects.size() * sizeof(StoredObjectType); }
-    
-    virtual size_t GetUsedObjectsSizeInBytes() const override 
-    { return (m_uObjectsCount + 1) * sizeof(StoredObjectType); }
-
-    StoredObjectType& GetById(size_t uId) 
-    {
-        AB_ASSERT(uId < m_uObjectsCount);
-        return m_StoredObjects[uId]; 
-    }
-
 public:
 
     virtual bool CheckIfVoxelOccupied(const iVec& pos) const override
     { 
-        AB_ASSERT(CalcIndex(pos) < voxelsGrid.size());
+        // AB_ASSERT(CalcIndex(pos) < voxelsGrid.size());
 
         const ::std::vector<Voxel>& voxelsGrid  = this->GetGrid();
         const ::size_t              uDim        = this->GetGridWidth(); 
@@ -125,7 +137,7 @@ public:
             return false;
 
         for (::uint32_t i = 0; i < voxelsGrid[uIndex].Type; ++i)
-            if (iVec::ToVec(m_StoredObjects[voxelsGrid[uIndex].Id[i]].GetPosition()) == pos) 
+            if (iVec::ToVec(m_StoredObjects.GetPosition(voxelsGrid[uIndex].Id[i])) == pos) 
                 return true;
         
         return false;
@@ -138,64 +150,72 @@ public:
     {
         size_t uId = GenerateObject(pos, this->GetGrid(), ::std::forward<U>(sot));
         this->ForceUpload();
+        this->SetPositionChanged();
+        this->SetRotationChanged();
+        this->SetHalfSizeChanged();
         return uId;
     }
 
     void RemoveObject(const size_t uObjectId)
     {
-        const StoredObjectType  obj     = this->GetById(uObjectId);
-        const iVec              area    = iVec::ToVec(obj.GetHalfSize() + 1);
+        const iVec area = iVec::ToVec(m_StoredObjects.GetHalfSize(uObjectId) + 1);
 
-        this->RemoveFromGrid(iVec::ToVec(obj.GetPosition()), 
+        this->RemoveFromGrid(iVec::ToVec(m_StoredObjects.GetPosition(uObjectId)), 
                              area,
                              uObjectId);
     
-        for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj) {
-            if (&(*itObj) == &obj) {
-                m_StoredObjects.erase(itObj);
-                break;
-            }
-        }
+        this->SetPositionChanged();
+        this->SetRotationChanged();
+        this->SetHalfSizeChanged();
+        m_StoredObjects.RemoveObject(uObjectId);
+        // for (auto itObj = m_StoredObjects.begin(); itObj != m_StoredObjects.end(); ++itObj) {
+        //     if (&(*itObj) == &obj) {
+        //         m_StoredObjects.erase(itObj);
+        //         break;
+        //     }
+        // }
     }
 
     void UpdatePos(const Vec& newPos, size_t uObjectId)
     {
-        StoredObjectType& obj = m_StoredObjects[uObjectId];
+        // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
+        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     return;
+        // }
 
-        if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-            AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
-            return;
-        }
-
-        if (obj.GetPosition() == newPos)
+        if (m_StoredObjects.GetPosition(uObjectId) == newPos)
             return;
     
-        const iVec area = iVec::ToVec(obj.GetHalfSize() + 1);
-        this->RemoveFromGrid(iVec::ToVec(obj.GetPosition()), 
+        const iVec area = iVec::ToVec(m_StoredObjects.GetHalfSize(uObjectId) + 1);
+        this->RemoveFromGrid(iVec::ToVec(m_StoredObjects.GetPosition(uObjectId)), 
                              area,
                              uObjectId);
 
-        obj.SetPositon(newPos);
+        m_StoredObjects.SetPositon(newPos, uObjectId);
         this->PlaceOnGrid(iVec::ToVec(newPos), 
                           area,
                           uObjectId);
 
         this->ForceUpload();
+        this->SetPositionChanged();
     }
 
     void UpdateRot(const Rot& newRot, ::size_t uId)
     {
-        if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-            AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
-            return;
+        // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
+        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     return;
+        // }
+
+        if (m_StoredObjects.GetRotation(uId) == newRot) {
+            // AB_LOG(::B33::Core::Debug::Info, L"New rotation is equal to old one");
+			return;
         }
 
-        if (m_StoredObjects[uId].GetRotation() == newRot)
-			return;
-
-        m_StoredObjects[uId].SetRotation(newRot);
+        m_StoredObjects.SetRotation(newRot, uId);
 
         this->ForceUpload();
+        this->SetRotationChanged();
     }
 
 private:
@@ -203,31 +223,33 @@ private:
     template<class U>
     ::size_t GenerateObject(iVec pos, ::std::vector<Voxel>& voxelsGrid, U&& sot)
     { 
-        const size_t uObjId = m_uObjectsCount;
+        const size_t uObjId = m_StoredObjects.AddObject();
         
-        if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-            AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
-            return -1;
-        }
+        // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
+        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     return -1;
+        // }
 
-        sot.SetPositon(Vec::ToVec(pos));
+        m_StoredObjects.SetPositon(Vec::ToVec(pos), uObjId);
+        m_StoredObjects.SetRotation(sot.GetRotation(), uObjId);
+        m_StoredObjects.SetHalfSize(sot.GetHalfSize(), uObjId);
 
-        this->PlaceOnGrid(iVec::ToVec(sot.GetPosition()), 
-                          iVec::ToVec(sot.GetHalfSize() + 1),
+        this->PlaceOnGrid(iVec::ToVec(m_StoredObjects.GetPosition(uObjId)), 
+                          iVec::ToVec(m_StoredObjects.GetHalfSize(uObjId) + 1),
                           uObjId);
         
-        m_StoredObjects[m_uObjectsCount++] = ::std::forward<U>(sot);
+        // m_StoredObjects[m_uObjectsCount++] = ::std::forward<U>(sot);
         return uObjId;
     }
 
 private:
 
-    ::std::vector<StoredObjectType> m_StoredObjects;
-    ::size_t                        m_uObjectsCount = -1;
+    StoredObjectType m_StoredObjects;
+    ::size_t         m_uObjectsCount = -1;
 
 };
 
-typedef ::B33::Rendering::WorldGrid<ColoredCube> CubeWorld;
+typedef ::B33::Rendering::WorldGrid<ColoredCubes> CubeWorld;
 
 } // !B33::Rendering
 #endif // !AB_VOXEL_GRID_H

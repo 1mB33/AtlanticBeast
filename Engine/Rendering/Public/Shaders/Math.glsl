@@ -63,30 +63,3 @@ vec3 CubeNormal(in const vec3 lP,
     else
         return vec3(0.0, 0.0, sign(lP.z));
 }
-
-// --------------------------------------------------------------------------------------------------------------------
-bool RayIntersectsAABB(in const vec3 ro, 
-                       in const vec3 rd,
-                       in const Cube onCube, 
-                       out float    fHitMin,
-                       out float    fHitMax,
-                       out vec3     normal)
-{
-    const mat3 cubeRot = RotationMatrix(onCube.Rot.xyz);
-    const vec3 lro = cubeRot * (ro - onCube.Pos.xyz);
-    const vec3 lrd = cubeRot * rd;
-
-    if (!IntersectRayAABB(lro, 
-                          lrd,
-                          onCube.HalfSize.xyz,
-                          fHitMin,
-                          fHitMax)) 
-    {
-        return false;
-    }
-
-    const mat3 invCubeRot = inverse(cubeRot);
-    normal = normalize(inverse(cubeRot) * CubeNormal(lro + lrd * fHitMin, onCube.HalfSize.xyz));
-
-    return true;
-}
