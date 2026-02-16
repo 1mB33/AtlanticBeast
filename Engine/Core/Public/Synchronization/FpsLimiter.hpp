@@ -24,6 +24,11 @@ public:
 
 public:
 
+    float GetTarget() const 
+    { return m_fTarget; }
+
+public:
+
     /**
      * @brief Blocks current thread for the amount of time needed to achive target interval (stored in ms)
      * between current and next call.

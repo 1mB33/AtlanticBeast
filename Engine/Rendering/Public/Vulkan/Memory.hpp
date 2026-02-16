@@ -116,7 +116,7 @@ public:
 
     BEAST_API void UploadOnStreamBuffer(const void* pUpload, 
                                         const ::size_t uUploadSize,
-                                        ::B33::Rendering::UploadDescriptor& onSet);
+                                        const ::B33::Rendering::UploadDescriptor& onSet);
 
 private:
 

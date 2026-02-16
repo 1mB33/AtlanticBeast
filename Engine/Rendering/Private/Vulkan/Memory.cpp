@@ -91,7 +91,7 @@ shared_ptr<GPUBuffer> Memory::ReserveGPUBuffer(const size_t uSizeInBytes)
 // --------------------------------------------------------------------------------------------------------------------
 void Memory::UploadOnStreamBuffer(const void* pUpload, 
                                   const size_t uUploadSize,
-                                  UploadDescriptor& onSet)
+                                  const UploadDescriptor& onSet)
 {
     AB_ASSERT(onSet.Buffer->GetMemoryHandle() != VK_NULL_HANDLE);
     AB_ASSERT(onSet.Buffer->GetBufferHandle() != VK_NULL_HANDLE);
