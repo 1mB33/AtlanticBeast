@@ -5,28 +5,28 @@ namespace B33::Rendering
 {
 
 // FIXME: Some compilers add one byte in the empty IMaterialProperties class
-class alignas(8) ColorProperty // : public IMaterialProperties
+class alignas(4) ColorProperty // : public IMaterialProperties
 {
 public:
 
     ColorProperty() 
-        : m_uColors({ })
+        : m_uColor(0xFFFFFFFF)
     { }
 
 public:
 
-    void SetColor(::uint32_t uColor, ::size_t uIndex) 
-    { m_uColors[uIndex] = (uColor & 0xFFFFFF00) | (m_uColors[uIndex] & 0x000000FF); }
+    void SetColor(::uint32_t uColor) 
+    { m_uColor = (uColor & 0xFFFFFF00) | (m_uColor & 0x000000FF); }
 
-    void SetAlpha(::uint32_t uAlpha, ::size_t uIndex) 
-    { m_uColors[uIndex] = (uAlpha & 0x000000FF) | (m_uColors[uIndex] & 0xFFFFFF00); }
+    void SetAlpha(::uint32_t uAlpha) 
+    { m_uColor = (uAlpha & 0x000000FF) | (m_uColor & 0xFFFFFF00); }
 
-    void SetColorAndAlpha(::uint32_t uHexValue, ::size_t uIndex) 
-    { m_uColors[uIndex] = uHexValue; }
+    void SetColorAndAlpha(::uint32_t uHexValue) 
+    { m_uColor = uHexValue; }
 
 private:
 
-    ::std::vector<::uint32_t> m_uColors;
+    ::uint32_t m_uColor;  
 
 };
 

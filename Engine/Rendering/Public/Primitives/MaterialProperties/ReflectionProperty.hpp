@@ -5,28 +5,28 @@ namespace B33::Rendering
 {
 
 // FIXME: Some compilers add one byte in the empty IMaterialProperties class
-class alignas(8) ReflectionProperty //: public IMaterialProperties
+class alignas(4) ReflectionProperty //: public IMaterialProperties
 {
 public:
 
     ReflectionProperty() 
-        : m_fReflections({ })
+        : m_fReflection(0.25f)
     { }
 
 public:
 
-    void SetReflection(float fRef, ::size_t uIndex) 
+    void SetReflection(float fRef) 
     { 
         if (fRef >= 0.5f) {
-            m_fReflections[uIndex] = 0.5f;
+            m_fReflection = 0.5f;
             return;
         }
-        m_fReflections[uIndex] = fRef * 0.5f; 
+        m_fReflection = fRef * 0.5f; 
     }
 
 private:
 
-    ::std::vector<float> m_fReflections;  
+    float m_fReflection;  
 
 };
 

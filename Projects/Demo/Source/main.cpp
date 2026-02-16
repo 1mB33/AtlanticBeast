@@ -29,8 +29,6 @@ int main()
     float                                       fFps            = 0.f;
     double                                      dAvgSessionFps  = 0.;
     double                                      dFrame          = 0.;
-    double                                      dMin            = INFINITY;
-    double                                      dMax            = -1.;
 
     shared_ptr<PlayablePaper> pwc = make_shared<PlayablePaper>();
 	const auto& pc = pwc->GetCharacter();
@@ -81,21 +79,10 @@ int main()
             dAvgSessionFps /= ++dFrame;
         }
 
-        if (dFrame >= 1000) 
-        {
-            if (fFps < dMin) 
-                dMin = fFps;
-
-            if (fFps > dMax && fFps <= (1000.f / fl.GetTarget())) 
-                dMax = fFps;
-        }
-
         Logger::Get().Log(Info, 
-                          L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
-                          fFps,
-                          dMax,
-                          dMin,
+                          L"AvgSessionFps: %7.2lf Fps: %7.2f Frame duration: %7.2fms Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
                           dAvgSessionFps,
+                          fFps,
                           fDeltaMs,
                           fBlock,
                           fWindowTimeMs,
@@ -103,13 +90,7 @@ int main()
                           fRenderTimeMs);
     }
 
-    Logger::Get().Log(Info,
-                      L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frames: %lf", 
-                      fFps,
-                      dMax,
-                      dMin,
-                      dAvgSessionFps,
-                      dFrame);
+    Logger::Get().Log(Info, L"AvgFps: %lf Frames: %lf", dAvgSessionFps, dFrame);
 
     AB_LOG(Info, L"App is closing...");
 

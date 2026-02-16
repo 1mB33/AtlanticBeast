@@ -27,17 +27,9 @@ layout(std430, binding = 1) readonly buffer Voxels
 {
     Voxel VoxelData[]; 
 };
-layout(std430, binding = 2) readonly buffer ObjectPositions
+layout(std430, binding = 2) readonly buffer Cubes 
 {
-    vec4 Positions[]; 
-};
-layout(std430, binding = 3) readonly buffer ObjectRotations
-{
-    vec4 Rotations[]; 
-};
-layout(std430, binding = 4) readonly buffer ObjectHalfSizes
-{
-    vec4 HalfSizes[]; 
+    CubeColored CubeData[]; 
 };
 layout(push_constant) uniform PushConstants 
 {
@@ -78,32 +70,6 @@ const float phongShininess          = 256.0;
 
 
 // --------------------------------------------------------------------------------------------------------------------
-bool RayIntersectsAABB(in const vec3 ro, 
-                       in const vec3 rd,
-                       in const uint uIndexCube, 
-                       out float     fHitMin,
-                       out float     fHitMax,
-                       out vec3      normal)
-{
-    const mat3 cubeRot = RotationMatrix(Rotations[uIndexCube].xyz);
-    const vec3 lro = cubeRot * (ro - Positions[uIndexCube].xyz);
-    const vec3 lrd = cubeRot * rd;
-
-    if (!IntersectRayAABB(lro, 
-                          lrd,
-                          HalfSizes[uIndexCube].xyz,
-                          fHitMin,
-                          fHitMax)) 
-    {
-        return false;
-    }
-
-    normal = normalize(inverse(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
-
-    return true;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
 bool TestObjects(in const Voxel onVoxel,
                  in const vec3  ro,
                  in const vec3  rd,
@@ -118,17 +84,12 @@ bool TestObjects(in const Voxel onVoxel,
     float fLastHitMin;
     float fLastHitMax;
     vec3 lastNormal;
-    for (uint k = 0; k < onVoxel.Type && k < 64; ++k) 
+    for (uint k = 0; k < onVoxel.Type; ++k) 
     {
         uLastId = onVoxel.Id[k];
-
-        // Object position is in oposite direction (more then 90 degrees)
-        if (dot(rd, Positions[uLastId].xyz - ro) < 0.)
-            continue;
-
         if (!RayIntersectsAABB(ro, 
                                rd,
-                               uLastId,
+                               CubeData[uLastId].Geometry,
                                fLastHitMin,
                                fLastHitMax,
                                lastNormal)) 
@@ -298,8 +259,8 @@ float SoftShadowRay(in const vec3   from,
                     in const vec3   normal, 
                     in const int    maxDistance)
 {
-    const float r = 2.;
-    const float samples = 4;
+    const float r = 4.;
+    const float samples = 12;
 
     vec3    dir = normalize(to - from);
     vec3    dummyHit;
@@ -311,7 +272,6 @@ float SoftShadowRay(in const vec3   from,
     
     const float sampleStep  = TWO_PI / samples;
     const float mixFactor   = 0.015;
-    const float shadowConst = 1. / samples;
 
     float angle;
     vec3 offset;
@@ -332,7 +292,7 @@ float SoftShadowRay(in const vec3   from,
                         dummyNormal,
                         dummyHitType)) 
         {
-            shadow -= shadowConst;
+            shadow -= (1. / samples);
         }
     }
 
@@ -459,10 +419,10 @@ vec3 Reflection(in vec3         from,
             fRoughness      = 0.0;
         }
         if (hitType == HIT_TYPE_OBJECT) {
-            // FIXME: CubeColored c = CubeData[index];
-            hitBaseColor    = ExtractColorInt(0xFFFFFFFF);
-            fLocalReflect   = 0.25;
-            fRoughness      = 0.08;
+            CubeColored c = CubeData[index];
+            hitBaseColor    = ExtractColorInt(c.Color);
+            fLocalReflect   = c.Reflection;
+            fRoughness      = c.Roughness;
         } 
         
         reflectedColor = mix(reflectedColor, 
@@ -529,10 +489,9 @@ void main()
             fRoughness      = 0.;
         }
         if (hitType == HIT_TYPE_OBJECT) {
-            // FIXME: finalColor      = ExtractColorInt(CubeData[index].Color); 
-            finalColor      = ExtractColorInt(0xFFFFFFFF);
-            reflectionPower = 0.25;
-            fRoughness      = 0.08;
+            finalColor      = ExtractColorInt(CubeData[index].Color); 
+            reflectionPower = CubeData[index].Reflection;
+            fRoughness      = CubeData[index].Roughness;
         }
 
         if (fDistance <= maxSteps) 

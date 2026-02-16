@@ -6,6 +6,7 @@
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
+#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -104,7 +105,7 @@ void VoxelPipeline::LoadImage(VkImage image)
 
     THROW_IF_FAILED(vkCreateImageView(m_pDeviceAdapter->GetAdapterHandle(), 
                                       &viewInfo,
-                                      NULL,
+                                      nullptr,
                                       &m_ImageView));
 
     VkDescriptorImageInfo imageInfo = { };
@@ -124,14 +125,14 @@ void VoxelPipeline::LoadImage(VkImage image)
                            1,
                            &imageWrite,
                            0,
-                           NULL);
+                           nullptr);
 }
 
 
 // Private // ----------------------------------------------------------------------------------------------------------
 VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout(shared_ptr<const AdapterWrapper>& da)
 {
-    array<VkDescriptorSetLayoutBinding, 5>  bindings    = { };
+    array<VkDescriptorSetLayoutBinding, 3>  bindings    = { };
     VkDescriptorSetLayout                   descriptorSetLayout;
 
     bindings[0].binding             = 0;
@@ -144,20 +145,10 @@ VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout(shared_ptr<const Ada
     bindings[1].descriptorCount     = 1;
     bindings[1].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
 
-    bindings[2].binding             = VoxelPipeline::EShaderResource::ObjectPositions;
+    bindings[2].binding             = VoxelPipeline::EShaderResource::Cubes;
     bindings[2].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
     bindings[2].descriptorCount     = 1;
     bindings[2].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
-
-    bindings[3].binding             = VoxelPipeline::EShaderResource::ObjectRotations;
-    bindings[3].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-    bindings[3].descriptorCount     = 1;
-    bindings[3].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
-
-    bindings[4].binding             = VoxelPipeline::EShaderResource::ObjectHalfSizes;
-    bindings[4].descriptorType      = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-    bindings[4].descriptorCount     = 1;
-    bindings[4].stageFlags          = VK_SHADER_STAGE_COMPUTE_BIT;
 
     VkDescriptorSetLayoutCreateInfo layoutCreateInfo = { };
     layoutCreateInfo.sType          = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -177,7 +168,7 @@ VkDescriptorPool VoxelPipeline::CreateDescriptorPool(shared_ptr<const AdapterWra
 {
     const vector<VkDescriptorPoolSize> poolSizes = {
         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,  1 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 4 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 2 },
     };
 
     VkDescriptorPool descriptorPool;
@@ -292,11 +283,11 @@ VkPipeline VoxelPipeline::CreateComputePipeline(shared_ptr<const AdapterWrapper>
     pipelineInfo.layout             = pipelineLayout;
 
     THROW_IF_FAILED(vkCreateComputePipelines(device,
-                                             VK_NULL_HANDLE,
-                                             1,
-                                             &pipelineInfo,
-                                             NULL,
-                                             &pipeline));
+                                           VK_NULL_HANDLE,
+                                           1,
+                                           &pipelineInfo,
+                                           NULL,
+                                           &pipeline));
 
     return pipeline;
 }
