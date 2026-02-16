@@ -3,7 +3,6 @@
 #include "Raycaster/Renderer.hpp"
 
 #include "Raycaster/VoxelGrid.hpp"
-#include "Vec3.hpp"
 #include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/FrameResources.hpp"
@@ -37,14 +36,10 @@ void Renderer::Initialize(shared_ptr<const WindowDesc> wd,
     m_CommandPool = CreateCommandPool(static_pointer_cast<AdapterWrapper>(m_pDeviceAdapter),
                                       m_pDeviceAdapter->GetQueueFamilyIndex());
 
-    m_StageVoxelBuffer          = std::move(m_pMemory->ReserveStagingBuffer(vg->GetVoxelsSizeInBytes()));
-    m_StagePositonsBuffer       = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3)));
-    m_StageRotationsBuffer      = std::move(m_pMemory->ReserveStagingBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3)));
-    m_StageHalfSizesBuffer      = std::move(m_pMemory->ReserveStagingBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3)));
-    m_VoxelBuffer       = std::move(m_pMemory->ReserveGPUBuffer(vg->GetVoxelsSizeInBytes()));
-    m_PositionsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().capacity() * sizeof(Vec3)));
-    m_RotationsBuffer   = std::move(m_pMemory->ReserveGPUBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().capacity() * sizeof(Vec3)));
-    m_HalfSizesBuffer   = std::move(m_pMemory->ReserveGPUBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().capacity() * sizeof(Vec3)));
+    m_StageVoxelBuffer   = std::move(m_pMemory->ReserveStagingBuffer(vg->GetVoxelsSizeInBytes()));
+    m_StageCubeBuffer    = std::move(m_pMemory->ReserveStagingBuffer(vg->GetObjectsSizeInBytes()));
+    m_VoxelBuffer   = std::move(m_pMemory->ReserveGPUBuffer(vg->GetVoxelsSizeInBytes()));
+    m_CubeBuffer    = std::move(m_pMemory->ReserveGPUBuffer(vg->GetObjectsSizeInBytes()));
 
     // Recreating swap chain also creates frame resources and initializes swap chain
     RecreateSwapChain();
@@ -64,39 +59,25 @@ void Renderer::Update(const float)
 
     if (m_pVoxelGrid->ReuploadStatus() & EReupload::RequestStaging) 
     {
-        m_uStorageBuffersFlags = m_pVoxelGrid->GetChanged();
-            
+         UploadDescriptor ud1 = m_pPipeline->GetUniformUploadDescriptor(m_StageVoxelBuffer, 
+                                                                       VoxelPipeline::EShaderResource::VoxelGrid);
+
         m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetGrid().data(), 
-                                        m_pVoxelGrid->GetGrid().size() * sizeof(Voxel),
-                                        m_pPipeline->GetUniformUploadDescriptor(m_StageVoxelBuffer, 
-                                                                                VoxelPipeline::EShaderResource::VoxelGrid));
+                                        m_pVoxelGrid->GetVoxelsSizeInBytes(),
+                                        ud1);
 
-        if (m_uStorageBuffersFlags & EGridChanged::Position) {
-            m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetPositions().data(),
-                                            m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3),
-                                            m_pPipeline->GetUniformUploadDescriptor(m_StagePositonsBuffer, 
-                                                                                    VoxelPipeline::EShaderResource::ObjectPositions));
-        }
+        UploadDescriptor ud2 = m_pPipeline->GetUniformUploadDescriptor(m_StageCubeBuffer, 
+                                                                       VoxelPipeline::EShaderResource::Cubes);
 
-        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
-            m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetStoredObjects().GetRotations().data(),
-                                            m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3),
-                                            m_pPipeline->GetUniformUploadDescriptor(m_StageRotationsBuffer, 
-                                                                                    VoxelPipeline::EShaderResource::ObjectRotations));
-        }
-
-        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
-            m_pMemory->UploadOnStreamBuffer((/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().data(),
-                                            (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3),
-                                            m_pPipeline->GetUniformUploadDescriptor(m_StageHalfSizesBuffer, 
-                                                                                    VoxelPipeline::EShaderResource::ObjectHalfSizes));
-        }
+        m_pMemory->UploadOnStreamBuffer(m_pVoxelGrid->GetObjectsPtr(),
+                                        m_pVoxelGrid->GetUsedObjectsSizeInBytes(),
+                                        ud2);
     }
 
-    Vec3 rot            = m_pCamera->GetRotation();
-    Vec3 rotVec         = Normalize(RotateY(RotateX(Vec3 { 0.f, 0.f, 1.f }, rot.x), rot.y));
-    Vec3 cameraRight    = Normalize(Cross(rotVec, Vec3 { 0.f, -1.f, 0.f }));
-    Vec3 cameraUp       = Cross(cameraRight, rotVec);
+    Vec3 rot = m_pCamera->GetRotation();
+    Vec3 rotVec = Normalize(RotateY(RotateX(Vec3 { 0.f, 0.f, 1.f }, rot.x), rot.y));
+    Vec3 cameraRight = Normalize(Cross(rotVec, Vec3 { 0.f, -1.f, 0.f }));
+    Vec3 cameraUp = Cross(cameraRight, rotVec);
 
     m_pPipeline->LoadPushConstants(m_pCamera->GetFov() * AB_DEG_TO_RAD,
                                    m_pCamera->GetPosition(), 
@@ -183,14 +164,10 @@ void Renderer::Destroy()
         m_CommandPool = VK_NULL_HANDLE;
     }
     
-    m_StageVoxelBuffer      = nullptr;
-    m_StagePositonsBuffer   = nullptr;
-    m_StageRotationsBuffer  = nullptr;
-    m_StageHalfSizesBuffer  = nullptr;
+    m_StageVoxelBuffer  = nullptr;
+    m_StageCubeBuffer   = nullptr;
     m_VoxelBuffer       = nullptr;
-    m_PositionsBuffer   = nullptr;
-    m_RotationsBuffer   = nullptr;
-    m_HalfSizesBuffer   = nullptr;
+    m_CubeBuffer        = nullptr;
     m_pPipeline         = nullptr;
     m_pSwapChain        = nullptr;
     m_pDeviceAdapter    = nullptr;
@@ -261,9 +238,7 @@ Renderer::FramesArray Renderer::CreateFrameResources(const shared_ptr<const Adap
     }
     
     m_StageVoxelBuffer->Reset();
-    m_StagePositonsBuffer->Reset();
-    m_StageRotationsBuffer->Reset();
-    m_StageHalfSizesBuffer->Reset();
+    m_StageCubeBuffer->Reset();
     m_pVoxelGrid->ForceUpload();
 
     return result;
@@ -297,7 +272,7 @@ void Renderer::RecordCommands(VkCommandBuffer& cmdBuff,
     barrier.subresourceRange    = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier(cmdBuff,
-                         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+                         VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                          0,
                          0, NULL,
@@ -359,63 +334,29 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
                         1,
                         &copyRegion);
 
-        if (m_uStorageBuffersFlags & EGridChanged::Position) {
-            copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetPositions().size() * sizeof(Vec3);
-            vkCmdCopyBuffer(cmdBuffer, 
-                            m_StagePositonsBuffer->GetBufferHandle(), 
-                            m_PositionsBuffer->GetBufferHandle(), 
-                            1,
-                            &copyRegion);
-        } 
+        copyRegion.size = m_pVoxelGrid->GetUsedObjectsSizeInBytes();
+        vkCmdCopyBuffer(cmdBuffer, 
+                        m_StageCubeBuffer->GetBufferHandle(), 
+                        m_CubeBuffer->GetBufferHandle(), 
+                        1,
+                        &copyRegion);
 
-        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
-            copyRegion.size = m_pVoxelGrid->GetStoredObjects().GetRotations().size() * sizeof(Vec3);
-            vkCmdCopyBuffer(cmdBuffer, 
-                            m_StageRotationsBuffer->GetBufferHandle(), 
-                            m_RotationsBuffer->GetBufferHandle(), 
-                            1,
-                            &copyRegion);
-        }
-
-        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
-            copyRegion.size = (/*FIXME: */(Cubes&)m_pVoxelGrid->GetStoredObjects()).GetHalfSizes().size() * sizeof(Vec3);
-            vkCmdCopyBuffer(cmdBuffer, 
-                            m_StageHalfSizesBuffer->GetBufferHandle(), 
-                            m_HalfSizesBuffer->GetBufferHandle(), 
-                            1,
-                            &copyRegion);
-        }
-
-        vector<VkMappedMemoryRange> mmrs = { };
-       
         VkMappedMemoryRange mmr = { };
         mmr.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
         mmr.memory = m_VoxelBuffer->GetMemoryHandle();
         mmr.offset = 0;
         mmr.size = VK_WHOLE_SIZE;
-        mmrs.push_back(mmr);
-        
-        if (m_uStorageBuffersFlags & EGridChanged::Position) {
-            VkMappedMemoryRange mmr2 = mmr;
-            mmr2.memory = m_PositionsBuffer->GetMemoryHandle();
-            mmrs.push_back(mmr2);
-        }
-        if (m_uStorageBuffersFlags & EGridChanged::Rotation) {
-            VkMappedMemoryRange mmr3 = mmr;
-            mmr3.memory = m_RotationsBuffer->GetMemoryHandle();
-            mmrs.push_back(mmr3);
-        }
-        if (m_uStorageBuffersFlags & EGridChanged::HalfSize) {
-            VkMappedMemoryRange mmr4 = mmr;
-            mmr4.memory = m_HalfSizesBuffer->GetMemoryHandle();
-            mmrs.push_back(mmr4);
-        }
+        VkMappedMemoryRange mmr2 = { };
+        mmr2.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+        mmr2.memory = m_CubeBuffer->GetMemoryHandle();
+        mmr2.offset = 0;
+        mmr2.size = VK_WHOLE_SIZE;
 
-        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), mmrs.size(), mmrs.data());
-        m_uStorageBuffersFlags &= 0;
+        VkMappedMemoryRange mmrs[2] = { mmr, mmr2 };
+        vkFlushMappedMemoryRanges(m_pDeviceAdapter->GetAdapterHandle(), 2, mmrs);
     }
 
-    VkBufferMemoryBarrier bufferBarriers[4] = { };
+    VkBufferMemoryBarrier bufferBarriers[2] = { };
     bufferBarriers[0].sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
     bufferBarriers[0].srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
     bufferBarriers[0].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
@@ -426,20 +367,14 @@ void Renderer::RecordVoxelesCommands(VkCommandBuffer& cmdBuffer, const shared_pt
     bufferBarriers[0].size = VK_WHOLE_SIZE;
     
     bufferBarriers[1] = bufferBarriers[0];
-    bufferBarriers[1].buffer = m_PositionsBuffer->GetBufferHandle();
-    
-    bufferBarriers[2] = bufferBarriers[1];
-    bufferBarriers[2].buffer = m_RotationsBuffer->GetBufferHandle();
-    
-    bufferBarriers[3] = bufferBarriers[2];
-    bufferBarriers[3].buffer = m_HalfSizesBuffer->GetBufferHandle();
+    bufferBarriers[1].buffer = m_CubeBuffer->GetBufferHandle();
 
     vkCmdPipelineBarrier(cmdBuffer,
                          VK_PIPELINE_STAGE_TRANSFER_BIT,
                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                          0,
                          0, NULL,
-                         4, bufferBarriers,
+                         2, bufferBarriers,
                          0, NULL);
 
     const uint32_t groupCountX = (m_pWindowDesc->Width + 31) / 32;
@@ -486,10 +421,10 @@ void Renderer::RecreateSwapChain()
                                           m_pWindowDesc);
 
     m_vFrames = make_unique<FramesArray>(std::move(CreateFrameResources(m_pDeviceAdapter,
-                                                                        m_pMemory,
-                                                                        m_pVoxelGrid,
-                                                                        m_CommandPool,
-                                                                        Frame::MAX_FRAMES_IN_FLIGHT)));
+                                                                                m_pMemory,
+                                                                                m_pVoxelGrid,
+                                                                                m_CommandPool,
+                                                                                Frame::MAX_FRAMES_IN_FLIGHT)));
     m_uCurrentFrame = 0;
     AB_LOG(Core::Debug::Info, L"Swapchain recreated");
 }
