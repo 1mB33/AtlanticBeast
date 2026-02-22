@@ -9,7 +9,7 @@
 
 # AtlanticBeast
 
-Realtime GPU ray tracer with custom acceleration structure based on a simplistic voxel grid in vulkan.<br>
+Realtime GPU Voxel Path Tracer using Vulkan Compute & DDA Traversal.<br>
 Project is separated into several libraries. For demonstration purpose a Minecraft alike demo game was created.
 
 ### Engine libraries:
