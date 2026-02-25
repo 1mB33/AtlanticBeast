@@ -9,7 +9,7 @@
 
 # AtlanticBeast
 
-Realtime GPU Voxel Path Tracer using Vulkan Compute & DDA Traversal.<br>
+Realtime GPU Voxel Ray Tracer using Vulkan Compute & DDA Traversal.<br>
 Project is separated into several libraries. For demonstration purpose a Minecraft alike demo game was created.
 
 ### Engine libraries:
