@@ -58,14 +58,14 @@ layout(push_constant) uniform PushConstants
 };
 
 const vec4  baseSkyColor            = vec4(.4078, .4725, 1., 1.);
-const vec3  lightPos                = vec3(20.0, 24.0, 10.0);
+const vec3  lightPos                = vec3(20.0, 5.0, 10.0);
 const vec3  lightColor              = vec3(1., 1., 1.);
 const float maxRenderDist           = 28.f;
 const int   maxSteps                = int(maxRenderDist * 2.6);
-const float phongAmbientStrength    = 0.4;
-const float phongDiffuseStrength    = 0.7;
-const float phongSpecularStrength   = 0.5;
-const float phongShininess          = 256.0;
+const float phongAmbientStrength    = 0.01;
+const float phongDiffuseStrength    = 0.8;
+const float phongSpecularStrength   = 0.8;
+const float phongShininess          = 512.0;
 
 #define LAST_UNKNOWN_AXIS -1
 #define LAST_X_AXIS 0
@@ -298,8 +298,8 @@ float SoftShadowRay(in const vec3   from,
                     in const vec3   normal, 
                     in const int    maxDistance)
 {
-    const float r = 2.;
-    const float samples = 4;
+    const float r       = 0.5;
+    const float samples = 6;
 
     vec3    dir = normalize(to - from);
     vec3    dummyHit;
@@ -307,7 +307,7 @@ float SoftShadowRay(in const vec3   from,
     vec3    dummyNormal;
     float   dummyDistance;
     int     dummyHitType;
-    float   shadow = 1.;
+    float   shadow = 1. + phongAmbientStrength;
     
     const float sampleStep  = TWO_PI / samples;
     const float mixFactor   = 0.015;
@@ -524,7 +524,7 @@ void main()
         }
         if (hitType == HIT_TYPE_VOXEL) 
         {
-            finalColor      = ExtractColorInt(VoxelData[index].Color);
+            finalColor      = ExtractColorInt(0x0000FFFF);
             reflectionPower = 0.1;
             fRoughness      = 0.;
         }
