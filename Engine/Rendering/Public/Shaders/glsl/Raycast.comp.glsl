@@ -98,7 +98,7 @@ bool RayIntersectsAABB(in const vec3 ro,
         return false;
     }
 
-    normal = normalize(inverse(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
+    normal = normalize(transpose(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
 
     return true;
 }

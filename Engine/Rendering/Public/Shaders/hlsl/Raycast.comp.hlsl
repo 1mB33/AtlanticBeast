@@ -1,5 +1,7 @@
-#include "Include/Colors.hlsl"
-#
+#include "Colors.hlsl"
+#include "Intersect.hlsl"
+#include "Random.hlsl"
+
 #define LAST_UNKNOWN_AXIS   -1
 #define LAST_X_AXIS         0
 #define LAST_Y_AXIS         1
@@ -36,7 +38,7 @@ struct Voxel
 {
     uint    Type;
     uint    Color;
-    uint    Id[26];
+    uint    Id[ 26 ];
 };
 
 RWTexture2D< float4 >       g_OutputImage   : register( u0 );
@@ -60,12 +62,65 @@ StructuredBuffer< float4 >  g_vHalfSizes    : register( t4 );
 #endif
 
 // --------------------------------------------------------------------------------------------------------------------
+bool TestObjects(in const Voxel     onVoxel,
+                 in const float3    ro,
+                 in const float3    rd,
+                 out uint       uHitIndex,
+                 out float      distance,
+                 out float3     hitCoords,
+                 out float3     normal)
+{
+    distance = INF;
+    
+    uint    uLastId;
+    float   fLastHitMin;
+    float   fLastHitMax;
+    float3  lastNormal;
+    for ( uint k = 0; k < onVoxel.Type && k < 64; ++k ) 
+    {
+        uLastId = onVoxel.Id[ k ];
+
+        // Object position is in oposite direction (more then 90 degrees)
+        if ( dot( rd, g_vPositions[ uLastId ].xyz - ro ) < 0. )
+            continue;
+
+        if ( !RayIntersectsAABB( ro, 
+                                 rd,
+                                 g_vPositions[ uLastId ].xyz,
+                                 g_vRotations[ uLastId ].xyz,
+                                 g_vHalfSizes[ uLastId ].xyz,
+                                 fLastHitMin,
+                                 fLastHitMax,
+                                 lastNormal ) ) 
+        {
+            continue;
+        }
+
+        if ( fLastHitMin < distance     &&
+             fLastHitMin >= EPSILON     && 
+             fLastHitMin < INF )
+        {
+            uHitIndex   = uLastId;
+            distance   = fLastHitMin;
+            normal      = lastNormal;
+        }
+    }
+
+    // Check if the hit was valid
+    if ( distance == INF ) 
+        return false;
+
+    hitCoords = ro + rd * distance;
+    return true;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 bool MarchTheRay( in const float3    ro,
                   in const float3    rd,
                   in const int       maxSteps,
                   out float3         hitCoords,
                   out uint           hitIndex,
-                  out float          fDistance,
+                  out float          distance,
                   out float3         normal,
                   out int            hitType )
 {
@@ -77,7 +132,8 @@ bool MarchTheRay( in const float3    ro,
     
     // Calc initial offset
     float offset;
-    for ( int i = 0; i < 3; ++i ) 
+    int i;
+    for ( i = 0; i < 3; ++i ) 
     {
         offset = rd[ i ] > 0.0 ? 1.0 - frac( ro[ i ] ) : frac( ro[ i ] );
         tMax[ i ] = tDelta[ i ] * offset;
@@ -86,9 +142,7 @@ bool MarchTheRay( in const float3    ro,
     int lastStepAxis = LAST_UNKNOWN_AXIS;
     int index;
     uint testedVoxel;
-    bool stepX;
-    bool stepY;
-    for ( int stepCount = 0; stepCount < maxSteps; ++stepCount )
+    for ( i = 0; i < maxSteps; ++i )
     {
         if ( voxel.x <= 0 || voxel.x >= pc.GridSize.x ||
              voxel.y <= 0 || voxel.y >= pc.GridSize.y ||
@@ -106,43 +160,50 @@ bool MarchTheRay( in const float3    ro,
     
         if ( testedVoxel == uint( HIT_TYPE_VOXEL ) )
         {
-            fDistance               = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
+            distance               = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
             normal                  = float3( 0., 0., 0. );
             normal[ lastStepAxis ]  = -float( step[ lastStepAxis ] );
 
             hitIndex    = index;
-            hitCoords   = ro + rd * fDistance;
+            hitCoords   = ro + rd * distance;
             hitType     = HIT_TYPE_VOXEL;
-
             return true;
         } 
         if ( pc.uDebugMode == 1                 &&
              testedVoxel > HIT_TYPE_UNKNOWN     && 
              testedVoxel < uint( HIT_TYPE_VOXEL ) )
         {
-            fDistance               = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
+            distance                = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
             normal                  = float3( 0., 0., 0. );
             normal[ lastStepAxis ]  = -float( step[ lastStepAxis ] );
 
             hitIndex    = index;
-            hitCoords   = ro + rd * fDistance;
+            hitCoords   = ro + rd * distance;
             hitType     = HIT_TYPE_VOXEL;
-
+            return true;
+        }
+        if ( testedVoxel > HIT_TYPE_UNKNOWN && 
+             testedVoxel < uint( HIT_TYPE_VOXEL ) && 
+             TestObjects( g_vVoxels[ index ],
+                          ro,
+                          rd,
+                          hitIndex,
+                          distance,
+                          hitCoords,
+                          normal ) )
+        {
+            hitType = HIT_TYPE_OBJECT;
             return true;
         }
 
-        // Move the ray
-        stepX = ( tMax.x < tMax.y ) && ( tMax.x < tMax.z );
-        stepY = ( tMax.y < tMax.z );
-
-        if ( stepX )
+        if ( tMax.x < tMax.y && tMax.x < tMax.z )
         {
             voxel.x  += step.x;
             tMax.x   += tDelta.x;
             lastStepAxis = LAST_X_AXIS;
             continue;
         }
-        if (stepY)
+        if ( tMax.y < tMax.z )
         {
             voxel.y += step.y;
             tMax.y  += tDelta.y;
@@ -162,11 +223,11 @@ bool MarchTheRay( in const float3    ro,
 * Use the diffrence of distance and MAX_RENDER_DIST as the value that interpolates between colors.
 * Clamp that value to HALF_MAX_RENDER_DIST (it creates that slow fading gradient).
 * Divide the clamped value by HALF_MAX_RENDER_DIST to get number between 0. and 1. */
-float4 FadeOutHorizont( float4 finalColor, float fDistance )
+float4 FadeOutHorizont( float4 finalColor, float distance )
 {
     return lerp( finalColor, 
                  BASE_SKY_COLOR,
-                 clamp( fDistance - MAX_RENDER_DIST, 
+                 clamp( distance - MAX_RENDER_DIST, 
                         0.f,
                         HALF_MAX_RENDER_DIST ) / HALF_MAX_RENDER_DIST );
 }
@@ -190,17 +251,17 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
 
     float3    hitPos;
     uint      index;
-    float     fDistance;
+    float     distance;
     float3    normal;
     int       hitType;
     float     reflectionPower;
     float     fRoughness;
     if ( !MarchTheRay( pc.CameraPos,
                        rd,
-                       200,
+                       MAX_STEPS,
                        hitPos,
                        index,
-                       fDistance,
+                       distance,
                        normal,
                        hitType ) ) 
     {
@@ -208,13 +269,23 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
         return;
     }
 
-    finalColor = float4( normal, 1. );
-
-    if ( fDistance <= MAX_RENDER_DIST )
-    {
-        g_OutputImage[ dispatchThreadId.xy ] = finalColor;
-        return;
+    if ( pc.uDebugMode == 1 ) {
+        finalColor = abs( float4( normal.xyz, 1.0 ));
+    }
+    if ( hitType == HIT_TYPE_VOXEL ) {
+        finalColor = ExtractColorInt( 0x0000FFFF );
+    }
+    if ( hitType == HIT_TYPE_OBJECT ) {
+        finalColor = ExtractColorInt( 0xFFFFFFFF );
     }
 
-    g_OutputImage[ dispatchThreadId.xy ] = FadeOutHorizont( finalColor, fDistance );
+    if ( distance <= MAX_STEPS && pc.uDebugMode != 1 ) 
+    {   
+        
+    }
+
+    if ( distance > MAX_RENDER_DIST )
+        finalColor = FadeOutHorizont( finalColor, distance );
+
+    g_OutputImage[ dispatchThreadId.xy ] = finalColor;
 }
