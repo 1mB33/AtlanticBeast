@@ -61,7 +61,7 @@ function(compileShadersDXC SHADERS_PATH COMPILE_TARGET)
         
             ADD_CUSTOM_COMMAND(
                 OUTPUT ${SPIRV_PATH}
-                COMMAND dxc -T cs_6_0 -E main -spirv ${SHADER_PATH} -Fo ${SPIRV_PATH}
+                COMMAND dxc -T cs_6_0 -E main -spirv -D VULKAN ${SHADER_PATH} -Fo ${SPIRV_PATH}
                 DEPENDS ${SHADER_PATH}
                 COMMENT "Compiling shader ${SHADER_NAME}"
                 VERBATIM
