@@ -74,5 +74,15 @@ TARGET_PRECOMPILE_HEADERS(B33Rendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Publ
 TARGET_COMPILE_DEFINITIONS(B33Rendering PRIVATE _BEAST_EXPORTS)
 
 INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/shaders.cmake)
-compileShaders("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+
+IF (LINUX)
+
+    compileShadersDXC("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+
+ELSE ()
+
+    compileShadersGlslang("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+
+ENDIF ()
+
 ADD_DEPENDENCIES(B33Rendering CompileShadersForVoxels)

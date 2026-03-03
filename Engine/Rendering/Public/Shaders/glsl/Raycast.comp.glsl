@@ -538,11 +538,13 @@ void main()
         if (fDistance <= maxSteps) 
         {   
             vec3 shaded;
+            int distanceMax = int(distance(hitPos, lightPos) * 1.5);
 
             shaded = PhongSoftShadows(CameraPos.xyz, 
                                       hitPos,
                                       normal,
-                                      int(distance(hitPos, lightPos) * 1.5)) * finalColor.xyz;
+                                      distanceMax) * 
+                     finalColor.xyz;
 
             // PHONG_ONLY: finalColor = vec4(shaded, finalColor.w);
             finalColor = vec4(Reflection(ro, 
