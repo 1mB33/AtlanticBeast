@@ -10,7 +10,7 @@
 #define HIT_TYPE_OBJECT     1
 
 #define MAX_RENDER_DIST         28.f
-#define HALF_MAX_RENDER_DIST    14.f
+#define HALF_MAX_RENDER_DIST    10.f
 #define MAX_STEPS               73
 #define BASE_SKY_COLOR          float4(.4078, .4725, 1., 1.)
 
@@ -157,6 +157,20 @@ bool MarchTheRay( in const float3    ro,
     return false;
 }
 
+/*
+* If we are outside of MAX_RENDER_DIST interpolate the color.
+* Use the diffrence of distance and MAX_RENDER_DIST as the value that interpolates between colors.
+* Clamp that value to HALF_MAX_RENDER_DIST (it creates that slow fading gradient).
+* Divide the clamped value by HALF_MAX_RENDER_DIST to get number between 0. and 1. */
+float4 FadeOutHorizont( float4 finalColor, float fDistance )
+{
+    return lerp( finalColor, 
+                 BASE_SKY_COLOR,
+                 clamp( fDistance - MAX_RENDER_DIST, 
+                        0.f,
+                        HALF_MAX_RENDER_DIST ) / HALF_MAX_RENDER_DIST );
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 [ RootSignature( "DescriptorTable( UAV( u0 ), SRV( t1, numDescriptors = 4 ), CBV( b1 ) )" ) ]
 [ numthreads( 32, 8, 1 ) ]
@@ -202,13 +216,5 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
         return;
     }
 
-    // If we are outside of MAX_RENDER_DIST interpolate the color.
-    // Use the diffrence of distance and MAX_RENDER_DIST as the value that interpolates between colors.
-    // Clamp that value to HALF_MAX_RENDER_DIST (it creates that slow fading gradient).
-    // Divide the clamped value by HALF_MAX_RENDER_DIST to get number between 0. and 1.
-    g_OutputImage[ dispatchThreadId.xy ] = lerp( finalColor, 
-                                                 BASE_SKY_COLOR,
-                                                 clamp( fDistance - MAX_RENDER_DIST, 
-                                                        0.f,
-                                                        HALF_MAX_RENDER_DIST ) / HALF_MAX_RENDER_DIST );
+    g_OutputImage[ dispatchThreadId.xy ] = FadeOutHorizont( finalColor, fDistance );
 }
