@@ -41,7 +41,7 @@ function(compileShadersGlslang SHADERS_PATH COMPILE_TARGET)
 
 endfunction()
 
-function(compileShadersDXC SHADERS_PATH COMPILE_TARGET)
+function(compileShadersDXC DXC_PATH SHADERS_PATH COMPILE_TARGET)
 
     SET(SHADER_SRC_DIR "${SHADERS_PATH}")
     SET(SHADER_BIN_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/Shaders")
@@ -57,11 +57,11 @@ function(compileShadersDXC SHADERS_PATH COMPILE_TARGET)
         
             GET_FILENAME_COMPONENT(SHADER_NAME ${SHADER_PATH} NAME_WE)
             SET(SPIRV_PATH "${SHADER_BIN_DIR}/${SHADER_NAME}.spv")
-            MESSAGE("COMMAND dxc -T cs_6_0 -E main -spirv ${SHADER_PATH} -Fo ${SPIRV_PATH}")
+            MESSAGE("COMMAND ${DXC_PATH} -T cs_6_0 -E main -spirv ${SHADER_PATH} -Fo ${SPIRV_PATH}")
         
             ADD_CUSTOM_COMMAND(
                 OUTPUT ${SPIRV_PATH}
-                COMMAND dxc -T cs_6_0 -E main -spirv -D VULKAN ${SHADER_PATH} -Fo ${SPIRV_PATH}
+                COMMAND ${DXC_PATH} -T cs_6_0 -E main -spirv -D VULKAN ${SHADER_PATH} -Fo ${SPIRV_PATH}
                 DEPENDS ${SHADER_PATH}
                 COMMENT "Compiling shader ${SHADER_NAME}"
                 VERBATIM

@@ -75,19 +75,33 @@ TARGET_COMPILE_DEFINITIONS(B33Rendering PRIVATE _BEAST_EXPORTS)
 
 INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/shaders.cmake)
 
-FIND_PROGRAM(
-    IS_DXC
-    dxc
-)
+
+IF ( WIN32 )
+
+    FIND_PROGRAM(
+        DXC_PATH
+        dxc
+        HINTS "$ENV{VULKAN_SDK}/Bin"
+        NO_DEFAULT_PATH
+    )
+
+ELSE ()
+
+    FIND_PROGRAM(
+        DXC_PATH
+        dxc
+    )
+
+ENDIF ()
 
 # Prefer HLSL shaders over GLSL
-IF ( IS_DXC STREQUAL "" )
+IF ( DXC_PATH STREQUAL "" )
 
     compileShadersGlslang("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
 
 ELSE ()
 
-    compileShadersDXC("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+    compileShadersDXC("${DXC_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
 
 ENDIF ()
 
