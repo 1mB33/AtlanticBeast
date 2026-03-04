@@ -75,13 +75,19 @@ TARGET_COMPILE_DEFINITIONS(B33Rendering PRIVATE _BEAST_EXPORTS)
 
 INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/shaders.cmake)
 
-IF (LINUX)
+FIND_PROGRAM(
+    IS_DXC
+    dxc
+)
 
-    compileShadersDXC("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+# Prefer HLSL shaders over GLSL
+IF ( IS_DXC STREQUAL "" )
+
+    compileShadersGlslang("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
 
 ELSE ()
 
-    compileShadersGlslang("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
+    compileShadersDXC("${CMAKE_CURRENT_SOURCE_DIR}/Public/Shaders" CompileShadersForVoxels)
 
 ENDIF ()
 
