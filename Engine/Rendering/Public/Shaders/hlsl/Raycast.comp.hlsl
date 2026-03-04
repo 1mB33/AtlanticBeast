@@ -16,6 +16,20 @@
 #define MAX_STEPS               73
 #define BASE_SKY_COLOR          float4(.4078, .4725, 1., 1.)
 
+#define PHONG_AMBIENT       0.2
+#define PHONG_DIFFUSE       0.8
+#define PHONG_SPECULAR      0.8
+#define PHONG_SHININESS     512.0
+#define PHONG_LIGHT_POS     float3( 20.0, 25.0, 10.0 )
+#define PHONG_LIGHT_COLOR   float3( 1., 1., .8 )
+
+#define SOFT_SHADOW_R               0.5
+#define SOFT_SHADOW_SAMPLES         8
+#define SOFT_SHADOW_SAMPLE_STEP     ( TWO_PI / SOFT_SHADOW_SAMPLES )
+#define SOFT_SHADOW_MIX_FACTOR      0.015
+#define SOFT_SHADOW_SHADOW_CONST    ( 1. / SOFT_SHADOW_SAMPLES )
+
+
 struct PushConstants
 {
     float3      CameraPos;
@@ -218,6 +232,143 @@ bool MarchTheRay( in const float3    ro,
     return false;
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+float SoftShadowRay( in const float2 uv,
+                     in const float3 from, 
+                     in const float3 to, 
+                     in const float3 normal, 
+                     in const int    maxDistance )
+{
+    float3  dir = normalize(to - from);
+    float3  dummyHit;
+    uint    dummyIndex;
+    float3  dummyNormal;
+    float   dummyDistance;
+    int     dummyHitType;
+    float   shadow = 1.;
+
+    float   angle;
+    float3  offset;
+    for ( int i = 0; i < SOFT_SHADOW_SAMPLES; ++i )
+    {
+        angle   = float( i ) * SOFT_SHADOW_SAMPLE_STEP;
+        offset  = float3( cos( angle ), sin( angle ), 0. ) * SOFT_SHADOW_R; 
+
+        dir = normalize( to + offset - from );
+        dir = lerp( dir, RandomPointOnHemisphere( normal, uv ), SOFT_SHADOW_MIX_FACTOR );
+
+        if ( MarchTheRay( from + dir * EPSILON,
+                          dir,
+                          maxDistance,
+                          dummyHit,
+                          dummyIndex,
+                          dummyDistance,
+                          dummyNormal,
+                          dummyHitType ) ) 
+        {
+            shadow -= SOFT_SHADOW_SHADOW_CONST;
+        }
+    }
+
+    return shadow;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+float3 PhongSoftShadows( in const float2   uv,
+                         in const float3   camPos,
+                         in const float3   hitPos,
+                         in const float3   normal,
+                         in const int      maxDistance )
+{
+    const float3 lightDir   = normalize( PHONG_LIGHT_POS - hitPos );
+    const float3 viewDir    = normalize( camPos   - hitPos );
+    const float3 reflectDir = normalize( lightDir + viewDir );
+        
+    const float diff    = max( dot( normal, lightDir ), 0.0 );
+    const float spec    = pow( max( dot( normal, reflectDir ), 0.0 ), PHONG_SHININESS );
+    const float shadow  = SoftShadowRay( uv, hitPos, PHONG_LIGHT_POS, normal, maxDistance );
+        
+    const float3 ambient    = PHONG_AMBIENT * PHONG_LIGHT_COLOR;
+    const float3 diffuse    = PHONG_DIFFUSE * diff * PHONG_LIGHT_COLOR * shadow;
+    const float3 specular   = PHONG_SPECULAR * spec * PHONG_LIGHT_COLOR * shadow;
+
+    return ambient + diffuse + specular;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+float3 Reflection( in const float2 uv,
+                   in float3       from,
+                   in float3       to,
+                   in int          maxSteps,
+                   in const uint   bounces,
+                   in const float3 baseColor,
+                   in float3       normal,
+                   in float        fMaterialReflectPower,
+                   in float        fRoughness )
+{
+    float3      dir;
+    float3      hit;
+    uint        index;
+    float       fDistance = 1.;
+    float3      normalRef;
+    int         hitType;
+
+    float3      incident;
+    float       fLocalReflect;
+    float3      reflectedColor = baseColor;
+    float4      hitBaseColor;
+
+    for ( uint i = 0; i < bounces; ++i )
+    {
+        if ( fMaterialReflectPower <= 0.0 )
+            break;
+
+        dir = reflect( normalize( to - from ), normal );
+        dir = lerp( dir, RandomPointOnHemisphere( normal, uv ), fRoughness * fDistance * 0.25 );
+
+        if ( !MarchTheRay( to + dir * EPSILON,
+                           dir,
+                           maxSteps,
+                           hit,
+                           index,
+                           fDistance,
+                           normalRef,
+                           hitType ) ) 
+        {
+            reflectedColor = lerp( reflectedColor, BASE_SKY_COLOR.xyz, fMaterialReflectPower );
+            return reflectedColor;
+        }
+
+        from    = to;
+        to      = hit;
+        normal  = normalRef;
+
+        if ( hitType == HIT_TYPE_VOXEL ) {
+            hitBaseColor    = ExtractColorInt( g_vVoxels[ index ].Color );
+            fLocalReflect   = 0.1;
+            fRoughness      = 0.0;
+        }
+        if ( hitType == HIT_TYPE_OBJECT ) {
+            hitBaseColor    = ExtractColorInt(0xFFFFFFFF);
+            fLocalReflect   = 0.25;
+            fRoughness      = 0.08;
+        } 
+        
+        reflectedColor = lerp( reflectedColor, 
+                               PhongSoftShadows( uv,
+                                                 from, 
+                                                 hit,
+                                                 normal,
+                                                 maxSteps ) * hitBaseColor.xyz,
+                               fMaterialReflectPower );
+
+        fMaterialReflectPower *= fLocalReflect * 2;
+        maxSteps = maxSteps * 0.5;
+    }
+
+    return reflectedColor;
+}
+
 /*
 * If we are outside of MAX_RENDER_DIST interpolate the color.
 * Use the diffrence of distance and MAX_RENDER_DIST as the value that interpolates between colors.
@@ -251,17 +402,17 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
 
     float3    hitPos;
     uint      index;
-    float     distance;
+    float     hitDistance;
     float3    normal;
     int       hitType;
     float     reflectionPower;
-    float     fRoughness;
+    float     roughness;
     if ( !MarchTheRay( pc.CameraPos,
                        rd,
                        MAX_STEPS,
                        hitPos,
                        index,
-                       distance,
+                       hitDistance,
                        normal,
                        hitType ) ) 
     {
@@ -271,21 +422,48 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
 
     if ( pc.uDebugMode == 1 ) {
         finalColor = abs( float4( normal.xyz, 1.0 ));
+        finalColor.xyz = finalColor.xyz * PhongSoftShadows( dispatchThreadId.xy,
+                                                            pc.CameraPos,
+                                                            hitPos,
+                                                            normal,
+                                                            MAX_RENDER_DIST );
+
+        g_OutputImage[ dispatchThreadId.xy ] = finalColor;
+        return;
     }
     if ( hitType == HIT_TYPE_VOXEL ) {
-        finalColor = ExtractColorInt( 0x0000FFFF );
+        finalColor      = ExtractColorInt( 0x00FF77FF );
+        reflectionPower = 0.2;
+        roughness       = 0.08;
     }
     if ( hitType == HIT_TYPE_OBJECT ) {
-        finalColor = ExtractColorInt( 0xFFFFFFFF );
+        finalColor      = ExtractColorInt( 0xFFFFFFFF );
+        reflectionPower = 0.4;
+        roughness       = 0.2;
     }
 
-    if ( distance <= MAX_STEPS && pc.uDebugMode != 1 ) 
+    if ( hitDistance <= MAX_STEPS ) 
     {   
-        
+        const int phongDistanceMax = int( distance( hitPos, PHONG_LIGHT_POS ) );
+        finalColor.xyz = finalColor.xyz * PhongSoftShadows( dispatchThreadId.xy,
+                                                            pc.CameraPos,
+                                                            hitPos,
+                                                            normal,
+                                                            phongDistanceMax );
+
+        finalColor.xyz = Reflection( dispatchThreadId.xy,
+                                     pc.CameraPos,
+                                     hitPos,
+                                     MAX_RENDER_DIST,
+                                     4,
+                                     finalColor.xyz,
+                                     normal,
+                                     reflectionPower,
+                                     roughness );
     }
 
-    if ( distance > MAX_RENDER_DIST )
-        finalColor = FadeOutHorizont( finalColor, distance );
+    if ( hitDistance > MAX_RENDER_DIST )
+        finalColor = FadeOutHorizont( finalColor, hitDistance );
 
     g_OutputImage[ dispatchThreadId.xy ] = finalColor;
 }

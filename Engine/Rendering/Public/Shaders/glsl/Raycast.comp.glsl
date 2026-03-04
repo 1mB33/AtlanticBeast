@@ -538,7 +538,7 @@ void main()
         if (fDistance <= maxSteps) 
         {   
             vec3 shaded;
-            int distanceMax = int(distance(hitPos, lightPos) * 1.5);
+            int distanceMax = int( distance(hitPos, lightPos) );
 
             shaded = PhongSoftShadows(CameraPos.xyz, 
                                       hitPos,
