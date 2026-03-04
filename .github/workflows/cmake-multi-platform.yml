@@ -68,6 +68,16 @@ jobs:
       with:
         # Space delimited list of packages to install. Version can be specified optionally using APT command syntax of <name>=<version> (e.g. xdot=1.2-2).
         packages: cmake make libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev vulkan-tools libvulkan-dev vulkan-utility-libraries-dev glslang-tools spirv-tools
+
+    - name: Get DirectX shaders compiler (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        curl -LO https://github.com/microsoft/DirectXShaderCompiler/releases/download/v1.9.2602/linux_dxc_2026_02_20.x86_64.tar.gz
+        tar -xf linux_dxc_*.tar.gz
+        sudo cp bin/dxc /usr/local/bin/
+        sudo cp lib/libdxcompiler.so* /usr/local/lib/
+        sudo cp lib/libdxil.so /usr/local/lib/
+        sudo ldconfig
       
     - name: Cache Vulkan SDK (Windows)
       if: runner.os == 'Windows' 

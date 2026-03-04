@@ -1,4 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
 vec4 ExtractColorInt(in const uint uPackedColor)
 {        
     float r = float((uPackedColor >> 24) & 0xFFu) / 255.;

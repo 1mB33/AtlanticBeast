@@ -98,7 +98,7 @@ bool RayIntersectsAABB(in const vec3 ro,
         return false;
     }
 
-    normal = normalize(inverse(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
+    normal = normalize(transpose(cubeRot) * CubeNormal(lro + lrd * fHitMin, HalfSizes[uIndexCube].xyz));
 
     return true;
 }
@@ -538,11 +538,13 @@ void main()
         if (fDistance <= maxSteps) 
         {   
             vec3 shaded;
+            int distanceMax = int( distance(hitPos, lightPos) );
 
             shaded = PhongSoftShadows(CameraPos.xyz, 
                                       hitPos,
                                       normal,
-                                      int(distance(hitPos, lightPos) * 1.5)) * finalColor.xyz;
+                                      distanceMax) * 
+                     finalColor.xyz;
 
             // PHONG_ONLY: finalColor = vec4(shaded, finalColor.w);
             finalColor = vec4(Reflection(ro, 
