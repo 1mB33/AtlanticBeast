@@ -4,7 +4,7 @@
 #include "B33Rendering.hpp"
 #include "Input/ControllerObject.hpp"
 #include "Input/UserInput.hpp"
-#include "Input/KeyList.hpp"
+#include "Operations.hpp"
 #include "Primitives/Camera.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/Rays.hpp"
@@ -66,11 +66,10 @@ public:
                                                                                                    rot.x), 
                                                                               rot.y));
 
-        B33::Rendering::HitResult hr = ::B33::Rendering::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
-
-        if (hr.bHit) {
-            m_g->PushCube(m_g->GetIdFromPos(hr.iHitCoords), hr.Normal, fForceMul);
-        }
+        ::B33::Rendering::HitResult hr = ::B33::Rendering::MarchTheRay(m_g->GetWorld().get(), this->GetPosition(), lookDir, 10);
+        ::B33::Math::Vec3 pushDir = ::B33::Math::Normalize( this->GetPosition() - ::B33::Math::Vec3( hr.iHitCoords ) );
+        if ( hr.bHit )
+            m_g->PushCube( m_g->GetIdFromPos( hr.iHitCoords ), pushDir, fForceMul );
     }
 
     void MoveForwardBackwards(const float fDelta, float fDir)
