@@ -54,11 +54,6 @@ VkDevice AdapterWrapper::CreateDevice( VkPhysicalDevice            gpu,
     queueCreateInfo.pQueuePriorities        = queuePriorities;
     queueCreateInfo.queueCount              = size( queuePriorities );
 
-    VkPhysicalDeviceFeatures deviceFeatures       = {};
-    deviceFeatures.fragmentStoresAndAtomics       = VK_TRUE;
-    deviceFeatures.vertexPipelineStoresAndAtomics = VK_TRUE;
-    deviceFeatures.shaderInt64                    = VK_TRUE;
-
     VkDeviceCreateInfo createInfo      = {};
     createInfo.sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     createInfo.pNext                   = pFeatures;
@@ -66,7 +61,7 @@ VkDevice AdapterWrapper::CreateDevice( VkPhysicalDevice            gpu,
     createInfo.queueCreateInfoCount    = 1;
     createInfo.ppEnabledExtensionNames = !vExtensions.empty() ? &vExtensions[ 0 ] : NULL;
     createInfo.enabledExtensionCount   = static_cast<uint32_t>( !vExtensions.empty() ? vExtensions.size() : 0 );
-    createInfo.pEnabledFeatures        = &deviceFeatures;
+    createInfo.pEnabledFeatures        = NULL;
 
     THROW_IF_FAILED( vkCreateDevice( gpu, &createInfo, NULL, &device ) );
 
