@@ -146,6 +146,35 @@ inline iVec3& AddAssign(iVec3& vA, const iVec3& vB)
 
 // ---------------------------------------------------------------------------------------------------------------------
 template<class Vector>
+inline Vector& SubtractAssign(Vector& vA, const Vector& vB)
+{
+    static_assert(Core::TypeIsAlwaysFalse<Vector>, 
+                  "This size of a vector doesn't have impementation of subtract assign yet");
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+template<>
+inline Vec3& SubtractAssign(Vec3& vA, const Vec3& vB)
+{
+    vA.x -= vB.x;
+    vA.y -= vB.y;
+    vA.z -= vB.z;
+    return vA;
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+template<>
+inline iVec3& SubtractAssign(iVec3& vA, const iVec3& vB)
+{
+    vA.x -= vB.x;
+    vA.y -= vB.y;
+    vA.z -= vB.z;
+    return vA;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+template<class Vector>
 inline Vector Multiply(const Vector& vA, const Vector& vB)
 {
     static_assert(Core::TypeIsAlwaysFalse<Vector>, 

@@ -22,6 +22,11 @@ public:
         : x(x), y(y), z(z)
     { }
 
+    template< typename Vector >
+    explicit Vec3(Vector v)
+        : x(v.x), y(v.y), z(v.z)
+    { }
+
     ~Vec3() = default;
 
 public:
@@ -60,6 +65,8 @@ public:
     inline Vec3 operator+(const struct iVec3& vB) const;
 
     inline Vec3 operator+(const uint32_t vB) const;
+
+    inline Vec3 operator-(const Vec3& vB) const;
 
     inline Vec3 operator*(const Vec3& vB) const;
 
@@ -144,7 +151,10 @@ public:
 
     inline iVec3 operator+(const Vec3& vB) const;
 
+    inline iVec3 operator-(const iVec3& vB) const;
+
     inline iVec3 operator*(const uint32_t vB) const;
+
 };
 
 } // !B33::Math

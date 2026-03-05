@@ -74,6 +74,13 @@ inline Vec3 Vec3::operator+(const uint32_t vB) const
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+inline Vec3 Vec3::operator-(const Vec3& vB) const
+{
+    Vec3 n(*this);
+    return SubtractAssign(n, vB);
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 inline Vec3 Vec3::operator*(const Vec3& vB) const
 {
     Vec3 n(*this);
@@ -92,6 +99,13 @@ inline iVec3 iVec3::operator+(const Vec3& vB) const
 {
     iVec3 n(*this);
     return AddAssign(n, iVec3(vB));
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+inline iVec3 iVec3::operator-(const iVec3& vB) const
+{
+    iVec3 n(*this);
+    return SubtractAssign(n, iVec3(vB));
 }
 
 // --------------------------------------------------------------------------------------------------------------------
