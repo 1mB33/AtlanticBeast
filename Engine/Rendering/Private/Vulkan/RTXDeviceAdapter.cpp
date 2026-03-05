@@ -14,7 +14,6 @@ const vector<const char *> RTXDeviceAdapter::GetExtensionsImpl() const
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
         VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
         VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
-        VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME,
     };
 
     return vpszDeviceExtensions;
@@ -23,28 +22,9 @@ const vector<const char *> RTXDeviceAdapter::GetExtensionsImpl() const
 // --------------------------------------------------------------------------------------------------------------------
 void *RTXDeviceAdapter::GetFeaturesImpl() const
 {
-    static VkPhysicalDeviceTimelineSemaphoreFeatures semaphoreFeatures = {
-        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES,
-        NULL,
-        VK_TRUE,
-    };
-    static VkPhysicalDevice8BitStorageFeatures bitStorageFeatures = {
-        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_8BIT_STORAGE_FEATURES_KHR,
-        &semaphoreFeatures,
-        VK_TRUE,
-        VK_FALSE,
-        VK_FALSE,
-    };
-    static VkPhysicalDeviceVulkanMemoryModelFeatures memoryModelFeatures = {
-        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_MEMORY_MODEL_FEATURES,
-        &bitStorageFeatures,
-        VK_TRUE,
-        VK_TRUE,
-        VK_FALSE,
-    };
     static VkPhysicalDeviceRayTracingPipelineFeaturesKHR rayTracingPipelineFeatures = {
         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_FEATURES_KHR,
-        &memoryModelFeatures,
+        NULL,
         VK_TRUE,
         VK_FALSE,
         VK_FALSE,
@@ -60,15 +40,8 @@ void *RTXDeviceAdapter::GetFeaturesImpl() const
         VK_FALSE,
         VK_FALSE,
     };
-    static VkPhysicalDeviceBufferDeviceAddressFeatures bufferDeviceAddressFeatures = {
-        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES,
-        &accelerationStructureFeatures,
-        VK_TRUE,
-        VK_FALSE,
-        VK_FALSE,
-    };
 
-    return &bufferDeviceAddressFeatures;
+    return &accelerationStructureFeatures;
 }
 
 } // namespace B33::Rendering

@@ -24,7 +24,6 @@ VkPhysicalDevice RTXHardware::ChooseGPU( const shared_ptr<const Instance> &pInst
 
     VkPhysicalDeviceRayTracingPipelineFeaturesKHR    rayTracingPipelineFeatures;
     VkPhysicalDeviceAccelerationStructureFeaturesKHR accelStructFeatures;
-    VkPhysicalDeviceBufferDeviceAddressFeatures      bufferAddressFeatures;
 
     VkPhysicalDeviceFeatures2 deviceFeatures2;
 
@@ -39,7 +38,6 @@ VkPhysicalDevice RTXHardware::ChooseGPU( const shared_ptr<const Instance> &pInst
 
         memset( static_cast<void *>( &rayTracingPipelineFeatures ), 0, sizeof( rayTracingPipelineFeatures ) );
         memset( static_cast<void *>( &accelStructFeatures ), 0, sizeof( accelStructFeatures ) );
-        memset( static_cast<void *>( &bufferAddressFeatures ), 0, sizeof( bufferAddressFeatures ) );
         memset( static_cast<void *>( &deviceFeatures2 ), 0, sizeof( deviceFeatures2 ) );
 
         rayTracingPipelineFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_PIPELINE_FEATURES_KHR;
@@ -48,16 +46,12 @@ VkPhysicalDevice RTXHardware::ChooseGPU( const shared_ptr<const Instance> &pInst
         accelStructFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ACCELERATION_STRUCTURE_FEATURES_KHR;
         accelStructFeatures.pNext = &rayTracingPipelineFeatures;
 
-        bufferAddressFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES;
-        bufferAddressFeatures.pNext = &accelStructFeatures;
-
         deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-        deviceFeatures2.pNext = &bufferAddressFeatures;
+        deviceFeatures2.pNext = &accelStructFeatures;
 
         vkGetPhysicalDeviceFeatures2( pDevice, &deviceFeatures2 );
 
-        if ( rayTracingPipelineFeatures.rayTracingPipeline && accelStructFeatures.accelerationStructure &&
-             bufferAddressFeatures.bufferDeviceAddress )
+        if ( rayTracingPipelineFeatures.rayTracingPipeline && accelStructFeatures.accelerationStructure )
         {
             chosenPhysicalDevice = pDevice;
             break;
