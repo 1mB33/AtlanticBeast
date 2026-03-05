@@ -13,51 +13,45 @@ enum EAppStatus
     Running
 };
 
-
 class BEAST_API AppStatus
 {
-    template<typename T, typename U>
-    friend class IBaseWindow;
+    template <typename T, typename U> friend class IBaseWindow;
 
     AppStatus();
 
-    AppStatus(const AppStatus&) noexcept = delete;
-    AppStatus& operator=(const AppStatus&) noexcept = delete;
+    AppStatus( const AppStatus & ) noexcept            = delete;
+    AppStatus &operator=( const AppStatus & ) noexcept = delete;
 
-    AppStatus(AppStatus&&) noexcept = delete;
-    AppStatus& operator=(AppStatus&&) noexcept = delete;
+    AppStatus( AppStatus && ) noexcept            = delete;
+    AppStatus &operator=( AppStatus && ) noexcept = delete;
 
     static EAppStatus m_AppCurrentStatus;
 
-public:
-
-    static AppStatus& Get();
+  public:
+    static AppStatus &Get();
 
     ~AppStatus();
 
-public:
-
+  public:
     static EAppStatus GetAppCurrentStatus();
 
-    const ::std::list<::std::shared_ptr<WindowDesc>>& GetWindowHandles() const
-    { return m_WindowHandles; }
+    const ::std::list<::std::shared_ptr<WindowDesc>> &GetWindowHandles() const
+    {
+        return m_WindowHandles;
+    }
 
-private:
+  private:
+    uint32_t SendOpenWindowSignal( ::std::shared_ptr<WindowDesc> pWd );
 
-    uint32_t SendOpenWindowSignal(::std::shared_ptr<WindowDesc> pWd);
-
-    uint32_t SendCloseWindowSignal(::std::shared_ptr<WindowDesc> pWd);
+    uint32_t SendCloseWindowSignal( ::std::shared_ptr<WindowDesc> pWd );
 
     void UpdateStatus();
 
-private:
-
+  private:
     uint32_t m_uNumberOfWindows;
 
     ::std::list<::std::shared_ptr<WindowDesc>> m_WindowHandles;
-
 };
 
-
-} // !Core
+} // namespace B33::App
 #endif // !AB_APPSTATUS_H

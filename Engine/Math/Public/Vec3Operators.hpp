@@ -6,114 +6,119 @@
 
 namespace B33::Math
 {
-    
-// --------------------------------------------------------------------------------------------------------------------
-constexpr float& Vec3::operator[](size_t uIndex)
-{
-    AB_ASSERT(uIndex < Size);
-
-    if (uIndex == 0) {
-        return x;
-    }
-    if (uIndex == 1) {
-        return y;
-    }
-    return z;
-} 
 
 // --------------------------------------------------------------------------------------------------------------------
-constexpr float Vec3::operator[](size_t uIndex) const
+constexpr float &Vec3::operator[]( size_t uIndex )
 {
-    AB_ASSERT(uIndex < Size);
+    AB_ASSERT( uIndex < Size );
 
-    if (uIndex == 0) {
+    if ( uIndex == 0 )
+    {
         return x;
     }
-    if (uIndex == 1) {
+    if ( uIndex == 1 )
+    {
         return y;
     }
     return z;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline bool Vec3::operator==(const Vec3& vB) const
+constexpr float Vec3::operator[]( size_t uIndex ) const
 {
-	const float fEpsilon = 0.0001f;
-    return (::std::fabs(this->x - vB.x) < fEpsilon &&
-            ::std::fabs(this->y - vB.y) < fEpsilon &&
-            ::std::fabs(this->z - vB.z) < fEpsilon) ? true : false;
+    AB_ASSERT( uIndex < Size );
+
+    if ( uIndex == 0 )
+    {
+        return x;
+    }
+    if ( uIndex == 1 )
+    {
+        return y;
+    }
+    return z;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3& Vec3::operator+=(const Vec3& vB)
+inline bool Vec3::operator==( const Vec3 &vB ) const
 {
-    return AddAssign(*this, vB);
+    const float fEpsilon = 0.0001f;
+    return ( ::std::fabs( this->x - vB.x ) < fEpsilon && ::std::fabs( this->y - vB.y ) < fEpsilon &&
+             ::std::fabs( this->z - vB.z ) < fEpsilon )
+               ? true
+               : false;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator+(const Vec3& vB) const
+inline Vec3 &Vec3::operator+=( const Vec3 &vB )
 {
-    Vec3 n(*this);
-    return AddAssign(n, vB);
+    return AddAssign( *this, vB );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator+(const iVec3& vB) const
+inline Vec3 Vec3::operator+( const Vec3 &vB ) const
 {
-    Vec3 n(*this);
-    n = AddAssign(n, Vec3::ToVec(vB));
+    Vec3 n( *this );
+    return AddAssign( n, vB );
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+inline Vec3 Vec3::operator+( const iVec3 &vB ) const
+{
+    Vec3 n( *this );
+    n = AddAssign( n, Vec3::ToVec( vB ) );
     return n;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator+(const uint32_t vB) const
+inline Vec3 Vec3::operator+( const uint32_t vB ) const
 {
-    Vec3 n(*this);
-    n = AddAssign(n, Vec3(vB, vB, vB));
+    Vec3 n( *this );
+    n = AddAssign( n, Vec3( vB, vB, vB ) );
     return n;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator-(const Vec3& vB) const
+inline Vec3 Vec3::operator-( const Vec3 &vB ) const
 {
-    Vec3 n(*this);
-    return SubtractAssign(n, vB);
+    Vec3 n( *this );
+    return SubtractAssign( n, vB );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator*(const Vec3& vB) const
+inline Vec3 Vec3::operator*( const Vec3 &vB ) const
 {
-    Vec3 n(*this);
-    return Multiply(n, vB);
+    Vec3 n( *this );
+    return Multiply( n, vB );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline Vec3 Vec3::operator*(const float vB) const
+inline Vec3 Vec3::operator*( const float vB ) const
 {
-    Vec3 n(*this);
-    return MultiplyScalar(n, vB);
+    Vec3 n( *this );
+    return MultiplyScalar( n, vB );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline iVec3 iVec3::operator+(const Vec3& vB) const
+inline iVec3 iVec3::operator+( const Vec3 &vB ) const
 {
-    iVec3 n(*this);
-    return AddAssign(n, iVec3(vB));
+    iVec3 n( *this );
+    return AddAssign( n, iVec3( vB ) );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline iVec3 iVec3::operator-(const iVec3& vB) const
+inline iVec3 iVec3::operator-( const iVec3 &vB ) const
 {
-    iVec3 n(*this);
-    return SubtractAssign(n, iVec3(vB));
+    iVec3 n( *this );
+    return SubtractAssign( n, iVec3( vB ) );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-inline iVec3 iVec3::operator*(const uint32_t vB) const
+inline iVec3 iVec3::operator*( const uint32_t vB ) const
 {
-    iVec3 n(*this);
-    return Multiply(n, iVec3(vB, vB, vB));
+    iVec3 n( *this );
+    return Multiply( n, iVec3( vB, vB, vB ) );
 }
 
-} // !B33::Math
+} // namespace B33::Math
 #endif // !AB_VEC3_OPERATORS_H

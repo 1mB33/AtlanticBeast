@@ -9,15 +9,12 @@ namespace B33::Rendering
 
 class MinimalHardware : public ::B33::Rendering::HardwareWrapper
 {
-public: 
+  public:
+    BEAST_API MinimalHardware( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance );
 
-    BEAST_API MinimalHardware(::std::shared_ptr<const ::B33::Rendering::Instance> pInstance);
-
-private:
-
-    ::VkPhysicalDevice ChooseGPU(const ::std::shared_ptr<const ::B33::Rendering::Instance>& pInstance);
-
+  private:
+    ::VkPhysicalDevice ChooseGPU( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance );
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_MINIMAL_HARDWARE_H

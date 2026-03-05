@@ -1,8 +1,8 @@
 #ifdef __linux__
-#ifndef AB_GAME_WINDOW_POLICY_H
-#define AB_GAME_WINDOW_POLICY_H
+#    ifndef AB_GAME_WINDOW_POLICY_H
+#        define AB_GAME_WINDOW_POLICY_H
 
-#include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
+#        include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 
 namespace B33::App
 {
@@ -13,26 +13,20 @@ namespace B33::App
  */
 class BEAST_API GameLinuxWindowPolicy : public BasicLinuxWindowPolicy
 {
-public:
+  public:
+    virtual void OnCreate( WindowDesc *pWd ) override;
 
-    virtual void OnCreate(WindowDesc* pWd) override;
+    virtual uint32_t OnUpdate( WindowDesc *pWd, XEvent &event ) override;
 
-    virtual uint32_t OnUpdate(WindowDesc* pWd, XEvent& event) override;
+  private:
+    void HandleRawInput( WindowDesc *pWd, XEvent &event );
 
-private:
+    void HandleFocusIn( WindowDesc *pWd );
 
-    void HandleRawInput(WindowDesc* pWd, XEvent& event);
-
-    void HandleFocusIn(WindowDesc* pWd);
-
-private:
-
+  private:
     int m_OpCode;
-
 };
 
-} // !B33::App
-#endif // !AB_GAME_WINDOW_POLICY_H
-#endif // __linux__
-
-
+} // namespace B33::App
+#    endif // !AB_GAME_WINDOW_POLICY_H
+#endif     // __linux__

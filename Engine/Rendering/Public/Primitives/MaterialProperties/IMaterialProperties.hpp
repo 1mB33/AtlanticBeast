@@ -4,23 +4,20 @@
 namespace B33::Rendering
 {
 
-class alignas(4) IMaterialProperties
+class alignas( 4 ) IMaterialProperties
 {
-public:
-
+  public:
     IMaterialProperties() = default;
 
     ~IMaterialProperties() = default;
 
-public:
+  public:
+    IMaterialProperties( const IMaterialProperties & ) noexcept            = default;
+    IMaterialProperties &operator=( const IMaterialProperties & ) noexcept = default;
 
-    IMaterialProperties(const IMaterialProperties&) noexcept = default;
-    IMaterialProperties& operator=(const IMaterialProperties&) noexcept = default;
-
-    IMaterialProperties(IMaterialProperties&&) noexcept = default;
-    IMaterialProperties& operator=(IMaterialProperties&&) noexcept = default;
-
+    IMaterialProperties( IMaterialProperties && ) noexcept            = default;
+    IMaterialProperties &operator=( IMaterialProperties && ) noexcept = default;
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_IMATERIAL_PROPERTIES

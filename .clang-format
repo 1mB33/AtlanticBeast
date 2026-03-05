@@ -1,0 +1,93 @@
+BasedOnStyle: LLVM
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+
+ColumnLimit: 120
+
+BreakBeforeBraces: Allman
+BraceWrapping:
+  AfterFunction:        true
+  AfterControlStatement: true
+  AfterStruct:          true
+  AfterEnum:            true
+  BeforeElse:           true
+
+SpacesInParentheses:      true
+SpacesInSquareBrackets:   true
+SpacesInAngles:           false
+SpaceInEmptyParentheses:  false
+SpaceInEmptyBlock:        false
+
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements:          true
+  AfterFunctionDeclarationName:    false
+  AfterFunctionDefinitionName:     false
+  AfterOverloadedOperator:         false
+  BeforeNonEmptyParentheses:       false
+
+AlignConsecutiveDeclarations:
+  Enabled:          true
+  AcrossEmptyLines: false
+  AcrossComments:   false
+
+AlignConsecutiveAssignments:
+  Enabled:          true
+  AcrossEmptyLines: false
+  AcrossComments:   false
+
+AlignConsecutiveMacros:
+  Enabled:          true
+  AcrossEmptyLines: false
+  AcrossComments:   false
+
+AlignOperands: Align
+
+AlignTrailingComments: true
+
+AlignAfterOpenBracket: Align
+BinPackParameters:     false
+BinPackArguments:      false
+
+AllowShortIfStatementsOnASingleLine:    Never
+AllowShortLoopsOnASingleLine:           false
+AllowShortBlocksOnASingleLine:          Never
+AllowShortFunctionsOnASingleLine:       None
+AllowShortCaseLabelsOnASingleLine:      false
+
+BreakBeforeBinaryOperators: None
+
+PointerAlignment: Right
+
+SortIncludes: false
+
+ReferenceAlignment:  Right
+
+SeparateDefinitionBlocks: Always
+
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerIndentWidth: 4
+
+PackConstructorInitializers:  Never
+
+BreakBeforeTernaryOperators: true
+
+IndentPPDirectives: AfterHash
+PPIndentWidth: 4
+
+AlignConsecutiveBitFields:
+  Enabled:          true
+  AcrossEmptyLines: false
+  AcrossComments:   false
+
+NamespaceIndentation: None
+CompactNamespaces:    false
+FixNamespaceComments: true
+
+AccessModifierOffset: -2
+
+MaxEmptyLinesToKeep:          1
+KeepEmptyLinesAtTheStartOfBlocks: false

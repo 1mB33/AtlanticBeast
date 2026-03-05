@@ -3,91 +3,97 @@
 
 #include "WrapperAdapter.hpp"
 
-namespace B33::Rendering 
+namespace B33::Rendering
 {
 
-class GPUBuffer 
+class GPUBuffer
 {
-public:
-
-    GPUBuffer() 
-        : m_pDeviceAdapter(nullptr)
-        , m_DeviceMemory(VK_NULL_HANDLE)
-        , m_Buffer(VK_NULL_HANDLE)
-        , m_uSizeInBytes(0)
-    { }
-
-    GPUBuffer(::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-              ::VkDeviceMemory deviceMemory,
-              ::VkBuffer buffer,
-              ::size_t sizeInBytes) 
-        : m_pDeviceAdapter(da)
-        , m_DeviceMemory(deviceMemory)
-        , m_Buffer(buffer)
-        , m_uSizeInBytes(sizeInBytes)
-    { }
-
-    ~GPUBuffer() 
+  public:
+    GPUBuffer()
+        : m_pDeviceAdapter( nullptr )
+        , m_DeviceMemory( VK_NULL_HANDLE )
+        , m_Buffer( VK_NULL_HANDLE )
+        , m_uSizeInBytes( 0 )
     {
-        if (m_pDeviceAdapter == nullptr) {
+    }
+
+    GPUBuffer( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+               ::VkDeviceMemory                                          deviceMemory,
+               ::VkBuffer                                                buffer,
+               ::size_t                                                  sizeInBytes )
+        : m_pDeviceAdapter( da )
+        , m_DeviceMemory( deviceMemory )
+        , m_Buffer( buffer )
+        , m_uSizeInBytes( sizeInBytes )
+    {
+    }
+
+    ~GPUBuffer()
+    {
+        if ( m_pDeviceAdapter == nullptr )
+        {
             return;
         }
-        if (m_Buffer != VK_NULL_HANDLE) {
-            ::vkDestroyBuffer(m_pDeviceAdapter->GetAdapterHandle(), m_Buffer, NULL);
+        if ( m_Buffer != VK_NULL_HANDLE )
+        {
+            ::vkDestroyBuffer( m_pDeviceAdapter->GetAdapterHandle(), m_Buffer, NULL );
         }
-        if (m_DeviceMemory != VK_NULL_HANDLE) {
-            ::vkFreeMemory(m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory, NULL);
+        if ( m_DeviceMemory != VK_NULL_HANDLE )
+        {
+            ::vkFreeMemory( m_pDeviceAdapter->GetAdapterHandle(), m_DeviceMemory, NULL );
         }
-		m_pDeviceAdapter = nullptr;
+        m_pDeviceAdapter = nullptr;
     }
 
-public:
+  public:
+    GPUBuffer( const GPUBuffer &other )                     = delete;
+    GPUBuffer &operator=( const GPUBuffer &other ) noexcept = delete;
 
-    GPUBuffer(const GPUBuffer& other) = delete;
-    GPUBuffer& operator=(const GPUBuffer& other) noexcept = delete;
-
-    GPUBuffer(GPUBuffer&& other) noexcept
-        : m_pDeviceAdapter(std::move(other.m_pDeviceAdapter))
-        , m_DeviceMemory(other.m_DeviceMemory)
-        , m_Buffer(other.m_Buffer)
-        , m_uSizeInBytes(other.m_uSizeInBytes)
+    GPUBuffer( GPUBuffer &&other ) noexcept
+        : m_pDeviceAdapter( std::move( other.m_pDeviceAdapter ) )
+        , m_DeviceMemory( other.m_DeviceMemory )
+        , m_Buffer( other.m_Buffer )
+        , m_uSizeInBytes( other.m_uSizeInBytes )
     {
         other.m_DeviceMemory = VK_NULL_HANDLE;
-        other.m_Buffer = VK_NULL_HANDLE;
+        other.m_Buffer       = VK_NULL_HANDLE;
     }
 
-    GPUBuffer& operator=(GPUBuffer&& other) noexcept
+    GPUBuffer &operator=( GPUBuffer &&other ) noexcept
     {
-        this->m_pDeviceAdapter  = std::move(other.m_pDeviceAdapter);
-        this->m_DeviceMemory    = other.m_DeviceMemory;
-        this->m_Buffer          = other.m_Buffer;
-        this->m_uSizeInBytes    = other.m_uSizeInBytes;
+        this->m_pDeviceAdapter = std::move( other.m_pDeviceAdapter );
+        this->m_DeviceMemory   = other.m_DeviceMemory;
+        this->m_Buffer         = other.m_Buffer;
+        this->m_uSizeInBytes   = other.m_uSizeInBytes;
 
-        other.m_DeviceMemory    = VK_NULL_HANDLE;
-        other.m_Buffer          = VK_NULL_HANDLE;
+        other.m_DeviceMemory = VK_NULL_HANDLE;
+        other.m_Buffer       = VK_NULL_HANDLE;
 
         return *this;
     }
 
-public:
+  public:
+    ::VkDeviceMemory GetMemoryHandle() const
+    {
+        return m_DeviceMemory;
+    }
 
-    ::VkDeviceMemory GetMemoryHandle() const 
-    { return m_DeviceMemory; }
+    ::VkBuffer GetBufferHandle() const
+    {
+        return m_Buffer;
+    }
 
-    ::VkBuffer GetBufferHandle() const 
-    { return m_Buffer; }
+    ::size_t GetSizeInBytes() const
+    {
+        return m_uSizeInBytes;
+    }
 
-    ::size_t GetSizeInBytes() const 
-    { return m_uSizeInBytes; }
-
-protected:
-
+  protected:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
-    ::VkDeviceMemory  m_DeviceMemory  = VK_NULL_HANDLE;
-    ::VkBuffer        m_Buffer        = VK_NULL_HANDLE;
-    ::size_t          m_uSizeInBytes  = 0;
-
+    ::VkDeviceMemory                                          m_DeviceMemory   = VK_NULL_HANDLE;
+    ::VkBuffer                                                m_Buffer         = VK_NULL_HANDLE;
+    ::size_t                                                  m_uSizeInBytes   = 0;
 };
 
-} // !B33::Rendering
-#endif //!AB_GPU_BUFFER_H
+} // namespace B33::Rendering
+#endif //! AB_GPU_BUFFER_H

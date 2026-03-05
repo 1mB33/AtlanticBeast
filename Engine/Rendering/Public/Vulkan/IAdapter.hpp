@@ -1,35 +1,34 @@
 #ifndef AB_WRAPPER_H
 #define AB_WRAPPER_H
 
-namespace B33::Rendering 
+namespace B33::Rendering
 {
 
-template<class Derived>
-class IAdapter 
+template <class Derived> class IAdapter
 {
-public:
-
+  public:
     IAdapter() = default;
 
     ~IAdapter() = default;
 
-public:
+  public:
+    IAdapter( IAdapter && )      = default;
+    IAdapter( const IAdapter & ) = default;
 
-    IAdapter(IAdapter&&) = default;
-    IAdapter(const IAdapter&) = default;
+    IAdapter &operator=( IAdapter && ) noexcept      = default;
+    IAdapter &operator=( const IAdapter & ) noexcept = default;
 
-    IAdapter& operator=(IAdapter&&) noexcept = default;
-    IAdapter& operator=(const IAdapter&) noexcept = default;
+  public:
+    const ::std::vector<const char *> &GetExtensions() const
+    {
+        return static_cast<const Derived *>( this )->GetExtensionsImpl();
+    }
 
-public:
-
-    const ::std::vector<const char*>& GetExtensions() const
-    { return static_cast<const Derived*>(this)->GetExtensionsImpl(); }
-
-    void* GetFeatures() const
-    { return static_cast<const Derived*>(this)->GetFeaturesImpl(); }
-
+    void *GetFeatures() const
+    {
+        return static_cast<const Derived *>( this )->GetFeaturesImpl();
+    }
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_WRAPPER_H

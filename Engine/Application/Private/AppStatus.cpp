@@ -14,56 +14,61 @@ EAppStatus AppStatus::m_AppCurrentStatus = EAppStatus::Dead;
 
 // --------------------------------------------------------------------------------------------------------------------
 AppStatus::AppStatus()
-    : m_uNumberOfWindows(0)
+    : m_uNumberOfWindows( 0 )
     , m_WindowHandles()
-{ }
+{
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 AppStatus::~AppStatus()
-{ }
+{
+}
 
 // --------------------------------------------------------------------------------------------------------------------
-AppStatus& AppStatus::Get()
+AppStatus &AppStatus::Get()
 {
-	static AppStatus instance;
-	return instance;
+    static AppStatus instance;
+    return instance;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 EAppStatus AppStatus::GetAppCurrentStatus()
-{ return m_AppCurrentStatus; }
+{
+    return m_AppCurrentStatus;
+}
 
 // --------------------------------------------------------------------------------------------------------------------
-uint32_t AppStatus::SendOpenWindowSignal(shared_ptr<WindowDesc> pWd)
+uint32_t AppStatus::SendOpenWindowSignal( shared_ptr<WindowDesc> pWd )
 {
-    AB_LOG(Info, L"Got new window signal");
+    AB_LOG( Info, L"Got new window signal" );
 
     ++m_uNumberOfWindows;
 
     UpdateStatus();
-    m_WindowHandles.push_back(pWd);
+    m_WindowHandles.push_back( pWd );
 
-    return  m_uNumberOfWindows;
+    return m_uNumberOfWindows;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-uint32_t AppStatus::SendCloseWindowSignal(shared_ptr<WindowDesc> pWd)
+uint32_t AppStatus::SendCloseWindowSignal( shared_ptr<WindowDesc> pWd )
 {
-    AB_LOG(Info, L"Got close window signal");
+    AB_LOG( Info, L"Got close window signal" );
 
     m_uNumberOfWindows = m_uNumberOfWindows > 0 ? --m_uNumberOfWindows : m_uNumberOfWindows;
     UpdateStatus();
-    m_WindowHandles.remove(pWd);
-    
-    return  m_uNumberOfWindows;
+    m_WindowHandles.remove( pWd );
+
+    return m_uNumberOfWindows;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 void AppStatus::UpdateStatus()
 {
-	AB_LOG(Info, L"B33::AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows);
+    AB_LOG( Info, L"B33::AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows );
 
-    if (m_uNumberOfWindows == 0) {
+    if ( m_uNumberOfWindows == 0 )
+    {
         m_AppCurrentStatus = EAppStatus::Dead;
         return;
     }
@@ -71,4 +76,4 @@ void AppStatus::UpdateStatus()
     m_AppCurrentStatus = EAppStatus::Running;
 }
 
-} // !B33::App
+} // namespace B33::App

@@ -6,44 +6,40 @@ namespace B33::Rendering
 
 class Instance
 {
-public:
-
+  public:
     BEAST_API Instance();
 
     BEAST_API ~Instance();
 
-public:
+  public:
+    Instance( const Instance & ) noexcept            = delete;
+    Instance &operator=( const Instance & ) noexcept = delete;
 
-    Instance(const Instance&) noexcept = delete;
-    Instance& operator=(const Instance&) noexcept = delete;
-
-    Instance(Instance&& other) noexcept 
-        : m_Instance(other.m_Instance)
-    { 
+    Instance( Instance &&other ) noexcept
+        : m_Instance( other.m_Instance )
+    {
         other.m_Instance = VK_NULL_HANDLE;
     }
 
-    Instance& operator=(Instance&& other) noexcept 
-    { 
+    Instance &operator=( Instance &&other ) noexcept
+    {
         this->m_Instance = other.m_Instance;
         other.m_Instance = VK_NULL_HANDLE;
         return *this;
     }
 
-public:
-
+  public:
     ::VkInstance GetInstance() const
-    { return m_Instance; }
+    {
+        return m_Instance;
+    }
 
-private:
-
+  private:
     ::VkInstance CreateInstance();
-    
-private:
 
+  private:
     ::VkInstance m_Instance = VK_NULL_HANDLE;
-
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_INSTANCE_H

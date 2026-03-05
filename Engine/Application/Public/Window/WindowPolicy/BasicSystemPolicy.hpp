@@ -2,21 +2,21 @@
 #define AB_BASIC_SYSTEM_POLICY_H
 
 #if _WIN32
-#	include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
+#    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 #elif __linux__
-#	include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
+#    include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 #endif // !_WIN32
 
 namespace B33::App
 {
 
-typedef 
+typedef
 #if _WIN32
-	BasicWin32WindowPolicy
+    BasicWin32WindowPolicy
 #elif __linux__
-	BasicLinuxWindowPolicy
+    BasicLinuxWindowPolicy
 #endif // !_WIN32
-	DefaultSystemWindowPolicy;
+        DefaultSystemWindowPolicy;
 
-} // !B33::App
+} // namespace B33::App
 #endif // !AB_BASIC_SYSTEM_POLICY_H

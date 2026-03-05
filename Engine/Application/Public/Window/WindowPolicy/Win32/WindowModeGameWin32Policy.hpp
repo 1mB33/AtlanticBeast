@@ -1,8 +1,8 @@
 #ifdef _WIN32
-#ifndef AB_GAME_POLICY_H
-#define AB_GAME_POLICY_H
+#    ifndef AB_GAME_POLICY_H
+#        define AB_GAME_POLICY_H
 
-#include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
+#        include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 
 namespace B33::App
 {
@@ -13,14 +13,12 @@ namespace B33::App
  */
 class BEAST_API WindowModeGameWin32WindowPolicy : public BasicWin32WindowPolicy
 {
-public:
-
+  public:
     void OnPreWcex() override;
 
-    void OnUpdate(UINT uMsg, WPARAM wParam, LPARAM lParam) override;
-
+    void OnUpdate( UINT uMsg, WPARAM wParam, LPARAM lParam ) override;
 };
 
-} // !B33::App
-#endif // !AB_GAME_POLICY_H
-#endif // _WIN32
+} // namespace B33::App
+#    endif // !AB_GAME_POLICY_H
+#endif     // _WIN32

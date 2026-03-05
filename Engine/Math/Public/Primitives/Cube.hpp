@@ -7,30 +7,30 @@
 namespace B33::Math
 {
 
-class alignas(16) Cube : public WorldObject
+class alignas( 16 ) Cube : public WorldObject
 {
-public:
-
-    Cube() 
+  public:
+    Cube()
         : WorldObject()
-        , m_fHalfSize(.5f, .5f, .5f)
-    { }
+        , m_fHalfSize( .5f, .5f, .5f )
+    {
+    }
 
-public:
-
+  public:
     Vec3 GetHalfSize() const
-    { return m_fHalfSize; }
+    {
+        return m_fHalfSize;
+    }
 
-public:
+  public:
+    void SetHalfSize( Vec3 halfSize )
+    {
+        m_fHalfSize = halfSize;
+    }
 
-    void SetHalfSize(Vec3 halfSize)
-    { m_fHalfSize = halfSize; }
-
-private:
-
+  private:
     Vec3 m_fHalfSize;
-
 };
 
-} // !B33::Math
+} // namespace B33::Math
 #endif // !AB_CUBE_H

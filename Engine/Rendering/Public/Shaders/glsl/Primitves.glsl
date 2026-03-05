@@ -1,4 +1,4 @@
-struct Cube 
+struct Cube
 {
     vec3 Pos;
     uint Padding1;
@@ -7,4 +7,3 @@ struct Cube
     vec3 HalfSize;
     uint Padding3;
 };
-
