@@ -3,28 +3,34 @@
 
 #include "Bind.h"
 
-typedef enum EAbInputEvents {
-    AbKeyPress = 1,
-    AbKeyRelease = AbKeyPress << 1,
-    AbButtonPress = AbKeyRelease << 1,
+typedef enum EAbInputEvents
+{
+    AbKeyPress      = 1,
+    AbKeyRelease    = AbKeyPress << 1,
+    AbButtonPress   = AbKeyRelease << 1,
     AbButtonRelease = AbButtonPress << 1,
-    AbMotion = AbButtonRelease << 1,
+    AbMotion        = AbButtonRelease << 1,
 } EAbInputEvents;
 
-typedef struct AbInputStruct 
+typedef struct AbInputStruct
 {
     EAbInputEvents Event;
-    union {
-        struct {
+
+    union
+    {
+        struct
+        {
             AbKeyId KeyId;
         } Keyboard;
 
-        struct {
+        struct
+        {
             int32_t MouseX;
             int32_t MouseY;
         } Mouse;
 
-        struct {
+        struct
+        {
             AbKeyId KeyId;
         } MouseButton;
     };

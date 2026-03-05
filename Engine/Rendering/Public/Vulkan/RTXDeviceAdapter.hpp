@@ -8,25 +8,21 @@
 namespace B33::Rendering
 {
 
-class RTXDeviceAdapter : public ::B33::Rendering::AdapterWrapper
-                       , public ::B33::Rendering::IAdapter<::B33::Rendering::RTXDeviceAdapter>
+class RTXDeviceAdapter : public ::B33::Rendering::AdapterWrapper,
+                         public ::B33::Rendering::IAdapter<::B33::Rendering::RTXDeviceAdapter>
 {
-public:
+  public:
+    RTXDeviceAdapter( ::std::shared_ptr<const HardwareWrapper> pGpu )
+        : AdapterWrapper(
+              pGpu, ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT, GetExtensionsImpl(), GetFeaturesImpl() )
+    {
+    }
 
-    RTXDeviceAdapter(::std::shared_ptr<const HardwareWrapper> pGpu)
-        : AdapterWrapper(pGpu,
-                         ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT,
-                         GetExtensionsImpl(),
-                         GetFeaturesImpl())
-    { }
+  public:
+    const ::std::vector<const char *> GetExtensionsImpl() const;
 
-public:
-
-    const ::std::vector<const char*> GetExtensionsImpl() const;
-
-    void* GetFeaturesImpl() const;
-
+    void *GetFeaturesImpl() const;
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_DEVICE_ADAPTER_H

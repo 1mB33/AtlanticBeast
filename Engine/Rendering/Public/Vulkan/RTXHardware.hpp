@@ -8,22 +8,19 @@ namespace B33::Rendering
 {
 
 /**
-* Hardware wrapper that selects a GPU with features:
-* - rayTracingPipeline
-* - accelerationStructure
-* - bufferDeviceAddress
-**/
+ * Hardware wrapper that selects a GPU with features:
+ * - rayTracingPipeline
+ * - accelerationStructure
+ * - bufferDeviceAddress
+ **/
 class RTXHardware : public ::B33::Rendering::HardwareWrapper
 {
-public:
+  public:
+    BEAST_API RTXHardware( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance );
 
-    BEAST_API RTXHardware(::std::shared_ptr<const ::B33::Rendering::Instance> pInstance);
-
-private:
-    
-    VkPhysicalDevice ChooseGPU(const ::std::shared_ptr<const ::B33::Rendering::Instance>& pInstance);
-
+  private:
+    VkPhysicalDevice ChooseGPU( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance );
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_RTX_HARDWARE_H

@@ -12,32 +12,34 @@ namespace B33::Rendering
  * */
 class Camera : public ::B33::Math::WorldObject
 {
-public:
-
-    Camera(float fFov = 90.f)
-		: m_fFov(fFov)
-	{ }
+  public:
+    Camera( float fFov = 90.f )
+        : m_fFov( fFov )
+    {
+    }
 
     ~Camera() = default;
 
-public:
+  public:
+    void IncreaseFov( float f )
+    {
+        m_fFov += f;
+    }
 
-    void IncreaseFov(float f)
-    { m_fFov += f; }
+    void SetFov( float f )
+    {
+        m_fFov = f;
+    }
 
-    void SetFov(float f) 
-    { m_fFov = f; }
+  public:
+    float GetFov()
+    {
+        return m_fFov;
+    }
 
-public:
-
-    float GetFov() 
-    { return m_fFov; }
-
-private:
-
-	float m_fFov;
-
+  private:
+    float m_fFov;
 };
 
-} // !B33::Rendering
+} // namespace B33::Rendering
 #endif // !AB_CAMERA_H

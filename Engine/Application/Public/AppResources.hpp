@@ -10,36 +10,35 @@ class AppResources
 {
     BEAST_API AppResources();
 
-    AppResources(AppResources&&) = delete;
-    
-    AppResources(const AppResources&) = delete;
+    AppResources( AppResources && ) = delete;
 
-public:
+    AppResources( const AppResources & ) = delete;
 
-    BEAST_API static AppResources& Get();
+  public:
+    BEAST_API static AppResources &Get();
 
     ~AppResources() = default;
 
-public:
-
-    const ::std::wstring& GetExecutablePathW() const
-    { return m_wstrExePathW; }
+  public:
+    const ::std::wstring &GetExecutablePathW() const
+    {
+        return m_wstrExePathW;
+    }
 
     BEAST_API ::std::string GetExecutablePathA() const
-    { return m_strExePathA; }
+    {
+        return m_strExePathA;
+    }
 
-private:
-
+  private:
     ::std::wstring InternalGetExecutablePathW() const;
 
     ::std::string InternalGetExecutablePathA() const;
 
-private:
-
+  private:
     ::std::wstring m_wstrExePathW;
-    ::std::string m_strExePathA;
-
+    ::std::string  m_strExePathA;
 };
 
-} // !B33::App
+} // namespace B33::App
 #endif // !AB_APP_RESOURCES_H

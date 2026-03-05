@@ -6,22 +6,22 @@
 namespace B33::Rendering
 {
 
-struct HitResult 
+struct HitResult
 {
-    using Vec   = ::B33::Math::Vec3;
-    using iVec  = ::B33::Math::iVec3;
+    using Vec  = ::B33::Math::Vec3;
+    using iVec = ::B33::Math::iVec3;
 
-    bool        bHit;
-    iVec        iHitCoords;
-    ::size_t    uHitIndex;
-    float       fDistance;
-    Vec         Normal;
+    bool     bHit;
+    iVec     iHitCoords;
+    ::size_t uHitIndex;
+    float    fDistance;
+    Vec      Normal;
 };
 
-BEAST_API HitResult MarchTheRay(const ::B33::Rendering::IWorldGrid* worldGrid, 
-                                const ::B33::Math::Vec3& rayOrigin,
-                                const ::B33::Math::Vec3& rayDestination,
-                                ::size_t maxSteps);
-     
-} //!B33::Rendering
-#endif //!AB_RAYS_H
+BEAST_API HitResult MarchTheRay( const ::B33::Rendering::IWorldGrid *worldGrid,
+                                 const ::B33::Math::Vec3            &rayOrigin,
+                                 const ::B33::Math::Vec3            &rayDestination,
+                                 ::size_t                            maxSteps );
+
+} // namespace B33::Rendering
+#endif //! AB_RAYS_H

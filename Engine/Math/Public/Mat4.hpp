@@ -4,10 +4,10 @@
 namespace B33::Math
 {
 
-struct alignas(16) Mat4
-{ 
-    float m[16];
+struct alignas( 16 ) Mat4
+{
+    float m[ 16 ];
 };
 
-} // !B33::Math
+} // namespace B33::Math
 #endif // !AB_MAT4_H

@@ -7,4 +7,3 @@
 #include <wchar.h>
 
 #endif // !AB_SYSTEM_H
-

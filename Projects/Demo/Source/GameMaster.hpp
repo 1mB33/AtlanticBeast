@@ -13,55 +13,51 @@
 
 class GameMaster
 {
-public:
+  public:
+    explicit GameMaster( std::shared_ptr<B33::Rendering::Renderer> pRenderer )
+        : m_pRenderer( pRenderer )
+    {
+    }
 
-    explicit GameMaster(std::shared_ptr<B33::Rendering::Renderer> pRenderer)
-        : m_pRenderer(pRenderer)
-    { }
+  public:
+    void SwitchDebugMode( const float fDelta )
+    {
+        m_pRenderer->SetDebugMode( !m_pRenderer->GetDebugMode() );
+    }
 
-public:
-
-    void SwitchDebugMode(const float fDelta)
-    { m_pRenderer->SetDebugMode(!m_pRenderer->GetDebugMode()); }
-
-private:
-
+  private:
     std::shared_ptr<B33::Rendering::Renderer> m_pRenderer;
 };
 
 class GameMasterController : public B33::App::ControllerObject
 {
-public:
-
+  public:
     GameMasterController() = default;
 
     ~GameMasterController() = default;
 
-public:
-
-    AB_DECL_ACTION(GameMaster, SwitchDebugMode, SwitchDebugMode);
-
+  public:
+    AB_DECL_ACTION( GameMaster, SwitchDebugMode, SwitchDebugMode );
 };
 
 class GameMasterPuppet
 {
-public:
-
-    explicit GameMasterPuppet(std::shared_ptr<B33::Rendering::Renderer> pRenderer)
-        : m_pGm(::std::make_shared<GameMaster>(pRenderer))
+  public:
+    explicit GameMasterPuppet( std::shared_ptr<B33::Rendering::Renderer> pRenderer )
+        : m_pGm( ::std::make_shared<GameMaster>( pRenderer ) )
         , m_Controller()
-    { }
+    {
+    }
 
-public:
+  public:
+    void BindToInput( const ::std::shared_ptr<B33::App::UserInput> &pInput );
 
-    void BindToInput(const ::std::shared_ptr<B33::App::UserInput>& pInput);
+    ::std::shared_ptr<GameMaster> &GetCharacter()
+    {
+        return m_pGm;
+    }
 
-    ::std::shared_ptr<GameMaster>& GetCharacter()
-    { return m_pGm; }
-
-private:
-
+  private:
     ::std::shared_ptr<GameMaster> m_pGm;
-    GameMasterController m_Controller;
-
+    GameMasterController          m_Controller;
 };

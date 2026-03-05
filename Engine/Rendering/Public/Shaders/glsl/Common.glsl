@@ -1,17 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
-bool IsCrosshair(in const vec2 uv, 
-                 in const float fAspectRatio) 
+bool IsCrosshair( in const vec2 uv, in const float fAspectRatio )
 {
-    const float fCrossHairWidth = 0.0026;
-    float fCrossHairWidthX = fCrossHairWidth;
-    float fCrossHairWidthY = fCrossHairWidth;
+    const float fCrossHairWidth  = 0.0026;
+    float       fCrossHairWidthX = fCrossHairWidth;
+    float       fCrossHairWidthY = fCrossHairWidth;
 
-    if (fAspectRatio >= 1.f) {
+    if ( fAspectRatio >= 1.f )
+    {
         fCrossHairWidthY *= fAspectRatio;
-    } else {
+    }
+    else
+    {
         fCrossHairWidthX *= fAspectRatio;
     }
 
-    return abs(uv).x < fCrossHairWidthX && abs(uv).y < fCrossHairWidthY;
+    return abs( uv ).x < fCrossHairWidthX && abs( uv ).y < fCrossHairWidthY;
 }
-

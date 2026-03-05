@@ -9,39 +9,30 @@ namespace B33::App
 
 class KeysMap : public IBindMap<KeysMap>
 {
-
     static constexpr size_t AmountOfBindableKeys = AB_KEY_COUNT;
 
     struct ActionReplayData
     {
-        void* pThis;
+        void    *pThis;
         AbAction action;
     };
 
-public:
-    
+  public:
     KeysMap();
-    
-    explicit KeysMap(size_t uAmountOfBindableKeys);
 
-public:
+    explicit KeysMap( size_t uAmountOfBindableKeys );
 
-    void BindActionImpl(const AbInputBind& ib,
-                        void* pThis,
-                        AbAction a, 
-                        AbMouseAction ma);
+  public:
+    void BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, AbMouseAction ma );
 
-    void UnbindActionImpl(const AbInputBind& ib, void* pThis);
+    void UnbindActionImpl( const AbInputBind &ib, void *pThis );
 
-public:
+  public:
+    void PlayAction( const float fDelta, AbKeyId keyCode );
 
-    void PlayAction(const float fDelta, AbKeyId keyCode);
-
-private:
-
+  private:
     ::std::vector<ActionReplayData> m_vKeys;
-
 };
 
-} // !B33::App
+} // namespace B33::App
 #endif // !AB_KEYS_MAP_H

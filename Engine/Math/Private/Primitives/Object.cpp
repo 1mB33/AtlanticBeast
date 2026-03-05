@@ -6,19 +6,27 @@ namespace B33::Math
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
-void WorldObject::SetPositon(Vec3 pos)
-{ m_vPosition = pos; }
+void WorldObject::SetPositon( Vec3 pos )
+{
+    m_vPosition = pos;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
-void WorldObject::SetRotation(Vec3 rot)
-{ m_vRotation = rot; }
+void WorldObject::SetRotation( Vec3 rot )
+{
+    m_vRotation = rot;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
-void WorldObject::AddPositon(const Vec3& pos)
-{ m_vPosition += pos; }
+void WorldObject::AddPositon( const Vec3 &pos )
+{
+    m_vPosition += pos;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
-void WorldObject::AddRotation(const Rot3& rot)
-{ m_vRotation += rot; }
+void WorldObject::AddRotation( const Rot3 &rot )
+{
+    m_vRotation += rot;
+}
 
-} // !B33::Math
+} // namespace B33::Math

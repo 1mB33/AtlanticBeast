@@ -8,9 +8,9 @@ namespace B33::Rendering
 using namespace std;
 
 // --------------------------------------------------------------------------------------------------------------------
-const vector<const char*> RTXDeviceAdapter::GetExtensionsImpl() const
+const vector<const char *> RTXDeviceAdapter::GetExtensionsImpl() const
 {
-    static const vector<const char*> vpszDeviceExtensions = {
+    static const vector<const char *> vpszDeviceExtensions = {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME,
         VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
         VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
@@ -21,7 +21,7 @@ const vector<const char*> RTXDeviceAdapter::GetExtensionsImpl() const
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void* RTXDeviceAdapter::GetFeaturesImpl() const
+void *RTXDeviceAdapter::GetFeaturesImpl() const
 {
     static VkPhysicalDeviceTimelineSemaphoreFeatures semaphoreFeatures = {
         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES,
@@ -65,11 +65,10 @@ void* RTXDeviceAdapter::GetFeaturesImpl() const
         &accelerationStructureFeatures,
         VK_TRUE,
         VK_FALSE,
-        VK_FALSE,                              
+        VK_FALSE,
     };
 
     return &bufferDeviceAddressFeatures;
 }
 
-} // !B33::Rendering
-
+} // namespace B33::Rendering

@@ -6,35 +6,31 @@
 namespace B33::App
 {
 
-template<class Map>
-class IBindMap
+template <class Map> class IBindMap
 {
-public:
-
+  public:
     IBindMap() = default;
 
     ~IBindMap() = default;
 
-public:
+  public:
+    IBindMap( const IBindMap & ) noexcept            = default;
+    IBindMap &operator=( const IBindMap & ) noexcept = default;
 
-    IBindMap(const IBindMap&) noexcept = default;
-    IBindMap& operator=(const IBindMap&) noexcept = default;
+    IBindMap( IBindMap && ) noexcept            = default;
+    IBindMap &operator=( IBindMap && ) noexcept = default;
 
-    IBindMap(IBindMap&&) noexcept = default;
-    IBindMap& operator=(IBindMap&&) noexcept = default;
+  public:
+    void BindAction( const AbInputBind &ib, void *pThis, AbAction a, AbMouseAction ma )
+    {
+        static_cast<Map *>( this )->BindActionImpl( ib, pThis, a, ma );
+    }
 
-public:
-
-    void BindAction(const AbInputBind& ib, 
-                    void* pThis,
-                    AbAction a,
-                    AbMouseAction ma) 
-    { static_cast<Map*>(this)->BindActionImpl(ib, pThis, a, ma); }
-
-    void UnbindAction(const AbInputBind& ib, void* pThis)
-    { static_cast<Map*>(this)->UnbindActionImpl(ib, pThis); }
-
+    void UnbindAction( const AbInputBind &ib, void *pThis )
+    {
+        static_cast<Map *>( this )->UnbindActionImpl( ib, pThis );
+    }
 };
 
-} // !Core
+} // namespace B33::App
 #endif // !AB_BIND_MAP_H

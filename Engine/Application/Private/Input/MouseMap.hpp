@@ -8,33 +8,24 @@ namespace B33::App
 
 class MouseMap : public IBindMap<MouseMap>
 {
-
     struct DataForActionReplay
     {
-        void*           pThis;
-        AbMouseAction   Action;
+        void         *pThis;
+        AbMouseAction Action;
     };
 
-public:
+  public:
+    void BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, AbMouseAction ma );
 
-    void BindActionImpl(const AbInputBind& ib, 
-                        void* pThis,
-                        AbAction a,
-                        AbMouseAction ma);
+    void UnbindActionImpl( const AbInputBind &ib, void *pThis );
 
-    void UnbindActionImpl(const AbInputBind& ib, void* pThis);
+  public:
+    void PlayAction( const float fDelta, int32_t fX, int32_t fY );
 
-public:
-
-    void PlayAction(const float fDelta, int32_t fX, int32_t fY);
-
-private:
-
+  private:
     ::std::vector<DataForActionReplay> m_vMouseBinds;
-
 };
 
-} // !B33::App
+} // namespace B33::App
 
 #endif // !AB_MOUSE_MAP_H
-

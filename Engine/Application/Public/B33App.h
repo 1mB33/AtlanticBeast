@@ -8,10 +8,10 @@
 
 #ifdef __cplusplus
 
-#include "Window/WindowDesc.hpp"
-#include "Input/KeyList.hpp"
-#include "AppStatus.hpp"
-#include "AppResources.hpp"
+#    include "Window/WindowDesc.hpp"
+#    include "Input/KeyList.hpp"
+#    include "AppStatus.hpp"
+#    include "AppResources.hpp"
 
 #endif //!__cplusplus
-#endif //!AB_APP_H
+#endif //! AB_APP_H
