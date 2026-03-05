@@ -56,10 +56,10 @@ struct Voxel
 };
 
 RWTexture2D< float4 >       g_OutputImage   : register( u0 );
-StructuredBuffer< Voxel >   g_vVoxels       : register( t1 );
-StructuredBuffer< float4 >  g_vPositions    : register( t2 );
-StructuredBuffer< float4 >  g_vRotations    : register( t3 );
-StructuredBuffer< float4 >  g_vHalfSizes    : register( t4 );
+StructuredBuffer< Voxel >   g_Voxels       : register( t1 );
+StructuredBuffer< float4 >  g_Positions    : register( t2 );
+StructuredBuffer< float4 >  g_Rotations    : register( t3 );
+StructuredBuffer< float4 >  g_HalfSizes    : register( t4 );
 
 #if defined( VULKAN )
 
@@ -76,13 +76,13 @@ StructuredBuffer< float4 >  g_vHalfSizes    : register( t4 );
 #endif
 
 // --------------------------------------------------------------------------------------------------------------------
-bool TestObjects(in const Voxel     onVoxel,
-                 in const float3    ro,
-                 in const float3    rd,
-                 out uint       uHitIndex,
-                 out float      distance,
-                 out float3     hitCoords,
-                 out float3     normal)
+bool TestObjects( in const Voxel     onVoxel,
+                  in const float3    ro,
+                  in const float3    rd,
+                  out uint       uHitIndex,
+                  out float      distance,
+                  out float3     hitCoords,
+                  out float3     normal )
 {
     distance = INF;
     
@@ -95,14 +95,14 @@ bool TestObjects(in const Voxel     onVoxel,
         uLastId = onVoxel.Id[ k ];
 
         // Object position is in oposite direction (more then 90 degrees)
-        if ( dot( rd, g_vPositions[ uLastId ].xyz - ro ) < 0. )
+        if ( dot( rd, g_Positions[ uLastId ].xyz - ro ) < 0. )
             continue;
 
         if ( !RayIntersectsAABB( ro, 
                                  rd,
-                                 g_vPositions[ uLastId ].xyz,
-                                 g_vRotations[ uLastId ].xyz,
-                                 g_vHalfSizes[ uLastId ].xyz,
+                                 g_Positions[ uLastId ].xyz,
+                                 g_Rotations[ uLastId ].xyz,
+                                 g_HalfSizes[ uLastId ].xyz,
                                  fLastHitMin,
                                  fLastHitMax,
                                  lastNormal ) ) 
@@ -170,9 +170,12 @@ bool MarchTheRay( in const float3    ro,
                 voxel.z * pc.GridSize.x * pc.GridSize.y;
 
         // Check for hits
-        testedVoxel = g_vVoxels[ index ].Type;
+        testedVoxel = g_Voxels[ index ].Type;
     
-        if ( testedVoxel == uint( HIT_TYPE_VOXEL ) )
+        if ( ( pc.uDebugMode == 1                 &&
+               testedVoxel > HIT_TYPE_UNKNOWN     && 
+               testedVoxel < uint( HIT_TYPE_VOXEL ) ) ||
+             testedVoxel == uint( HIT_TYPE_VOXEL ) )
         {
             distance               = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
             normal                  = float3( 0., 0., 0. );
@@ -183,22 +186,9 @@ bool MarchTheRay( in const float3    ro,
             hitType     = HIT_TYPE_VOXEL;
             return true;
         } 
-        if ( pc.uDebugMode == 1                 &&
-             testedVoxel > HIT_TYPE_UNKNOWN     && 
-             testedVoxel < uint( HIT_TYPE_VOXEL ) )
-        {
-            distance                = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
-            normal                  = float3( 0., 0., 0. );
-            normal[ lastStepAxis ]  = -float( step[ lastStepAxis ] );
-
-            hitIndex    = index;
-            hitCoords   = ro + rd * distance;
-            hitType     = HIT_TYPE_VOXEL;
-            return true;
-        }
         if ( testedVoxel > HIT_TYPE_UNKNOWN && 
              testedVoxel < uint( HIT_TYPE_VOXEL ) && 
-             TestObjects( g_vVoxels[ index ],
+             TestObjects( g_Voxels[ index ],
                           ro,
                           rd,
                           hitIndex,
@@ -344,7 +334,7 @@ float3 Reflection( in const float2 uv,
         normal  = normalRef;
 
         if ( hitType == HIT_TYPE_VOXEL ) {
-            hitBaseColor    = ExtractColorInt( g_vVoxels[ index ].Color );
+            hitBaseColor    = ExtractColorInt( g_Voxels[ index ].Color );
             fLocalReflect   = 0.1;
             fRoughness      = 0.0;
         }
@@ -370,7 +360,6 @@ float3 Reflection( in const float2 uv,
 }
 
 /*
-* If we are outside of MAX_RENDER_DIST interpolate the color.
 * Use the diffrence of distance and MAX_RENDER_DIST as the value that interpolates between colors.
 * Clamp that value to HALF_MAX_RENDER_DIST (it creates that slow fading gradient).
 * Divide the clamped value by HALF_MAX_RENDER_DIST to get number between 0. and 1. */
@@ -438,8 +427,8 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
     }
     if ( hitType == HIT_TYPE_OBJECT ) {
         finalColor      = ExtractColorInt( 0xFFFFFFFF );
-        reflectionPower = 0.4;
-        roughness       = 0.2;
+        reflectionPower = 0.45;
+        roughness       = 0.25;
     }
 
     if ( hitDistance <= MAX_STEPS ) 

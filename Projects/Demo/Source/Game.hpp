@@ -211,11 +211,11 @@ public:
         AB_ASSERT(m_pPhysicsSystem != nullptr);
 
         JPH::Vec3 force = { };
-        if (normal.x != 0) 
+        if (normal.x != 0)
             force.SetX(-normal.x * fForceMul);
-        else if (normal.y != 0) 
+        else if (normal.y != 0)
             force.SetY(-normal.y * fForceMul);
-        else 
+        else
             force.SetZ(-normal.z * fForceMul);
 
         m_pPhysicsSystem->GetBodyInterface().SetLinearVelocity(bodyId, force);
