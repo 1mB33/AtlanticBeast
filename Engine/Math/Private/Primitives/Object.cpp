@@ -1,6 +1,6 @@
-#include "Primitives/Object.hpp"
-
 #include "B33Math.hpp"
+
+#include "Primitives/Object.hpp"
 
 namespace B33::Math
 {

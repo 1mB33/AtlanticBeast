@@ -1,6 +1,6 @@
-#include "Synchronization/DeltaTime.hpp"
-
 #include "B33Core.h"
+
+#include "Synchronization/DeltaTime.hpp"
 
 namespace B33::Core
 {

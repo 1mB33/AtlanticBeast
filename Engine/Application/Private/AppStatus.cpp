@@ -1,6 +1,6 @@
-#include "AppStatus.hpp"
-
 #include "B33App.h"
+
+#include "AppStatus.hpp"
 
 namespace B33::App
 {

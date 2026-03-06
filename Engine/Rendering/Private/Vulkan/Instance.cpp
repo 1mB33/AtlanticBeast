@@ -1,6 +1,6 @@
-#include "Vulkan/Instance.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Vulkan/Instance.hpp"
 
 namespace B33::Rendering
 {

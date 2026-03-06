@@ -1,7 +1,6 @@
-#include "Raycaster/Renderer.hpp"
-
 #include "B33Rendering.hpp"
 
+#include "Raycaster/Renderer.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
 #include "Vulkan/ComputeAdapter.hpp"

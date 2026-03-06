@@ -1,6 +1,6 @@
-#include "Vulkan/MinimalHardware.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Vulkan/MinimalHardware.hpp"
 
 namespace B33::Rendering
 {

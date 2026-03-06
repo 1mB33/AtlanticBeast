@@ -1,8 +1,7 @@
-#include "Vulkan/Memory.hpp"
-
 #include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
+#include "Vulkan/Memory.hpp"
 
 namespace B33::Rendering
 {

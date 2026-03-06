@@ -1,6 +1,6 @@
-#include "Synchronization/FpsLimiter.hpp"
-
 #include "B33Core.h"
+
+#include "Synchronization/FpsLimiter.hpp"
 
 namespace B33::Core
 {

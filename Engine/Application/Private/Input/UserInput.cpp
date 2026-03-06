@@ -1,10 +1,9 @@
-#include "Input/UserInput.hpp"
-
 #include "B33Core.h"
 
 #include "Input/ControllerObject.hpp"
 #include "Input/InputEvents.h"
 #include "Input/MouseButtonList.hpp"
+#include "Input/UserInput.hpp"
 #include "KeysMap.hpp"
 #include "MouseMap.hpp"
 

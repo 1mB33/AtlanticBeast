@@ -1,6 +1,6 @@
-#include "KeysMap.hpp"
-
 #include "B33Core.h"
+
+#include "KeysMap.hpp"
 
 namespace B33::App
 {

@@ -1,6 +1,6 @@
-#include "AppResources.hpp"
-
 #include "B33App.h"
+
+#include "AppResources.hpp"
 
 namespace B33::App
 {

@@ -1,6 +1,6 @@
-#include "Raycaster/Rays.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Raycaster/Rays.hpp"
 
 namespace B33::Rendering
 {

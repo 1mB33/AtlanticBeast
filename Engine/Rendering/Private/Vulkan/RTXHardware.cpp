@@ -1,6 +1,6 @@
-#include "Vulkan/RTXHardware.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Vulkan/RTXHardware.hpp"
 
 namespace B33::Rendering
 {

@@ -1,8 +1,7 @@
-#include "Vulkan/SwapChain.hpp"
-
 #include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
+#include "Vulkan/SwapChain.hpp"
 #include "Vulkan/WrapperHardware.hpp"
 
 namespace B33::Rendering

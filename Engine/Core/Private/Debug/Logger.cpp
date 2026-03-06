@@ -1,6 +1,6 @@
-#include "Debug/Logger.hpp"
-
 #include "B33Core.h"
+
+#include "Debug/Logger.hpp"
 
 #include <cstdarg>
 #include <ctime>

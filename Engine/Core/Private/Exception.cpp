@@ -1,6 +1,6 @@
-#include "Exception.hpp"
-
 #include "B33Core.h"
+
+#include "Exception.hpp"
 
 namespace B33::Core
 {

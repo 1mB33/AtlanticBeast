@@ -1,8 +1,7 @@
 #ifdef _WIN32
 
-#    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
-
 #    include "Window/BaseWindowDetails.h"
+#    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 
 namespace B33::App
 {

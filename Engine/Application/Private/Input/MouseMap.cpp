@@ -1,6 +1,6 @@
-#include "MouseMap.hpp"
-
 #include "B33Core.h"
+
+#include "MouseMap.hpp"
 
 namespace B33::App
 {

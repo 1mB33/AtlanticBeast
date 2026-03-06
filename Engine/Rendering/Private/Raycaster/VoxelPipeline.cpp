@@ -1,7 +1,6 @@
-#include "Raycaster/VoxelPipeline.hpp"
-
 #include "B33Rendering.hpp"
 
+#include "Raycaster/VoxelPipeline.hpp"
 #include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"

@@ -1,6 +1,6 @@
-#include "Raycaster/VoxelGrid.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Raycaster/VoxelGrid.hpp"
 
 namespace B33::Rendering
 {

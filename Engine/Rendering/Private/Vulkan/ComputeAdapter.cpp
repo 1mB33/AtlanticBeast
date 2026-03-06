@@ -1,6 +1,6 @@
-#include "Vulkan/ComputeAdapter.hpp"
-
 #include "B33Rendering.hpp"
+
+#include "Vulkan/ComputeAdapter.hpp"
 
 namespace B33::Rendering
 {
