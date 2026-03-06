@@ -29,7 +29,8 @@
 namespace B33::Core
 {
 
-template <typename T> constexpr bool TypeIsAlwaysFalse = false;
+template <typename T>
+constexpr bool TypeIsAlwaysFalse = false;
 
 } // namespace B33::Core
 #endif // !AB_DEBUG_ASSERT_H

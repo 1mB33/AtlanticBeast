@@ -13,9 +13,9 @@ class WorldObjects
 {
   public:
     explicit WorldObjects()
-        : m_uRollingIndex( 0 )
-        , m_vPositions( {} )
-        , m_vRotations( {} )
+      : m_uRollingIndex( 0 )
+      , m_vPositions( {} )
+      , m_vRotations( {} )
     {
         m_vPositions.reserve( 64 * 64 * 64 );
         m_vRotations.reserve( 64 * 64 * 64 );
@@ -74,9 +74,7 @@ class WorldObjects
         return i;
     }
 
-    virtual void RemoveObject( ::size_t uIndex )
-    {
-    }
+    virtual void RemoveObject( ::size_t uIndex ) {}
 
   private:
     ::size_t            m_uRollingIndex;

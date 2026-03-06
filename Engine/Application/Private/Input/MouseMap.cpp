@@ -1,6 +1,6 @@
-#include "B33Core.h"
-
 #include "MouseMap.hpp"
+
+#include "B33Core.h"
 
 namespace B33::App
 {
@@ -12,7 +12,7 @@ void MouseMap::BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, A
     AB_ASSERT( a == nullptr );
     AB_ASSERT( pThis != nullptr );
 
-    m_vMouseBinds.push_back( DataForActionReplay{ pThis, ma } );
+    m_vMouseBinds.push_back( DataForActionReplay { pThis, ma } );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

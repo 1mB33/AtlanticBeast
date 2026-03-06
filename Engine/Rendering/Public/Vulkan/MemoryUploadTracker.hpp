@@ -15,7 +15,7 @@ class MemoryUploadTracker
 {
   public:
     MemoryUploadTracker()
-        : m_Reupload( RequestStaging )
+      : m_Reupload( RequestStaging )
     {
     }
 
@@ -38,16 +38,16 @@ class MemoryUploadTracker
     {
         switch ( m_Reupload )
         {
-        case EReupload::NoAction:
-            return EReupload::NoAction;
-        case EReupload::RequestStaging:
-            m_Reupload = EReupload::RequestGpuUpload;
-            return EReupload::RequestStaging;
-        case EReupload::RequestGpuUpload:
-            m_Reupload = EReupload::NoAction;
-            return EReupload::RequestGpuUpload;
-        default:
-            return EReupload::NoAction;
+            case EReupload::NoAction:
+                return EReupload::NoAction;
+            case EReupload::RequestStaging:
+                m_Reupload = EReupload::RequestGpuUpload;
+                return EReupload::RequestStaging;
+            case EReupload::RequestGpuUpload:
+                m_Reupload = EReupload::NoAction;
+                return EReupload::RequestGpuUpload;
+            default:
+                return EReupload::NoAction;
         }
     }
 

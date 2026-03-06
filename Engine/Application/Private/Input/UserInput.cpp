@@ -1,12 +1,12 @@
-#include "B33Core.h"
-
 #include "Input/UserInput.hpp"
 
-#include "Input/MouseButtonList.hpp"
-#include "MouseMap.hpp"
-#include "KeysMap.hpp"
-#include "Input/InputEvents.h"
+#include "B33Core.h"
+
 #include "Input/ControllerObject.hpp"
+#include "Input/InputEvents.h"
+#include "Input/MouseButtonList.hpp"
+#include "KeysMap.hpp"
+#include "MouseMap.hpp"
 
 namespace B33::App
 {
@@ -28,26 +28,24 @@ struct UserInput::UserInputImpl
 
 // --------------------------------------------------------------------------------------------------------------------
 UserInput::UserInput( ::std::shared_ptr<WindowDesc> pWd )
-    : WindowListener( pWd )
-    , m_bIsCapturing( false )
-    , m_BindsHandles()
-    , m_vCurrentlyPressedKeys()
-    , m_pImpl( make_unique<UserInputImpl>() )
+  : WindowListener( pWd )
+  , m_bIsCapturing( false )
+  , m_BindsHandles()
+  , m_vCurrentlyPressedKeys()
+  , m_pImpl( make_unique<UserInputImpl>() )
 {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-UserInput::~UserInput()
-{
-}
+UserInput::~UserInput() {}
 
 // --------------------------------------------------------------------------------------------------------------------
 UserInput::UserInput( const UserInput &other ) noexcept
-    : WindowListener( other )
-    , m_bIsCapturing( false )
-    , m_BindsHandles( other.m_BindsHandles )
-    , m_vCurrentlyPressedKeys()
-    , m_pImpl( make_unique<UserInputImpl>( *other.m_pImpl.get() ) )
+  : WindowListener( other )
+  , m_bIsCapturing( false )
+  , m_BindsHandles( other.m_BindsHandles )
+  , m_vCurrentlyPressedKeys()
+  , m_pImpl( make_unique<UserInputImpl>( *other.m_pImpl.get() ) )
 {
 }
 
@@ -65,11 +63,11 @@ UserInput &UserInput::operator=( const UserInput &other ) noexcept
 
 // --------------------------------------------------------------------------------------------------------------------
 UserInput::UserInput( UserInput &&other ) noexcept
-    : WindowListener( std::move( other ) )
-    , m_bIsCapturing( false )
-    , m_BindsHandles( std::move( other.m_BindsHandles ) )
-    , m_vCurrentlyPressedKeys()
-    , m_pImpl( std::move( other.m_pImpl ) )
+  : WindowListener( std::move( other ) )
+  , m_bIsCapturing( false )
+  , m_BindsHandles( std::move( other.m_BindsHandles ) )
+  , m_vCurrentlyPressedKeys()
+  , m_pImpl( std::move( other.m_pImpl ) )
 {
 }
 
@@ -141,69 +139,69 @@ void UserInput::Update( const float fDelta )
 
         switch ( is.Event )
         {
-        case EAbInputEvents::AbKeyPress:
-        {
-            AbKeyId key = is.Keyboard.KeyId;
+            case EAbInputEvents::AbKeyPress:
+            {
+                AbKeyId key = is.Keyboard.KeyId;
 
-            if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                    break;
+
+                if ( m_vCurrentlyPressedKeys.test( key ) )
+                    break;
+
+                m_vCurrentlyPressedKeys.set( key );
+
+                m_pImpl->KeyPressMap.PlayAction( fDelta, key );
+                // Don't wait for the next update to play continuos actions
+                m_pImpl->KeyContinuous.PlayAction( fDelta, key );
                 break;
+            }
 
-            if ( m_vCurrentlyPressedKeys.test( key ) )
+            case EAbInputEvents::AbKeyRelease:
+            {
+                AbKeyId key = is.Keyboard.KeyId;
+
+                if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                    break;
+
+                if ( !m_vCurrentlyPressedKeys.test( key ) )
+                    break;
+
+                m_vCurrentlyPressedKeys.flip( key );
+
+                m_pImpl->KeyReleaseMap.PlayAction( fDelta, key );
                 break;
+            }
 
-            m_vCurrentlyPressedKeys.set( key );
+            case EAbInputEvents::AbButtonPress:
+            {
+                AbKeyId button = is.Keyboard.KeyId;
 
-            m_pImpl->KeyPressMap.PlayAction( fDelta, key );
-            // Don't wait for the next update to play continuos actions
-            m_pImpl->KeyContinuous.PlayAction( fDelta, key );
-            break;
-        }
+                if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
+                    break;
 
-        case EAbInputEvents::AbKeyRelease:
-        {
-            AbKeyId key = is.Keyboard.KeyId;
-
-            if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                m_pImpl->ButtonPressMap.PlayAction( fDelta, button );
                 break;
+            }
 
-            if ( !m_vCurrentlyPressedKeys.test( key ) )
+            case EAbInputEvents::AbButtonRelease:
+            {
+                AbKeyId button = is.Keyboard.KeyId;
+
+                if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
+                    break;
+
+                m_pImpl->ButtonReleaseMap.PlayAction( fDelta, button );
                 break;
+            }
 
-            m_vCurrentlyPressedKeys.flip( key );
-
-            m_pImpl->KeyReleaseMap.PlayAction( fDelta, key );
-            break;
-        }
-
-        case EAbInputEvents::AbButtonPress:
-        {
-            AbKeyId button = is.Keyboard.KeyId;
-
-            if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
+            case EAbInputEvents::AbMotion:
+            {
+                m_pImpl->MotionMouseMap.PlayAction( fDelta, is.Mouse.MouseX, is.Mouse.MouseY );
+                is.Mouse.MouseX = 0;
+                is.Mouse.MouseY = 0;
                 break;
-
-            m_pImpl->ButtonPressMap.PlayAction( fDelta, button );
-            break;
-        }
-
-        case EAbInputEvents::AbButtonRelease:
-        {
-            AbKeyId button = is.Keyboard.KeyId;
-
-            if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
-                break;
-
-            m_pImpl->ButtonReleaseMap.PlayAction( fDelta, button );
-            break;
-        }
-
-        case EAbInputEvents::AbMotion:
-        {
-            m_pImpl->MotionMouseMap.PlayAction( fDelta, is.Mouse.MouseX, is.Mouse.MouseY );
-            is.Mouse.MouseX = 0;
-            is.Mouse.MouseY = 0;
-            break;
-        }
+            }
         }
 
         // Consume the input event
@@ -235,33 +233,35 @@ void UserInput::Bind( void *pThis, ControllerObject *pCo, AbAction action, AbMou
 
         switch ( bind.Keyboard.KeyState )
         {
-        case EAbOnState::Press:
-            m_pImpl->KeyPressMap.BindAction( bind, pThis, action, nullptr );
-            break;
-        case EAbOnState::Release:
-            m_pImpl->KeyReleaseMap.BindAction( bind, pThis, action, nullptr );
-            break;
-        case EAbOnState::Continuous:
-            m_pImpl->KeyContinuous.BindAction( bind, pThis, action, nullptr );
-            break;
-        default:
-            Logger::Get().Log(
-                Error, L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]", bind.Keyboard.KeyState );
+            case EAbOnState::Press:
+                m_pImpl->KeyPressMap.BindAction( bind, pThis, action, nullptr );
+                break;
+            case EAbOnState::Release:
+                m_pImpl->KeyReleaseMap.BindAction( bind, pThis, action, nullptr );
+                break;
+            case EAbOnState::Continuous:
+                m_pImpl->KeyContinuous.BindAction( bind, pThis, action, nullptr );
+                break;
+            default:
+                Logger::Get().Log( Error,
+                                   L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
+                                   bind.Keyboard.KeyState );
         }
     }
     else if ( bind.Type & EAbBindType::MouseButton )
     {
         switch ( bind.Keyboard.KeyState )
         {
-        case EAbOnState::Press:
-            m_pImpl->ButtonPressMap.BindAction( bind, pThis, action, nullptr );
-            break;
-        case EAbOnState::Release:
-            m_pImpl->ButtonReleaseMap.BindAction( bind, pThis, action, nullptr );
-            break;
-        default:
-            Logger::Get().Log(
-                Error, L"Button state wasn't valid? Coulnd't map the bind. [ButtonState: %d]", bind.Keyboard.KeyState );
+            case EAbOnState::Press:
+                m_pImpl->ButtonPressMap.BindAction( bind, pThis, action, nullptr );
+                break;
+            case EAbOnState::Release:
+                m_pImpl->ButtonReleaseMap.BindAction( bind, pThis, action, nullptr );
+                break;
+            default:
+                Logger::Get().Log( Error,
+                                   L"Button state wasn't valid? Coulnd't map the bind. [ButtonState: %d]",
+                                   bind.Keyboard.KeyState );
         }
     }
     else if ( bind.Type & EAbBindType::Mouse )
@@ -296,18 +296,19 @@ void UserInput::Unbind( ControllerObject *pCo )
         {
             switch ( bind.Keyboard.KeyState )
             {
-            case EAbOnState::Press:
-                m_pImpl->KeyPressMap.UnbindAction( bind, bindHandle.pThis );
-                break;
-            case EAbOnState::Release:
-                m_pImpl->KeyReleaseMap.UnbindAction( bind, bindHandle.pThis );
-                break;
-            case EAbOnState::Continuous:
-                m_pImpl->KeyContinuous.UnbindAction( bind, bindHandle.pThis );
-                break;
-            default:
-                Logger::Get().Log(
-                    Error, L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]", bind.Keyboard.KeyState );
+                case EAbOnState::Press:
+                    m_pImpl->KeyPressMap.UnbindAction( bind, bindHandle.pThis );
+                    break;
+                case EAbOnState::Release:
+                    m_pImpl->KeyReleaseMap.UnbindAction( bind, bindHandle.pThis );
+                    break;
+                case EAbOnState::Continuous:
+                    m_pImpl->KeyContinuous.UnbindAction( bind, bindHandle.pThis );
+                    break;
+                default:
+                    Logger::Get().Log( Error,
+                                       L"Key state wasn't valid? Coulnd't map the bind. [KeyState: %d]",
+                                       bind.Keyboard.KeyState );
             }
         }
         else if ( bind.Type & EAbBindType::Mouse )

@@ -15,10 +15,10 @@ class AdapterWrapper
                     const uint32_t                           uFlags,
                     const std::vector<const char *>         &vExtensions,
                     const void                              *pFeatures )
-        : m_pGPU( pHardware )
-        , m_uQueueFamily( ChooseQueueFamily( m_pGPU->GetPhysicalDevice(), uFlags ) )
-        , m_Device( CreateDevice( m_pGPU->GetPhysicalDevice(), vExtensions, pFeatures, m_uQueueFamily ) )
-        , m_Queue( CreateQueue( m_Device, m_uQueueFamily ) )
+      : m_pGPU( pHardware )
+      , m_uQueueFamily( ChooseQueueFamily( m_pGPU->GetPhysicalDevice(), uFlags ) )
+      , m_Device( CreateDevice( m_pGPU->GetPhysicalDevice(), vExtensions, pFeatures, m_uQueueFamily ) )
+      , m_Queue( CreateQueue( m_Device, m_uQueueFamily ) )
     {
         AB_LOG( Core::Debug::Info, L"Initializing adapter" );
     }

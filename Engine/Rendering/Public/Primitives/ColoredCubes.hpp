@@ -9,10 +9,11 @@
 namespace B33::Rendering
 {
 
-class ColoredCubes : public B33::Math::Cubes,
-                     public B33::Rendering::ColorProperty,
-                     public B33::Rendering::ReflectionProperty,
-                     public B33::Rendering::RoughnessProperty
+class ColoredCubes
+  : public B33::Math::Cubes
+  , public B33::Rendering::ColorProperty
+  , public B33::Rendering::ReflectionProperty
+  , public B33::Rendering::RoughnessProperty
 {
 };
 

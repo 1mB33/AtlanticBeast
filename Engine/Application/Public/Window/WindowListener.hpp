@@ -12,7 +12,7 @@ class WindowListener
 {
   public:
     explicit WindowListener( ::std::shared_ptr<WindowDesc> pWd = nullptr )
-        : m_pWindowDesc( pWd )
+      : m_pWindowDesc( pWd )
     {
     }
 
@@ -20,7 +20,7 @@ class WindowListener
 
   public:
     WindowListener( const WindowListener &other ) noexcept
-        : m_pWindowDesc( other.m_pWindowDesc )
+      : m_pWindowDesc( other.m_pWindowDesc )
     {
     }
 
@@ -31,7 +31,7 @@ class WindowListener
     }
 
     WindowListener( WindowListener &&other ) noexcept
-        : m_pWindowDesc( std::move( other.m_pWindowDesc ) )
+      : m_pWindowDesc( std::move( other.m_pWindowDesc ) )
     {
     }
 

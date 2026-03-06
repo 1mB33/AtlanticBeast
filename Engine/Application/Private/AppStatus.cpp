@@ -1,6 +1,6 @@
-#include "B33App.h"
-
 #include "AppStatus.hpp"
+
+#include "B33App.h"
 
 namespace B33::App
 {
@@ -14,15 +14,13 @@ EAppStatus AppStatus::m_AppCurrentStatus = EAppStatus::Dead;
 
 // --------------------------------------------------------------------------------------------------------------------
 AppStatus::AppStatus()
-    : m_uNumberOfWindows( 0 )
-    , m_WindowHandles()
+  : m_uNumberOfWindows( 0 )
+  , m_WindowHandles()
 {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-AppStatus::~AppStatus()
-{
-}
+AppStatus::~AppStatus() {}
 
 // --------------------------------------------------------------------------------------------------------------------
 AppStatus &AppStatus::Get()

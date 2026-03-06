@@ -7,7 +7,8 @@ namespace B33::Math
 {
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> Vector Normalize( const Vector &v )
+template <class Vector>
+Vector Normalize( const Vector &v )
 {
     Vector result = Vector();
     float  mod    = 0.f;
@@ -30,14 +31,16 @@ template <class Vector> Vector Normalize( const Vector &v )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> constexpr inline Vector Cross( const Vector &vA, const Vector &vB )
+template <class Vector>
+constexpr inline Vector Cross( const Vector &vA, const Vector &vB )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of cross product yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 Cross( const Vec3 &vA, const Vec3 &vB )
+template <>
+inline Vec3 Cross( const Vec3 &vA, const Vec3 &vB )
 {
     Vec3 result;
     result.x = vA.y * vB.z - vB.y * vA.z;
@@ -47,14 +50,16 @@ template <> inline Vec3 Cross( const Vec3 &vA, const Vec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> constexpr inline Vector RotateX( const Vector &v, float angleRad )
+template <class Vector>
+constexpr inline Vector RotateX( const Vector &v, float angleRad )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of rotate x yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 RotateX( const Vec3 &v, float angleRad )
+template <>
+inline Vec3 RotateX( const Vec3 &v, float angleRad )
 {
     Vec3  result;
     float c = std::cos( angleRad );
@@ -68,14 +73,16 @@ template <> inline Vec3 RotateX( const Vec3 &v, float angleRad )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> constexpr inline Vector RotateY( const Vector &v, float angleRad )
+template <class Vector>
+constexpr inline Vector RotateY( const Vector &v, float angleRad )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of rotate y yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 RotateY( const Vec3 &v, float angleRad )
+template <>
+inline Vec3 RotateY( const Vec3 &v, float angleRad )
 {
     Vec3  result;
     float c = std::cos( angleRad );
@@ -89,14 +96,16 @@ template <> inline Vec3 RotateY( const Vec3 &v, float angleRad )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> constexpr inline Vector RotateZ( const Vector &v, float angleRad )
+template <class Vector>
+constexpr inline Vector RotateZ( const Vector &v, float angleRad )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of rotate z yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 RotateZ( const Vec3 &v, float angleRad )
+template <>
+inline Vec3 RotateZ( const Vec3 &v, float angleRad )
 {
     Vec3  result;
     float c = std::cos( angleRad );
@@ -110,14 +119,16 @@ template <> inline Vec3 RotateZ( const Vec3 &v, float angleRad )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> inline Vector &AddAssign( Vector &vA, const Vector &vB )
+template <class Vector>
+inline Vector &AddAssign( Vector &vA, const Vector &vB )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of add assign yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 &AddAssign( Vec3 &vA, const Vec3 &vB )
+template <>
+inline Vec3 &AddAssign( Vec3 &vA, const Vec3 &vB )
 {
     vA.x += vB.x;
     vA.y += vB.y;
@@ -126,7 +137,8 @@ template <> inline Vec3 &AddAssign( Vec3 &vA, const Vec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline iVec3 &AddAssign( iVec3 &vA, const iVec3 &vB )
+template <>
+inline iVec3 &AddAssign( iVec3 &vA, const iVec3 &vB )
 {
     vA.x += vB.x;
     vA.y += vB.y;
@@ -135,14 +147,16 @@ template <> inline iVec3 &AddAssign( iVec3 &vA, const iVec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> inline Vector &SubtractAssign( Vector &vA, const Vector &vB )
+template <class Vector>
+inline Vector &SubtractAssign( Vector &vA, const Vector &vB )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of subtract assign yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 &SubtractAssign( Vec3 &vA, const Vec3 &vB )
+template <>
+inline Vec3 &SubtractAssign( Vec3 &vA, const Vec3 &vB )
 {
     vA.x -= vB.x;
     vA.y -= vB.y;
@@ -151,7 +165,8 @@ template <> inline Vec3 &SubtractAssign( Vec3 &vA, const Vec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline iVec3 &SubtractAssign( iVec3 &vA, const iVec3 &vB )
+template <>
+inline iVec3 &SubtractAssign( iVec3 &vA, const iVec3 &vB )
 {
     vA.x -= vB.x;
     vA.y -= vB.y;
@@ -160,14 +175,16 @@ template <> inline iVec3 &SubtractAssign( iVec3 &vA, const iVec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> inline Vector Multiply( const Vector &vA, const Vector &vB )
+template <class Vector>
+inline Vector Multiply( const Vector &vA, const Vector &vB )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of multiply yet" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 Multiply( const Vec3 &vA, const Vec3 &vB )
+template <>
+inline Vec3 Multiply( const Vec3 &vA, const Vec3 &vB )
 {
     Vec3 r;
 
@@ -179,7 +196,8 @@ template <> inline Vec3 Multiply( const Vec3 &vA, const Vec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <> inline iVec3 Multiply( const iVec3 &vA, const iVec3 &vB )
+template <>
+inline iVec3 Multiply( const iVec3 &vA, const iVec3 &vB )
 {
     iVec3 r;
 
@@ -191,14 +209,16 @@ template <> inline iVec3 Multiply( const iVec3 &vA, const iVec3 &vB )
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-template <class Vector> constexpr inline Vector MultiplyScalar( const Vector &vA, const float vB )
+template <class Vector>
+constexpr inline Vector MultiplyScalar( const Vector &vA, const float vB )
 {
     static_assert( Core::TypeIsAlwaysFalse<Vector>,
                    "This size of a vector doesn't have impementation of multiply by scalar yet" );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-template <> inline Vec3 MultiplyScalar( const Vec3 &vA, const float vB )
+template <>
+inline Vec3 MultiplyScalar( const Vec3 &vA, const float vB )
 {
     Vec3 r;
 
@@ -210,7 +230,8 @@ template <> inline Vec3 MultiplyScalar( const Vec3 &vA, const float vB )
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-template <> inline iVec3 MultiplyScalar( const iVec3 &vA, const float vB )
+template <>
+inline iVec3 MultiplyScalar( const iVec3 &vA, const float vB )
 {
     iVec3 r;
 

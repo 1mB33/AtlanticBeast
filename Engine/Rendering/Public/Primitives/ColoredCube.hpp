@@ -9,10 +9,11 @@
 namespace B33::Rendering
 {
 
-class alignas( 16 ) ColoredCube : public B33::Math::Cube,
-                                  public B33::Rendering::ColorProperty,
-                                  public B33::Rendering::ReflectionProperty,
-                                  public B33::Rendering::RoughnessProperty
+class alignas( 16 ) ColoredCube
+  : public B33::Math::Cube
+  , public B33::Rendering::ColorProperty
+  , public B33::Rendering::ReflectionProperty
+  , public B33::Rendering::RoughnessProperty
 {
     uint32_t m_uPadding;
 };

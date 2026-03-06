@@ -1,20 +1,20 @@
-#include "B33Core.h"
-
 #include "KeysMap.hpp"
+
+#include "B33Core.h"
 
 namespace B33::App
 {
 
 // --------------------------------------------------------------------------------------------------------------------
 KeysMap::KeysMap()
-    : m_vKeys( AmountOfBindableKeys )
+  : m_vKeys( AmountOfBindableKeys )
 {
     memset( m_vKeys.data(), 0, sizeof( ActionReplayData ) * m_vKeys.size() );
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 KeysMap::KeysMap( size_t uAmountOfBindableKeys )
-    : m_vKeys( uAmountOfBindableKeys )
+  : m_vKeys( uAmountOfBindableKeys )
 {
     memset( m_vKeys.data(), 0, sizeof( ActionReplayData ) * m_vKeys.size() );
 }
@@ -28,7 +28,7 @@ void KeysMap::BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, Ab
     AB_ASSERT( ma == nullptr );
     AB_ASSERT( pThis != nullptr );
 
-    m_vKeys[ ib.Keyboard.KeyCode ] = ActionReplayData{ pThis, a };
+    m_vKeys[ ib.Keyboard.KeyCode ] = ActionReplayData { pThis, a };
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

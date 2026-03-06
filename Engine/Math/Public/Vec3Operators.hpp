@@ -1,8 +1,8 @@
 #ifndef AB_VEC3_OPERATORS_H
 #define AB_VEC3_OPERATORS_H
 
-#include "Vec3.hpp"
 #include "Operations.hpp"
+#include "Vec3.hpp"
 
 namespace B33::Math
 {

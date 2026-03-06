@@ -2,10 +2,11 @@
 #define AB_IBASEWINDOW_H
 
 #include "B33Core.h"
+
+#include "AppStatus.hpp"
 #include "Window/WindowDesc.hpp"
 #include "Window/WindowEvents.h"
 #include "Window/WindowPolicy/BasicSystemPolicy.hpp"
-#include "AppStatus.hpp"
 
 namespace B33::App
 {
@@ -17,19 +18,20 @@ namespace B33::App
  * by overriding virtual methods of the base class or creating your new
  * policy from IWindowPolicy class, to handle different and custom os level logic.
  * */
-template <typename Derived, typename WindowPolicy = DefaultSystemWindowPolicy> class IBaseWindow
+template <typename Derived, typename WindowPolicy = DefaultSystemWindowPolicy>
+class IBaseWindow
 {
   public:
     IBaseWindow()
-        : m_Policy( ::std::make_unique<WindowPolicy>() )
-        , m_pWindowDesc( ::std::make_shared<WindowDesc>( CreateWindowDesc( L"IBaseWindow", 1280, 720 ) ) )
+      : m_Policy( ::std::make_unique<WindowPolicy>() )
+      , m_pWindowDesc( ::std::make_shared<WindowDesc>( CreateWindowDesc( L"IBaseWindow", 1280, 720 ) ) )
     {
     }
 
     template <class U>
     explicit IBaseWindow( U &&windowDesc = WindowDesc() )
-        : m_Policy( ::std::make_unique<WindowPolicy>() )
-        , m_pWindowDesc( ::std::make_shared<WindowDesc>( ::std::forward<U>( windowDesc ) ) )
+      : m_Policy( ::std::make_unique<WindowPolicy>() )
+      , m_pWindowDesc( ::std::make_shared<WindowDesc>( ::std::forward<U>( windowDesc ) ) )
     {
     }
 
@@ -46,8 +48,8 @@ template <typename Derived, typename WindowPolicy = DefaultSystemWindowPolicy> c
     IBaseWindow &operator=( const IBaseWindow & ) noexcept = delete;
 
     IBaseWindow( IBaseWindow &&other ) noexcept
-        : m_Policy( ::std::move( other.m_Policy ) )
-        , m_pWindowDesc( ::std::move( other.m_pWindowDesc ) )
+      : m_Policy( ::std::move( other.m_Policy ) )
+      , m_pWindowDesc( ::std::move( other.m_pWindowDesc ) )
     {
     }
 
@@ -60,7 +62,8 @@ template <typename Derived, typename WindowPolicy = DefaultSystemWindowPolicy> c
     }
 
   public:
-    template <class NewPolicy> void ChangePolicy()
+    template <class NewPolicy>
+    void ChangePolicy()
     {
         AB_ASSERT( m_pWindowDesc != nullptr );
 

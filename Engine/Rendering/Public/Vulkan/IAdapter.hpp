@@ -4,7 +4,8 @@
 namespace B33::Rendering
 {
 
-template <class Derived> class IAdapter
+template <class Derived>
+class IAdapter
 {
   public:
     IAdapter() = default;

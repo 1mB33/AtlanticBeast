@@ -13,8 +13,8 @@ class HardwareWrapper
 
     explicit HardwareWrapper( ::std::shared_ptr<const B33::Rendering::Instance> pInstance,
                               VkPhysicalDevice                                  physicalDevice )
-        : m_pInstance( pInstance )
-        , m_PhysicalDevice( physicalDevice )
+      : m_pInstance( pInstance )
+      , m_PhysicalDevice( physicalDevice )
     {
         AB_LOG( Core::Debug::Info, L"Initializing hardware" );
     }

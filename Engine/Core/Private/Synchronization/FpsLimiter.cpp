@@ -1,6 +1,6 @@
-#include "B33Core.h"
-
 #include "Synchronization/FpsLimiter.hpp"
+
+#include "B33Core.h"
 
 namespace B33::Core
 {
@@ -10,8 +10,8 @@ using namespace ::std::chrono;
 
 // --------------------------------------------------------------------------------------------------------------------
 FpsLimiter::FpsLimiter( const float fTargetMs )
-    : m_fTarget( fTargetMs )
-    , m_fBalance( 0.f )
+  : m_fTarget( fTargetMs )
+  , m_fBalance( 0.f )
 {
 }
 

@@ -7,14 +7,15 @@
 #    define VK_USE_PLATFORM_XLIB_KHR
 #endif
 
+#include "B33App.h"
+#include "B33Core.h"
+
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-#include "B33Core.h"
-#include "B33App.h"
-
 #ifdef __cplusplus
 #    include "B33Math.hpp"
+
 #    include <vulkan/vulkan.hpp>
 #    ifdef _WIN32
 #        undef LoadImage

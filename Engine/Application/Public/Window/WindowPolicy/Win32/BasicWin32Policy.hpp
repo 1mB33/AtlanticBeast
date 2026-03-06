@@ -30,16 +30,12 @@ class BEAST_API BasicWin32WindowPolicy : public IWindowPolicy<BasicWin32WindowPo
     /**
      * @brief Called first on Create. Use it to create WCEX.
      */
-    virtual void OnPreWcex()
-    {
-    }
+    virtual void OnPreWcex() {}
 
     /**
      * @brief Called later on Create. Use it to register window in custom way.
      */
-    virtual void OnPreRegister()
-    {
-    }
+    virtual void OnPreRegister() {}
 
     /**
      * @brief Called on every Update. Can capture the event or pass it to base class implementation.

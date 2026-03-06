@@ -13,10 +13,10 @@ struct alignas( 16 ) Vec4
 
   public:
     explicit Vec4( float x = 0, float y = 0, float z = 0, float w = 0 )
-        : x( x )
-        , y( y )
-        , z( z )
-        , w( w )
+      : x( x )
+      , y( y )
+      , z( z )
+      , w( w )
     {
     }
 
@@ -36,7 +36,8 @@ struct alignas( 16 ) Vec4
     float w;
 
   public:
-    template <typename Vector> static Vec4 ToVec4( Vector v )
+    template <typename Vector>
+    static Vec4 ToVec4( Vector v )
     {
         return Vec4( v.x, v.y, v.z, 0.f );
     }
@@ -88,10 +89,10 @@ struct alignas( 16 ) iVec4
 
   public:
     explicit iVec4( int32_t x = 0, int32_t y = 0, int32_t z = 0, int32_t w = 0 )
-        : x( x )
-        , y( y )
-        , z( z )
-        , w( w )
+      : x( x )
+      , y( y )
+      , z( z )
+      , w( w )
     {
     }
 
@@ -111,7 +112,8 @@ struct alignas( 16 ) iVec4
     int32_t w;
 
   public:
-    template <typename Vector> static iVec4 ToiVec4( Vector v )
+    template <typename Vector>
+    static iVec4 ToiVec4( Vector v )
     {
         return iVec4( v.x, v.y, v.z, 0.f );
     }

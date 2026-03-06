@@ -27,9 +27,7 @@ class BEAST_API BasicLinuxWindowPolicy : public IWindowPolicy<BasicLinuxWindowPo
     /**
      * @brief Called last on Create. Use it to query additional functionality from X11.
      */
-    virtual void OnCreate( WindowDesc *pWd )
-    {
-    }
+    virtual void OnCreate( WindowDesc *pWd ) {}
 
     /**
      * @brief Called first on every Update. Can capture the event or pass it to base class implementation.

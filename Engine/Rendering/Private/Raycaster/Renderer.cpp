@@ -1,11 +1,11 @@
-#include "B33Rendering.hpp"
-
 #include "Raycaster/Renderer.hpp"
+
+#include "B33Rendering.hpp"
 
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
-#include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/ComputeAdapter.hpp"
+#include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
@@ -106,8 +106,8 @@ void Renderer::Update( const float )
     }
 
     Vec3 rot         = m_pCamera->GetRotation();
-    Vec3 rotVec      = Normalize( RotateY( RotateX( Vec3{ 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
-    Vec3 cameraRight = Normalize( Cross( rotVec, Vec3{ 0.f, -1.f, 0.f } ) );
+    Vec3 rotVec      = Normalize( RotateY( RotateX( Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
+    Vec3 cameraRight = Normalize( Cross( rotVec, Vec3 { 0.f, -1.f, 0.f } ) );
     Vec3 cameraUp    = Cross( cameraRight, rotVec );
 
     m_pPipeline->LoadPushConstants( m_pCamera->GetFov() * AB_DEG_TO_RAD,
@@ -130,8 +130,12 @@ void Renderer::Render()
     THROW_IF_FAILED( vkWaitForFences( device, 1, &frame.InFlightFence, VK_TRUE, UINT64_MAX ) );
     THROW_IF_FAILED( vkResetFences( device, 1, &frame.InFlightFence ) );
 
-    result = vkAcquireNextImageKHR(
-        device, m_pSwapChain->GetSwapChainHandle(), UINT64_MAX, frame.ImageAvailable, VK_NULL_HANDLE, &uImageIndex );
+    result = vkAcquireNextImageKHR( device,
+                                    m_pSwapChain->GetSwapChainHandle(),
+                                    UINT64_MAX,
+                                    frame.ImageAvailable,
+                                    VK_NULL_HANDLE,
+                                    &uImageIndex );
 
     if ( result == VK_SUBOPTIMAL_KHR || result == VK_ERROR_OUT_OF_DATE_KHR )
     {
@@ -303,7 +307,7 @@ void Renderer::RecordCommands( VkCommandBuffer                 &cmdBuff,
     barrier.srcAccessMask        = 0;
     barrier.dstAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
     barrier.image                = m_pSwapChain->GetImage( uImageIndex );
-    barrier.subresourceRange     = VkImageSubresourceRange{ VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+    barrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier( cmdBuff,
                           VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
@@ -327,7 +331,7 @@ void Renderer::RecordCommands( VkCommandBuffer                 &cmdBuff,
     presentBarrier.srcAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
     presentBarrier.dstAccessMask        = 0;
     presentBarrier.image                = m_pSwapChain->GetImage( uImageIndex );
-    presentBarrier.subresourceRange     = VkImageSubresourceRange{ VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+    presentBarrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier( cmdBuff,
                           VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
@@ -370,8 +374,11 @@ void Renderer::RecordVoxelesCommands( VkCommandBuffer &cmdBuffer, const shared_p
         copyRegion.srcOffset    = 0;
         copyRegion.dstOffset    = 0;
         copyRegion.size         = m_StageVoxelBuffer->GetSizeInBytes();
-        vkCmdCopyBuffer(
-            cmdBuffer, m_StageVoxelBuffer->GetBufferHandle(), m_VoxelBuffer->GetBufferHandle(), 1, &copyRegion );
+        vkCmdCopyBuffer( cmdBuffer,
+                         m_StageVoxelBuffer->GetBufferHandle(),
+                         m_VoxelBuffer->GetBufferHandle(),
+                         1,
+                         &copyRegion );
 
         if ( m_uStorageBuffersFlags & EGridChanged::Position )
         {
@@ -510,8 +517,11 @@ void Renderer::RecreateSwapChain()
                                            static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                            m_pWindowDesc );
 
-    m_vFrames       = make_unique<FramesArray>( std::move( CreateFrameResources(
-        m_pDeviceAdapter, m_pMemory, m_pVoxelGrid, m_CommandPool, Frame::MAX_FRAMES_IN_FLIGHT ) ) );
+    m_vFrames       = make_unique<FramesArray>( std::move( CreateFrameResources( m_pDeviceAdapter,
+                                                                           m_pMemory,
+                                                                           m_pVoxelGrid,
+                                                                           m_CommandPool,
+                                                                           Frame::MAX_FRAMES_IN_FLIGHT ) ) );
     m_uCurrentFrame = 0;
     AB_LOG( Core::Debug::Info, L"Swapchain recreated" );
 }

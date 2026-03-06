@@ -2,6 +2,7 @@
 #define AB_APPSTATUS_H
 
 #include "B33Core.h"
+
 #include "Window/WindowDesc.hpp"
 
 namespace B33::App
@@ -15,7 +16,8 @@ enum EAppStatus
 
 class BEAST_API AppStatus
 {
-    template <typename T, typename U> friend class IBaseWindow;
+    template <typename T, typename U>
+    friend class IBaseWindow;
 
     AppStatus();
 

@@ -12,9 +12,9 @@ namespace B33::Math
 class alignas( 16 ) WorldObject
 {
   public:
-    explicit WorldObject( Vec3 positon = Vec3{ 0.f, 0.f, 0.f }, Rot3 rotation = Vec3{ 0.f, 0.f, 0.f } )
-        : m_vPosition( Vec3() )
-        , m_vRotation( Rot3() )
+    explicit WorldObject( Vec3 positon = Vec3 { 0.f, 0.f, 0.f }, Rot3 rotation = Vec3 { 0.f, 0.f, 0.f } )
+      : m_vPosition( Vec3() )
+      , m_vRotation( Rot3() )
     {
     }
 

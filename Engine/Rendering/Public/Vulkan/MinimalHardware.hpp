@@ -1,8 +1,8 @@
 #ifndef AB_MINIMAL_HARDWARE_H
 #define AB_MINIMAL_HARDWARE_H
 
-#include "WrapperHardware.hpp"
 #include "Instance.hpp"
+#include "WrapperHardware.hpp"
 
 namespace B33::Rendering
 {

@@ -9,7 +9,7 @@ class alignas( 8 ) ReflectionProperty //: public IMaterialProperties
 {
   public:
     ReflectionProperty()
-        : m_fReflections( {} )
+      : m_fReflections( {} )
     {
     }
 

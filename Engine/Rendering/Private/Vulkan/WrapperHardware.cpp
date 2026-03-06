@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/WrapperHardware.hpp"
+
+#include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 

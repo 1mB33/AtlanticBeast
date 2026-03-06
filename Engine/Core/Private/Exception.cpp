@@ -1,6 +1,6 @@
-#include "B33Core.h"
-
 #include "Exception.hpp"
+
+#include "B33Core.h"
 
 namespace B33::Core
 {
@@ -9,13 +9,16 @@ using namespace ::std;
 using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
-Exception::Exception(
-    const char *szMessage, size_t uMesLen, int32_t uLine, const char *szFileName, size_t uFileNameLen ) noexcept
-    : m_pszMessage( szMessage )
-    , m_uMesLen( uMesLen )
-    , m_Line( uLine )
-    , m_pszFileName( szFileName )
-    , m_uFileNameLen( uFileNameLen )
+Exception::Exception( const char *szMessage,
+                      size_t      uMesLen,
+                      int32_t     uLine,
+                      const char *szFileName,
+                      size_t      uFileNameLen ) noexcept
+  : m_pszMessage( szMessage )
+  , m_uMesLen( uMesLen )
+  , m_Line( uLine )
+  , m_pszFileName( szFileName )
+  , m_uFileNameLen( uFileNameLen )
 {
     // There is no message to copy
     if ( !m_pszMessage )
@@ -77,11 +80,11 @@ Exception::~Exception() noexcept
 
 // --------------------------------------------------------------------------------------------------------------------
 Exception::Exception( const Exception &other ) noexcept
-    : m_pszMessage( nullptr )
-    , m_uMesLen( other.m_uMesLen )
-    , m_Line( other.m_Line )
-    , m_pszFileName( other.m_pszFileName )
-    , m_uFileNameLen( other.m_uFileNameLen )
+  : m_pszMessage( nullptr )
+  , m_uMesLen( other.m_uMesLen )
+  , m_Line( other.m_Line )
+  , m_pszFileName( other.m_pszFileName )
+  , m_uFileNameLen( other.m_uFileNameLen )
 {
     if ( other.m_uMesLen != InvalidLine && other.m_uMesLen >= AB_LONG_STRING )
     {

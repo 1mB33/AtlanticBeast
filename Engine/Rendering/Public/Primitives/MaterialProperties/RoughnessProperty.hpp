@@ -9,7 +9,7 @@ class alignas( 8 ) RoughnessProperty // : public IMaterialProperties
 {
   public:
     RoughnessProperty()
-        : m_fRoughness( {} )
+      : m_fRoughness( {} )
     {
     }
 

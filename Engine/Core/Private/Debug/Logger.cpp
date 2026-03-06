@@ -1,10 +1,10 @@
-#include "B33Core.h"
-
 #include "Debug/Logger.hpp"
 
+#include "B33Core.h"
+
+#include <cstdarg>
 #include <ctime>
 #include <iostream>
-#include <cstdarg>
 
 namespace B33::Core::Debug
 {
@@ -15,12 +15,12 @@ using namespace ::B33::Core;
 
 // Logger // -----------------------------------------------------------------------------------------------------------
 Logger::Logger()
-    : m_InstanceLock()
-    , m_MessageQueue()
-    , m_strTargetPath( filesystem::current_path().string() + "/Logs/" )
-    , m_strLogName( CreateDatePreFix() + szLogPostfix )
-    , m_aIsWriteThreadWorking( true )
-    , m_FlushCondition()
+  : m_InstanceLock()
+  , m_MessageQueue()
+  , m_strTargetPath( filesystem::current_path().string() + "/Logs/" )
+  , m_strLogName( CreateDatePreFix() + szLogPostfix )
+  , m_aIsWriteThreadWorking( true )
+  , m_FlushCondition()
 {
     setlocale( LC_ALL, "" );
     m_tWriteThreadHandle = thread( &Logger::WriteLoop, this );
@@ -60,7 +60,11 @@ void Logger::Log( const ESeverity sev, const wchar_t wszFmt[], ... )
 void Logger::Flush()
 {
     unique_lock<mutex> ul( m_InstanceLock );
-    m_FlushCondition.wait( ul, [ this ]() { return m_MessageQueue.empty(); } );
+    m_FlushCondition.wait( ul,
+                           [ this ]()
+                           {
+                               return m_MessageQueue.empty();
+                           } );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -80,14 +84,14 @@ const wchar_t *Logger::GetTag( const ESeverity sev ) const
 {
     switch ( sev )
     {
-    case ESeverity::Info:
-        return L"Info";
-    case ESeverity::Warning:
-        return L"Warning";
-    case ESeverity::Error:
-        return L"Error";
-    default:
-        return L"Unknown";
+        case ESeverity::Info:
+            return L"Info";
+        case ESeverity::Warning:
+            return L"Warning";
+        case ESeverity::Error:
+            return L"Error";
+        default:
+            return L"Unknown";
     }
 }
 

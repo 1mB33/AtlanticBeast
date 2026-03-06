@@ -6,7 +6,8 @@
 namespace B33::App
 {
 
-template <class Policy> class IWindowPolicy
+template <class Policy>
+class IWindowPolicy
 {
   public:
     IWindowPolicy() = default;

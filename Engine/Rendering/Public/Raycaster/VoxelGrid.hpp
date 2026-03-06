@@ -2,10 +2,11 @@
 #define AB_VOXEL_GRID_H
 
 #include "B33Core.h"
-#include "Primitives/Object.hpp"
-#include "Vulkan/MemoryUploadTracker.hpp"
-#include "Raycaster/Voxel.hpp"
+
 #include "Primitives/ColoredCubes.hpp"
+#include "Primitives/Object.hpp"
+#include "Raycaster/Voxel.hpp"
+#include "Vulkan/MemoryUploadTracker.hpp"
 
 namespace B33::Rendering
 {
@@ -28,9 +29,9 @@ class IWorldGrid : public ::B33::Rendering::MemoryUploadTracker
 
   public:
     explicit IWorldGrid( size_t uGridWidth = DefaultVoxelGridDim )
-        : m_uGridDim( uGridWidth )
-        , m_VoxelGrid( uGridWidth * uGridWidth * uGridWidth )
-        , m_uChanged( NoChanges )
+      : m_uGridDim( uGridWidth )
+      , m_VoxelGrid( uGridWidth * uGridWidth * uGridWidth )
+      , m_uChanged( NoChanges )
     {
     }
 
@@ -108,7 +109,8 @@ class IWorldGrid : public ::B33::Rendering::MemoryUploadTracker
     ::uint32_t                             m_uChanged;
 };
 
-template <class StoredObjectType> class WorldGrid : public IWorldGrid
+template <class StoredObjectType>
+class WorldGrid : public IWorldGrid
 {
     using Vec  = ::B33::Math::Vec3;
     using iVec = ::B33::Math::iVec3;
@@ -116,9 +118,9 @@ template <class StoredObjectType> class WorldGrid : public IWorldGrid
 
   public:
     explicit WorldGrid( size_t uGridWidth = IWorldGrid::DefaultVoxelGridDim )
-        : IWorldGrid( uGridWidth )
-        , m_StoredObjects() // TODO: this->GetVoxelsSizeInBytes() / sizeof(Voxel))
-        , m_uObjectsCount( 0 )
+      : IWorldGrid( uGridWidth )
+      , m_StoredObjects() // TODO: this->GetVoxelsSizeInBytes() / sizeof(Voxel))
+      , m_uObjectsCount( 0 )
     {
     }
 
@@ -148,7 +150,8 @@ template <class StoredObjectType> class WorldGrid : public IWorldGrid
     }
 
   public:
-    template <class U> size_t GenerateObjectAtVoxel( const iVec &pos, U &&sot )
+    template <class U>
+    size_t GenerateObjectAtVoxel( const iVec &pos, U &&sot )
     {
         size_t uId = GenerateObject( pos, this->GetGrid(), ::std::forward<U>( sot ) );
         this->ForceUpload();
@@ -216,7 +219,8 @@ template <class StoredObjectType> class WorldGrid : public IWorldGrid
     }
 
   private:
-    template <class U>::size_t GenerateObject( iVec pos, ::std::vector<Voxel> &voxelsGrid, U &&sot )
+    template <class U>
+    ::size_t GenerateObject( iVec pos, ::std::vector<Voxel> &voxelsGrid, U &&sot )
     {
         const size_t uObjId = m_StoredObjects.AddObject();
 

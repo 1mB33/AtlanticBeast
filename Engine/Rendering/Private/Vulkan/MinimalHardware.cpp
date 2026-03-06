@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/MinimalHardware.hpp"
+
+#include "B33Rendering.hpp"
 
 namespace B33::Rendering
 {
@@ -9,7 +9,7 @@ using namespace std;
 
 // ---------------------------------------------------------------------------------------------------------------------
 MinimalHardware::MinimalHardware( shared_ptr<const Instance> pInstance )
-    : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
+  : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
 {
 }
 

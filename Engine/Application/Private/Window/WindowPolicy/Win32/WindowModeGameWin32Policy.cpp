@@ -32,106 +32,106 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
 
     switch ( uMsg )
     {
-    case WM_SETFOCUS:
-    {
-        RAWINPUTDEVICE rid;
-        RECT           rect;
-
-        rid.usUsagePage = 0x01;
-        rid.usUsage     = 0x02;
-        rid.dwFlags     = 0;
-        rid.hwndTarget  = pWd->hWnd;
-
-        if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
+        case WM_SETFOCUS:
         {
-            AB_LOG( B33::Core::Debug::Error, L"Couldn't register raw input" );
-        }
+            RAWINPUTDEVICE rid;
+            RECT           rect;
 
-        ShowCursor( FALSE );
+            rid.usUsagePage = 0x01;
+            rid.usUsage     = 0x02;
+            rid.dwFlags     = 0;
+            rid.hwndTarget  = pWd->hWnd;
 
-        GetWindowRect( pWd->hWnd, &rect );
-        ClipCursor( &rect );
-        SetCursorPos( static_cast<int>( rect.left + 0.5f * pWd->Width ),
-                      static_cast<int>( rect.top + 0.5f * pWd->Height ) );
+            if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
+            {
+                AB_LOG( B33::Core::Debug::Error, L"Couldn't register raw input" );
+            }
 
-        break;
-    }
+            ShowCursor( FALSE );
 
-    case WM_KILLFOCUS:
-    case WM_DESTROY:
-    {
-        RAWINPUTDEVICE rid;
+            GetWindowRect( pWd->hWnd, &rect );
+            ClipCursor( &rect );
+            SetCursorPos( static_cast<int>( rect.left + 0.5f * pWd->Width ),
+                          static_cast<int>( rect.top + 0.5f * pWd->Height ) );
 
-        rid.usUsagePage = 0x01;
-        rid.usUsage     = 0x02;
-        rid.dwFlags     = RIDEV_REMOVE;
-        rid.hwndTarget  = NULL;
-
-        if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
-            throw AB_EXCEPT( "Couldn't register raw input" );
-
-        ShowCursor( TRUE );
-        ClipCursor( NULL );
-        break;
-    }
-
-    case WM_INPUT:
-    {
-        static ::std::vector<BYTE> vRi = {};
-        AbInputStruct              is  = {};
-        UINT                       cbSize;
-        UINT                       cbSize2;
-        size_t                     uRiRead;
-        RAWINPUT                  *pRi;
-        RECT                       clientPos;
-
-        if ( GetRawInputBuffer( NULL, &cbSize, sizeof( RAWINPUTHEADER ) ) != 0 )
-        {
-            AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
             break;
         }
 
-        if ( cbSize == 0 )
-            break;
-
-        cbSize2 = cbSize * 16;
-        if ( vRi.size() < cbSize2 )
-            vRi.resize( cbSize2 );
-
-        uRiRead = GetRawInputBuffer( reinterpret_cast<PRAWINPUT>( &vRi[ 0 ] ), &cbSize2, sizeof( RAWINPUTHEADER ) );
-        if ( uRiRead == static_cast<UINT>( -1 ) )
+        case WM_KILLFOCUS:
+        case WM_DESTROY:
         {
-            AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
+            RAWINPUTDEVICE rid;
+
+            rid.usUsagePage = 0x01;
+            rid.usUsage     = 0x02;
+            rid.dwFlags     = RIDEV_REMOVE;
+            rid.hwndTarget  = NULL;
+
+            if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
+                throw AB_EXCEPT( "Couldn't register raw input" );
+
+            ShowCursor( TRUE );
+            ClipCursor( NULL );
             break;
         }
 
-        pWd->LastEvent |= EAbWindowEvents::Input;
-
-        is.Event = EAbInputEvents::AbMotion;
-        pRi      = reinterpret_cast<PRAWINPUT>( &vRi[ 0 ] );
-        for ( size_t i = 0; i < uRiRead; ++i, pRi = NEXTRAWINPUTBLOCK( pRi ) )
+        case WM_INPUT:
         {
-            auto &mouse = pRi->data.mouse;
+            static ::std::vector<BYTE> vRi = {};
+            AbInputStruct              is  = {};
+            UINT                       cbSize;
+            UINT                       cbSize2;
+            size_t                     uRiRead;
+            RAWINPUT                  *pRi;
+            RECT                       clientPos;
 
-            if ( pRi->header.dwType != RIM_TYPEMOUSE || mouse.usFlags & MOUSE_MOVE_ABSOLUTE )
-                continue;
+            if ( GetRawInputBuffer( NULL, &cbSize, sizeof( RAWINPUTHEADER ) ) != 0 )
+            {
+                AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
+                break;
+            }
 
-            is.Mouse.MouseX += mouse.lLastX;
-            is.Mouse.MouseY += mouse.lLastY;
+            if ( cbSize == 0 )
+                break;
+
+            cbSize2 = cbSize * 16;
+            if ( vRi.size() < cbSize2 )
+                vRi.resize( cbSize2 );
+
+            uRiRead = GetRawInputBuffer( reinterpret_cast<PRAWINPUT>( &vRi[ 0 ] ), &cbSize2, sizeof( RAWINPUTHEADER ) );
+            if ( uRiRead == static_cast<UINT>( -1 ) )
+            {
+                AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
+                break;
+            }
+
+            pWd->LastEvent |= EAbWindowEvents::Input;
+
+            is.Event = EAbInputEvents::AbMotion;
+            pRi      = reinterpret_cast<PRAWINPUT>( &vRi[ 0 ] );
+            for ( size_t i = 0; i < uRiRead; ++i, pRi = NEXTRAWINPUTBLOCK( pRi ) )
+            {
+                auto &mouse = pRi->data.mouse;
+
+                if ( pRi->header.dwType != RIM_TYPEMOUSE || mouse.usFlags & MOUSE_MOVE_ABSOLUTE )
+                    continue;
+
+                is.Mouse.MouseX += mouse.lLastX;
+                is.Mouse.MouseY += mouse.lLastY;
+            }
+
+            pWd->InputStruct.push( is );
+
+            GetWindowRect( this->GetWindowDesc()->hWnd, &clientPos );
+
+            SetCursorPos( clientPos.left + ( ( clientPos.right - clientPos.left ) * 0.5f ),
+                          clientPos.top + ( ( clientPos.bottom - clientPos.top ) * 0.5f ) );
+
+            return;
         }
 
-        pWd->InputStruct.push( is );
-
-        GetWindowRect( this->GetWindowDesc()->hWnd, &clientPos );
-
-        SetCursorPos( clientPos.left + ( ( clientPos.right - clientPos.left ) * 0.5f ),
-                      clientPos.top + ( ( clientPos.bottom - clientPos.top ) * 0.5f ) );
-
-        return;
-    }
-
-    case WM_MOUSEMOVE:
-        return;
+        case WM_MOUSEMOVE:
+            return;
     }
 
     return BasicWin32WindowPolicy::OnUpdate( uMsg, wParam, lParam );

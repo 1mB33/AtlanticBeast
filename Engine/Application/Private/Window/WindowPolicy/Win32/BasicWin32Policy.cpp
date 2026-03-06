@@ -1,7 +1,8 @@
 #ifdef _WIN32
 
-#    include "Window/BaseWindowDetails.h"
 #    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
+
+#    include "Window/BaseWindowDetails.h"
 
 namespace B33::App
 {
@@ -122,99 +123,99 @@ void BasicWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
     switch ( uMsg )
     {
-    case WM_KEYDOWN:
-    {
-        // UserInput class handles continuos press by itself, no need to spam
-        WORD wKeyFlags = HIWORD( lParam );
-        if ( wKeyFlags & KF_REPEAT )
+        case WM_KEYDOWN:
         {
+            // UserInput class handles continuos press by itself, no need to spam
+            WORD wKeyFlags = HIWORD( lParam );
+            if ( wKeyFlags & KF_REPEAT )
+            {
+                return;
+            }
+
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+
+            is.Event          = EAbInputEvents::AbKeyPress;
+            is.Keyboard.KeyId = LOWORD( wKeyFlags );
+
+            m_pWindowDesc->InputStruct.push( is );
             return;
         }
 
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+        case WM_KEYUP:
+        {
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-        is.Event          = EAbInputEvents::AbKeyPress;
-        is.Keyboard.KeyId = LOWORD( wKeyFlags );
+            is.Event          = EAbInputEvents::AbKeyRelease;
+            is.Keyboard.KeyId = LOWORD( HIWORD( lParam ) );
 
-        m_pWindowDesc->InputStruct.push( is );
-        return;
-    }
+            m_pWindowDesc->InputStruct.push( is );
+            return;
+        }
 
-    case WM_KEYUP:
-    {
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+        case WM_LBUTTONDOWN:
+        {
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-        is.Event          = EAbInputEvents::AbKeyRelease;
-        is.Keyboard.KeyId = LOWORD( HIWORD( lParam ) );
+            is.Event             = EAbInputEvents::AbButtonPress;
+            is.MouseButton.KeyId = 1;
 
-        m_pWindowDesc->InputStruct.push( is );
-        return;
-    }
+            m_pWindowDesc->InputStruct.push( is );
+            break;
+        }
 
-    case WM_LBUTTONDOWN:
-    {
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+        case WM_RBUTTONDOWN:
+        {
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-        is.Event             = EAbInputEvents::AbButtonPress;
-        is.MouseButton.KeyId = 1;
+            is.Event             = EAbInputEvents::AbButtonPress;
+            is.MouseButton.KeyId = 3;
 
-        m_pWindowDesc->InputStruct.push( is );
-        break;
-    }
+            m_pWindowDesc->InputStruct.push( is );
+            break;
+        }
 
-    case WM_RBUTTONDOWN:
-    {
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+        case WM_MBUTTONDOWN:
+        {
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-        is.Event             = EAbInputEvents::AbButtonPress;
-        is.MouseButton.KeyId = 3;
+            is.Event             = EAbInputEvents::AbButtonPress;
+            is.MouseButton.KeyId = 2;
 
-        m_pWindowDesc->InputStruct.push( is );
-        break;
-    }
+            m_pWindowDesc->InputStruct.push( is );
+            break;
+        }
 
-    case WM_MBUTTONDOWN:
-    {
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+        case WM_MOUSEMOVE:
+        {
+            AbInputStruct is = {};
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
 
-        is.Event             = EAbInputEvents::AbButtonPress;
-        is.MouseButton.KeyId = 2;
+            is.Event        = EAbInputEvents::AbMotion;
+            is.Mouse.MouseX = GET_X_LPARAM( lParam );
+            is.Mouse.MouseY = GET_Y_LPARAM( lParam );
 
-        m_pWindowDesc->InputStruct.push( is );
-        break;
-    }
+            m_pWindowDesc->InputStruct.push( is );
 
-    case WM_MOUSEMOVE:
-    {
-        AbInputStruct is = {};
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Input;
+            return;
+        }
 
-        is.Event        = EAbInputEvents::AbMotion;
-        is.Mouse.MouseX = GET_X_LPARAM( lParam );
-        is.Mouse.MouseY = GET_Y_LPARAM( lParam );
+        case WM_SIZE:
+            m_pWindowDesc->Width  = LOWORD( lParam );
+            m_pWindowDesc->Height = HIWORD( lParam );
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Resize;
+            break;
 
-        m_pWindowDesc->InputStruct.push( is );
+        case WM_CLOSE:
+            m_pWindowDesc->LastEvent |= EAbWindowEvents::Destroy;
+            break;
 
-        return;
-    }
-
-    case WM_SIZE:
-        m_pWindowDesc->Width  = LOWORD( lParam );
-        m_pWindowDesc->Height = HIWORD( lParam );
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Resize;
-        break;
-
-    case WM_CLOSE:
-        m_pWindowDesc->LastEvent |= EAbWindowEvents::Destroy;
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 }
 

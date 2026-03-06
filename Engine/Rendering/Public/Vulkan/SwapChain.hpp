@@ -2,9 +2,9 @@
 #define AB_SWAPCHAIN_H
 
 #include "Instance.hpp"
-#include "WrapperHardware.hpp"
-#include "WrapperAdapter.hpp"
 #include "Window/WindowDesc.hpp"
+#include "WrapperAdapter.hpp"
+#include "WrapperHardware.hpp"
 
 namespace B33::Rendering
 {

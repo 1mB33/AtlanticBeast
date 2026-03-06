@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/SwapChain.hpp"
+
+#include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/WrapperHardware.hpp"
@@ -15,20 +15,25 @@ Swapchain::Swapchain( shared_ptr<const Instance>        pInst,
                       shared_ptr<const HardwareWrapper> hw,
                       shared_ptr<const AdapterWrapper>  da,
                       shared_ptr<const WindowDesc>      wd )
-    : m_pInstance( pInst )
-    , m_pHardware( hw )
-    , m_pDeviceAdapter( da )
-    , m_pWindowDesc( wd )
-    , m_Surface( CreateSurface( m_pInstance, m_pWindowDesc ) )
-    , m_Capabilities( GetCapabilitesInternal( m_pHardware, m_Surface ) )
-    , m_Extent( GetExtentInternal( m_Capabilities, m_pWindowDesc ) )
-    , m_uImageCount( GetImageCountInternal( m_Capabilities ) )
-    , m_SurfaceFormat( PickFormat( m_pHardware, m_Surface ) )
-    , m_PresentMode( PickPresentationMode( m_pHardware, m_Surface ) )
-    , m_pSwapChain( CreateSwapChain(
-          m_pDeviceAdapter, m_Surface, m_Capabilities, m_Extent, m_uImageCount, m_SurfaceFormat, m_PresentMode ) )
-    , m_uCurrentImageIndex( 0 )
-    , m_SwapChainImages( CreateSwapChainImages( m_pDeviceAdapter, m_pSwapChain, m_uImageCount ) )
+  : m_pInstance( pInst )
+  , m_pHardware( hw )
+  , m_pDeviceAdapter( da )
+  , m_pWindowDesc( wd )
+  , m_Surface( CreateSurface( m_pInstance, m_pWindowDesc ) )
+  , m_Capabilities( GetCapabilitesInternal( m_pHardware, m_Surface ) )
+  , m_Extent( GetExtentInternal( m_Capabilities, m_pWindowDesc ) )
+  , m_uImageCount( GetImageCountInternal( m_Capabilities ) )
+  , m_SurfaceFormat( PickFormat( m_pHardware, m_Surface ) )
+  , m_PresentMode( PickPresentationMode( m_pHardware, m_Surface ) )
+  , m_pSwapChain( CreateSwapChain( m_pDeviceAdapter,
+                                   m_Surface,
+                                   m_Capabilities,
+                                   m_Extent,
+                                   m_uImageCount,
+                                   m_SurfaceFormat,
+                                   m_PresentMode ) )
+  , m_uCurrentImageIndex( 0 )
+  , m_SwapChainImages( CreateSwapChainImages( m_pDeviceAdapter, m_pSwapChain, m_uImageCount ) )
 {
     AB_LOG( Core::Debug::Info, L"Creating a swapchain!" );
 }
@@ -211,8 +216,10 @@ VkPresentModeKHR Swapchain::PickPresentationMode( shared_ptr<const HardwareWrapp
     THROW_IF_FAILED(
         vkGetPhysicalDeviceSurfacePresentModesKHR( physicalDeviceHandle, surface, &uPresentModeCount, NULL ) );
     vPresentModes.resize( uPresentModeCount );
-    THROW_IF_FAILED( vkGetPhysicalDeviceSurfacePresentModesKHR(
-        physicalDeviceHandle, surface, &uPresentModeCount, &vPresentModes[ 0 ] ) );
+    THROW_IF_FAILED( vkGetPhysicalDeviceSurfacePresentModesKHR( physicalDeviceHandle,
+                                                                surface,
+                                                                &uPresentModeCount,
+                                                                &vPresentModes[ 0 ] ) );
     AB_ASSERT( !vPresentModes.empty() );
 
     for ( const auto &mode : vPresentModes )

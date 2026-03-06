@@ -9,7 +9,7 @@ class alignas( 8 ) ColorProperty // : public IMaterialProperties
 {
   public:
     ColorProperty()
-        : m_uColors( {} )
+      : m_uColors( {} )
     {
     }
 

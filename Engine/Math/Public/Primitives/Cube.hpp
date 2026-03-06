@@ -2,6 +2,7 @@
 #define AB_CUBE_H
 
 #include "B33Math.hpp"
+
 #include "Primitives/Object.hpp"
 
 namespace B33::Math
@@ -11,8 +12,8 @@ class alignas( 16 ) Cube : public WorldObject
 {
   public:
     Cube()
-        : WorldObject()
-        , m_fHalfSize( .5f, .5f, .5f )
+      : WorldObject()
+      , m_fHalfSize( .5f, .5f, .5f )
     {
     }
 

@@ -10,10 +10,10 @@ class GPUBuffer
 {
   public:
     GPUBuffer()
-        : m_pDeviceAdapter( nullptr )
-        , m_DeviceMemory( VK_NULL_HANDLE )
-        , m_Buffer( VK_NULL_HANDLE )
-        , m_uSizeInBytes( 0 )
+      : m_pDeviceAdapter( nullptr )
+      , m_DeviceMemory( VK_NULL_HANDLE )
+      , m_Buffer( VK_NULL_HANDLE )
+      , m_uSizeInBytes( 0 )
     {
     }
 
@@ -21,10 +21,10 @@ class GPUBuffer
                ::VkDeviceMemory                                          deviceMemory,
                ::VkBuffer                                                buffer,
                ::size_t                                                  sizeInBytes )
-        : m_pDeviceAdapter( da )
-        , m_DeviceMemory( deviceMemory )
-        , m_Buffer( buffer )
-        , m_uSizeInBytes( sizeInBytes )
+      : m_pDeviceAdapter( da )
+      , m_DeviceMemory( deviceMemory )
+      , m_Buffer( buffer )
+      , m_uSizeInBytes( sizeInBytes )
     {
     }
 
@@ -50,10 +50,10 @@ class GPUBuffer
     GPUBuffer &operator=( const GPUBuffer &other ) noexcept = delete;
 
     GPUBuffer( GPUBuffer &&other ) noexcept
-        : m_pDeviceAdapter( std::move( other.m_pDeviceAdapter ) )
-        , m_DeviceMemory( other.m_DeviceMemory )
-        , m_Buffer( other.m_Buffer )
-        , m_uSizeInBytes( other.m_uSizeInBytes )
+      : m_pDeviceAdapter( std::move( other.m_pDeviceAdapter ) )
+      , m_DeviceMemory( other.m_DeviceMemory )
+      , m_Buffer( other.m_Buffer )
+      , m_uSizeInBytes( other.m_uSizeInBytes )
     {
         other.m_DeviceMemory = VK_NULL_HANDLE;
         other.m_Buffer       = VK_NULL_HANDLE;

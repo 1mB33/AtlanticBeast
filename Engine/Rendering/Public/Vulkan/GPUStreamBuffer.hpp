@@ -10,8 +10,8 @@ class GPUStreamBuffer : public ::B33::Rendering::GPUBuffer
 {
   public:
     GPUStreamBuffer()
-        : GPUBuffer()
-        , m_pData( nullptr )
+      : GPUBuffer()
+      , m_pData( nullptr )
     {
     }
 
@@ -20,7 +20,7 @@ class GPUStreamBuffer : public ::B33::Rendering::GPUBuffer
                      VkBuffer                                buffer,
                      void                                   *pData,
                      size_t                                  sizeInBytes )
-        : GPUBuffer( da, deviceMemory, buffer, sizeInBytes )
+      : GPUBuffer( da, deviceMemory, buffer, sizeInBytes )
     {
     }
 
@@ -44,8 +44,8 @@ class GPUStreamBuffer : public ::B33::Rendering::GPUBuffer
     GPUStreamBuffer &operator=( const GPUStreamBuffer &other ) noexcept = delete;
 
     GPUStreamBuffer( GPUStreamBuffer &&other ) noexcept
-        : GPUBuffer( std::move( other ) )
-        , m_pData( other.m_pData )
+      : GPUBuffer( std::move( other ) )
+      , m_pData( other.m_pData )
     {
     }
 

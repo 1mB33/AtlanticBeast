@@ -21,7 +21,7 @@ class BEAST_API Exception : public ::std::exception
     constexpr Exception( const char ( &pszMessage )[ uMesLen ],
                          int32_t uLine                               = 0,
                          const char ( &pszFileName )[ uFileNameLen ] = nullptr ) noexcept
-        : Exception( pszMessage, uMesLen, uLine, pszFileName, uFileNameLen )
+      : Exception( pszMessage, uMesLen, uLine, pszFileName, uFileNameLen )
     {
     }
 

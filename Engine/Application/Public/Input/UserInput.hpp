@@ -1,11 +1,11 @@
 #ifndef AB_USER_INPUT_H
 #define AB_USER_INPUT_H
 
-#include "Window/WindowDesc.hpp"
-#include "Window/WindowListener.hpp"
 #include "Input/Bind.h"
 #include "Input/KeyList.hpp"
 #include "Input/MouseButtonList.hpp"
+#include "Window/WindowDesc.hpp"
+#include "Window/WindowListener.hpp"
 
 namespace B33::App
 {

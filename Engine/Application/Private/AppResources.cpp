@@ -1,6 +1,6 @@
-#include "B33App.h"
-
 #include "AppResources.hpp"
+
+#include "B33App.h"
 
 namespace B33::App
 {
@@ -11,8 +11,8 @@ using namespace ::B33::Core::Debug;
 
 // ---------------------------------------------------------------------------------------------------------------------
 AppResources::AppResources()
-    : m_wstrExePathW( InternalGetExecutablePathW() )
-    , m_strExePathA( InternalGetExecutablePathA() )
+  : m_wstrExePathW( InternalGetExecutablePathW() )
+  , m_strExePathA( InternalGetExecutablePathA() )
 {
 }
 

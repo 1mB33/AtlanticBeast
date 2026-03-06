@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/RTXHardware.hpp"
+
+#include "B33Rendering.hpp"
 
 namespace B33::Rendering
 {
@@ -9,7 +9,7 @@ using namespace std;
 
 // RTXHardware // ------------------------------------------------------------------------------------------------------
 RTXHardware::RTXHardware( shared_ptr<const Instance> pInstance )
-    : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
+  : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
 {
     AB_LOG( Core::Debug::Info, L"Creating a hardware!" );
 }

@@ -6,7 +6,8 @@
 namespace B33::App
 {
 
-template <class Map> class IBindMap
+template <class Map>
+class IBindMap
 {
   public:
     IBindMap() = default;

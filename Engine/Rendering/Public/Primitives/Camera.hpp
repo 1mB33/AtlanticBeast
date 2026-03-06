@@ -14,7 +14,7 @@ class Camera : public ::B33::Math::WorldObject
 {
   public:
     Camera( float fFov = 90.f )
-        : m_fFov( fFov )
+      : m_fFov( fFov )
     {
     }
 

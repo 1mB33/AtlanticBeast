@@ -2,6 +2,7 @@
 #define AB_CUBES_H
 
 #include "B33Math.hpp"
+
 #include "Primitives/Objects.hpp"
 
 namespace B33::Math
@@ -11,8 +12,8 @@ class Cubes : public WorldObjects
 {
   public:
     Cubes()
-        : WorldObjects()
-        , m_vHalfSizes( {} )
+      : WorldObjects()
+      , m_vHalfSizes( {} )
     {
         m_vHalfSizes.reserve( 64 * 64 * 64 );
     }

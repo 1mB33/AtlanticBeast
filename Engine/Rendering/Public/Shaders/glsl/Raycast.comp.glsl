@@ -1,9 +1,9 @@
 #version 450
 #extension GL_ARB_shading_language_include : enable
-#include "Math.glsl"
-#include "Random.glsl"
 #include "Colors.glsl"
 #include "Common.glsl"
+#include "Math.glsl"
+#include "Random.glsl"
 
 struct Voxel
 {
@@ -258,8 +258,14 @@ bool ShadowRay( in const vec3 from, in const vec3 to, in const int maxDistance )
     float      dummyDistance;
     int        dummyHitType;
 
-    return MarchTheRay(
-        from + dir * EPSILON, dir, maxDistance, dummyHit, dummyIndex, dummyDistance, dummyNormal, dummyHitType );
+    return MarchTheRay( from + dir * EPSILON,
+                        dir,
+                        maxDistance,
+                        dummyHit,
+                        dummyIndex,
+                        dummyDistance,
+                        dummyNormal,
+                        dummyHitType );
 }
 
 // --------------------------------------------------------------------------------------------------------------------

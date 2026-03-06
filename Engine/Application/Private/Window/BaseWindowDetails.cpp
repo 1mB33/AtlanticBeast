@@ -26,7 +26,7 @@ static unordered_map<string, DisplayCount> Displays = {};
 
     if ( Displays.find( pszDisplayName ) == Displays.end() )
     {
-        Displays[ pszDisplayName ] = DisplayCount{ nullptr, 0 };
+        Displays[ pszDisplayName ] = DisplayCount { nullptr, 0 };
     }
 
     auto &mapped = Displays[ pszDisplayName ];

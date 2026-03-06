@@ -1,8 +1,11 @@
 #include "Math.hlsl"
 
 // --------------------------------------------------------------------------------------------------------------------
-bool IntersectRayAABB(
-    in const float3 ro, in const float3 rd, in const float3 halfSize, out float tMin, out float tMax )
+bool IntersectRayAABB( in const float3 ro,
+                       in const float3 rd,
+                       in const float3 halfSize,
+                       out float       tMin,
+                       out float       tMax )
 {
     const float3 invDir   = 1.0 / rd;
     const float3 t0s      = ( -halfSize - ro ) * invDir;

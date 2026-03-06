@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/Memory.hpp"
+
+#include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 
@@ -13,8 +13,8 @@ using namespace B33::Core::Debug;
 
 // --------------------------------------------------------------------------------------------------------------------
 Memory::Memory( shared_ptr<const HardwareWrapper> pHardware, shared_ptr<const AdapterWrapper> pAdapter )
-    : m_pHardware( pHardware )
-    , m_pAdapter( pAdapter )
+  : m_pHardware( pHardware )
+  , m_pAdapter( pAdapter )
 {
 }
 
@@ -41,8 +41,9 @@ shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer( const size_t uSizeInBy
     VkMemoryAllocateInfo allocInfo = {};
     allocInfo.sType                = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize       = memRequirements.size;
-    allocInfo.memoryTypeIndex      = FindMemoryType(
-        memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
+    allocInfo.memoryTypeIndex =
+        FindMemoryType( memRequirements.memoryTypeBits,
+                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
 
     THROW_IF_FAILED( vkAllocateMemory( da, &allocInfo, NULL, &voxelBufferMemory ) );
     THROW_IF_FAILED( vkBindBufferMemory( da, voxelBuffer, voxelBufferMemory, 0 ) );
@@ -100,8 +101,12 @@ void Memory::UploadOnStreamBuffer( const void *pUpload, const size_t uUploadSize
 
     if ( buffer->GetDataPointer() == nullptr )
     {
-        THROW_IF_FAILED( vkMapMemory(
-            da, buffer->GetMemoryHandle(), 0, buffer->GetSizeInBytes(), 0, buffer->GetPtrToDataPointer() ) );
+        THROW_IF_FAILED( vkMapMemory( da,
+                                      buffer->GetMemoryHandle(),
+                                      0,
+                                      buffer->GetSizeInBytes(),
+                                      0,
+                                      buffer->GetPtrToDataPointer() ) );
     }
     memcpy( buffer->GetDataPointer(), pUpload, uUploadSize );
     if ( updateDescSets )

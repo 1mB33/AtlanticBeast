@@ -1,10 +1,10 @@
 #ifndef AB_MEMORY_H
 #define AB_MEMORY_H
 
-#include "WrapperHardware.hpp"
-#include "WrapperAdapter.hpp"
 #include "GPUBuffer.hpp"
 #include "GPUStreamBuffer.hpp"
+#include "WrapperAdapter.hpp"
+#include "WrapperHardware.hpp"
 
 namespace B33::Rendering
 {
@@ -22,23 +22,21 @@ struct UploadDescriptor
 
     template <typename U, typename L, class T>
     UploadDescriptor( U &&bufferInfo, L &&write, EUploadType type, const T &buffer )
-        : BufferInfo( ::std::forward<U>( bufferInfo ) )
-        , Write( ::std::forward<L>( write ) )
-        , Type( type )
+      : BufferInfo( ::std::forward<U>( bufferInfo ) )
+      , Write( ::std::forward<L>( write ) )
+      , Type( type )
     {
         Write.pBufferInfo = &BufferInfo;
         Buffer            = buffer;
     }
 
-    ~UploadDescriptor()
-    {
-    }
+    ~UploadDescriptor() {}
 
   public:
     UploadDescriptor( const UploadDescriptor &other ) noexcept
-        : BufferInfo( other.BufferInfo )
-        , Write( other.Write )
-        , Type( other.Type )
+      : BufferInfo( other.BufferInfo )
+      , Write( other.Write )
+      , Type( other.Type )
     {
         Write.pBufferInfo = &BufferInfo;
         Buffer            = other.Buffer;
@@ -56,9 +54,9 @@ struct UploadDescriptor
     }
 
     UploadDescriptor( UploadDescriptor &&other ) noexcept
-        : BufferInfo( std::move( other.BufferInfo ) )
-        , Write( std::move( other.Write ) )
-        , Type( other.Type )
+      : BufferInfo( std::move( other.BufferInfo ) )
+      , Write( std::move( other.Write ) )
+      , Type( other.Type )
     {
         Write.pBufferInfo = &BufferInfo;
         Buffer            = std::move( other.Buffer );

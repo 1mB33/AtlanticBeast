@@ -208,8 +208,11 @@ bool MarchTheRay( in const float3 ro,
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-float SoftShadowRay(
-    in const float2 uv, in const float3 from, in const float3 to, in const float3 normal, in const int maxDistance )
+float SoftShadowRay( in const float2 uv,
+                     in const float3 from,
+                     in const float3 to,
+                     in const float3 normal,
+                     in const int    maxDistance )
 {
     float3 dir = normalize( to - from );
     float3 dummyHit;

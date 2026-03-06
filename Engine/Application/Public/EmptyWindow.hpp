@@ -15,13 +15,13 @@ class EmptyWindow : public ::B33::App::IBaseWindow<EmptyWindow>
 
   public:
     explicit EmptyWindow( ::std::wstring wstrName = L"EmptyWindow" )
-        : IBaseWindow<EmptyWindow>( CreateWindowDesc( std::move( wstrName ), 1200, 700 ) )
+      : IBaseWindow<EmptyWindow>( CreateWindowDesc( std::move( wstrName ), 1200, 700 ) )
     {
     }
 
     template <class U>
     explicit EmptyWindow( U &&windowDesc )
-        : IBaseWindow<EmptyWindow>( ::std::forward<U>( windowDesc ) )
+      : IBaseWindow<EmptyWindow>( ::std::forward<U>( windowDesc ) )
     {
     }
 

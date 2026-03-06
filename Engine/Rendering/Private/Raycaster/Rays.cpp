@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Raycaster/Rays.hpp"
+
+#include "B33Rendering.hpp"
 
 namespace B33::Rendering
 {
@@ -59,21 +59,21 @@ HitResult MarchTheRay( const IWorldGrid *vg, const Vec3 &ro, const Vec3 &rd, siz
 
             switch ( lastStepAxis )
             {
-            case X:
-                result.Normal    = Vec3( -float( step.x ), 0.0f, 0.0f );
-                result.fDistance = tMax.x - tDelta.x;
-                break;
-            case Y:
-                result.Normal    = Vec3( 0.0f, -float( step.y ), 0.0f );
-                result.fDistance = tMax.y - tDelta.y;
-                break;
-            case Z:
-                result.Normal    = Vec3( 0.0f, 0.0f, -float( step.z ) );
-                result.fDistance = tMax.z - tDelta.z;
-                break;
-            default:
-                result.Normal    = Vec3( 0.f, 0.f, 0.f );
-                result.fDistance = tMax.z - tDelta.z;
+                case X:
+                    result.Normal    = Vec3( -float( step.x ), 0.0f, 0.0f );
+                    result.fDistance = tMax.x - tDelta.x;
+                    break;
+                case Y:
+                    result.Normal    = Vec3( 0.0f, -float( step.y ), 0.0f );
+                    result.fDistance = tMax.y - tDelta.y;
+                    break;
+                case Z:
+                    result.Normal    = Vec3( 0.0f, 0.0f, -float( step.z ) );
+                    result.fDistance = tMax.z - tDelta.z;
+                    break;
+                default:
+                    result.Normal    = Vec3( 0.f, 0.f, 0.f );
+                    result.fDistance = tMax.z - tDelta.z;
             }
 
             return result;

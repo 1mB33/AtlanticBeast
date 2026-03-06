@@ -16,7 +16,7 @@ class Instance
     Instance &operator=( const Instance & ) noexcept = delete;
 
     Instance( Instance &&other ) noexcept
-        : m_Instance( other.m_Instance )
+      : m_Instance( other.m_Instance )
     {
         other.m_Instance = VK_NULL_HANDLE;
     }

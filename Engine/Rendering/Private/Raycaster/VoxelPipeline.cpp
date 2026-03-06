@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Raycaster/VoxelPipeline.hpp"
+
+#include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/GPUStreamBuffer.hpp"
@@ -15,15 +15,15 @@ using namespace ::B33::Math;
 
 // ---------------------------------------------------------------------------------------------------------------------
 VoxelPipeline::VoxelPipeline( ::std::shared_ptr<const HardwareWrapper> hw, ::std::shared_ptr<const AdapterWrapper> da )
-    : m_pHardware( hw )
-    , m_pDeviceAdapter( da )
-    , m_DescriptorLayout( CreateDescriptorLayout( m_pDeviceAdapter ) )
-    , m_DescriptorPool( CreateDescriptorPool( m_pDeviceAdapter ) )
-    , m_DescriptorSet( CreateDescriptorSet( m_pDeviceAdapter, m_DescriptorPool, m_DescriptorLayout ) )
-    , m_PipelineLayout( CreatePipelineLayout( m_pDeviceAdapter, m_DescriptorLayout ) )
-    , m_ShaderModule( LoadShader( m_pDeviceAdapter,
-                                  App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" ) )
-    , m_ComputePipeline( CreateComputePipeline( m_pDeviceAdapter, m_PipelineLayout, m_ShaderModule ) )
+  : m_pHardware( hw )
+  , m_pDeviceAdapter( da )
+  , m_DescriptorLayout( CreateDescriptorLayout( m_pDeviceAdapter ) )
+  , m_DescriptorPool( CreateDescriptorPool( m_pDeviceAdapter ) )
+  , m_DescriptorSet( CreateDescriptorSet( m_pDeviceAdapter, m_DescriptorPool, m_DescriptorLayout ) )
+  , m_PipelineLayout( CreatePipelineLayout( m_pDeviceAdapter, m_DescriptorLayout ) )
+  , m_ShaderModule(
+        LoadShader( m_pDeviceAdapter, App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" ) )
+  , m_ComputePipeline( CreateComputePipeline( m_pDeviceAdapter, m_PipelineLayout, m_ShaderModule ) )
 {
     AB_LOG( Core::Debug::Info, L"Creating a pipeline!" );
 }
@@ -82,8 +82,10 @@ UploadDescriptor VoxelPipeline::GetUniformUploadDescriptor( const shared_ptr<GPU
     write.descriptorCount      = 1;
     write.pBufferInfo          = &bufferInfo;
 
-    return UploadDescriptor(
-        std::move( bufferInfo ), std::move( write ), UploadDescriptor::EUploadType::StreamBuffer, outBuffer );
+    return UploadDescriptor( std::move( bufferInfo ),
+                             std::move( write ),
+                             UploadDescriptor::EUploadType::StreamBuffer,
+                             outBuffer );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

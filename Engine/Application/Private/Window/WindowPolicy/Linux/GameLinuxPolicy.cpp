@@ -66,12 +66,12 @@ uint32_t GameLinuxWindowPolicy::OnUpdate( WindowDesc *pWd, XEvent &event )
 
     switch ( event.type )
     {
-    case FocusIn:
-        HandleFocusIn( pWd );
-        return 1;
+        case FocusIn:
+            HandleFocusIn( pWd );
+            return 1;
 
-    case MotionNotify:
-        return 0;
+        case MotionNotify:
+            return 0;
     }
 
     return BasicLinuxWindowPolicy::OnUpdate( pWd, event );

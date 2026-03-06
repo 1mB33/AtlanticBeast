@@ -2,8 +2,9 @@
 #define AB_CONTROLLER_OBJECT_H
 
 #include "B33Core.h"
-#include "Input/UserInput.hpp"
+
 #include "Bind.h"
+#include "Input/UserInput.hpp"
 
 namespace B33::App
 {
@@ -26,7 +27,7 @@ class ControllerObject
     ControllerObject &operator=( const ControllerObject & ) noexcept = delete;
 
     ControllerObject( ControllerObject &&other ) noexcept
-        : m_pUserInput( std::move( other.m_pUserInput ) )
+      : m_pUserInput( std::move( other.m_pUserInput ) )
     {
     }
 

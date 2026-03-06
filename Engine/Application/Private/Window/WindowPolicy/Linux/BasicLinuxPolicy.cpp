@@ -3,10 +3,10 @@
 
 #    include "B33Core.h"
 
-#    include "X11ErrorHandling.hpp"
+#    include "AppStatus.hpp"
 #    include "Window/BaseWindowDetails.h"
 #    include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
-#    include "AppStatus.hpp"
+#    include "X11ErrorHandling.hpp"
 
 namespace B33::App
 {
@@ -154,74 +154,74 @@ uint32_t BasicLinuxWindowPolicy::OnUpdate( WindowDesc *pWd, XEvent &event )
 
     switch ( event.type )
     {
-    case KeyPress:
-        HandleKey( pWd, event, AbKeyPress );
-        return 0;
+        case KeyPress:
+            HandleKey( pWd, event, AbKeyPress );
+            return 0;
 
-    case KeyRelease:
-        HandleKey( pWd, event, AbKeyRelease );
-        return 0;
+        case KeyRelease:
+            HandleKey( pWd, event, AbKeyRelease );
+            return 0;
 
-    case ButtonPress:
-        HandleMouseButton( pWd, event, AbButtonPress );
-        return 0;
+        case ButtonPress:
+            HandleMouseButton( pWd, event, AbButtonPress );
+            return 0;
 
-    case ButtonRelease:
-        HandleMouseButton( pWd, event, AbButtonRelease );
-        return 0;
+        case ButtonRelease:
+            HandleMouseButton( pWd, event, AbButtonRelease );
+            return 0;
 
-    case MotionNotify:
-        int    rootX, rootY, dummy;
-        Window dummyWindow;
+        case MotionNotify:
+            int    rootX, rootY, dummy;
+            Window dummyWindow;
 
-        XQueryPointer( display,
-                       window,
-                       &dummyWindow,
-                       &dummyWindow,
-                       &rootX,
-                       &rootY,
-                       &dummy,
-                       &dummy,
-                       reinterpret_cast<unsigned int *>( &dummy ) );
+            XQueryPointer( display,
+                           window,
+                           &dummyWindow,
+                           &dummyWindow,
+                           &rootX,
+                           &rootY,
+                           &dummy,
+                           &dummy,
+                           reinterpret_cast<unsigned int *>( &dummy ) );
 
-        pWd->LastEvent |= Input;
-        AbInputStruct is;
+            pWd->LastEvent |= Input;
+            AbInputStruct is;
 
-        is.Event        = AbMotion;
-        is.Mouse.MouseX = static_cast<int32_t>( rootX );
-        is.Mouse.MouseY = static_cast<int32_t>( rootY );
+            is.Event        = AbMotion;
+            is.Mouse.MouseX = static_cast<int32_t>( rootX );
+            is.Mouse.MouseY = static_cast<int32_t>( rootY );
 
-        pWd->InputStruct.push( is );
-        return 0;
+            pWd->InputStruct.push( is );
+            return 0;
 
-    case Expose:
-        pWd->LastEvent |= Resize;
-        pWd->Width  = event.xexpose.width;
-        pWd->Height = event.xexpose.height;
-        return 1;
-
-    case ConfigureNotify:
-        pWd->LastEvent |= Resize;
-        pWd->Height = event.xconfigure.height;
-        pWd->Width  = event.xconfigure.width;
-        return 1;
-
-    case ClientMessage:
-        Atom wmDeleteMessage;
-
-        if ( event.xclient.window != window )
+        case Expose:
+            pWd->LastEvent |= Resize;
+            pWd->Width  = event.xexpose.width;
+            pWd->Height = event.xexpose.height;
             return 1;
 
-        if ( ( wmDeleteMessage = XInternAtom( display, "WM_DELETE_WINDOW", 1 ) ) == None )
-            break;
+        case ConfigureNotify:
+            pWd->LastEvent |= Resize;
+            pWd->Height = event.xconfigure.height;
+            pWd->Width  = event.xconfigure.width;
+            return 1;
 
-        if ( static_cast<Atom>( event.xclient.data.l[ 0 ] ) == wmDeleteMessage )
-        {
-            pWd->LastEvent |= Destroy;
+        case ClientMessage:
+            Atom wmDeleteMessage;
+
+            if ( event.xclient.window != window )
+                return 1;
+
+            if ( ( wmDeleteMessage = XInternAtom( display, "WM_DELETE_WINDOW", 1 ) ) == None )
+                break;
+
+            if ( static_cast<Atom>( event.xclient.data.l[ 0 ] ) == wmDeleteMessage )
+            {
+                pWd->LastEvent |= Destroy;
+                return 0;
+            }
+
             return 0;
-        }
-
-        return 0;
     }
 
     return 0;

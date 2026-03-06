@@ -13,24 +13,24 @@ struct alignas( 16 ) Vec3
 
   public:
     Vec3()
-        : x( 0.f )
-        , y( 0.f )
-        , z( 0.f )
+      : x( 0.f )
+      , y( 0.f )
+      , z( 0.f )
     {
     }
 
     explicit Vec3( float x, float y = 0., float z = 0.f )
-        : x( x )
-        , y( y )
-        , z( z )
+      : x( x )
+      , y( y )
+      , z( z )
     {
     }
 
     template <typename Vector>
     explicit Vec3( Vector v )
-        : x( v.x )
-        , y( v.y )
-        , z( v.z )
+      : x( v.x )
+      , y( v.y )
+      , z( v.z )
     {
     }
 
@@ -50,7 +50,8 @@ struct alignas( 16 ) Vec3
     float _Padding;
 
   public:
-    template <typename Vector> static Vec3 ToVec( Vector v )
+    template <typename Vector>
+    static Vec3 ToVec( Vector v )
     {
         return Vec3( v.x, v.y, v.z );
     }
@@ -84,23 +85,23 @@ struct alignas( 16 ) iVec3
 
   public:
     iVec3()
-        : x( 0 )
-        , y( 0 )
-        , z( 0 )
+      : x( 0 )
+      , y( 0 )
+      , z( 0 )
     {
     }
 
     explicit iVec3( int32_t x, int32_t y = 0, int32_t z = 0 )
-        : x( x )
-        , y( y )
-        , z( z )
+      : x( x )
+      , y( y )
+      , z( z )
     {
     }
 
     explicit iVec3( Vec3 v )
-        : x( v.x )
-        , y( v.y )
-        , z( v.z )
+      : x( v.x )
+      , y( v.y )
+      , z( v.z )
     {
     }
 
@@ -120,7 +121,8 @@ struct alignas( 16 ) iVec3
     int32_t _Padding;
 
   public:
-    template <typename Vector> static iVec3 ToVec( Vector v )
+    template <typename Vector>
+    static iVec3 ToVec( Vector v )
     {
         return iVec3( v.x, v.y, v.z );
     }

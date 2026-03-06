@@ -1,6 +1,6 @@
-#include "B33Rendering.hpp"
-
 #include "Vulkan/Instance.hpp"
+
+#include "B33Rendering.hpp"
 
 namespace B33::Rendering
 {
@@ -9,7 +9,7 @@ using namespace std;
 
 // Instance // ---------------------------------------------------------------------------------------------------------
 Instance::Instance()
-    : m_Instance( CreateInstance() )
+  : m_Instance( CreateInstance() )
 {
     AB_LOG( B33::Core::Debug::Info, L"Creating an instance!" );
 }

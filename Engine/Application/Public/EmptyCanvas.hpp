@@ -1,9 +1,9 @@
 #ifndef AB_EMPTYCANVAS_H
 #define AB_EMPTYCANVAS_H
 
+#include "Input/UserInput.hpp"
 #include "Window/IBaseWindow.hpp"
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
-#include "Input/UserInput.hpp"
 
 namespace B33::App
 {
@@ -23,14 +23,14 @@ class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdat
 
   public:
     explicit EmptyCanvas( std::wstring wstrWindowName = L"EmptyCanvas" )
-        : IBaseWindow<EmptyCanvas, GamePolicy>( CreateWindowDesc( std::move( wstrWindowName ), 1200, 700 ) )
-        , m_pInput( ::std::make_shared<UserInput>( this->GetWindowDesc() ) )
+      : IBaseWindow<EmptyCanvas, GamePolicy>( CreateWindowDesc( std::move( wstrWindowName ), 1200, 700 ) )
+      , m_pInput( ::std::make_shared<UserInput>( this->GetWindowDesc() ) )
     {
     }
 
     template <class U>
     explicit EmptyCanvas( U &&desc )
-        : IBaseWindow<EmptyCanvas, GamePolicy>( ::std::forward<U>( desc ) )
+      : IBaseWindow<EmptyCanvas, GamePolicy>( ::std::forward<U>( desc ) )
     {
     }
 

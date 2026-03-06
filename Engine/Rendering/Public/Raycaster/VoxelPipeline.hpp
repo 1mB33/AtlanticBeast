@@ -1,10 +1,10 @@
 #ifndef AB_PIPELINE_H
 #define AB_PIPELINE_H
 
-#include "Vulkan/GPUStreamBuffer.hpp"
-#include "Vulkan/SwapChain.hpp"
-#include "Vulkan/Memory.hpp"
 #include "Raycaster/PushConstants.hpp"
+#include "Vulkan/GPUStreamBuffer.hpp"
+#include "Vulkan/Memory.hpp"
+#include "Vulkan/SwapChain.hpp"
 
 namespace B33::Rendering
 {
@@ -30,8 +30,9 @@ class VoxelPipeline
     BEAST_API ~VoxelPipeline();
 
   public:
-    BEAST_API UploadDescriptor GetUniformUploadDescriptor(
-        const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer, const EShaderResource &sr );
+    BEAST_API UploadDescriptor
+    GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
+                                const EShaderResource                                      &sr );
 
     BEAST_API void LoadImage( VkImage image );
 

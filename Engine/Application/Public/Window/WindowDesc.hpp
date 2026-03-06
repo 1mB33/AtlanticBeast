@@ -2,8 +2,8 @@
 #define AB_WINDOW_DESC_H
 
 #include "ExportImport.h"
-#include "WindowEvents.h"
 #include "Input/InputEvents.h"
+#include "WindowEvents.h"
 
 /**
  * Struct that contains all the handles and information about the window.
@@ -31,7 +31,8 @@ struct WindowDesc
 #endif // !_WIN32
 };
 
-template <class U> WindowDesc CreateWindowDesc( U &&wstrName, int32_t width, int32_t height )
+template <class U>
+WindowDesc CreateWindowDesc( U &&wstrName, int32_t width, int32_t height )
 {
     WindowDesc wd = {};
 

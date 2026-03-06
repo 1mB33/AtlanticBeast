@@ -1,14 +1,14 @@
 #ifndef AB_RENDERER_H
 #define AB_RENDERER_H
 
+#include "Primitives/Camera.hpp"
+#include "Raycaster/VoxelGrid.hpp"
+#include "Raycaster/VoxelPipeline.hpp"
+#include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Instance.hpp"
 #include "Vulkan/MinimalHardware.hpp"
-#include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/SwapChain.hpp"
-#include "Raycaster/VoxelGrid.hpp"
-#include "Raycaster/VoxelPipeline.hpp"
-#include "Primitives/Camera.hpp"
 
 namespace B33::Rendering
 {
@@ -19,19 +19,19 @@ class Renderer
 
   public:
     Renderer()
-        : m_pInstance( nullptr )
-        , m_pHardware( nullptr )
-        , m_pDeviceAdapter( nullptr )
-        , m_pWindowDesc( nullptr )
-        , m_pSwapChain( nullptr )
-        , m_pMemory( nullptr )
-        , m_pPipeline( nullptr )
-        , m_pVoxelGrid( nullptr )
-        , m_CommandPool( VK_NULL_HANDLE )
-        , m_uCurrentFrame( 0 )
-        , m_vFrames()
-        , m_uStorageBuffersFlags( 0 )
-        , m_bDebugMode( false )
+      : m_pInstance( nullptr )
+      , m_pHardware( nullptr )
+      , m_pDeviceAdapter( nullptr )
+      , m_pWindowDesc( nullptr )
+      , m_pSwapChain( nullptr )
+      , m_pMemory( nullptr )
+      , m_pPipeline( nullptr )
+      , m_pVoxelGrid( nullptr )
+      , m_CommandPool( VK_NULL_HANDLE )
+      , m_uCurrentFrame( 0 )
+      , m_vFrames()
+      , m_uStorageBuffersFlags( 0 )
+      , m_bDebugMode( false )
     {
     }
 
