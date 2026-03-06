@@ -54,6 +54,7 @@ PointerAlignment:                   Right
 
 SortIncludes:                       CaseSensitive
 IncludeBlocks:                      Regroup
+IncludeIsMainRegex:                 ''
 IncludeCategories:
   - Regex:                          '^"B33'
     Priority:                       1
