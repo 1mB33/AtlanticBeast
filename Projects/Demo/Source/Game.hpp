@@ -1,16 +1,10 @@
 #pragma once
 
-#include "B33Core.h"
-
-#include "Primitives/ColoredCube.hpp"
-#include "Raycaster/VoxelGrid.hpp"
-#include "Vec3.hpp"
-
+#include <Jolt/Jolt.h>
 #include <Jolt/Core/Factory.h>
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Core/TempAllocator.h>
 #include <Jolt/Geometry/AABox.h>
-#include <Jolt/Jolt.h>
 #include <Jolt/Math/Real.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
@@ -22,6 +16,12 @@
 #include <Jolt/Physics/PhysicsSettings.h>
 #include <Jolt/Physics/PhysicsSystem.h>
 #include <Jolt/RegisterTypes.h>
+
+#include "B33Core.h"
+
+#include "Primitives/ColoredCube.hpp"
+#include "Raycaster/VoxelGrid.hpp"
+#include "Vec3.hpp"
 
 namespace Layers
 {
