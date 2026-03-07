@@ -23,6 +23,8 @@ class BEAST_API GameLinuxWindowPolicy : public BasicLinuxWindowPolicy
 
     void HandleFocusIn( WindowDesc *pWd );
 
+    void HandleFocusOut( WindowDesc *pWd );
+
   private:
     int m_OpCode;
 };

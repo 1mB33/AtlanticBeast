@@ -1,3 +1,5 @@
+#include <X11/X.h>
+#include <X11/Xlib.h>
 #ifdef __linux__
 
 #    include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
@@ -69,7 +71,9 @@ uint32_t GameLinuxWindowPolicy::OnUpdate( WindowDesc *pWd, XEvent &event )
         case FocusIn:
             HandleFocusIn( pWd );
             return 1;
-
+        case FocusOut:
+            HandleFocusOut( pWd );
+            return 1;
         case MotionNotify:
             return 0;
     }
@@ -136,6 +140,18 @@ void GameLinuxWindowPolicy::HandleFocusIn( WindowDesc *pWd )
     XDefineCursor( pDisplay, window, invisibleCursor );
 
     XWarpPointer( pDisplay, None, window, 0, 0, 0, 0, pWd->Width * 0.5f, pWd->Height * 0.5f );
+
+    XFlush( pDisplay );
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+void GameLinuxWindowPolicy::HandleFocusOut( WindowDesc *pWd )
+{
+    Display *pDisplay = pWd->pDisplayHandle;
+    Window   window   = pWd->WindowHandle;
+
+    XUngrabPointer( pDisplay, CurrentTime );
+    XUndefineCursor( pDisplay, window );
 
     XFlush( pDisplay );
 }
