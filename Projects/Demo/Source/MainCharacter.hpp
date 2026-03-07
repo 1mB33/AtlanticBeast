@@ -1,23 +1,24 @@
 #pragma once
 
 #include "Game.hpp"
+#include "B33Math.hpp"
 #include "B33Rendering.hpp"
+
 #include "Input/ControllerObject.hpp"
 #include "Input/UserInput.hpp"
 #include "Operations.hpp"
 #include "Primitives/Camera.hpp"
-#include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/Rays.hpp"
-#include "B33Math.hpp"
+#include "Raycaster/VoxelGrid.hpp"
 
 class PaperCharacter : public ::B33::Rendering::Camera
 {
   public:
     template <class... U>
     explicit PaperCharacter( U &&...args )
-        : m_g( nullptr )
-        , Camera( ::std::forward<U>( args )... )
-        , m_fSpeed( m_fWalk )
+      : m_g( nullptr )
+      , Camera( ::std::forward<U>( args )... )
+      , m_fSpeed( m_fWalk )
     {
     }
 
@@ -32,7 +33,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     {
         B33::Math::Vec3 rot     = this->GetRotation();
         B33::Math::Vec3 lookDir = B33::Math::Normalize(
-            B33::Math::RotateY( B33::Math::RotateX( B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
+            B33::Math::RotateY( B33::Math::RotateX( B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         B33::Rendering::HitResult hr =
             ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
@@ -47,7 +48,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     {
         B33::Math::Vec3 rot     = this->GetRotation();
         B33::Math::Vec3 lookDir = ::B33::Math::Normalize(
-            ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
+            ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         B33::Rendering::HitResult hr =
             ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
@@ -60,7 +61,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     {
         B33::Math::Vec3 rot     = this->GetRotation();
         B33::Math::Vec3 lookDir = ::B33::Math::Normalize(
-            ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
+            ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         ::B33::Rendering::HitResult hr =
             ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
@@ -72,7 +73,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     void MoveForwardBackwards( const float fDelta, float fDir )
     {
         B33::Math::Rot3 rot     = this->GetRotation();
-        B33::Math::Vec3 lookDir = ::B33::Math::RotateY( ::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.y );
+        B33::Math::Vec3 lookDir = ::B33::Math::RotateY( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.y );
 
         this->AddPositon( lookDir * fDir * ( fDelta * m_fSpeed ) );
     }
@@ -81,14 +82,14 @@ class PaperCharacter : public ::B33::Rendering::Camera
     {
         B33::Math::Rot3 rot = this->GetRotation();
         B33::Math::Vec3 lookDir =
-            ::B33::Math::RotateY( ::B33::Math::Vec3{ 0.f, 0.f, 1.f }, rot.y + ( 90.f * ::B33::Math::AB_DEG_TO_RAD ) );
+            ::B33::Math::RotateY( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.y + ( 90.f * ::B33::Math::AB_DEG_TO_RAD ) );
 
         this->AddPositon( lookDir * fDir * ( fDelta * m_fSpeed ) );
     }
 
     void MouseMove( const float, int32_t fX, int32_t fY )
     {
-        this->AddRotation( B33::Math::Rot3{ 0.00085f * fY, 0.00085f * fX, 0.f } );
+        this->AddRotation( B33::Math::Rot3 { 0.00085f * fY, 0.00085f * fX, 0.f } );
     }
 
     void Move( const float fDelta, const B33::Math::Vec3 &dir )
@@ -132,9 +133,9 @@ class PaperController : public B33::App::ControllerObject
 
     AB_DECL_ACTION( PaperCharacter, MoveForwardBackwards, MoveBack, -0.1f );
 
-    AB_DECL_ACTION( PaperCharacter, Move, MoveUp, B33::Math::Vec3{ 0.f, -0.1f, 0.f } );
+    AB_DECL_ACTION( PaperCharacter, Move, MoveUp, B33::Math::Vec3 { 0.f, -0.1f, 0.f } );
 
-    AB_DECL_ACTION( PaperCharacter, Move, MoveDown, B33::Math::Vec3{ 0.f, 0.1f, 0.f } );
+    AB_DECL_ACTION( PaperCharacter, Move, MoveDown, B33::Math::Vec3 { 0.f, 0.1f, 0.f } );
 
     AB_DECL_ACTION( PaperCharacter, PlaceBlock, PlaceBlock );
 
@@ -157,8 +158,8 @@ class PlayablePaper
 {
   public:
     PlayablePaper()
-        : m_Character( ::std::make_shared<PaperCharacter>() )
-        , m_Controller()
+      : m_Character( ::std::make_shared<PaperCharacter>() )
+      , m_Controller()
     {
     }
 

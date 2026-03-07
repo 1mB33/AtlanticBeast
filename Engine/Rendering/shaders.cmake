@@ -11,11 +11,11 @@ function(compileShadersGlslang SHADERS_PATH COMPILE_TARGET)
     IF (SHADERS)
 
         FOREACH(SHADER_PATH ${SHADERS})
-        
+
             GET_FILENAME_COMPONENT(SHADER_NAME ${SHADER_PATH} NAME_WE)
             SET(SPIRV_PATH "${SHADER_BIN_DIR}/${SHADER_NAME}.spv")
             MESSAGE("COMMAND glslangValidator -e main -V -I${SHADER_SRC_DIR}/ ${SHADER_PATH} -o ${SPIRV_PATH}")
-        
+
             ADD_CUSTOM_COMMAND(
                 OUTPUT ${SPIRV_PATH}
                 COMMAND glslangValidator -e main -V -I${SHADER_SRC_DIR}/ ${SHADER_PATH} -o ${SPIRV_PATH}
@@ -23,9 +23,9 @@ function(compileShadersGlslang SHADERS_PATH COMPILE_TARGET)
                 COMMENT "Compiling shader ${SHADER_NAME}"
                 VERBATIM
             )
-        
+
             LIST(APPEND COMPILED_SHADERS ${SPIRV_PATH})
-        
+
         ENDFOREACH()
 
         ADD_CUSTOM_TARGET(${COMPILE_TARGET} ALL
@@ -54,11 +54,11 @@ function(compileShadersDXC DXC_PATH SHADERS_PATH COMPILE_TARGET)
     IF (SHADERS)
 
         FOREACH(SHADER_PATH ${SHADERS})
-        
+
             GET_FILENAME_COMPONENT(SHADER_NAME ${SHADER_PATH} NAME_WE)
             SET(SPIRV_PATH "${SHADER_BIN_DIR}/${SHADER_NAME}.spv")
             MESSAGE("COMMAND ${DXC_PATH} -T cs_6_0 -E main -spirv ${SHADER_PATH} -Fo ${SPIRV_PATH}")
-        
+
             ADD_CUSTOM_COMMAND(
                 OUTPUT ${SPIRV_PATH}
                 COMMAND ${DXC_PATH} -T cs_6_0 -E main -spirv -D VULKAN ${SHADER_PATH} -Fo ${SPIRV_PATH}
@@ -66,9 +66,9 @@ function(compileShadersDXC DXC_PATH SHADERS_PATH COMPILE_TARGET)
                 COMMENT "Compiling shader ${SHADER_NAME}"
                 VERBATIM
             )
-        
+
             LIST(APPEND COMPILED_SHADERS ${SPIRV_PATH})
-        
+
         ENDFOREACH()
 
         ADD_CUSTOM_TARGET(${COMPILE_TARGET} ALL
@@ -83,5 +83,3 @@ function(compileShadersDXC DXC_PATH SHADERS_PATH COMPILE_TARGET)
     ENDIF()
 
 endfunction()
-
-

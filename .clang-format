@@ -52,7 +52,7 @@ SpaceBeforeRangeBasedForLoopColon:  true
 ReferenceAlignment:                 Right
 PointerAlignment:                   Right
 
-SortIncludes:                       CaseSensitive
+SortIncludes:                       Never
 IncludeBlocks:                      Regroup
 IncludeIsMainRegex:                 '^$'
 IncludeCategories:

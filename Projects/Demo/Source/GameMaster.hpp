@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Game.hpp"
+#include "B33Math.hpp"
 #include "B33Rendering.hpp"
+
 #include "Input/ControllerObject.hpp"
-#include "Input/UserInput.hpp"
 #include "Input/KeyList.hpp"
+#include "Input/UserInput.hpp"
 #include "Primitives/Camera.hpp"
-#include "Raycaster/VoxelGrid.hpp"
 #include "Raycaster/Rays.hpp"
 #include "Raycaster/Renderer.hpp"
-#include "B33Math.hpp"
+#include "Raycaster/VoxelGrid.hpp"
 
 class GameMaster
 {
   public:
     explicit GameMaster( std::shared_ptr<B33::Rendering::Renderer> pRenderer )
-        : m_pRenderer( pRenderer )
+      : m_pRenderer( pRenderer )
     {
     }
 
@@ -44,8 +45,8 @@ class GameMasterPuppet
 {
   public:
     explicit GameMasterPuppet( std::shared_ptr<B33::Rendering::Renderer> pRenderer )
-        : m_pGm( ::std::make_shared<GameMaster>( pRenderer ) )
-        , m_Controller()
+      : m_pGm( ::std::make_shared<GameMaster>( pRenderer ) )
+      , m_Controller()
     {
     }
 

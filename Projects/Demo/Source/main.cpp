@@ -1,9 +1,9 @@
 #include "Game.hpp"
+#include "B33Core.h"
+
+#include "EmptyCanvas.hpp"
 #include "GameMaster.hpp"
 #include "MainCharacter.hpp"
-
-#include "B33Core.h"
-#include "EmptyCanvas.hpp"
 #include "Raycaster/Renderer.hpp"
 #include "Synchronization/DeltaTime.hpp"
 #include "Synchronization/FpsLimiter.hpp"
@@ -45,8 +45,8 @@ int main()
     render->SetCurrentCamera( static_pointer_cast<Camera>( pc ) );
     render->Initialize( renderWindow.GetWindowDesc(), g->GetWorld() );
 
-    pc->SetRotation( Vec3{ -0.5f, 1.25f, 0.f } );
-    pc->SetPositon( Vec3{ 14.5f, 2.25f, 25.f } );
+    pc->SetRotation( Vec3 { -0.5f, 1.25f, 0.f } );
+    pc->SetPositon( Vec3 { 14.5f, 2.25f, 25.f } );
     pc->SetGrid( g );
 
     g->Initialize();

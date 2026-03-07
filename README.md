@@ -19,7 +19,7 @@ Project is separated into several libraries. For demonstration purpose a Minecra
 - Rendering (Vulkan C++ wrappers, rendering logic, shaders and tracer renderer)
 
 
-Project uses voxel traversal algorithm implementation based on 
+Project uses voxel traversal algorithm implementation based on
 'A Fast Voxel Traversal Algorithm for Ray Tracing'
 by John Amanatides and Andrew Woo (1987) and Blinn-Phong Reflection lighting.
 
@@ -29,7 +29,7 @@ Features a low-latency input system and a fully custom Vulkan-based compute rend
 
 # About demo
 
-In demo we can play a simple minecraft lookalike game where you can place and remove blocks. Uses Jolt Physics to enhance the experience and showcase functionality. 
+In demo we can play a simple minecraft lookalike game where you can place and remove blocks. Uses Jolt Physics to enhance the experience and showcase functionality.
 
 
 # Demos physics showcase
@@ -48,8 +48,8 @@ In demo we can play a simple minecraft lookalike game where you can place and re
 <p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen03.jpg?raw=true" alt="Screenshot" width="49%"/>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/readmeSrceenshot_6.jpg?raw=true" alt="Screenshot" width="49%"/>
-</p>																
-<p float="left">													
+</p>
+<p float="left">
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen05.jpg?raw=true" alt="Screenshot" width="49%"/>
   <img src="https://github.com/Im-Bee/AtlanticBeast/blob/master/Docs/DocScreen06.jpg?raw=true" alt="Screenshot" width="49%"/>
 </p>
@@ -85,7 +85,7 @@ Build dependencies:
 
 ## Linux
 
-### Get necessary libraries and headers 
+### Get necessary libraries and headers
 
 ### Arch linux based systems
 ``` sh
@@ -115,7 +115,7 @@ Run project from a bin directory that is created in root directory of the projec
 Download Vulkan SDK from a place like [LunarG](https://vulkan.lunarg.com/sdk/home).
 If you are using Visual Studio make sure to have CMake support installed.
 
-### Visual Studio 
+### Visual Studio
 
 Open root directory of the project with Visual Studio. Wait for cmake to build. Select AtlBee project as a build target.
 Prefer release build.
@@ -130,5 +130,3 @@ cmake --build .
 ```
 
 Run project from a bin directory that is created in root directory of the project **Bin/TARGET_ARCH/BUILD_TYPE/**.
-
-

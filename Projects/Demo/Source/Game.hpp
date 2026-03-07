@@ -18,6 +18,7 @@
 #include <Jolt/Math/Real.h>
 
 #include "B33Core.h"
+
 #include "Primitives/ColoredCube.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 #include "Vec3.hpp"
@@ -36,13 +37,13 @@ class ObjectLayerPairFilterImpl : public JPH::ObjectLayerPairFilter
     {
         switch ( inObject1 )
         {
-        case Layers::NON_MOVING:
-            return inObject2 == Layers::MOVING; // Non moving only collides with moving
-        case Layers::MOVING:
-            return true; // Moving collides with everything
-        default:
-            JPH_ASSERT( false );
-            return false;
+            case Layers::NON_MOVING:
+                return inObject2 == Layers::MOVING; // Non moving only collides with moving
+            case Layers::MOVING:
+                return true; // Moving collides with everything
+            default:
+                JPH_ASSERT( false );
+                return false;
         }
     }
 };
@@ -80,13 +81,13 @@ class BPLayerInterfaceImpl final : public JPH::BroadPhaseLayerInterface
     {
         switch ( (JPH::BroadPhaseLayer::Type)inLayer )
         {
-        case (JPH::BroadPhaseLayer::Type)BroadPhaseLayers::NON_MOVING:
-            return "NON_MOVING";
-        case (JPH::BroadPhaseLayer::Type)BroadPhaseLayers::MOVING:
-            return "MOVING";
-        default:
-            JPH_ASSERT( false );
-            return "INVALID";
+            case (JPH::BroadPhaseLayer::Type)BroadPhaseLayers::NON_MOVING:
+                return "NON_MOVING";
+            case (JPH::BroadPhaseLayer::Type)BroadPhaseLayers::MOVING:
+                return "MOVING";
+            default:
+                JPH_ASSERT( false );
+                return "INVALID";
         }
     }
 #endif // JPH_EXTERNAL_PROFILE || JPH_PROFILE_ENABLED
@@ -102,13 +103,13 @@ class ObjectVsBroadPhaseLayerFilterImpl : public JPH::ObjectVsBroadPhaseLayerFil
     {
         switch ( inLayer1 )
         {
-        case Layers::NON_MOVING:
-            return inLayer2 == BroadPhaseLayers::MOVING;
-        case Layers::MOVING:
-            return true;
-        default:
-            JPH_ASSERT( false );
-            return false;
+            case Layers::NON_MOVING:
+                return inLayer2 == BroadPhaseLayers::MOVING;
+            case Layers::MOVING:
+                return true;
+            default:
+                JPH_ASSERT( false );
+                return false;
         }
     }
 };
@@ -117,15 +118,15 @@ class Physics
 {
   public:
     Physics( uint32_t uMaxBodies = 512 )
-        : m_uMaxBodies( uMaxBodies )
-        , m_uMaxBodiesPairs( uMaxBodies )
-        , m_uMaxContacts( uMaxBodies * 2 )
-        , m_Bpii()
-        , m_Ovbplfi()
-        , m_Olpfi()
-        , m_pTempAlloc( nullptr )
-        , m_pJobSystem( nullptr )
-        , m_pPhysicsSystem( nullptr )
+      : m_uMaxBodies( uMaxBodies )
+      , m_uMaxBodiesPairs( uMaxBodies )
+      , m_uMaxContacts( uMaxBodies * 2 )
+      , m_Bpii()
+      , m_Ovbplfi()
+      , m_Olpfi()
+      , m_pTempAlloc( nullptr )
+      , m_pJobSystem( nullptr )
+      , m_pPhysicsSystem( nullptr )
     {
     }
 
@@ -170,8 +171,9 @@ class Physics
 
         m_pTempAlloc = ::std::make_unique<JPH::TempAllocatorImpl>( m_uAllocatedMem );
 
-        m_pJobSystem = ::std::make_unique<JPH::JobSystemThreadPool>(
-            JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, ::std::thread::hardware_concurrency() - 1 );
+        m_pJobSystem = ::std::make_unique<JPH::JobSystemThreadPool>( JPH::cMaxPhysicsJobs,
+                                                                     JPH::cMaxPhysicsBarriers,
+                                                                     ::std::thread::hardware_concurrency() - 1 );
 
         m_pPhysicsSystem = ::std::make_unique<JPH::PhysicsSystem>();
         m_pPhysicsSystem->Init( m_uMaxBodies, 0, m_uMaxBodiesPairs, m_uMaxContacts, m_Bpii, m_Ovbplfi, m_Olpfi );
@@ -300,7 +302,7 @@ class World : public ::B33::Rendering::CubeWorld
 {
   public:
     World()
-        : ::B33::Rendering::CubeWorld()
+      : ::B33::Rendering::CubeWorld()
     {
         GenerateFloor();
     }
@@ -329,10 +331,10 @@ class InWorldCube
 {
   public:
     InWorldCube( const ::std::shared_ptr<World> &pW, size_t uC, ::std::weak_ptr<Physics> pP, JPH::BodyID physicsId )
-        : m_pWorld( pW )
-        , m_pPhysics( pP )
-        , m_uCubeId( uC )
-        , m_PhysicsId( std::move( physicsId ) )
+      : m_pWorld( pW )
+      , m_pPhysics( pP )
+      , m_uCubeId( uC )
+      , m_PhysicsId( std::move( physicsId ) )
     {
     }
 
@@ -404,9 +406,9 @@ class Game
 {
   public:
     Game()
-        : m_pWorld( ::std::make_shared<World>() )
-        , m_vInWorldObjects()
-        , m_pPhysics( ::std::make_shared<Physics>() )
+      : m_pWorld( ::std::make_shared<World>() )
+      , m_vInWorldObjects()
+      , m_pPhysics( ::std::make_shared<Physics>() )
     {
     }
 

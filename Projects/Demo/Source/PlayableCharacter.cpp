@@ -6,7 +6,7 @@ void PlayablePaper::BindToInput( const ::std::shared_ptr<B33::App::UserInput> &p
 
     AbInputBind ib;
     ib.Type     = EAbBindType::Keyboard;
-    ib.Keyboard = AbKeyboardBind{ EAbOnState::Continuous, B33::App::AB_KEY_A };
+    ib.Keyboard = AbKeyboardBind { EAbOnState::Continuous, B33::App::AB_KEY_A };
 
     pInput->Bind( m_Character.get(), &m_Controller, &PaperController::UseActionMoveLeft, nullptr, ib );
 
