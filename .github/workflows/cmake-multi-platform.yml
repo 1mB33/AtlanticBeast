@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-  
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -53,7 +53,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
-        fetch-depth: 0 
+        fetch-depth: 0
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -78,9 +78,9 @@ jobs:
         sudo cp lib/libdxcompiler.so* /usr/local/lib/
         sudo cp lib/libdxil.so /usr/local/lib/
         sudo ldconfig
-      
+
     - name: Cache Vulkan SDK (Windows)
-      if: runner.os == 'Windows' 
+      if: runner.os == 'Windows'
       id: cache-vulkan
       uses: actions/cache@v4
       with:
@@ -91,26 +91,26 @@ jobs:
       if: runner.os == 'Windows' && steps.cache-vulkan.outputs.cache-hit != 'true'
       id: vulkan
       run: |
-          curl -L https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe --output VulkanSDK.exe 
+          curl -L https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe --output VulkanSDK.exe
           ./VulkanSDK.exe --accept-licenses --default-answer --confirm-command install
       shell: pwsh
-      
+
     - name: Add Vulkan SDK to PATH (Windows)
       if: runner.os == 'Windows'
       run: |
         $vulkan_sdk_path = "C:\\VulkanSDK"
         $vulkan_version = Get-ChildItem -Path $vulkan_sdk_path -Directory | Sort-Object Name | Select-Object -Last 1
         $vulkan_version_path = "$vulkan_sdk_path\\$($vulkan_version.Name)"
-        
+
         Write-Output "Vulkan SDK Version Path: $vulkan_version_path"
         Write-Output "Vulkan Include Directory Path: $vulkan_version_path\\include"
         Write-Output "Vulkan Library Path: $vulkan_version_path\\lib\\vulkan-1.lib"
         Write-Output "Vulkan Bin Path: $vulkan_version_path\\Bin"
-        
+
         Add-Content -Path $env:GITHUB_ENV -Value "VULKAN_SDK=$vulkan_version_path"
         Add-Content -Path $env:GITHUB_ENV -Value "VULKAN_INCLUDE_DIR=$vulkan_version_path\\include"
         Add-Content -Path $env:GITHUB_ENV -Value "VULKAN_LIBRARY=$vulkan_version_path\\lib\\vulkan-1.lib"
-        
+
         Add-Content -Path $env:GITHUB_ENV -Value "PATH=$vulkan_version_path\\;$vulkan_version_path\\lib;$vulkan_version_path\\bin;$env:PATH"
       shell: pwsh
 
@@ -118,9 +118,9 @@ jobs:
       run: |
         cat $env:GITHUB_ENV
       shell: pwsh
-      
+
     - name: Configure CMake
-      run: 
+      run:
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
@@ -129,7 +129,7 @@ jobs:
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-      
+
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).

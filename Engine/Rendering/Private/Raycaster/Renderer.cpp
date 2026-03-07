@@ -29,7 +29,7 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd, shared_ptr<IWorldGri
     m_pWindowDesc    = wd;
     m_pVoxelGrid     = vg;
     m_pPipeline      = make_shared<VoxelPipeline>( static_pointer_cast<HardwareWrapper>( m_pHardware ),
-                                              static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ) );
+                                                   static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ) );
 
     AB_LOG( Core::Debug::Info, L"Initializing command pool" );
     m_CommandPool = CreateCommandPool( static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
@@ -517,10 +517,10 @@ void Renderer::RecreateSwapChain()
                                            m_pWindowDesc );
 
     m_vFrames       = make_unique<FramesArray>( std::move( CreateFrameResources( m_pDeviceAdapter,
-                                                                           m_pMemory,
-                                                                           m_pVoxelGrid,
-                                                                           m_CommandPool,
-                                                                           Frame::MAX_FRAMES_IN_FLIGHT ) ) );
+                                                                                 m_pMemory,
+                                                                                 m_pVoxelGrid,
+                                                                                 m_CommandPool,
+                                                                                 Frame::MAX_FRAMES_IN_FLIGHT ) ) );
     m_uCurrentFrame = 0;
     AB_LOG( Core::Debug::Info, L"Swapchain recreated" );
 }
