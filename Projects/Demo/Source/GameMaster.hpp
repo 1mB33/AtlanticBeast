@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Game.hpp"
 #include "B33Math.hpp"
 #include "B33Rendering.hpp"
 
-#include "Game.hpp"
 #include "Input/ControllerObject.hpp"
 #include "Input/KeyList.hpp"
 #include "Input/UserInput.hpp"

@@ -1,7 +1,7 @@
+#include "Game.hpp"
 #include "B33Core.h"
 
 #include "EmptyCanvas.hpp"
-#include "Game.hpp"
 #include "GameMaster.hpp"
 #include "MainCharacter.hpp"
 #include "Raycaster/Renderer.hpp"
