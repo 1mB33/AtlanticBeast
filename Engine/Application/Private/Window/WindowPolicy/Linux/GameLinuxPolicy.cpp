@@ -1,8 +1,8 @@
-#include <X11/X.h>
-#include <X11/Xlib.h>
 #ifdef __linux__
-
 #    include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
+
+#    include <X11/X.h>
+#    include <X11/Xlib.h>
 
 namespace B33::App
 {
