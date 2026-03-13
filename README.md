@@ -81,7 +81,7 @@ Build dependencies:
   - CMake or Visual Studio with CMake support
   - Compiler that supports at least C++17
   - Windows or Linux operating system
-  - X11 libraries [Only on linux]
+  - X11 libraries (linux only)
 
 ## Linux
 
