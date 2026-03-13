@@ -13,10 +13,10 @@ Realtime GPU Voxel Ray Tracer using Vulkan Compute & DDA Traversal.<br>
 Project is separated into several libraries. For demonstration purpose a Minecraft alike demo game was created.
 
 ### Engine libraries:
-- Core (Fundamental functionality, including debugging tools, correct choosen system headers)
-- Application (Windows managment, input managment, etc.)
-- Math (Vector math, primitive geometrical structures, matrices and vector struckts)
-- Rendering (Vulkan C++ wrappers, rendering logic, shaders and tracer renderer)
+- Core (fundamental functionality, debugging tools, OS headers)
+- Application (windows managment, input managment, application managment)
+- Math (vector math, geometric primitives, matrices and vector implementations)
+- Rendering (vulkan C++ wrappers, rendering logic, shaders)
 
 
 Project uses voxel traversal algorithm implementation based on
