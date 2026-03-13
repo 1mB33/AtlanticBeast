@@ -29,7 +29,7 @@ Features a low-latency input system and a fully custom Vulkan-based compute rend
 
 # About demo
 
-In demo we can play a simple minecraft lookalike game where you can place and remove blocks. Uses Jolt Physics to enhance the experience and showcase functionality.
+In demo we can play a simple minecraft lookalike game where you can place and remove blocks. Uses Jolt Physics to showcase the rendering pipeline and test performance.
 
 
 # Demos physics showcase
