@@ -89,12 +89,12 @@ Build dependencies:
 
 ### Arch linux based systems
 ``` sh
-sudo pacman -S --needed cmake make libx11 libxrandr libxinerama libxcursor libxi vulkan-tools vulkan-headers vulkan-utility-libraries glslang spirv-tools
+sudo pacman -S --needed cmake make libx11 libxext libgcc libxi vulkan-tools vulkan-icd-loader vulkan-headers vulkan-utility-libraries glslang spirv-tools directx-shader-compiler
 ```
 
 ### Ubuntu/Debian based systems
 ``` sh
-sudo apt update && sudo apt install -y cmake make libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev vulkan-tools libvulkan-dev vulkan-utility-libraries-dev glslang-tools spirv-tools
+sudo apt install -y cmake make libx11-dev libxext-dev gcc libxi-dev vulkan-tools libvulkan-dev libvulkan1 glslang-tools spirv-tools
 ```
 
 ### Download and build the project
