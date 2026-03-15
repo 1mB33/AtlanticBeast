@@ -67,7 +67,7 @@ jobs:
       uses: awalsh128/cache-apt-pkgs-action@v1.5.3
       with:
         # Space delimited list of packages to install. Version can be specified optionally using APT command syntax of <name>=<version> (e.g. xdot=1.2-2).
-        packages: cmake make libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev vulkan-tools libvulkan-dev vulkan-utility-libraries-dev glslang-tools spirv-tools
+        packages: cmake make libx11-dev libxext-dev gcc libxi-dev vulkan-tools libvulkan-dev libvulkan1 glslang-tools spirv-tools
 
     - name: Get DirectX shaders compiler (Linux)
       if: runner.os == 'Linux'
