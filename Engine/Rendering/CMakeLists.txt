@@ -49,7 +49,7 @@ ELSE()
 
     IF (NOT CMAKE_BUILD_TYPE=="Debug")
 
-        TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "-O2")
+        TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "-O3")
 
     ENDIF()
 
