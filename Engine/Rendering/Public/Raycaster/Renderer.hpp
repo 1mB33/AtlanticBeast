@@ -24,7 +24,7 @@ class Renderer
       , m_pWindowDesc( nullptr )
       , m_pSwapChain( nullptr )
       , m_pMemory( nullptr )
-      , m_pPipeline( nullptr )
+      , m_vPipeline()
       , m_CommandPool( VK_NULL_HANDLE )
       , m_uCurrentFrame( 0 )
       , m_vFrames()
@@ -54,11 +54,6 @@ class Renderer
         return m_bDebugMode;
     }
 
-    ::std::shared_ptr<::B33::Rendering::VoxelPipeline> &GetPipeline()
-    {
-        return m_pPipeline;
-    }
-
   public:
     void SetCurrentCamera( ::std::shared_ptr<::B33::Rendering::Camera> camera )
     {
@@ -79,6 +74,18 @@ class Renderer
 
     BEAST_API void Destroy();
 
+    template <class PIPE_LINE = ::B33::Rendering::VoxelPipeline, class... RESOURCES_ARGS>
+    void PushPipeline( RESOURCES_ARGS... args )
+    {
+        auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<HardwareWrapper>( m_pHardware ),
+                                                       ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
+                                                       m_pMemory,
+                                                       m_pWindowDesc );
+        pipeline->CreatePipelineResources( args... );
+
+        m_vPipeline.push_back( pipeline );
+    }
+
   private:
     ::VkCommandPool CreateCommandPool( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
                                        ::uint32_t                                                uQueueFamily );
@@ -91,9 +98,7 @@ class Renderer
                                       ::VkCommandPool                                                  cmdPool,
                                       ::size_t                                                         uFrames );
 
-    void RecordCommands( ::VkCommandBuffer                                        &cmdBuff,
-                         const ::std::shared_ptr<::B33::Rendering::VoxelPipeline> &pipeline,
-                         ::uint32_t                                                uImageIndex );
+    void RecordCommands( ::VkCommandBuffer &cmdBuff, ::uint32_t uImageIndex );
 
   private:
     void DestroyFrameResources();
@@ -109,8 +114,7 @@ class Renderer
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory        = nullptr;
     ::std::shared_ptr<::B33::Rendering::Camera>          m_pCamera        = nullptr;
 
-    // Pipeline specific
-    ::std::shared_ptr<::B33::Rendering::VoxelPipeline> m_pPipeline = nullptr;
+    ::std::vector<::std::shared_ptr<::B33::Rendering::VoxelPipeline>> m_vPipeline = {};
 
     ::VkCommandPool m_CommandPool = VK_NULL_HANDLE;
 
