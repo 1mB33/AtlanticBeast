@@ -43,7 +43,8 @@ int main()
     input->StartCapturing();
 
     render->SetCurrentCamera( static_pointer_cast<Camera>( pc ) );
-    render->Initialize( renderWindow.GetWindowDesc(), g->GetWorld() );
+    render->Initialize( renderWindow.GetWindowDesc() );
+    render->GetPipeline()->CreatePipelineResources( g->GetWorld() );
 
     pc->SetRotation( Vec3 { -0.5f, 1.25f, 0.f } );
     pc->SetPositon( Vec3 { 14.5f, 2.25f, 25.f } );
