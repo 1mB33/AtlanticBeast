@@ -3,6 +3,7 @@
 
 #include "ExportImport.h"
 #include "Vulkan/GPUStreamBuffer.hpp"
+#include "Vulkan/IPipeline.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
 #include "Raycaster/PushConstants.hpp"
@@ -11,7 +12,7 @@
 namespace B33::Rendering
 {
 
-class VoxelPipeline
+class VoxelPipeline : public IPipeline<VoxelPipeline>
 {
     using Vec  = ::B33::Math::Vec3;
     using iVec = ::B33::Math::iVec3;
@@ -26,55 +27,34 @@ class VoxelPipeline
     };
 
   public:
-    BEAST_API VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> hw,
-                             ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>  da,
-                             ::std::shared_ptr<::B33::Rendering::Memory>                mem,
-                             ::std::shared_ptr<const ::WindowDesc>                      win );
+    VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+                   ::std::shared_ptr<::B33::Rendering::Memory>               mem,
+                   ::std::shared_ptr<const ::WindowDesc>                     win )
+      : IPipeline( da, ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" )
+      , m_pMemory( mem )
+      , m_pWindowDesc( win )
+      , m_pVoxelGrid( nullptr )
+    {
+        AB_LOG( Core::Debug::Info, L"Creating a pipeline!" );
+    }
 
     BEAST_API ~VoxelPipeline();
 
   public:
-    ::VkPipelineLayout GetLayoutHandle() const
-    {
-        return m_PipelineLayout;
-    }
+    BEAST_API virtual void Update() override final;
 
-    ::VkPipeline GetPipelineHandle() const
-    {
-        return m_ComputePipeline;
-    }
+    BEAST_API virtual void RecordCommands( VkCommandBuffer &cmdBuffer ) override final;
 
-    ::VkDescriptorSet &GetDescriptorSet()
-    {
-        return m_DescriptorSet;
-    }
+    BEAST_API virtual void Reset() override final;
 
-    const ::B33::Rendering::VoxelPushConstants &GetPushConstants() const
-    {
-        return m_Vpc;
-    }
+    BEAST_API virtual void LoadImage( VkImage image ) override final;
 
-  public:
-    BEAST_API void CreatePipelineResources( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
-
-    BEAST_API void Update();
-
-    BEAST_API void RecordCommands( VkCommandBuffer &cmdBuffer );
-
-    BEAST_API void Reset();
-
-    BEAST_API UploadDescriptor
-    GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
-                                const EShaderResource                                      &sr );
-
-    BEAST_API void LoadImage( VkImage image );
-
-    void LoadPushConstants( float      fFov,
-                            Vec        cameraPos,
-                            Vec        cameraLookDir,
-                            Vec        cameraRight,
-                            Vec        cameraUp,
-                            ::uint32_t uDebugMode )
+    virtual void LoadPushConstants( float      fFov,
+                                    Vec        cameraPos,
+                                    Vec        cameraLookDir,
+                                    Vec        cameraRight,
+                                    Vec        cameraUp,
+                                    ::uint32_t uDebugMode ) override final
     {
         ::uint32_t uGridWidth = m_pVoxelGrid->GetGridWidth();
 
@@ -87,40 +67,30 @@ class VoxelPipeline
         m_Vpc.uMode         = uDebugMode;
     }
 
-  private:
-    ::VkDescriptorSetLayout CreateDescriptorLayout( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da );
+    void CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
 
-    ::VkDescriptorPool CreateDescriptorPool( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da );
+    ::VkDescriptorSet CreateDescriptorSetImpl();
 
-    ::VkDescriptorSet CreateDescriptorSet( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                           ::VkDescriptorPool                                         dp,
-                                           ::VkDescriptorSetLayout                                    dLayout );
+    ::VkPipelineLayout CreatePipelineLayoutImpl();
 
-    ::VkPipelineLayout CreatePipelineLayout( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                             ::VkDescriptorSetLayout descriptorSetLayout );
+    ::VkPipeline CreatePipelineImpl();
 
-    ::VkShaderModule LoadShader( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                 const ::std::string                                       &strPath );
+    ::VkDescriptorSetLayout CreateDescriptorLayoutImpl();
 
-    ::VkPipeline CreateComputePipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                        ::VkPipelineLayout                                         pipelineLayout,
-                                        ::VkShaderModule                                           shaderModule );
+    ::VkDescriptorPool CreateDescriptorPoolImpl();
+
+    ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
 
   private:
-    ::std::shared_ptr<const ::WindowDesc>                      m_pWindowDesc    = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> m_pHardware      = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>  m_pDeviceAdapter = nullptr;
-    ::std::shared_ptr<::B33::Rendering::Memory>                m_pMemory        = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::Swapchain>       m_pSwapChain     = nullptr;
+    UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
+                                                 const EShaderResource                                      &sr );
+
+  private:
+    ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
+    ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
+    ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
 
     ::B33::Rendering::VoxelPushConstants m_Vpc;
-
-    ::VkDescriptorSetLayout m_DescriptorLayout = VK_NULL_HANDLE;
-    ::VkDescriptorPool      m_DescriptorPool   = VK_NULL_HANDLE;
-    ::VkDescriptorSet       m_DescriptorSet    = VK_NULL_HANDLE;
-    ::VkPipelineLayout      m_PipelineLayout   = VK_NULL_HANDLE;
-    ::VkShaderModule        m_ShaderModule     = VK_NULL_HANDLE;
-    ::VkPipeline            m_ComputePipeline  = VK_NULL_HANDLE;
 
 
     // Assets memory
@@ -134,7 +104,7 @@ class VoxelPipeline
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageRotationsBuffer;
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer;
 
-    uint32_t m_uStorageBuffersFlags;
+    ::uint32_t m_uStorageBuffersFlags;
 
 
     ::VkImageView m_ImageView = VK_NULL_HANDLE;

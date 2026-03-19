@@ -4,7 +4,7 @@
 #include "EmptyCanvas.hpp"
 #include "GameMaster.hpp"
 #include "MainCharacter.hpp"
-#include "Raycaster/Renderer.hpp"
+#include "Vulkan/Renderer.hpp"
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Synchronization/DeltaTime.hpp"
 #include "Synchronization/FpsLimiter.hpp"

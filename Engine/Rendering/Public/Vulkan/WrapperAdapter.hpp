@@ -11,13 +11,14 @@ class AdapterWrapper
   public:
     AdapterWrapper() = delete;
 
-    AdapterWrapper( ::std::shared_ptr<const HardwareWrapper> pHardware,
-                    const uint32_t                           uFlags,
-                    const std::vector<const char *>         &vExtensions,
-                    const void                              *pFeatures )
+    template <class T>
+    AdapterWrapper( ::std::shared_ptr<const HardwareWrapper> pHardware, const uint32_t uFlags, T *pIAdapter )
       : m_pGPU( pHardware )
       , m_uQueueFamily( ChooseQueueFamily( m_pGPU->GetPhysicalDevice(), uFlags ) )
-      , m_Device( CreateDevice( m_pGPU->GetPhysicalDevice(), vExtensions, pFeatures, m_uQueueFamily ) )
+      , m_Device( CreateDevice( m_pGPU->GetPhysicalDevice(),
+                                pIAdapter->GetExtensions(),
+                                pIAdapter->GetFeatures(),
+                                m_uQueueFamily ) )
       , m_Queue( CreateQueue( m_Device, m_uQueueFamily ) )
     {
         AB_LOG( Core::Debug::Info, L"Initializing adapter" );

@@ -8,6 +8,7 @@
 #include "Vulkan/WrapperAdapter.hpp"
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/SwapChain.hpp"
+#include "Vulkan/WrapperPipeline.hpp"
 
 namespace B33::Rendering
 {
@@ -77,13 +78,12 @@ class Renderer
     template <class PIPE_LINE = ::B33::Rendering::VoxelPipeline, class... RESOURCES_ARGS>
     void PushPipeline( RESOURCES_ARGS... args )
     {
-        auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<HardwareWrapper>( m_pHardware ),
-                                                       ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
+        auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                                        m_pMemory,
                                                        m_pWindowDesc );
-        pipeline->CreatePipelineResources( args... );
+        pipeline->CreatePipelineResourcesImpl( args... );
 
-        m_vPipeline.push_back( pipeline );
+        m_vPipeline.push_back( ::std::static_pointer_cast<::B33::Rendering::PipelineWrapper>( pipeline ) );
     }
 
   private:
@@ -114,7 +114,7 @@ class Renderer
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory        = nullptr;
     ::std::shared_ptr<::B33::Rendering::Camera>          m_pCamera        = nullptr;
 
-    ::std::vector<::std::shared_ptr<::B33::Rendering::VoxelPipeline>> m_vPipeline = {};
+    ::std::vector<::std::shared_ptr<::B33::Rendering::PipelineWrapper>> m_vPipeline = {};
 
     ::VkCommandPool m_CommandPool = VK_NULL_HANDLE;
 

@@ -315,13 +315,13 @@ float3 Reflection( in const float2 uv,
         {
             hitBaseColor  = ExtractColorInt( g_Voxels[ index ].Color );
             fLocalReflect = 0.1;
-            fRoughness    = 0.0;
+            fRoughness    = 0.01;
         }
         if ( hitType == HIT_TYPE_OBJECT )
         {
             hitBaseColor  = ExtractColorInt( 0xFFFFFFFF );
             fLocalReflect = 0.25;
-            fRoughness    = 0.08;
+            fRoughness    = 0.01;
         }
 
         reflectedColor = lerp( reflectedColor,
@@ -389,13 +389,13 @@ main( uint3 dispatchThreadId : SV_DispatchThreadID )
     {
         finalColor      = ExtractColorInt( 0x00FF77FF );
         reflectionPower = 0.2;
-        roughness       = 0.08;
+        roughness       = 0.0;
     }
     if ( hitType == HIT_TYPE_OBJECT )
     {
         finalColor      = ExtractColorInt( 0xFFFFFFFF );
         reflectionPower = 0.45;
-        roughness       = 0.25;
+        roughness       = 0.0;
     }
 
     if ( hitDistance <= MAX_STEPS )

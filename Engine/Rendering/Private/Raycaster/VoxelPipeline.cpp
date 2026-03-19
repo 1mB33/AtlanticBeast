@@ -5,6 +5,7 @@
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
+#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -13,60 +14,14 @@ using namespace ::std;
 using namespace ::B33::Math;
 
 // ---------------------------------------------------------------------------------------------------------------------
-VoxelPipeline::VoxelPipeline( shared_ptr<const HardwareWrapper> hw,
-                              shared_ptr<const AdapterWrapper>  da,
-                              shared_ptr<Memory>                mem,
-                              shared_ptr<const WindowDesc>      win )
-  : m_pHardware( hw )
-  , m_pDeviceAdapter( da )
-  , m_pMemory( mem )
-  , m_pWindowDesc( win )
-  , m_pVoxelGrid( nullptr )
-  , m_DescriptorLayout( CreateDescriptorLayout( m_pDeviceAdapter ) )
-  , m_DescriptorPool( CreateDescriptorPool( m_pDeviceAdapter ) )
-  , m_DescriptorSet( CreateDescriptorSet( m_pDeviceAdapter, m_DescriptorPool, m_DescriptorLayout ) )
-  , m_PipelineLayout( CreatePipelineLayout( m_pDeviceAdapter, m_DescriptorLayout ) )
-  , m_ShaderModule(
-        LoadShader( m_pDeviceAdapter, App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" ) )
-  , m_ComputePipeline( CreateComputePipeline( m_pDeviceAdapter, m_PipelineLayout, m_ShaderModule ) )
-{
-    AB_LOG( Core::Debug::Info, L"Creating a pipeline!" );
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
 VoxelPipeline::~VoxelPipeline()
 {
     AB_LOG( Core::Debug::Info, L"Destroying pipeline" );
 
     if ( m_ImageView != VK_NULL_HANDLE )
     {
-        vkDestroyImageView( m_pDeviceAdapter->GetAdapterHandle(), m_ImageView, nullptr );
+        vkDestroyImageView( GetAdaterInternal()->GetAdapterHandle(), m_ImageView, nullptr );
         m_ImageView = VK_NULL_HANDLE;
-    }
-    if ( m_ComputePipeline != VK_NULL_HANDLE )
-    {
-        vkDestroyPipeline( m_pDeviceAdapter->GetAdapterHandle(), m_ComputePipeline, NULL );
-        m_ComputePipeline = VK_NULL_HANDLE;
-    }
-    if ( m_ShaderModule != VK_NULL_HANDLE )
-    {
-        vkDestroyShaderModule( m_pDeviceAdapter->GetAdapterHandle(), m_ShaderModule, NULL );
-        m_ShaderModule = VK_NULL_HANDLE;
-    }
-    if ( m_PipelineLayout != VK_NULL_HANDLE )
-    {
-        vkDestroyPipelineLayout( m_pDeviceAdapter->GetAdapterHandle(), m_PipelineLayout, NULL );
-        m_PipelineLayout = VK_NULL_HANDLE;
-    }
-    if ( m_DescriptorPool != VK_NULL_HANDLE )
-    {
-        vkDestroyDescriptorPool( m_pDeviceAdapter->GetAdapterHandle(), m_DescriptorPool, NULL );
-        m_DescriptorPool = VK_NULL_HANDLE;
-    }
-    if ( m_DescriptorLayout != VK_NULL_HANDLE )
-    {
-        vkDestroyDescriptorSetLayout( m_pDeviceAdapter->GetAdapterHandle(), m_DescriptorLayout, NULL );
-        m_DescriptorLayout = VK_NULL_HANDLE;
     }
 
     m_StageVoxelBuffer     = nullptr;
@@ -80,7 +35,7 @@ VoxelPipeline::~VoxelPipeline()
 }
 
 // Public // -----------------------------------------------------------------------------------------------------------
-void VoxelPipeline::CreatePipelineResources( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld )
+void VoxelPipeline::CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld )
 {
     m_pVoxelGrid = pWorld;
 
@@ -146,7 +101,7 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
                         VK_SHADER_STAGE_COMPUTE_BIT,
                         0,
                         sizeof( VoxelPushConstants ),
-                        &GetPushConstants() );
+                        &m_Vpc );
 
     if ( m_pVoxelGrid->ReuploadStatus() & EReupload::RequestGpuUpload )
     {
@@ -219,7 +174,7 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
             mmrs.push_back( mmr4 );
         }
 
-        vkFlushMappedMemoryRanges( m_pDeviceAdapter->GetAdapterHandle(), mmrs.size(), mmrs.data() );
+        vkFlushMappedMemoryRanges( GetAdaterInternal()->GetAdapterHandle(), mmrs.size(), mmrs.data() );
         m_uStorageBuffersFlags &= 0;
     }
 
@@ -285,7 +240,7 @@ UploadDescriptor VoxelPipeline::GetUniformUploadDescriptor( const shared_ptr<GPU
 
     VkWriteDescriptorSet write = {};
     write.sType                = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    write.dstSet               = m_DescriptorSet;
+    write.dstSet               = GetDescriptorSet();
     write.dstBinding           = sr;
     write.descriptorType       = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
     write.descriptorCount      = 1;
@@ -302,7 +257,7 @@ void VoxelPipeline::LoadImage( VkImage image )
 {
     if ( m_ImageView != VK_NULL_HANDLE )
     {
-        vkDestroyImageView( m_pDeviceAdapter->GetAdapterHandle(), m_ImageView, nullptr );
+        vkDestroyImageView( GetAdaterInternal()->GetAdapterHandle(), m_ImageView, nullptr );
         m_ImageView = VK_NULL_HANDLE;
     }
 
@@ -317,7 +272,7 @@ void VoxelPipeline::LoadImage( VkImage image )
     viewInfo.subresourceRange.baseArrayLayer = 0;
     viewInfo.subresourceRange.layerCount     = 1;
 
-    THROW_IF_FAILED( vkCreateImageView( m_pDeviceAdapter->GetAdapterHandle(), &viewInfo, NULL, &m_ImageView ) );
+    THROW_IF_FAILED( vkCreateImageView( GetAdaterInternal()->GetAdapterHandle(), &viewInfo, NULL, &m_ImageView ) );
 
     VkDescriptorImageInfo imageInfo = {};
     imageInfo.imageView             = m_ImageView;
@@ -325,18 +280,18 @@ void VoxelPipeline::LoadImage( VkImage image )
 
     VkWriteDescriptorSet imageWrite = {};
     imageWrite.sType                = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    imageWrite.dstSet               = m_DescriptorSet;
+    imageWrite.dstSet               = this->GetDescriptorSet();
     imageWrite.dstBinding           = 0;
     imageWrite.dstArrayElement      = 0;
     imageWrite.descriptorType       = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
     imageWrite.descriptorCount      = 1;
     imageWrite.pImageInfo           = &imageInfo;
 
-    vkUpdateDescriptorSets( m_pDeviceAdapter->GetAdapterHandle(), 1, &imageWrite, 0, NULL );
+    vkUpdateDescriptorSets( GetAdaterInternal()->GetAdapterHandle(), 1, &imageWrite, 0, NULL );
 }
 
 // Private // ----------------------------------------------------------------------------------------------------------
-VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout( shared_ptr<const AdapterWrapper> &da )
+VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayoutImpl()
 {
     array<VkDescriptorSetLayoutBinding, 5> bindings = {};
     VkDescriptorSetLayout                  descriptorSetLayout;
@@ -371,14 +326,16 @@ VkDescriptorSetLayout VoxelPipeline::CreateDescriptorLayout( shared_ptr<const Ad
     layoutCreateInfo.bindingCount                    = static_cast<uint32_t>( bindings.size() );
     layoutCreateInfo.pBindings                       = &bindings[ 0 ];
 
-    THROW_IF_FAILED(
-        vkCreateDescriptorSetLayout( da->GetAdapterHandle(), &layoutCreateInfo, NULL, &descriptorSetLayout ) );
+    THROW_IF_FAILED( vkCreateDescriptorSetLayout( GetAdaterInternal()->GetAdapterHandle(),
+                                                  &layoutCreateInfo,
+                                                  NULL,
+                                                  &descriptorSetLayout ) );
 
     return descriptorSetLayout;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkDescriptorPool VoxelPipeline::CreateDescriptorPool( shared_ptr<const AdapterWrapper> &da )
+VkDescriptorPool VoxelPipeline::CreateDescriptorPoolImpl()
 {
     const vector<VkDescriptorPoolSize> poolSizes = {
         { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1 },
@@ -393,33 +350,33 @@ VkDescriptorPool VoxelPipeline::CreateDescriptorPool( shared_ptr<const AdapterWr
     poolInfo.pPoolSizes                 = &poolSizes[ 0 ];
     poolInfo.maxSets                    = 1;
 
-    THROW_IF_FAILED( vkCreateDescriptorPool( da->GetAdapterHandle(), &poolInfo, NULL, &descriptorPool ) );
+    THROW_IF_FAILED(
+        vkCreateDescriptorPool( GetAdaterInternal()->GetAdapterHandle(), &poolInfo, NULL, &descriptorPool ) );
 
     return descriptorPool;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkDescriptorSet VoxelPipeline::CreateDescriptorSet( shared_ptr<const AdapterWrapper> &da,
-                                                    VkDescriptorPool                  descPool,
-                                                    VkDescriptorSetLayout             descLayout )
+VkDescriptorSet VoxelPipeline::CreateDescriptorSetImpl()
 {
-    VkDescriptorSet descriptorSet;
+    VkDescriptorSetLayout descLayout = GetDescriptorLayoutInternal();
+    VkDescriptorSet       descriptorSet;
 
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType                       = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    allocInfo.descriptorPool              = descPool;
+    allocInfo.descriptorPool              = GetDescriptorPoolInternal();
     allocInfo.descriptorSetCount          = 1;
     allocInfo.pSetLayouts                 = &descLayout;
 
-    THROW_IF_FAILED( vkAllocateDescriptorSets( da->GetAdapterHandle(), &allocInfo, &descriptorSet ) );
+    THROW_IF_FAILED( vkAllocateDescriptorSets( GetAdaterInternal()->GetAdapterHandle(), &allocInfo, &descriptorSet ) );
 
     return descriptorSet;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkPipelineLayout VoxelPipeline::CreatePipelineLayout( shared_ptr<const AdapterWrapper> &da,
-                                                      VkDescriptorSetLayout             descriptorSetLayout )
+VkPipelineLayout VoxelPipeline::CreatePipelineLayoutImpl()
 {
+    VkDescriptorSetLayout      descLayout = GetDescriptorLayoutInternal();
     VkPushConstantRange        pushConstantRange;
     VkPipelineLayoutCreateInfo layoutInfo;
     VkPipelineLayout           pipelineLayout;
@@ -432,17 +389,18 @@ VkPipelineLayout VoxelPipeline::CreatePipelineLayout( shared_ptr<const AdapterWr
     layoutInfo.pNext                  = NULL;
     layoutInfo.flags                  = 0;
     layoutInfo.setLayoutCount         = 1;
-    layoutInfo.pSetLayouts            = &descriptorSetLayout;
+    layoutInfo.pSetLayouts            = &descLayout;
     layoutInfo.pushConstantRangeCount = 1;
     layoutInfo.pPushConstantRanges    = &pushConstantRange;
 
-    THROW_IF_FAILED( vkCreatePipelineLayout( da->GetAdapterHandle(), &layoutInfo, NULL, &pipelineLayout ) );
+    THROW_IF_FAILED(
+        vkCreatePipelineLayout( GetAdaterInternal()->GetAdapterHandle(), &layoutInfo, NULL, &pipelineLayout ) );
 
     return pipelineLayout;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkShaderModule VoxelPipeline::LoadShader( shared_ptr<const AdapterWrapper> &da, const string &strPath )
+VkShaderModule VoxelPipeline::LoadShaderImpl( const string &strPath )
 {
     vector<char>   vBuffer;
     size_t         uFileSize;
@@ -469,29 +427,28 @@ VkShaderModule VoxelPipeline::LoadShader( shared_ptr<const AdapterWrapper> &da, 
     shaderCreateInfo.codeSize                 = vBuffer.size(); // Size is in bytes, so it's okay
     shaderCreateInfo.pCode                    = reinterpret_cast<const uint32_t *>( &vBuffer[ 0 ] );
 
-    THROW_IF_FAILED( vkCreateShaderModule( da->GetAdapterHandle(), &shaderCreateInfo, NULL, &shaderModule ) );
+    THROW_IF_FAILED(
+        vkCreateShaderModule( GetAdaterInternal()->GetAdapterHandle(), &shaderCreateInfo, NULL, &shaderModule ) );
 
     return shaderModule;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkPipeline VoxelPipeline::CreateComputePipeline( shared_ptr<const AdapterWrapper> &da,
-                                                 VkPipelineLayout                  pipelineLayout,
-                                                 VkShaderModule                    shaderModule )
+VkPipeline VoxelPipeline::CreatePipelineImpl()
 {
-    const VkDevice device   = da->GetAdapterHandle();
+    const VkDevice device   = GetAdaterInternal()->GetAdapterHandle();
     VkPipeline     pipeline = VK_NULL_HANDLE;
 
     VkPipelineShaderStageCreateInfo shaderStage = {};
     shaderStage.sType                           = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     shaderStage.stage                           = VK_SHADER_STAGE_COMPUTE_BIT;
-    shaderStage.module                          = shaderModule;
+    shaderStage.module                          = GetShaderModuleInternal();
     shaderStage.pName                           = "main";
 
     VkComputePipelineCreateInfo pipelineInfo = {};
     pipelineInfo.sType                       = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
     pipelineInfo.stage                       = shaderStage;
-    pipelineInfo.layout                      = pipelineLayout;
+    pipelineInfo.layout                      = this->GetLayoutHandle();
 
     THROW_IF_FAILED( vkCreateComputePipelines( device, VK_NULL_HANDLE, 1, &pipelineInfo, NULL, &pipeline ) );
 

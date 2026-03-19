@@ -9,7 +9,7 @@
 #include "Input/UserInput.hpp"
 #include "Primitives/Camera.hpp"
 #include "Raycaster/Rays.hpp"
-#include "Raycaster/Renderer.hpp"
+#include "Vulkan/Renderer.hpp"
 #include "Raycaster/VoxelGrid.hpp"
 
 class GameMaster

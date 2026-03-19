@@ -8,10 +8,10 @@ SET(BEE_RENDERING_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/RTXDeviceAdapter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/SwapChain.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/Memory.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/Renderer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/Rays.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelPipeline.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelGrid.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/Renderer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/B33Rendering.cpp"
 )
 SET(BEE_RENDERING_HEADRES
@@ -26,11 +26,14 @@ SET(BEE_RENDERING_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/SwapChain.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/Memory.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/FrameResources.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/WrapperAdapter.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/WrapperHardware.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/WrapperPipeline.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/Renderer.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/VoxelPipeline.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/PushConstants.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Voxel.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/VoxelGrid.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Renderer.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Rays.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp"
 )

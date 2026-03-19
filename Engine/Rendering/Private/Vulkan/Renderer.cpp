@@ -1,6 +1,6 @@
 #include "B33Rendering.hpp"
 
-#include "Raycaster/Renderer.hpp"
+#include "Vulkan/Renderer.hpp"
 #include "Vec3.hpp"
 #include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/ErrorHandling.hpp"
