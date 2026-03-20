@@ -8,6 +8,7 @@
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Synchronization/DeltaTime.hpp"
 #include "Synchronization/FpsLimiter.hpp"
+#include "Window/WindowPolicy/BorderlessGameSystemPolicy.hpp"
 
 using namespace ::std;
 using namespace ::B33::App;
@@ -18,33 +19,33 @@ using namespace ::B33::Rendering;
 
 int main()
 {
-    EmptyCanvas          renderWindow = EmptyCanvas();
-    const auto          &input        = renderWindow.GetInput();
-    shared_ptr<Renderer> render       = make_shared<Renderer>();
-    shared_ptr<Game>     g            = make_shared<Game>();
-    GameMasterPuppet     gameMaster   = GameMasterPuppet( render );
-    DeltaTime            dt           = {};
-    DeltaTime            dttime       = {};
-    FpsLimiter           fl( 1000.f / 120.f );
-    float                fFps           = 0.f;
-    double               dAvgSessionFps = 0.;
-    double               dFrame         = 0.;
-    double               dMin           = INFINITY;
-    double               dMax           = -1.;
+    shared_ptr<EmptyCanvas<>> renderWindow = make_shared<EmptyCanvas<>>();
+    const auto               &input        = renderWindow->GetInput();
+    shared_ptr<Renderer>      render       = make_shared<Renderer>();
+    shared_ptr<Game>          g            = make_shared<Game>();
+    GameMasterPuppet          gameMaster   = GameMasterPuppet( renderWindow, render );
+    DeltaTime                 dt           = {};
+    DeltaTime                 dttime       = {};
+    FpsLimiter                fl( 1000.f / 120.f );
+    float                     fFps           = 0.f;
+    double                    dAvgSessionFps = 0.;
+    double                    dFrame         = 0.;
+    double                    dMin           = INFINITY;
+    double                    dMax           = -1.;
 
     shared_ptr<PlayablePaper> pwc = make_shared<PlayablePaper>();
     const auto               &pc  = pwc->GetCharacter();
 
     // Set up
-    renderWindow.GetWindowDesc()->Name = L"Voxels Raytracing Demo!";
-    renderWindow.Create();
+    renderWindow->GetWindowDesc()->Name = L"Voxels Raytracing Demo!";
+    renderWindow->Create();
     pwc->BindToInput( input );
     gameMaster.BindToInput( input );
 
     input->StartCapturing();
 
     render->SetCurrentCamera( static_pointer_cast<Camera>( pc ) );
-    render->Initialize( renderWindow.GetWindowDesc() );
+    render->Initialize( renderWindow->GetWindowDesc() );
     render->PushPipeline<VoxelPipeline>( g->GetWorld() );
 
     pc->SetRotation( Vec3 { -0.5f, 1.25f, 0.f } );
@@ -59,7 +60,7 @@ int main()
     {
         dttime.FetchMs();
         const float fDeltaMs = dt.FetchMs();
-        renderWindow.Update( fDeltaMs );
+        renderWindow->Update( fDeltaMs );
         const float fWindowTimeMs = dttime.FetchMs();
         g->Update( fDeltaMs );
         const float fGameTimeMs = dttime.FetchMs();
@@ -92,18 +93,18 @@ int main()
                 dMax = fFps;
         }
 
-        Logger::Get().Log( Info,
-                           L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
-                           L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
-                           fFps,
-                           dMax,
-                           dMin,
-                           dAvgSessionFps,
-                           fDeltaMs,
-                           fBlock,
-                           fWindowTimeMs,
-                           fGameTimeMs,
-                           fRenderTimeMs );
+        // Logger::Get().Log( Info,
+        //                    L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
+        //                    L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
+        //                    fFps,
+        //                    dMax,
+        //                    dMin,
+        //                    dAvgSessionFps,
+        //                    fDeltaMs,
+        //                    fBlock,
+        //                    fWindowTimeMs,
+        //                    fGameTimeMs,
+        //                    fRenderTimeMs );
     }
 
     Logger::Get().Log( Info,

@@ -75,7 +75,7 @@ class Renderer
 
     BEAST_API void Destroy();
 
-    template <class PIPE_LINE = ::B33::Rendering::VoxelPipeline, class... RESOURCES_ARGS>
+    template <class PIPE_LINE = ::B33::Rendering::PipelineWrapper, class... RESOURCES_ARGS>
     void PushPipeline( RESOURCES_ARGS... args )
     {
         auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),

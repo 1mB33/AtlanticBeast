@@ -204,7 +204,8 @@ void UserInput::Update( const float fDelta )
         }
 
         // Consume the input event
-        pWindowDesc->InputStruct.pop();
+        if ( !pWindowDesc->InputStruct.empty() )
+            pWindowDesc->InputStruct.pop();
     }
 
     pWindowDesc->LastEvent &= ~EAbWindowEvents::Input;
