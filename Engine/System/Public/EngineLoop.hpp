@@ -36,14 +36,14 @@ class EngineLoop
     }
 
   public:
-    void InitializeComponents();
+    BEAST_API void InitializeComponents();
 
-    void UpdateComponents( float fDelta );
-
-    void DestroyComponents();
+    BEAST_API void UpdateComponents( float fDelta );
+     
+    BEAST_API void DestroyComponents();
 
   private:
-    void AddComponentInternal( ::std::string_view componentName );
+    BEAST_API void AddComponentInternal( ::std::string_view componentName );
 
   private:
     static inline ::std::unordered_map<::std::string_view, ComponentFactory> m_ComponentRegistry      = {};

@@ -43,7 +43,7 @@ struct ComponentInstanceRegister
     }
 
   private:
-    static void RegisterInternal( const ::std::string_view &className, ComponentFactory factory );
+    BEAST_API static void RegisterInternal( const ::std::string_view &className, ComponentFactory factory );
 };
 
 #define B33_COMPONENT( CLASS_NAME )                                                                                    \
