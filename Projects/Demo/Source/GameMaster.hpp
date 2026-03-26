@@ -41,7 +41,7 @@ class GameMaster
     {
         ::B33::Core::Debug::Logger::Get().Log( ::B33::Core::Debug::Info,
                                                L"Changing window display policy to borderless" );
-        m_pWindow->ChangePolicy<::B33::App::BorderlessGameLinuxWindowPolicy>();
+        m_pWindow->ChangePolicy<::B33::App::BorderlessGameSystemPolicy>();
     }
 
   private:
