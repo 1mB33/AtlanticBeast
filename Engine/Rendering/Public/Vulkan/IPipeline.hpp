@@ -15,16 +15,9 @@ class IPipeline : public PipelineWrapper
 
     IPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
                const ::std::string                                      &strPath,
-               VkPipelineStageFlagBits                                   stage )
-      : PipelineWrapper( da, strPath, this, stage )
-    {
-    }
-
-    IPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-               const ::std::string                                      &strPath,
                VkPipelineStageFlagBits                                   stage,
                VkPipelineBindPoint                                       bindPoint )
-      : PipelineWrapper( da, strPath, this, stage, bindPoint )
+      : PipelineWrapper( da, strPath, stage, bindPoint )
     {
     }
 

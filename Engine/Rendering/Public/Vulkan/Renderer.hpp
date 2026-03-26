@@ -84,6 +84,7 @@ class Renderer
         auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                                        m_pMemory,
                                                        m_pWindowDesc );
+        pipeline->Initialize( *pipeline );
         pipeline->CreatePipelineResources( args... );
 
         m_vPipeline.push_back( ::std::static_pointer_cast<::B33::Rendering::PipelineWrapper>( pipeline ) );

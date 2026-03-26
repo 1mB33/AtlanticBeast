@@ -15,25 +15,15 @@ class PipelineWrapper
   public:
     PipelineWrapper() = delete;
 
-    template <class T>
     PipelineWrapper( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pAdapter,
                      const ::std::string                                      &strShaderPath,
-                     T                                                        *pPipeline,
                      VkPipelineStageFlagBits                                   stage,
                      VkPipelineBindPoint                                       bindPoint )
       : m_pDeviceAdapter( pAdapter )
-      , m_uPushConstantsByteSize( pPipeline->GetPushConstantsByteSize() )
-      , m_pPushConstants( pPipeline->GetPushConstants() )
+      , m_strShaderPath( strShaderPath )
       , m_StageBits( stage )
       , m_BindPoint( bindPoint )
     {
-        AB_LOG( Core::Debug::Info, L"Initializing pipeline" );
-        m_DescriptorLayout = pPipeline->CreateDescriptorLayout();
-        m_DescriptorPool   = pPipeline->CreateDescriptorPool();
-        m_ShaderModule     = pPipeline->LoadShader( strShaderPath );
-        m_DescriptorSet    = pPipeline->CreateDescriptorSet();
-        m_PipelineLayout   = pPipeline->CreatePipelineLayout();
-        m_Pipeline         = pPipeline->CreatePipeline();
     }
 
     ~PipelineWrapper()
@@ -81,6 +71,20 @@ class PipelineWrapper
     virtual void Reset() = 0;
 
     virtual void LoadImage( VkImage image ) = 0;
+
+    template <class T>
+    void Initialize( T &pPipeline )
+    {
+        AB_LOG( Core::Debug::Info, L"Initializing pipeline" );
+        m_uPushConstantsByteSize = pPipeline.GetPushConstantsByteSize();
+        m_pPushConstants         = pPipeline.GetPushConstants();
+        m_DescriptorLayout       = pPipeline.CreateDescriptorLayout();
+        m_DescriptorPool         = pPipeline.CreateDescriptorPool();
+        m_ShaderModule           = pPipeline.LoadShader( m_strShaderPath );
+        m_DescriptorSet          = pPipeline.CreateDescriptorSet();
+        m_PipelineLayout         = pPipeline.CreatePipelineLayout();
+        m_Pipeline               = pPipeline.CreatePipeline();
+    }
 
     void LoadPushConstants( const IPushConstants &constants, ::size_t uByteSize )
     {
@@ -139,8 +143,9 @@ class PipelineWrapper
   private:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
 
-    const ::size_t  m_uPushConstantsByteSize = 0;
-    IPushConstants *m_pPushConstants         = nullptr;
+    const ::std::string m_strShaderPath          = {};
+    ::size_t            m_uPushConstantsByteSize = 0;
+    IPushConstants     *m_pPushConstants         = nullptr;
 
     ::VkPipelineStageFlagBits m_StageBits = {};
     ::VkPipelineBindPoint     m_BindPoint = {};
