@@ -62,19 +62,19 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
         return &m_Vpc;
     }
 
-    void CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
+    BEAST_API void CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
 
-    ::VkDescriptorSet CreateDescriptorSetImpl();
+    BEAST_API ::VkDescriptorSet CreateDescriptorSetImpl();
 
-    ::VkPipelineLayout CreatePipelineLayoutImpl();
+    BEAST_API ::VkPipelineLayout CreatePipelineLayoutImpl();
 
-    ::VkPipeline CreatePipelineImpl();
+    BEAST_API ::VkPipeline CreatePipelineImpl();
 
-    ::VkDescriptorSetLayout CreateDescriptorLayoutImpl();
+    BEAST_API ::VkDescriptorSetLayout CreateDescriptorLayoutImpl();
 
-    ::VkDescriptorPool CreateDescriptorPoolImpl();
+    BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
-    ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
+    BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
 
   private:
     UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
