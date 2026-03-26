@@ -52,7 +52,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
     XkbSetDetectableAutoRepeat( pDisplay, True, &bSupported );
     if ( !bSupported )
     {
-        AB_LOG( Error, L"Detectable auto repeat ISN`T SUPPORTED!" );
+        AB_LOG( Error, L"Detectable auto repeat ISN'T SUPPORTED!" );
     }
 
     XSelectInput( pDisplay,
@@ -60,8 +60,6 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
                   FocusChangeMask | PointerMotionMask | PointerMotionHintMask | ButtonPressMask | ButtonReleaseMask |
                       KeyPressMask | KeyReleaseMask | ExposureMask | StructureNotifyMask | SubstructureNotifyMask |
                       SubstructureRedirectMask );
-    XMapWindow( pDisplay, window );
-
     pWd->Screen       = screen;
     pWd->WindowHandle = window;
 
@@ -69,6 +67,8 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
     XSetWMProtocols( pDisplay, window, &wmDeleteMessage, 1 );
 
     OnCreate( pWd );
+
+    XMapWindow( pDisplay, window );
 
     return 0;
 }

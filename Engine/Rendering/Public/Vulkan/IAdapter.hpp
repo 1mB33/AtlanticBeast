@@ -1,14 +1,21 @@
 #ifndef AB_WRAPPER_H
 #define AB_WRAPPER_H
 
+#include "WrapperAdapter.hpp"
+
 namespace B33::Rendering
 {
 
 template <class Derived>
-class IAdapter
+class IAdapter : public AdapterWrapper
 {
   public:
-    IAdapter() = default;
+    IAdapter() = delete;
+
+    IAdapter( ::std::shared_ptr<const HardwareWrapper> pHardware, const uint32_t uFlags )
+      : AdapterWrapper( pHardware, uFlags, this )
+    {
+    }
 
     ~IAdapter() = default;
 

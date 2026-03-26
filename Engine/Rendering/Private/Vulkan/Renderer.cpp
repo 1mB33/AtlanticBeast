@@ -1,12 +1,13 @@
 #include "B33Rendering.hpp"
 
-#include "Raycaster/Renderer.hpp"
+#include "Vulkan/Renderer.hpp"
 #include "Vec3.hpp"
 #include "Vulkan/ComputeAdapter.hpp"
 #include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/MinimalHardware.hpp"
+#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -24,10 +25,6 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
     m_pDeviceAdapter = make_shared<ComputeAdapter>( static_pointer_cast<HardwareWrapper>( m_pHardware ) );
     m_pMemory        = make_unique<Memory>( m_pHardware, m_pDeviceAdapter );
     m_pWindowDesc    = wd;
-    m_pPipeline      = make_shared<VoxelPipeline>( static_pointer_cast<HardwareWrapper>( m_pHardware ),
-                                                   static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
-                                                   m_pMemory,
-                                                   m_pWindowDesc );
 
     AB_LOG( Core::Debug::Info, L"Initializing command pool" );
     m_CommandPool = CreateCommandPool( static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
@@ -52,18 +49,10 @@ void Renderer::Update( const float )
     auto &frames = *m_vFrames.get();
 
 
-    Vec3 rot         = m_pCamera->GetRotation();
-    Vec3 rotVec      = Normalize( RotateY( RotateX( Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
-    Vec3 cameraRight = Normalize( Cross( rotVec, Vec3 { 0.f, -1.f, 0.f } ) );
-    Vec3 cameraUp    = Cross( cameraRight, rotVec );
-
-    m_pPipeline->Update();
-    m_pPipeline->LoadPushConstants( m_pCamera->GetFov() * AB_DEG_TO_RAD,
-                                    m_pCamera->GetPosition(),
-                                    rotVec,
-                                    cameraRight,
-                                    cameraUp,
-                                    m_bDebugMode ? 1 : 0 );
+    for ( auto &pipeline : m_vPipeline )
+    {
+        pipeline->Update();
+    }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -90,9 +79,7 @@ void Renderer::Render()
         return;
     }
 
-    m_pPipeline->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
-
-    RecordCommands( frame.CommandBuffer, m_pPipeline, uImageIndex );
+    RecordCommands( frame.CommandBuffer, uImageIndex );
 
     VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
@@ -143,7 +130,7 @@ void Renderer::Destroy()
         m_CommandPool = VK_NULL_HANDLE;
     }
 
-    m_pPipeline      = nullptr;
+    m_vPipeline.clear();
     m_pSwapChain     = nullptr;
     m_pDeviceAdapter = nullptr;
     m_pHardware      = nullptr;
@@ -211,58 +198,65 @@ Renderer::FramesArray Renderer::CreateFrameResources( const shared_ptr<const Ada
         result[ i ].CommandBuffer = CreateCommandBuffer( da, cmdPool );
     }
 
-    m_pPipeline->Reset();
+    for ( auto &pipeline : m_vPipeline )
+        pipeline->Reset();
+
     return result;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-void Renderer::RecordCommands( VkCommandBuffer                 &cmdBuff,
-                               const shared_ptr<VoxelPipeline> &pipeline,
-                               uint32_t                         uImageIndex )
+void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
 {
     vkResetCommandBuffer( cmdBuff, 0 );
 
-    VkCommandBufferBeginInfo beginInfo;
-    beginInfo.sType            = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    beginInfo.pNext            = NULL;
-    beginInfo.flags            = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-    beginInfo.pInheritanceInfo = NULL;
+    VkCommandBufferBeginInfo beginInfo = {};
+    beginInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.pNext                    = NULL;
+    beginInfo.flags                    = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+    beginInfo.pInheritanceInfo         = NULL;
 
     THROW_IF_FAILED( vkBeginCommandBuffer( cmdBuff, &beginInfo ) );
-    vkCmdBindPipeline( cmdBuff, VK_PIPELINE_BIND_POINT_COMPUTE, m_pPipeline->GetPipelineHandle() );
 
-    VkImageMemoryBarrier barrier = {};
-    barrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-    barrier.srcQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
-    barrier.dstQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
-    barrier.oldLayout            = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    barrier.newLayout            = VK_IMAGE_LAYOUT_GENERAL;
-    barrier.srcAccessMask        = 0;
-    barrier.dstAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
-    barrier.image                = m_pSwapChain->GetImage( uImageIndex );
-    barrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+    VkPipelineStageFlagBits lastStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    for ( auto &pipeline : m_vPipeline )
+    {
+        pipeline->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
+        vkCmdBindPipeline( cmdBuff, pipeline->GetPipelineBindPoint(), pipeline->GetPipelineHandle() );
 
-    vkCmdPipelineBarrier( cmdBuff,
-                          VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                          0,
-                          0,
-                          NULL,
-                          0,
-                          NULL,
-                          1,
-                          &barrier );
+        VkImageMemoryBarrier barrier = {};
+        barrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        barrier.srcQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
+        barrier.dstQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
+        barrier.oldLayout            = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        barrier.newLayout            = VK_IMAGE_LAYOUT_GENERAL;
+        barrier.srcAccessMask        = 0;
+        barrier.dstAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
+        barrier.image                = m_pSwapChain->GetImage( uImageIndex );
+        barrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
-    vkCmdBindDescriptorSets( cmdBuff,
-                             VK_PIPELINE_BIND_POINT_COMPUTE,
-                             pipeline->GetLayoutHandle(),
-                             0,
-                             1,
-                             &pipeline->GetDescriptorSet(),
-                             0,
-                             NULL );
+        vkCmdPipelineBarrier( cmdBuff,
+                              lastStage,
+                              pipeline->GetPipelineStageFlagBits(),
+                              0,
+                              0,
+                              NULL,
+                              0,
+                              NULL,
+                              1,
+                              &barrier );
 
-    m_pPipeline->RecordCommands( cmdBuff );
+        vkCmdBindDescriptorSets( cmdBuff,
+                                 pipeline->GetPipelineBindPoint(),
+                                 pipeline->GetLayoutHandle(),
+                                 0,
+                                 1,
+                                 &pipeline->GetDescriptorSet(),
+                                 0,
+                                 NULL );
+
+        lastStage = pipeline->GetPipelineStageFlagBits();
+        pipeline->RecordCommands( cmdBuff );
+    }
 
     VkImageMemoryBarrier presentBarrier = {};
     presentBarrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -276,7 +270,7 @@ void Renderer::RecordCommands( VkCommandBuffer                 &cmdBuff,
     presentBarrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier( cmdBuff,
-                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                          lastStage,
                           VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
                           0,
                           0,

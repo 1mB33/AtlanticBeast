@@ -3,6 +3,7 @@
 
 #include "ExportImport.h"
 #include "Vulkan/GPUStreamBuffer.hpp"
+#include "Vulkan/IPipeline.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
 #include "Raycaster/PushConstants.hpp"
@@ -11,7 +12,7 @@
 namespace B33::Rendering
 {
 
-class VoxelPipeline
+class VoxelPipeline : public IPipeline<VoxelPipeline>
 {
     using Vec  = ::B33::Math::Vec3;
     using iVec = ::B33::Math::iVec3;
@@ -26,116 +27,78 @@ class VoxelPipeline
     };
 
   public:
-    BEAST_API VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> hw,
-                             ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>  da,
-                             ::std::shared_ptr<::B33::Rendering::Memory>                mem,
-                             ::std::shared_ptr<const ::WindowDesc>                      win );
+    VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
+                   ::std::shared_ptr<::B33::Rendering::Memory>               mem,
+                   ::std::shared_ptr<const ::WindowDesc>                     win )
+      : IPipeline( da,
+                   ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
+                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                   VK_PIPELINE_BIND_POINT_COMPUTE )
+      , m_pMemory( mem )
+      , m_pWindowDesc( win )
+      , m_pVoxelGrid( nullptr )
+    {
+        AB_LOG( Core::Debug::Info, L"Creating a pipeline!" );
+    }
 
     BEAST_API ~VoxelPipeline();
 
   public:
-    ::VkPipelineLayout GetLayoutHandle() const
+    BEAST_API virtual void Update() override final;
+
+    BEAST_API virtual void RecordCommands( VkCommandBuffer &cmdBuffer ) override final;
+
+    BEAST_API virtual void Reset() override final;
+
+    BEAST_API virtual void LoadImage( VkImage image ) override final;
+
+    ::size_t GetPushConstantsByteSizeImpl()
     {
-        return m_PipelineLayout;
+        return sizeof( m_Vpc );
     }
 
-    ::VkPipeline GetPipelineHandle() const
+    IPushConstants *GetPushConstantsImpl()
     {
-        return m_ComputePipeline;
+        return &m_Vpc;
     }
 
-    ::VkDescriptorSet &GetDescriptorSet()
-    {
-        return m_DescriptorSet;
-    }
+    BEAST_API void CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
 
-    const ::B33::Rendering::VoxelPushConstants &GetPushConstants() const
-    {
-        return m_Vpc;
-    }
+    BEAST_API ::VkDescriptorSet CreateDescriptorSetImpl();
 
-  public:
-    BEAST_API void CreatePipelineResources( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );
+    BEAST_API ::VkPipelineLayout CreatePipelineLayoutImpl();
 
-    BEAST_API void Update();
+    BEAST_API ::VkPipeline CreatePipelineImpl();
 
-    BEAST_API void RecordCommands( VkCommandBuffer &cmdBuffer );
+    BEAST_API ::VkDescriptorSetLayout CreateDescriptorLayoutImpl();
 
-    BEAST_API void Reset();
+    BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
-    BEAST_API UploadDescriptor
-    GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
-                                const EShaderResource                                      &sr );
-
-    BEAST_API void LoadImage( VkImage image );
-
-    void LoadPushConstants( float      fFov,
-                            Vec        cameraPos,
-                            Vec        cameraLookDir,
-                            Vec        cameraRight,
-                            Vec        cameraUp,
-                            ::uint32_t uDebugMode )
-    {
-        ::uint32_t uGridWidth = m_pVoxelGrid->GetGridWidth();
-
-        m_Vpc.CameraPos     = cameraPos;
-        m_Vpc.CameraLookDir = cameraLookDir;
-        m_Vpc.CameraRight   = cameraRight;
-        m_Vpc.CameraUp      = cameraUp;
-        m_Vpc.fFov          = fFov;
-        m_Vpc.GridSize      = iVec( uGridWidth, uGridWidth, uGridWidth );
-        m_Vpc.uMode         = uDebugMode;
-    }
+    BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
 
   private:
-    ::VkDescriptorSetLayout CreateDescriptorLayout( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da );
-
-    ::VkDescriptorPool CreateDescriptorPool( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da );
-
-    ::VkDescriptorSet CreateDescriptorSet( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                           ::VkDescriptorPool                                         dp,
-                                           ::VkDescriptorSetLayout                                    dLayout );
-
-    ::VkPipelineLayout CreatePipelineLayout( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                             ::VkDescriptorSetLayout descriptorSetLayout );
-
-    ::VkShaderModule LoadShader( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                 const ::std::string                                       &strPath );
-
-    ::VkPipeline CreateComputePipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &da,
-                                        ::VkPipelineLayout                                         pipelineLayout,
-                                        ::VkShaderModule                                           shaderModule );
+    UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
+                                                 const EShaderResource                                      &sr );
 
   private:
-    ::std::shared_ptr<const ::WindowDesc>                      m_pWindowDesc    = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> m_pHardware      = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper>  m_pDeviceAdapter = nullptr;
-    ::std::shared_ptr<::B33::Rendering::Memory>                m_pMemory        = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::Swapchain>       m_pSwapChain     = nullptr;
+    ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
+    ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
+    ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
 
-    ::B33::Rendering::VoxelPushConstants m_Vpc;
+    ::B33::Rendering::VoxelPushConstants m_Vpc = {};
 
-    ::VkDescriptorSetLayout m_DescriptorLayout = VK_NULL_HANDLE;
-    ::VkDescriptorPool      m_DescriptorPool   = VK_NULL_HANDLE;
-    ::VkDescriptorSet       m_DescriptorSet    = VK_NULL_HANDLE;
-    ::VkPipelineLayout      m_PipelineLayout   = VK_NULL_HANDLE;
-    ::VkShaderModule        m_ShaderModule     = VK_NULL_HANDLE;
-    ::VkPipeline            m_ComputePipeline  = VK_NULL_HANDLE;
+    // Shader uniforms
+    ::std::shared_ptr<::B33::Rendering::IWorldGrid>      m_pVoxelGrid           = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_VoxelBuffer          = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_PositionsBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_RotationsBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_HalfSizesBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageVoxelBuffer     = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StagePositonsBuffer  = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageRotationsBuffer = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer = nullptr;
 
-
-    // Assets memory
-    ::std::shared_ptr<::B33::Rendering::IWorldGrid>      m_pVoxelGrid = nullptr;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_VoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_PositionsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_RotationsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_HalfSizesBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageVoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StagePositonsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageRotationsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer;
-
-    uint32_t m_uStorageBuffersFlags;
-
+    ::uint32_t m_uStorageBuffersFlags = 0;
 
     ::VkImageView m_ImageView = VK_NULL_HANDLE;
 };

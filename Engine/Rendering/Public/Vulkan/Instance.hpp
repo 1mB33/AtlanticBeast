@@ -1,6 +1,8 @@
 #ifndef AB_INSTANCE_H
 #define AB_INSTANCE_H
 
+#include "B33Rendering.hpp"
+
 namespace B33::Rendering
 {
 
