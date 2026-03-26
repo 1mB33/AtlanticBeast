@@ -87,8 +87,8 @@ void VoxelPipeline::Update()
     if ( m_uStorageBuffersFlags & EGridChanged::HalfSize )
     {
         m_pMemory->UploadOnStreamBuffer(
-            ( /*FIXME: */ (Cubes &)m_pVoxelGrid->GetStoredObjects() ).GetHalfSizes().data(),
-            ( /*FIXME: */ (Cubes &)m_pVoxelGrid->GetStoredObjects() ).GetHalfSizes().size() * sizeof( Vec3 ),
+            ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().data(),
+            ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() * sizeof( Vec3 ),
             GetUniformUploadDescriptor( m_StageHalfSizesBuffer, VoxelPipeline::EShaderResource::ObjectHalfSizes ) );
     }
 }
@@ -138,7 +138,8 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
         if ( m_uStorageBuffersFlags & EGridChanged::HalfSize )
         {
             copyRegion.size =
-                ( /*FIXME: */ (Cubes &)m_pVoxelGrid->GetStoredObjects() ).GetHalfSizes().size() * sizeof( Vec3 );
+                ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() *
+                sizeof( Vec3 );
             vkCmdCopyBuffer( cmdBuffer,
                              m_StageHalfSizesBuffer->GetBufferHandle(),
                              m_HalfSizesBuffer->GetBufferHandle(),
@@ -208,8 +209,8 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
                           0,
                           NULL );
 
-    const uint32_t groupCountX = ( m_pWindowDesc->Width + 31 ) / 32;
-    const uint32_t groupCountY = ( m_pWindowDesc->Height + 7 ) / 8;
+    const uint32_t groupCountX = ( m_pWindowDesc->Width + 31 ) >> 5;
+    const uint32_t groupCountY = ( m_pWindowDesc->Height + 7 ) >> 3;
     vkCmdDispatch( cmdBuffer, groupCountX, groupCountY, 1 );
 }
 

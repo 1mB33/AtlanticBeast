@@ -7,6 +7,7 @@
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/MinimalHardware.hpp"
+#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -216,10 +217,11 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
 
     THROW_IF_FAILED( vkBeginCommandBuffer( cmdBuff, &beginInfo ) );
 
+    VkPipelineStageFlagBits lastStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
     for ( auto &pipeline : m_vPipeline )
     {
         pipeline->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
-        vkCmdBindPipeline( cmdBuff, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->GetPipelineHandle() );
+        vkCmdBindPipeline( cmdBuff, pipeline->GetPipelineBindPoint(), pipeline->GetPipelineHandle() );
 
         VkImageMemoryBarrier barrier = {};
         barrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -233,8 +235,8 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
         barrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
         vkCmdPipelineBarrier( cmdBuff,
-                              VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-                              VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                              lastStage,
+                              pipeline->GetPipelineStageFlagBits(),
                               0,
                               0,
                               NULL,
@@ -244,7 +246,7 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
                               &barrier );
 
         vkCmdBindDescriptorSets( cmdBuff,
-                                 VK_PIPELINE_BIND_POINT_COMPUTE,
+                                 pipeline->GetPipelineBindPoint(),
                                  pipeline->GetLayoutHandle(),
                                  0,
                                  1,
@@ -252,6 +254,7 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
                                  0,
                                  NULL );
 
+        lastStage = pipeline->GetPipelineStageFlagBits();
         pipeline->RecordCommands( cmdBuff );
     }
 
@@ -267,7 +270,7 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
     presentBarrier.subresourceRange     = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
     vkCmdPipelineBarrier( cmdBuff,
-                          VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                          lastStage,
                           VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
                           0,
                           0,

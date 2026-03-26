@@ -18,10 +18,14 @@ class PipelineWrapper
     template <class T>
     PipelineWrapper( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pAdapter,
                      const ::std::string                                      &strShaderPath,
-                     T                                                        *pPipeline )
+                     T                                                        *pPipeline,
+                     VkPipelineStageFlagBits                                   stage,
+                     VkPipelineBindPoint                                       bindPoint )
       : m_pDeviceAdapter( pAdapter )
       , m_uPushConstantsByteSize( pPipeline->GetPushConstantsByteSize() )
       , m_pPushConstants( pPipeline->GetPushConstants() )
+      , m_StageBits( stage )
+      , m_BindPoint( bindPoint )
     {
         AB_LOG( Core::Debug::Info, L"Initializing pipeline" );
         m_DescriptorLayout = pPipeline->CreateDescriptorLayout();
@@ -101,6 +105,16 @@ class PipelineWrapper
         return m_DescriptorSet;
     }
 
+    ::VkPipelineStageFlagBits GetPipelineStageFlagBits() const
+    {
+        return m_StageBits;
+    }
+
+    ::VkPipelineBindPoint GetPipelineBindPoint() const
+    {
+        return m_BindPoint;
+    }
+
   protected:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> GetAdaterInternal()
     {
@@ -122,12 +136,14 @@ class PipelineWrapper
         return m_DescriptorPool;
     }
 
-
   private:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
 
-    const ::size_t  m_uPushConstantsByteSize;
-    IPushConstants *m_pPushConstants;
+    const ::size_t  m_uPushConstantsByteSize = 0;
+    IPushConstants *m_pPushConstants         = nullptr;
+
+    ::VkPipelineStageFlagBits m_StageBits = {};
+    ::VkPipelineBindPoint     m_BindPoint = {};
 
     ::VkShaderModule        m_ShaderModule     = VK_NULL_HANDLE;
     ::VkDescriptorSetLayout m_DescriptorLayout = VK_NULL_HANDLE;

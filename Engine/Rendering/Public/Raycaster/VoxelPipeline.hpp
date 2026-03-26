@@ -30,7 +30,10 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
                    ::std::shared_ptr<::B33::Rendering::Memory>               mem,
                    ::std::shared_ptr<const ::WindowDesc>                     win )
-      : IPipeline( da, ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" )
+      : IPipeline( da,
+                   ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
+                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                   VK_PIPELINE_BIND_POINT_COMPUTE )
       , m_pMemory( mem )
       , m_pWindowDesc( win )
       , m_pVoxelGrid( nullptr )
@@ -82,22 +85,20 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
     ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
 
-    ::B33::Rendering::VoxelPushConstants m_Vpc;
+    ::B33::Rendering::VoxelPushConstants m_Vpc = {};
 
+    // Shader uniforms
+    ::std::shared_ptr<::B33::Rendering::IWorldGrid>      m_pVoxelGrid           = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_VoxelBuffer          = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_PositionsBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_RotationsBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_HalfSizesBuffer      = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageVoxelBuffer     = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StagePositonsBuffer  = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageRotationsBuffer = nullptr;
+    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer = nullptr;
 
-    // Assets memory
-    ::std::shared_ptr<::B33::Rendering::IWorldGrid>      m_pVoxelGrid = nullptr;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_VoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_PositionsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_RotationsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUBuffer>       m_HalfSizesBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageVoxelBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StagePositonsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageRotationsBuffer;
-    ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer;
-
-    ::uint32_t m_uStorageBuffersFlags;
-
+    ::uint32_t m_uStorageBuffersFlags = 0;
 
     ::VkImageView m_ImageView = VK_NULL_HANDLE;
 };

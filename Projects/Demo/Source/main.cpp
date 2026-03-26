@@ -9,7 +9,6 @@
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Synchronization/DeltaTime.hpp"
 #include "Synchronization/FpsLimiter.hpp"
-#include "Window/WindowPolicy/BorderlessGameSystemPolicy.hpp"
 
 using namespace ::std;
 using namespace ::B33::App;
