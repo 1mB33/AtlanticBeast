@@ -49,22 +49,14 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
 
     BEAST_API virtual void LoadImage( VkImage image ) override final;
 
-    virtual void LoadPushConstants( float      fFov,
-                                    Vec        cameraPos,
-                                    Vec        cameraLookDir,
-                                    Vec        cameraRight,
-                                    Vec        cameraUp,
-                                    ::uint32_t uDebugMode ) override final
+    ::size_t GetPushConstantsByteSizeImpl()
     {
-        ::uint32_t uGridWidth = m_pVoxelGrid->GetGridWidth();
+        return sizeof( m_Vpc );
+    }
 
-        m_Vpc.CameraPos     = cameraPos;
-        m_Vpc.CameraLookDir = cameraLookDir;
-        m_Vpc.CameraRight   = cameraRight;
-        m_Vpc.CameraUp      = cameraUp;
-        m_Vpc.fFov          = fFov;
-        m_Vpc.GridSize      = iVec( uGridWidth, uGridWidth, uGridWidth );
-        m_Vpc.uMode         = uDebugMode;
+    IPushConstants *GetPushConstantsImpl()
+    {
+        return &m_Vpc;
     }
 
     void CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Rendering::CubeWorld> pWorld );

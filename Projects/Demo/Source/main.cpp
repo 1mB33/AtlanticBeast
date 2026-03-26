@@ -4,6 +4,7 @@
 #include "EmptyCanvas.hpp"
 #include "GameMaster.hpp"
 #include "MainCharacter.hpp"
+#include "Raycaster/PushConstants.hpp"
 #include "Vulkan/Renderer.hpp"
 #include "Raycaster/VoxelPipeline.hpp"
 #include "Synchronization/DeltaTime.hpp"
@@ -60,12 +61,32 @@ int main()
     {
         dttime.FetchMs();
         const float fDeltaMs = dt.FetchMs();
+
         renderWindow->Update( fDeltaMs );
         const float fWindowTimeMs = dttime.FetchMs();
+
         g->Update( fDeltaMs );
         const float fGameTimeMs = dttime.FetchMs();
+
         render->Update( fDeltaMs );
+        const Vec3         rot         = pc->GetRotation();
+        const Vec3         rotVec      = Normalize( RotateY( RotateX( Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
+        const Vec3         cameraRight = Normalize( Cross( rotVec, Vec3 { 0.f, -1.f, 0.f } ) );
+        const Vec3         cameraUp    = Cross( cameraRight, rotVec );
+        VoxelPushConstants vpc         = {};
+        vpc.fFov                       = pc->GetFov() * AB_DEG_TO_RAD;
+        vpc.CameraPos                  = pc->GetPosition();
+        vpc.CameraLookDir              = rotVec;
+        vpc.CameraRight                = cameraRight;
+        vpc.CameraUp                   = cameraUp;
+        const size_t uWorldWidth       = g->GetWorld()->GetGridWidth();
+        vpc.GridSize                   = iVec3( uWorldWidth, uWorldWidth, uWorldWidth );
+        vpc.uMode                      = render->GetDebugMode();
+
+        render->GetPipeline( 0 )->LoadPushConstants( vpc, sizeof( vpc ) );
         render->Render();
+
+
         const float fRenderTimeMs = dttime.FetchMs();
         const float fBlock        = fl.Block( dt.DeltaMs(), fDeltaMs );
 

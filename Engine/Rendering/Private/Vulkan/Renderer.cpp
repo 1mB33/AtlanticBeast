@@ -48,20 +48,9 @@ void Renderer::Update( const float )
     auto &frames = *m_vFrames.get();
 
 
-    Vec3 rot         = m_pCamera->GetRotation();
-    Vec3 rotVec      = Normalize( RotateY( RotateX( Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
-    Vec3 cameraRight = Normalize( Cross( rotVec, Vec3 { 0.f, -1.f, 0.f } ) );
-    Vec3 cameraUp    = Cross( cameraRight, rotVec );
-
     for ( auto &pipeline : m_vPipeline )
     {
         pipeline->Update();
-        pipeline->LoadPushConstants( m_pCamera->GetFov() * AB_DEG_TO_RAD,
-                                     m_pCamera->GetPosition(),
-                                     rotVec,
-                                     cameraRight,
-                                     cameraUp,
-                                     m_bDebugMode ? 1 : 0 );
     }
 }
 

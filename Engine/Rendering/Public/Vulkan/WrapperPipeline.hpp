@@ -1,7 +1,7 @@
 #ifndef AB_WRAPPER_PIPELINE_H
 #define AB_WRAPPER_PIPELINE_H
 
-#include "B33Rendering.hpp"
+#include "Vulkan/IPushConstants.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
 namespace B33::Rendering
@@ -20,14 +20,16 @@ class PipelineWrapper
                      const ::std::string                                      &strShaderPath,
                      T                                                        *pPipeline )
       : m_pDeviceAdapter( pAdapter )
-      , m_DescriptorLayout( pPipeline->CreateDescriptorLayout() )
-      , m_DescriptorPool( pPipeline->CreateDescriptorPool() )
-      , m_ShaderModule( pPipeline->LoadShader( strShaderPath ) )
-      , m_DescriptorSet( pPipeline->CreateDescriptorSet() )
-      , m_PipelineLayout( pPipeline->CreatePipelineLayout() )
-      , m_Pipeline( pPipeline->CreatePipeline() )
+      , m_uPushConstantsByteSize( pPipeline->GetPushConstantsByteSize() )
+      , m_pPushConstants( pPipeline->GetPushConstants() )
     {
         AB_LOG( Core::Debug::Info, L"Initializing pipeline" );
+        m_DescriptorLayout = pPipeline->CreateDescriptorLayout();
+        m_DescriptorPool   = pPipeline->CreateDescriptorPool();
+        m_ShaderModule     = pPipeline->LoadShader( strShaderPath );
+        m_DescriptorSet    = pPipeline->CreateDescriptorSet();
+        m_PipelineLayout   = pPipeline->CreatePipelineLayout();
+        m_Pipeline         = pPipeline->CreatePipeline();
     }
 
     ~PipelineWrapper()
@@ -61,10 +63,10 @@ class PipelineWrapper
     }
 
   public:
-    PipelineWrapper( PipelineWrapper && ) noexcept = default;
+    PipelineWrapper( PipelineWrapper && ) noexcept = delete;
     PipelineWrapper( const PipelineWrapper & )     = delete;
 
-    PipelineWrapper &operator=( PipelineWrapper && ) noexcept      = default;
+    PipelineWrapper &operator=( PipelineWrapper && ) noexcept      = delete;
     PipelineWrapper &operator=( const PipelineWrapper & ) noexcept = delete;
 
   public:
@@ -76,12 +78,12 @@ class PipelineWrapper
 
     virtual void LoadImage( VkImage image ) = 0;
 
-    virtual void LoadPushConstants( float      fFov,
-                                    Vec        cameraPos,
-                                    Vec        cameraLookDir,
-                                    Vec        cameraRight,
-                                    Vec        cameraUp,
-                                    ::uint32_t uDebugMode ) = 0;
+    void LoadPushConstants( const IPushConstants &constants, ::size_t uByteSize )
+    {
+        AB_ASSERT( uByteSize == m_uPushConstantsByteSize );
+
+        memcpy( m_pPushConstants, &constants, m_uPushConstantsByteSize );
+    }
 
   public:
     ::VkPipelineLayout GetLayoutHandle() const
@@ -123,6 +125,9 @@ class PipelineWrapper
 
   private:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
+
+    const ::size_t  m_uPushConstantsByteSize;
+    IPushConstants *m_pPushConstants;
 
     ::VkShaderModule        m_ShaderModule     = VK_NULL_HANDLE;
     ::VkDescriptorSetLayout m_DescriptorLayout = VK_NULL_HANDLE;

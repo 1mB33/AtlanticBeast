@@ -1,13 +1,16 @@
 #ifndef AB_RENDERER_H
 #define AB_RENDERER_H
 
+#include "B33Rendering.hpp"
+
+#include "ExportImport.h"
 #include "Primitives/Camera.hpp"
-#include "Raycaster/VoxelPipeline.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Instance.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 #include "Vulkan/WrapperHardware.hpp"
 #include "Vulkan/SwapChain.hpp"
+#include "Vulkan/Memory.hpp"
 #include "Vulkan/WrapperPipeline.hpp"
 
 namespace B33::Rendering
@@ -81,9 +84,14 @@ class Renderer
         auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                                        m_pMemory,
                                                        m_pWindowDesc );
-        pipeline->CreatePipelineResourcesImpl( args... );
+        pipeline->CreatePipelineResources( args... );
 
         m_vPipeline.push_back( ::std::static_pointer_cast<::B33::Rendering::PipelineWrapper>( pipeline ) );
+    }
+
+    ::std::shared_ptr<::B33::Rendering::PipelineWrapper> &GetPipeline( const ::size_t uIndex )
+    {
+        return m_vPipeline[ uIndex ];
     }
 
   private:

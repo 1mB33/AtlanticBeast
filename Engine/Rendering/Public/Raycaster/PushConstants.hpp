@@ -1,10 +1,12 @@
-#ifndef AB_PUSH_CONSTANTS_H
-#define AB_PUSH_CONSTANTS_H
+#ifndef AB_VOXEL_PUSH_CONSTANTS_H
+#define AB_VOXEL_PUSH_CONSTANTS_H
+
+#include "Vulkan/IPushConstants.hpp"
 
 namespace B33::Rendering
 {
 
-struct alignas( 16 ) VoxelPushConstants
+struct alignas( 16 ) VoxelPushConstants : IPushConstants
 {
     using Vec  = ::B33::Math::Vec3;
     using iVec = ::B33::Math::iVec3;
@@ -21,4 +23,4 @@ struct alignas( 16 ) VoxelPushConstants
 };
 
 } // namespace B33::Rendering
-#endif // !AB_PUSH_CONSTANTS_H
+#endif // !AB_VOXEL_PUSH_CONSTANTS_H
