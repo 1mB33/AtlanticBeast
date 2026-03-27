@@ -87,8 +87,8 @@ void VoxelPipeline::Update()
     if ( m_uStorageBuffersFlags & EGridChanged::HalfSize )
     {
         m_pMemory->UploadOnStreamBuffer(
-            ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().data(),
-            ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() * sizeof( Vec3 ),
+            ( static_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().data(),
+            ( static_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() * sizeof( Vec3 ),
             GetUniformUploadDescriptor( m_StageHalfSizesBuffer, VoxelPipeline::EShaderResource::ObjectHalfSizes ) );
     }
 }
@@ -138,7 +138,7 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
         if ( m_uStorageBuffersFlags & EGridChanged::HalfSize )
         {
             copyRegion.size =
-                ( dynamic_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() *
+                ( static_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() *
                 sizeof( Vec3 );
             vkCmdCopyBuffer( cmdBuffer,
                              m_StageHalfSizesBuffer->GetBufferHandle(),
