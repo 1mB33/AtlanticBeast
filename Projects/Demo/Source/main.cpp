@@ -113,18 +113,18 @@ int main()
                 dMax = fFps;
         }
 
-        // Logger::Get().Log( Info,
-        //                    L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
-        //                    L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
-        //                    fFps,
-        //                    dMax,
-        //                    dMin,
-        //                    dAvgSessionFps,
-        //                    fDeltaMs,
-        //                    fBlock,
-        //                    fWindowTimeMs,
-        //                    fGameTimeMs,
-        //                    fRenderTimeMs );
+        Logger::Get().Log( Info,
+                           L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
+                           L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
+                           fFps,
+                           dMax,
+                           dMin,
+                           dAvgSessionFps,
+                           fDeltaMs,
+                           fBlock,
+                           fWindowTimeMs,
+                           fGameTimeMs,
+                           fRenderTimeMs );
     }
 
     Logger::Get().Log( Info,

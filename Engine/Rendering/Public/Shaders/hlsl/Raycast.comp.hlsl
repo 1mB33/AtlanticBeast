@@ -97,19 +97,15 @@ bool TestObjects( in const Voxel  onVoxel,
         if ( dot( rd, g_Positions[ uLastId ].xyz - ro ) < 0. )
             continue;
 
-        if ( !RayIntersectsAABB( ro,
-                                 rd,
-                                 g_Positions[ uLastId ].xyz,
-                                 g_Rotations[ uLastId ].xyz,
-                                 g_HalfSizes[ uLastId ].xyz,
-                                 fLastHitMin,
-                                 fLastHitMax,
-                                 lastNormal ) )
-        {
-            continue;
-        }
-
-        if ( fLastHitMin < distance && fLastHitMin >= EPSILON && fLastHitMin < INF )
+        if ( RayIntersectsAABB( ro,
+                                rd,
+                                g_Positions[ uLastId ].xyz,
+                                g_Rotations[ uLastId ].xyz,
+                                g_HalfSizes[ uLastId ].xyz,
+                                fLastHitMin,
+                                fLastHitMax,
+                                lastNormal ) &&
+                                fLastHitMin < distance && fLastHitMin >= EPSILON && fLastHitMin < INF)
         {
             uHitIndex = uLastId;
             distance  = fLastHitMin;
