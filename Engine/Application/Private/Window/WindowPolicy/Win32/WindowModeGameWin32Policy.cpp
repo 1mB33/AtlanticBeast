@@ -32,8 +32,17 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
 
     switch ( uMsg )
     {
+        case WM_SHOWWINDOW: 
+            // Window is being hidden
+            if ( wParam != TRUE )
+            {
+                break;
+            }
+        [[fallthrough]];
+        case WM_CREATE:
         case WM_SETFOCUS:
         {
+            AB_LOG( B33::Core::Debug::Info, L"Capturing focus" );
             RAWINPUTDEVICE rid;
             RECT           rect;
 
@@ -60,6 +69,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
         case WM_KILLFOCUS:
         case WM_DESTROY:
         {
+            AB_LOG( B33::Core::Debug::Info, L"Leaving focus" );
             RAWINPUTDEVICE rid;
 
             rid.usUsagePage = 0x01;

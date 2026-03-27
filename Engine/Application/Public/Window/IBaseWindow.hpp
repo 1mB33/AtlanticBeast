@@ -114,6 +114,10 @@ class IBaseWindow
         SetWindowDescBufferStateInternal( newDesc );
         m_Policy.swap( pNewPolicy );
         m_pWindowDesc->LastEvent = EAbWindowEvents::ChangedBehavior;
+        
+        // This helps with pinning the focus to the window on Windows OS
+        this->Hide();
+        this->Show();
     }
 
   public:

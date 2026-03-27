@@ -75,9 +75,10 @@ void AbAskToRegisterWindowClass( const wchar_t *pwszClassName, WNDCLASSEX &wcex 
         pwszClassName = L"";
     }
 
-    if ( RegisteredClasses.find( pwszClassName ) != RegisteredClasses.end() )
+    if ( RegisteredClasses.find( pwszClassName ) != RegisteredClasses.end() && RegisteredClasses[ pwszClassName ] != 0 )
     {
         ++RegisteredClasses[ pwszClassName ];
+        return;
     }
 
     wstring className = wcex.lpszClassName;
