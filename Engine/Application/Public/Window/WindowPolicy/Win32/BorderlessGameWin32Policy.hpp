@@ -31,15 +31,15 @@ class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
         pWd->Wcex.lpszClassName = pWd->pwszClassName;
         pWd->Wcex.lpfnWndProc   = WindowProc<WindowModeGameWin32WindowPolicy>;
 
-        DEVMODE dm;
+        HMONITOR hMonitor = MonitorFromWindow( pWd->hWnd, MONITOR_DEFAULTTONEAREST );
+        MONITORINFO mi;
 
-        ::ZeroMemory( &dm, sizeof( dm ) );
-        dm.dmSize = sizeof( dm );
+        mi.cbSize = sizeof( mi );
 
-        if ( EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &dm ) )
+        if ( GetMonitorInfo( hMonitor, &mi ) )
         {
-            pWd->Width  = dm.dmPelsWidth;
-            pWd->Height = dm.dmPelsHeight;
+            pWd->Width  = mi.rcMonitor.right - mi.rcMonitor.left;
+            pWd->Height = mi.rcMonitor.bottom - mi.rcMonitor.top;
         }
     }
 
