@@ -44,6 +44,13 @@ class GameMaster
         m_pWindow->ChangePolicy<::B33::App::BorderlessGameSystemPolicy>();
     }
 
+    void ExitGame( const float )
+    {
+        ::B33::Core::Debug::Logger::Get().Log( ::B33::Core::Debug::Info, L"Closing game" );
+
+        ::B33::App::AppStatus::Get().SendExitSignal();
+    }
+
   private:
     ::std::shared_ptr<B33::Rendering::Renderer>  m_pRenderer;
     ::std::shared_ptr<::B33::App::EmptyCanvas<>> m_pWindow;
@@ -60,6 +67,7 @@ class GameMasterController : public B33::App::ControllerObject
     AB_DECL_ACTION( GameMaster, SwitchDebugMode, SwitchDebugMode );
     AB_DECL_ACTION( GameMaster, SetWindowMode, SetWindowMode );
     AB_DECL_ACTION( GameMaster, SetBorderless, SetBorderless );
+    AB_DECL_ACTION( GameMaster, ExitGame, ExitGame );
 };
 
 class GameMasterPuppet

@@ -42,6 +42,14 @@ class BEAST_API AppStatus
         return m_WindowHandles;
     }
 
+    void SendExitSignal()
+    {
+        while ( !m_WindowHandles.empty() )
+        {
+            SendCloseWindowSignal( m_WindowHandles.front() );
+        }
+    }
+
   private:
     uint32_t SendOpenWindowSignal( ::std::shared_ptr<WindowDesc> pWd );
 
