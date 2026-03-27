@@ -140,6 +140,7 @@ bool MarchTheRay( in const float3 ro,
 
     float3 tDelta = abs( 1.0 / rd );
     float3 tMax;
+    bool3 tMin;
 
     // Calc initial offset
     float offset;
@@ -150,7 +151,6 @@ bool MarchTheRay( in const float3 ro,
         tMax[ i ] = tDelta[ i ] * offset;
     }
 
-    int  lastStepAxis = LAST_UNKNOWN_AXIS;
     int  index;
     uint testedVoxel;
     for ( i = 0; i < maxSteps; ++i )
@@ -166,42 +166,32 @@ bool MarchTheRay( in const float3 ro,
         // Check for hits
         testedVoxel = g_Voxels[ index ].Type;
 
-        if ( ( pc.uDebugMode == 1 && testedVoxel > HIT_TYPE_UNKNOWN && testedVoxel < uint( HIT_TYPE_VOXEL ) ) ||
-             testedVoxel == uint( HIT_TYPE_VOXEL ) )
+        if (testedVoxel > HIT_TYPE_UNKNOWN && testedVoxel <= uint( HIT_TYPE_VOXEL ) )
         {
-            distance               = tMax[ lastStepAxis ] - tDelta[ lastStepAxis ];
-            normal                 = float3( 0., 0., 0. );
-            normal[ lastStepAxis ] = -float( step[ lastStepAxis ] );
+            if ( pc.uDebugMode == 1 || testedVoxel == uint( HIT_TYPE_VOXEL ) )
+            {
+                distance  = dot(tMin, tMax - tDelta);
+                hitIndex  = index;
+                hitCoords = ro + rd * distance;
+                hitType   = HIT_TYPE_VOXEL;
+                normal    = -float3(step) * tMin;
+                return true;
+            }
+            if ( TestObjects( g_Voxels[ index ], ro, rd, hitIndex, distance, hitCoords, normal ) )
+            {
+                hitType = HIT_TYPE_OBJECT;
+                return true;
+            }
+        }
 
-            hitIndex  = index;
-            hitCoords = ro + rd * distance;
-            hitType   = HIT_TYPE_VOXEL;
-            return true;
-        }
-        if ( testedVoxel > HIT_TYPE_UNKNOWN && testedVoxel < uint( HIT_TYPE_VOXEL ) &&
-             TestObjects( g_Voxels[ index ], ro, rd, hitIndex, distance, hitCoords, normal ) )
-        {
-            hitType = HIT_TYPE_OBJECT;
-            return true;
-        }
+        tMin = bool3(
+            ( tMax.x < tMax.y && tMax.x < tMax.z ),
+            ( tMax.y < tMax.x && tMax.y < tMax.z ),
+            ( tMax.z < tMax.y && tMax.z < tMax.x )
+        );
 
-        if ( tMax.x < tMax.y && tMax.x < tMax.z )
-        {
-            voxel.x += step.x;
-            tMax.x += tDelta.x;
-            lastStepAxis = LAST_X_AXIS;
-            continue;
-        }
-        if ( tMax.y < tMax.z )
-        {
-            voxel.y += step.y;
-            tMax.y += tDelta.y;
-            lastStepAxis = LAST_Y_AXIS;
-            continue;
-        }
-        voxel.z += step.z;
-        tMax.z += tDelta.z;
-        lastStepAxis = LAST_Z_AXIS;
+        voxel += tMin * step;
+        tMax  += tMin * tDelta;
     }
 
     return false;
