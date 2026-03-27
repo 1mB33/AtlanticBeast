@@ -36,6 +36,24 @@ EAppStatus AppStatus::GetAppCurrentStatus()
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+void AppStatus::SendExitSignal()
+{
+    AB_LOG( Warning, L"B33::AppStatus Exiting [Number of active windows: %d]", m_uNumberOfWindows );
+
+    if ( m_WindowHandles.empty() )
+    {
+        AB_LOG( Error, L"B33::AppStatus m_WindowHandles is empty!!!" );
+    }
+
+    while ( !m_WindowHandles.empty() )
+    {
+        SendCloseWindowSignal( m_WindowHandles.front() );
+    }
+
+    UpdateStatus();
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 uint32_t AppStatus::SendOpenWindowSignal( shared_ptr<WindowDesc> pWd )
 {
     AB_LOG( Info, L"Got new window signal" );
@@ -55,7 +73,14 @@ uint32_t AppStatus::SendCloseWindowSignal( shared_ptr<WindowDesc> pWd )
 
     m_uNumberOfWindows = m_uNumberOfWindows > 0 ? --m_uNumberOfWindows : m_uNumberOfWindows;
     UpdateStatus();
-    m_WindowHandles.remove( pWd );
+    for ( auto it = m_WindowHandles.begin(); it != m_WindowHandles.end(); ++it )
+    {
+        if ( *it == pWd )
+        {
+            it = m_WindowHandles.erase( it );
+            break;
+        }
+    }
 
     return m_uNumberOfWindows;
 }
