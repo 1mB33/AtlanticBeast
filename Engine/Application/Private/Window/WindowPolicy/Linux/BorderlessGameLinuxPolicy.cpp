@@ -29,9 +29,6 @@ void BorderlessGameLinuxWindowPolicy::OnCreate( WindowDesc *pWd )
                      reinterpret_cast<unsigned char *>( &m_WMFullscreen ),
                      1 );
 
-    XFlush( pWd->pDisplayHandle );
-    XMapWindow( pWd->pDisplayHandle, pWd->WindowHandle );
-    XUnmapWindow( pWd->pDisplayHandle, pWd->WindowHandle );
 
     Window       dummyWindow;
     int          dummyInt;

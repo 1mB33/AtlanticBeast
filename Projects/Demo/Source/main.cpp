@@ -37,22 +37,24 @@ int main()
     const auto               &pc  = pwc->GetCharacter();
 
     // Set up
+
+    // Initialize Window Component
     renderWindow->GetWindowDesc()->Name = L"Voxels Raytracing Demo!";
     renderWindow->Create();
+
+    // Initialize Game Component
     pwc->BindToInput( input );
     gameMaster.BindToInput( input );
-
     input->StartCapturing();
-
-    render->SetCurrentCamera( static_pointer_cast<Camera>( pc ) );
-    render->Initialize( renderWindow->GetWindowDesc() );
-    render->PushPipeline<VoxelPipeline>( g->GetWorld() );
-
     pc->SetRotation( Vec3 { -0.5f, 1.25f, 0.f } );
     pc->SetPositon( Vec3 { 14.5f, 2.25f, 25.f } );
     pc->SetGrid( g );
-
     g->Initialize();
+
+    // Initialize Renderer Component
+    render->SetCurrentCamera( static_pointer_cast<Camera>( pc ) );
+    render->Initialize( renderWindow->GetWindowDesc() );
+    render->PushPipeline<VoxelPipeline>( g->GetWorld() );
 
     // Main loop
     dt.SetReferenceFrame();
@@ -113,18 +115,18 @@ int main()
                 dMax = fFps;
         }
 
-        // Logger::Get().Log( Info,
-        //                    L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
-        //                    L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
-        //                    fFps,
-        //                    dMax,
-        //                    dMin,
-        //                    dAvgSessionFps,
-        //                    fDeltaMs,
-        //                    fBlock,
-        //                    fWindowTimeMs,
-        //                    fGameTimeMs,
-        //                    fRenderTimeMs );
+        Logger::Get().Log( Info,
+                           L"Fps: %7.2f FpsMax: %7.2f  FpsMin: %7.2f AvgSessionFps: %7.2lf Frame duration: %7.2fms "
+                           L"Blocked for: %7.2fms WindowTime: %7.2fms GameTime: %7.2fms RenderTime: %7.2fms",
+                           fFps,
+                           dMax,
+                           dMin,
+                           dAvgSessionFps,
+                           fDeltaMs,
+                           fBlock,
+                           fWindowTimeMs,
+                           fGameTimeMs,
+                           fRenderTimeMs );
     }
 
     Logger::Get().Log( Info,
