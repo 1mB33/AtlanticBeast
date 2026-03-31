@@ -14,3 +14,4 @@ Lib/
 *.dll
 *.lib
 *.exe
+*.out
