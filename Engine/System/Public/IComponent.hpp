@@ -7,6 +7,9 @@ namespace B33::System
 class IComponent
 {
   public:
+    virtual ~IComponent() = default;
+
+  public:
     virtual void Initialize( class ComponentBridge &bridge )           = 0;
     virtual void Update( class ComponentBridge &bridge, float fDelta ) = 0;
     virtual void Destroy( class ComponentBridge &bridge )              = 0;
