@@ -21,7 +21,7 @@ struct ComponentOrderRegister
     ComponentOrderRegister &operator=( const ComponentOrderRegister & ) = default;
 
   public:
-    static ComponentOrderRegister RegisterOrder( ::std::vector<::std::string_view> order );
+    BEAST_API static ComponentOrderRegister RegisterOrder( ::std::vector<::std::string_view> order );
 };
 
 /**

@@ -35,7 +35,9 @@ class ComponentBridge
     COMPONENT_DERIVED &QueryComponent()
     {
         AB_ASSERT( m_ComponentMap.find( COMPONENT_DERIVED::GetComponentName() ) != m_ComponentMap.end() );
-        return dynamic_cast<COMPONENT_DERIVED &>( *m_ComponentMap[ COMPONENT_DERIVED::GetComponentName() ].get() );
+        IComponent* result = m_ComponentMap[ COMPONENT_DERIVED::GetComponentName() ].get();
+        COMPONENT_DERIVED* resultDerived = dynamic_cast<COMPONENT_DERIVED *>( result );
+        return *resultDerived;
     }
 
   private:

@@ -33,8 +33,9 @@ void EngineLoop::AddComponentInternal( ::std::string_view componentName )
     AB_ASSERT_MSG( m_ComponentRegistry.find( componentName ) != m_ComponentRegistry.end(),
                    "That component isn't registered. B33COMPONENT macro might be missing in the class body. " );
 
-    auto component =
-        ( m_ComponentBridge.m_ComponentMap[ componentName ] = m_ComponentRegistry[ componentName ]() ).get();
+    m_ComponentBridge.m_ComponentMap[ componentName ] = m_ComponentRegistry[ componentName ]();
+
+    auto component = ( m_ComponentBridge.m_ComponentMap[ componentName ] ).get();
 
     m_Components.push_back( component );
 
