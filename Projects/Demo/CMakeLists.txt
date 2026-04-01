@@ -27,5 +27,6 @@ TARGET_LINK_LIBRARIES(AtlBee PRIVATE
     B33Core
     B33App
     B33Rendering
+    B33System
     Jolt
 )
