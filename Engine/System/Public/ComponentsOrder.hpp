@@ -23,7 +23,8 @@ struct ComponentOrderRegister
 };
 
 #define B33_ORDER_COMPONENTS( ... )                                                                                    \
-    static ComponentOrderRegister g_ComponentOrder = ComponentOrderRegister::RegisterOrder( __VA_ARGS__ );
+    static ::B33::System::ComponentOrderRegister g_ComponentOrder =                                                    \
+        ::B33::System::ComponentOrderRegister::RegisterOrder( __VA_ARGS__ );
 
 } // namespace B33::System
 #endif // !AB_COMPONENTS_ORDER_HPP

@@ -1,7 +1,7 @@
 #ifndef AB_WINDOW_DESC_H
 #define AB_WINDOW_DESC_H
 
-#include "ExportImport.h"
+#include "B33App.h"
 #include "Input/InputEvents.h"
 #include "WindowEvents.h"
 
@@ -32,7 +32,7 @@ struct WindowDesc
 };
 
 template <class U>
-WindowDesc CreateWindowDesc( U &&wstrName, int32_t width, int32_t height )
+WindowDesc CreateWindowDesc( U &&wstrName, int32_t width = 1200, int32_t height = 700 )
 {
     WindowDesc wd = {};
 

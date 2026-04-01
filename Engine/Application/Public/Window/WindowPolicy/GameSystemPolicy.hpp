@@ -1,6 +1,8 @@
 #ifndef AB_GAME_SYSTEM_POLICY_H
 #define AB_GAME_SYSTEM_POLICY_H
 
+#include "B33App.h"
+
 #if _WIN32
 #    include "Window/WindowPolicy/Win32/BorderlessGameWin32Policy.hpp"
 #    include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"

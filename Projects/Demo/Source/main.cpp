@@ -1,24 +1,24 @@
-#include "Game.hpp"
-#include "B33Core.h"
-
-#include "EmptyCanvas.hpp"
-#include "GameMaster.hpp"
-#include "MainCharacter.hpp"
-#include "Raycaster/PushConstants.hpp"
-#include "Vulkan/Renderer.hpp"
-#include "Raycaster/VoxelPipeline.hpp"
-#include "Synchronization/DeltaTime.hpp"
-#include "Synchronization/FpsLimiter.hpp"
-
-using namespace ::std;
-using namespace ::B33::App;
-using namespace ::B33::Core;
-using namespace ::B33::Core::Debug;
-using namespace ::B33::Math;
-using namespace ::B33::Rendering;
-
-#include "EntryPoints/DefaultSystemEntryPoint.hpp"
-
+// #include "Game.hpp"
+// #include "B33Core.h"
+//
+// #include "EmptyCanvas.hpp"
+// #include "GameMaster.hpp"
+// #include "MainCharacter.hpp"
+// #include "Raycaster/PushConstants.hpp"
+// #include "Vulkan/Renderer.hpp"
+// #include "Raycaster/VoxelPipeline.hpp"
+// #include "Synchronization/DeltaTime.hpp"
+// #include "Synchronization/FpsLimiter.hpp"
+//
+// using namespace ::std;
+// using namespace ::B33::App;
+// using namespace ::B33::Core;
+// using namespace ::B33::Core::Debug;
+// using namespace ::B33::Math;
+// using namespace ::B33::Rendering;
+//
+// #include "EntryPoints/DefaultSystemEntryPoint.hpp"
+//
 // int main()
 // {
 //     shared_ptr<EmptyCanvas<>> renderWindow = make_shared<EmptyCanvas<>>();

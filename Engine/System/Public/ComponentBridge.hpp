@@ -25,7 +25,7 @@ class ComponentBridge
     ComponentBridge &operator=( ComponentBridge && )      = delete;
 
   public:
-    IComponent &QueryComponent( ::std::string strComponentName )
+    BEAST_API IComponent &QueryComponent( ::std::string strComponentName )
     {
         AB_ASSERT( m_ComponentMap.find( strComponentName ) != m_ComponentMap.end() );
         return *m_ComponentMap[ strComponentName ].get();

@@ -25,7 +25,7 @@ void EngineLoop::UpdateComponents( float fDelta )
 void EngineLoop::DestroyComponents()
 {
     for ( auto component : m_Components )
-        component->Destroy();
+        component->Destroy( m_ComponentBridge );
 }
 
 void EngineLoop::AddComponentInternal( ::std::string_view componentName )
@@ -40,7 +40,7 @@ void EngineLoop::AddComponentInternal( ::std::string_view componentName )
 
     if ( m_bInitialized )
     {
-        component->Initialize();
+        component->Initialize( m_ComponentBridge );
     }
 }
 

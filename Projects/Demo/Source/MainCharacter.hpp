@@ -15,17 +15,11 @@ class PaperCharacter : public ::B33::Rendering::Camera
 {
   public:
     template <class... U>
-    explicit PaperCharacter( U &&...args )
-      : m_g( nullptr )
+    explicit PaperCharacter( Game &vg, U &&...args )
+      : m_g( vg )
       , Camera( ::std::forward<U>( args )... )
       , m_fSpeed( m_fWalk )
     {
-    }
-
-  public:
-    void SetGrid( ::std::shared_ptr<Game> vg )
-    {
-        m_g = vg;
     }
 
   public:
@@ -36,11 +30,11 @@ class PaperCharacter : public ::B33::Rendering::Camera
             B33::Math::RotateY( B33::Math::RotateX( B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         B33::Rendering::HitResult hr =
-            ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
+            ::B33::Rendering::MarchTheRay( m_g.GetWorld().get(), this->GetPosition(), lookDir, 10 );
 
         if ( hr.bHit )
         {
-            m_g->GenerateCube( B33::Math::iVec3( hr.iHitCoords + hr.Normal ) );
+            m_g.GenerateCube( B33::Math::iVec3( hr.iHitCoords + hr.Normal ) );
         }
     }
 
@@ -51,10 +45,10 @@ class PaperCharacter : public ::B33::Rendering::Camera
             ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         B33::Rendering::HitResult hr =
-            ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
+            ::B33::Rendering::MarchTheRay( m_g.GetWorld().get(), this->GetPosition(), lookDir, 10 );
 
         if ( hr.bHit )
-            m_g->RemoveCube( m_g->GetIdFromPos( hr.iHitCoords ) );
+            m_g.RemoveCube( m_g.GetIdFromPos( hr.iHitCoords ) );
     }
 
     void Push( const float, const float fForceMul )
@@ -64,10 +58,10 @@ class PaperCharacter : public ::B33::Rendering::Camera
             ::B33::Math::RotateY( ::B33::Math::RotateX( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.x ), rot.y ) );
 
         ::B33::Rendering::HitResult hr =
-            ::B33::Rendering::MarchTheRay( m_g->GetWorld().get(), this->GetPosition(), lookDir, 10 );
+            ::B33::Rendering::MarchTheRay( m_g.GetWorld().get(), this->GetPosition(), lookDir, 10 );
         ::B33::Math::Vec3 pushDir = ::B33::Math::Normalize( this->GetPosition() - ::B33::Math::Vec3( hr.iHitCoords ) );
         if ( hr.bHit )
-            m_g->PushCube( m_g->GetIdFromPos( hr.iHitCoords ), pushDir, fForceMul );
+            m_g.PushCube( m_g.GetIdFromPos( hr.iHitCoords ), pushDir, fForceMul );
     }
 
     void MoveForwardBackwards( const float fDelta, float fDir )
@@ -108,7 +102,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     }
 
   private:
-    ::std::shared_ptr<Game> m_g;
+    Game &m_g;
 
     uint32_t m_uColor;
 
@@ -157,8 +151,8 @@ class PaperController : public B33::App::ControllerObject
 class PlayablePaper
 {
   public:
-    PlayablePaper()
-      : m_Character( ::std::make_shared<PaperCharacter>() )
+    PlayablePaper( Game &g )
+      : m_Character( ::std::make_shared<PaperCharacter>( g ) )
       , m_Controller()
     {
     }
@@ -168,7 +162,7 @@ class PlayablePaper
   public:
     void BindToInput( const ::std::shared_ptr<B33::App::UserInput> &pInput );
 
-    ::std::shared_ptr<PaperCharacter> &GetCharacter()
+    const ::std::shared_ptr<PaperCharacter> &GetCharacterHandle() const
     {
         return m_Character;
     }

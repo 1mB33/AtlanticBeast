@@ -7,9 +7,9 @@ namespace B33::System
 class IComponent
 {
   public:
-    virtual void Initialize()                                          = 0;
+    virtual void Initialize( class ComponentBridge &bridge )           = 0;
     virtual void Update( class ComponentBridge &bridge, float fDelta ) = 0;
-    virtual void Destroy()                                             = 0;
+    virtual void Destroy( class ComponentBridge &bridge )              = 0;
 };
 
 using ComponentInstance = ::std::unique_ptr<IComponent>;
@@ -48,7 +48,7 @@ struct ComponentInstanceRegister
 
 #define B33_COMPONENT( CLASS_NAME )                                                                                    \
   public:                                                                                                              \
-    static ComponentInstance GetComponentFactory()                                                                     \
+    static ::B33::System::ComponentInstance GetComponentFactory()                                                      \
     {                                                                                                                  \
         return ::std::make_unique<CLASS_NAME>();                                                                       \
     }                                                                                                                  \
@@ -58,8 +58,8 @@ struct ComponentInstanceRegister
     }                                                                                                                  \
                                                                                                                        \
   private:                                                                                                             \
-    static inline const ComponentInstanceRegister RegisteredComponent =                                                \
-        ComponentInstanceRegister::Register( CLASS_NAME::GetComponentName(), &GetComponentFactory );
+    static inline const ::B33::System::ComponentInstanceRegister RegisteredComponent =                                 \
+        ::B33::System::ComponentInstanceRegister::Register( CLASS_NAME::GetComponentName(), &GetComponentFactory );
 
 } // namespace B33::System
 #endif // !AB_ICOMPONENT_H
