@@ -46,7 +46,13 @@ ADD_LIBRARY(B33Rendering SHARED
 IF (MSVC)
 
     TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/permissive-")
-    TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/GR-")
+    TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/GR")
+    
+    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+
+        TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/O2")
+        
+    ENDIF()
 
 ELSE()
 

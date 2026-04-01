@@ -1,6 +1,7 @@
 #ifndef AB_EMPTYCANVAS_H
 #define AB_EMPTYCANVAS_H
 
+#include "B33App.h"
 #include "Input/UserInput.hpp"
 #include "Window/IBaseWindow.hpp"
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
@@ -22,8 +23,9 @@ class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdat
     friend class IBaseWindow<EmptyCanvas<bManualInputUpdate>, GamePolicy>;
 
   public:
-    explicit EmptyCanvas( std::wstring wstrWindowName = L"EmptyCanvas" )
-      : IBaseWindow<EmptyCanvas, GamePolicy>( CreateWindowDesc( std::move( wstrWindowName ), 1200, 700 ) )
+    EmptyCanvas( std::wstring wstrWindowName, int32_t defaultWidth, int32_t defaultHeigth )
+      : IBaseWindow<EmptyCanvas, GamePolicy>(
+            CreateWindowDesc( std::move( wstrWindowName ), defaultWidth, defaultHeigth ) )
       , m_pInput( ::std::make_shared<UserInput>( this->GetWindowDesc() ) )
     {
     }
@@ -35,7 +37,7 @@ class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdat
     }
 
   public:
-    const ::std::shared_ptr<UserInput> &GetInput() const
+    ::std::weak_ptr<UserInput> GetInput() const
     {
         return m_pInput;
     }

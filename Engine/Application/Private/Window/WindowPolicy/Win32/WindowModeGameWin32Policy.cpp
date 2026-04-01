@@ -1,6 +1,8 @@
 #ifdef _WIN32
 
+#    include <windowsx.h>
 #    include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"
+#    include "MinimalWindowsIncludes.h"
 
 namespace B33::App
 {
@@ -14,7 +16,7 @@ void WindowModeGameWin32WindowPolicy::OnPreWcex()
     WindowDesc *pWd = this->GetWindowDesc();
 
     pWd->pwszClassName = L"GameAtlanticClass";
-
+    
     memset( &pWd->Wcex, 0, sizeof( WNDCLASSEX ) );
 
     pWd->Wcex.cbSize        = sizeof( WNDCLASSEX );
@@ -24,6 +26,8 @@ void WindowModeGameWin32WindowPolicy::OnPreWcex()
     pWd->Wcex.lpszClassName = pWd->pwszClassName;
     pWd->Wcex.lpfnWndProc   = WindowProc<WindowModeGameWin32WindowPolicy>;
 }
+
+typedef __int64 QWORD;
 
 // ---------------------------------------------------------------------------------------------------------------------
 void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM lParam )

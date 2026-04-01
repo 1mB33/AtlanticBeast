@@ -4,14 +4,23 @@ FILE(GLOB_RECURSE PRJT_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.hpp"
 )
 
+
 ADD_EXECUTABLE(AtlBee
     "${PRJT_SOURCE}"
 )
 
+SET(B33TARGET AtlBee PARENT_SCOPE)
+
 IF (MSVC)
 
     TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/permissive-")
-    TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/GR-")
+    TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/GR")
+
+    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+
+        TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/O2")
+        
+    ENDIF()
 
 ELSE()
 
@@ -27,5 +36,6 @@ TARGET_LINK_LIBRARIES(AtlBee PRIVATE
     B33Core
     B33App
     B33Rendering
+    B33System
     Jolt
 )

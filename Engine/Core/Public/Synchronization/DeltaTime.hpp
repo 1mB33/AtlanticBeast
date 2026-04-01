@@ -1,6 +1,8 @@
 #ifndef AB_DELTA_TIME_H
 #define AB_DELTA_TIME_H
 
+#include "B33Core.h"
+
 namespace B33::Core
 {
 

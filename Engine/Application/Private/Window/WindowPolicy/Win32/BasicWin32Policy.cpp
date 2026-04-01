@@ -2,6 +2,7 @@
 
 #    include "Window/BaseWindowDetails.h"
 #    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
+#    include <windowsx.h>
 
 namespace B33::App
 {
