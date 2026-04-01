@@ -24,9 +24,16 @@ struct ComponentOrderRegister
     static ComponentOrderRegister RegisterOrder( ::std::vector<::std::string_view> order );
 };
 
+/**
+* @brief Creates a global instance of ComponentOrderRegister.
+* Structure registers that order in to every EngineLoop object.
+* Asures that every EngineLoop object will have access to listed components after construction.
+* Every operation called on EngineLoop (InitializeComponents, UpdateCompononts, etc...) will loop through
+* components in sequence provided in this macro.
+*/
 #define B33_CREATE_COMPONENTS( ... )                                                                                   \
     static ::B33::System::ComponentOrderRegister g_ComponentOrder =                                                    \
-        ::B33::System::ComponentOrderRegister::RegisterOrder( __VA_ARGS__ );
+        ::B33::System::ComponentOrderRegister::RegisterOrder( { __VA_ARGS__ } );
 
 } // namespace B33::System
 #endif // !AB_COMPONENTS_ORDER_HPP

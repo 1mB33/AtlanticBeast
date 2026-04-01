@@ -37,7 +37,7 @@ class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdat
     }
 
   public:
-    const ::std::shared_ptr<UserInput> &GetInput() const
+    ::std::weak_ptr<UserInput> GetInput() const
     {
         return m_pInput;
     }

@@ -3,9 +3,11 @@
 #include "B33System.hpp"
 #include "ComponentsOrder.hpp"
 #include "EmptyCanvas.hpp"
+#include "Input/UserInput.hpp"
+#include "WindowMaster.hpp"
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
 
-B33_CREATE_COMPONENTS( { "MainWindow", "MyGame", "Renderer" } )
+B33_CREATE_COMPONENTS( "MainWindow", "MyGame", "Renderer" )
 
 class MainWindow : public ::B33::System::IComponent
 {
@@ -14,6 +16,8 @@ class MainWindow : public ::B33::System::IComponent
   public:
     MainWindow()
       : m_WindowInstance( L"Cool Game", 1200, 700 )
+      , m_UserInput( *m_WindowInstance.GetInput().lock().get() )
+      , m_WindowPuppet( m_WindowInstance )
     {
     }
 
@@ -30,4 +34,6 @@ class MainWindow : public ::B33::System::IComponent
 
   private:
     ::B33::App::EmptyCanvas<true, ::B33::App::DefaultGameSystemWindowPolicy> m_WindowInstance;
+    ::B33::App::UserInput                                                   &m_UserInput;
+    WindowMasterPuppet                                                       m_WindowPuppet;
 };

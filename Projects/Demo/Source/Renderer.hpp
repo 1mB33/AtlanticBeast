@@ -2,6 +2,7 @@
 
 #include "B33System.hpp"
 #include "Raycaster/VoxelPipeline.hpp"
+#include "RendererMaster.hpp"
 #include "Vulkan/Renderer.hpp"
 
 class Renderer : public ::B33::System::IComponent
@@ -11,6 +12,7 @@ class Renderer : public ::B33::System::IComponent
   public:
     Renderer()
       : m_RendererInstance()
+      , m_RendererMaster( m_RendererInstance )
     {
     }
 
@@ -21,4 +23,5 @@ class Renderer : public ::B33::System::IComponent
 
   private:
     ::B33::Rendering::Renderer m_RendererInstance = {};
+    RendererMasterPuppet       m_RendererMaster;
 };

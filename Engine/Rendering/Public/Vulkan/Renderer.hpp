@@ -31,25 +31,12 @@ class Renderer
       , m_CommandPool( VK_NULL_HANDLE )
       , m_uCurrentFrame( 0 )
       , m_vFrames()
-      , m_bDebugMode( false )
     {
     }
 
     ~Renderer()
     {
         Destroy();
-    }
-
-  public:
-    bool GetDebugMode()
-    {
-        return m_bDebugMode;
-    }
-
-  public:
-    void SetDebugMode( const bool bMode )
-    {
-        m_bDebugMode = bMode;
     }
 
   public:
@@ -111,8 +98,6 @@ class Renderer
 
     ::size_t                       m_uCurrentFrame;
     ::std::unique_ptr<FramesArray> m_vFrames = nullptr;
-
-    bool m_bDebugMode;
 };
 
 } // namespace B33::Rendering

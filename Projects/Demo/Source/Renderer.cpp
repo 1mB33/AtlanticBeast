@@ -7,6 +7,12 @@ using namespace B33::Math;
 
 void Renderer::Initialize( ::B33::System::ComponentBridge &bridge )
 {
+    auto input = bridge.QueryComponent<MainWindow>().GetWindowInstance().GetInput();
+    if ( auto locked = input.lock() )
+    {
+        m_RendererMaster.BindToInput( locked );
+    }
+
     m_RendererInstance.Initialize( bridge.QueryComponent<MainWindow>().GetWindowInstance().GetWindowDesc() );
     m_RendererInstance.PushPipeline<::B33::Rendering::VoxelPipeline>(
         bridge.QueryComponent<MyGame>().GetGameInstance().GetWorld() );
@@ -30,7 +36,7 @@ void Renderer::Update( ::B33::System::ComponentBridge &bridge, float fDelta )
     constants.CameraUp                           = cameraUp;
     const size_t uWorldWidth                     = gameHandle.GetWorld()->GetGridWidth();
     constants.GridSize                           = iVec3( uWorldWidth, uWorldWidth, uWorldWidth );
-    constants.uMode                              = m_RendererInstance.GetDebugMode();
+    constants.uMode                              = m_RendererMaster.GetGameMaster().GetDebugMode();
 
     m_RendererInstance.GetPipeline( 0 )->LoadPushConstants( constants, sizeof( constants ) );
     m_RendererInstance.Update( fDelta );
