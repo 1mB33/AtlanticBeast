@@ -1,4 +1,4 @@
-#if defined( __linux__ )
+#if defined( _WIN32 )
 #    ifndef AB_ENTRY_POINT_HPP
 #        define AB_ENTRY_POINT_HPP
 
@@ -6,7 +6,7 @@
 #        include "Synchronization/DeltaTime.hpp"
 #        include "../../EngineLoop.hpp"
 
-int main( int argc, char *pArgv[] )
+int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow )
 {
     ::B33::Core::Debug::Logger::Get().Log( ::B33::Core::Debug::Info, L"Starting B33..." );
     ::B33::System::EngineLoop engineLoop = {};
@@ -30,4 +30,4 @@ int main( int argc, char *pArgv[] )
 }
 
 #    endif // !AB_ENTRY_POINT_HPP
-#endif     // !__linux__
+#endif     // !_WIN32
