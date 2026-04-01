@@ -5,7 +5,7 @@
 #include "EmptyCanvas.hpp"
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
 
-B33_ORDER_COMPONENTS( { "MainWindow", "MyGame", "Renderer" } )
+B33_CREATE_COMPONENTS( { "MainWindow", "MyGame", "Renderer" } )
 
 class MainWindow : public ::B33::System::IComponent
 {

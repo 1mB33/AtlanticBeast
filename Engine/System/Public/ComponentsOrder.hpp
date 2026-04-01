@@ -1,6 +1,8 @@
 #ifndef AB_COMPONENTS_ORDER_HPP
 #define AB_COMPONENTS_ORDER_HPP
 
+#include "B33System.hpp"
+
 namespace B33::System
 {
 
@@ -22,7 +24,7 @@ struct ComponentOrderRegister
     static ComponentOrderRegister RegisterOrder( ::std::vector<::std::string_view> order );
 };
 
-#define B33_ORDER_COMPONENTS( ... )                                                                                    \
+#define B33_CREATE_COMPONENTS( ... )                                                                                   \
     static ::B33::System::ComponentOrderRegister g_ComponentOrder =                                                    \
         ::B33::System::ComponentOrderRegister::RegisterOrder( __VA_ARGS__ );
 

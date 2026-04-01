@@ -33,9 +33,6 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
 
     // Recreating swap chain also creates frame resources and initializes swap chain
     RecreateSwapChain();
-
-    if ( m_pCamera == nullptr )
-        m_pCamera = make_shared<Camera>();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -4,7 +4,6 @@
 #include "B33Rendering.hpp"
 
 #include "ExportImport.h"
-#include "Primitives/Camera.hpp"
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Instance.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
@@ -42,28 +41,12 @@ class Renderer
     }
 
   public:
-    ::std::shared_ptr<::B33::Rendering::Camera> &GetCurrentCamera()
-    {
-        if ( m_pCamera == nullptr )
-        {
-            AB_LOG( ::B33::Core::Debug::Warning, L"Renderer doesn't have a camera. Recreating default camera on fly." );
-            m_pCamera = ::std::make_shared<::B33::Rendering::Camera>();
-        }
-
-        return m_pCamera;
-    }
-
     bool GetDebugMode()
     {
         return m_bDebugMode;
     }
 
   public:
-    void SetCurrentCamera( ::std::shared_ptr<::B33::Rendering::Camera> camera )
-    {
-        m_pCamera = camera;
-    }
-
     void SetDebugMode( const bool bMode )
     {
         m_bDebugMode = bMode;
@@ -121,7 +104,6 @@ class Renderer
     ::std::shared_ptr<::B33::Rendering::AdapterWrapper>  m_pDeviceAdapter = nullptr;
     ::std::unique_ptr<::B33::Rendering::Swapchain>       m_pSwapChain     = nullptr;
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory        = nullptr;
-    ::std::shared_ptr<::B33::Rendering::Camera>          m_pCamera        = nullptr;
 
     ::std::vector<::std::shared_ptr<::B33::Rendering::PipelineWrapper>> m_vPipeline = {};
 

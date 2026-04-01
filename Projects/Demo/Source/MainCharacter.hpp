@@ -152,7 +152,7 @@ class PlayablePaper
 {
   public:
     PlayablePaper( Game &g )
-      : m_Character( ::std::make_shared<PaperCharacter>( g ) )
+      : m_Character( PaperCharacter( g ) )
       , m_Controller()
     {
     }
@@ -162,12 +162,17 @@ class PlayablePaper
   public:
     void BindToInput( const ::std::shared_ptr<B33::App::UserInput> &pInput );
 
-    const ::std::shared_ptr<PaperCharacter> &GetCharacterHandle() const
+    const PaperCharacter &GetCharacterHandle() const
+    {
+        return m_Character;
+    }
+
+    PaperCharacter &GetCharacterHandle()
     {
         return m_Character;
     }
 
   private:
-    ::std::shared_ptr<PaperCharacter> m_Character;
-    PaperController                   m_Controller;
+    PaperCharacter  m_Character;
+    PaperController m_Controller;
 };

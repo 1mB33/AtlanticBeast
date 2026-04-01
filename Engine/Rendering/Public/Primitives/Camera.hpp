@@ -32,7 +32,7 @@ class Camera : public ::B33::Math::WorldObject
     }
 
   public:
-    float GetFov()
+    float GetFov() const
     {
         return m_fFov;
     }
