@@ -7,7 +7,8 @@ namespace B33::Core::Debug
 enum ESeverity
 {
     Info    = 1,
-    Warning = Info << 1,
+    Trace   = Info << 1,
+    Warning = Trace << 1,
     Error   = Warning << 1,
 };
 

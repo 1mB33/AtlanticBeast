@@ -5,6 +5,7 @@
 #include "IComponent.hpp"
 #include "ComponentsOrder.hpp"
 #include "ComponentBridge.hpp"
+#include "Synchronization/JobSystem.hpp"
 
 namespace B33::System
 {
@@ -18,6 +19,7 @@ class EngineLoop
     EngineLoop()
       : m_Components()
       , m_ComponentBridge()
+      , m_JobSystem()
       , m_bInitialized( false )
     {
     }
@@ -39,7 +41,7 @@ class EngineLoop
     BEAST_API void InitializeComponents();
 
     BEAST_API void UpdateComponents( float fDelta );
-     
+
     BEAST_API void DestroyComponents();
 
   private:
@@ -50,7 +52,11 @@ class EngineLoop
     static inline ::std::vector<::std::string_view>                          m_ComponentOrderRegistry = {};
 
     ::std::vector<IComponent *> m_Components      = {};
+    ::std::vector<IComponent *> m_AsyncComponents = {};
     ComponentBridge             m_ComponentBridge = {};
+
+    ::B33::Core::JobSystem m_JobSystem = {};
+
 
     bool m_bInitialized = false;
 };

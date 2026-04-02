@@ -40,7 +40,7 @@ class RendererMasterController : public ::B33::App::ControllerObject
     ~RendererMasterController() = default;
 
   public:
-    AB_DECL_ACTION( RendererMaster, SwitchDebugMode, SetWindowMode );
+    B33_DECL_ACTION( RendererMaster, SwitchDebugMode, SetWindowMode );
 };
 
 class RendererMasterPuppet

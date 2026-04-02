@@ -45,9 +45,9 @@ class WindowMasterController : public B33::App::ControllerObject
     ~WindowMasterController() = default;
 
   public:
-    AB_DECL_ACTION( WindowMaster, SetWindow, SetWindowMode );
-    AB_DECL_ACTION( WindowMaster, SetBorderless, SetBorderless );
-    AB_DECL_ACTION( WindowMaster, ExitGame, ExitGame );
+    B33_DECL_ACTION( WindowMaster, SetWindow, SetWindowMode );
+    B33_DECL_ACTION( WindowMaster, SetBorderless, SetBorderless );
+    B33_DECL_ACTION( WindowMaster, ExitGame, ExitGame );
 };
 
 class WindowMasterPuppet

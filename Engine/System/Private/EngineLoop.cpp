@@ -1,5 +1,7 @@
 #include "B33System.hpp"
+#include "ComponentBridge.hpp"
 #include "EngineLoop.hpp"
+#include "IComponent.hpp"
 
 namespace B33::System
 {
@@ -18,12 +20,24 @@ void EngineLoop::InitializeComponents()
 
 void EngineLoop::UpdateComponents( float fDelta )
 {
+    for ( IComponent *component : m_AsyncComponents )
+        m_JobSystem.PushJob(
+            [ = ]()
+            {
+                component->Update( m_ComponentBridge, fDelta );
+            } );
+
+    m_JobSystem.BlockAndWait();
+
     for ( auto component : m_Components )
         component->Update( m_ComponentBridge, fDelta );
 }
 
 void EngineLoop::DestroyComponents()
 {
+    for ( auto component : m_AsyncComponents )
+        component->Destroy( m_ComponentBridge );
+
     for ( auto component : m_Components )
         component->Destroy( m_ComponentBridge );
 }
@@ -36,12 +50,27 @@ void EngineLoop::AddComponentInternal( ::std::string_view componentName )
     m_ComponentBridge.m_ComponentMap[ componentName ] = m_ComponentRegistry[ componentName ]();
 
     auto component = ( m_ComponentBridge.m_ComponentMap[ componentName ] ).get();
-
-    m_Components.push_back( component );
-
-    if ( m_bInitialized )
+    switch ( component->GetComponentType() )
     {
-        component->Initialize( m_ComponentBridge );
+        case Abstract:
+        {
+        }
+        case Default:
+        {
+            if ( m_bInitialized )
+                component->Initialize( m_ComponentBridge );
+
+            m_Components.push_back( component );
+            break;
+        }
+        case Async:
+        {
+            if ( m_bInitialized )
+                component->Initialize( m_ComponentBridge );
+
+            m_AsyncComponents.push_back( component );
+            break;
+        }
     }
 }
 

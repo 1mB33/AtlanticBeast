@@ -118,31 +118,31 @@ class PaperController : public B33::App::ControllerObject
     ~PaperController() = default;
 
   public:
-    AB_DECL_ACTION( PaperCharacter, Strafe, MoveRight, 0.1f );
+    B33_DECL_ACTION( PaperCharacter, Strafe, MoveRight, 0.1f );
 
-    AB_DECL_ACTION( PaperCharacter, Strafe, MoveLeft, -0.1f );
+    B33_DECL_ACTION( PaperCharacter, Strafe, MoveLeft, -0.1f );
 
-    AB_DECL_ACTION( PaperCharacter, MoveForwardBackwards, MoveFront, 0.1f );
+    B33_DECL_ACTION( PaperCharacter, MoveForwardBackwards, MoveFront, 0.1f );
 
-    AB_DECL_ACTION( PaperCharacter, MoveForwardBackwards, MoveBack, -0.1f );
+    B33_DECL_ACTION( PaperCharacter, MoveForwardBackwards, MoveBack, -0.1f );
 
-    AB_DECL_ACTION( PaperCharacter, Move, MoveUp, B33::Math::Vec3 { 0.f, -0.1f, 0.f } );
+    B33_DECL_ACTION( PaperCharacter, Move, MoveUp, B33::Math::Vec3 { 0.f, -0.1f, 0.f } );
 
-    AB_DECL_ACTION( PaperCharacter, Move, MoveDown, B33::Math::Vec3 { 0.f, 0.1f, 0.f } );
+    B33_DECL_ACTION( PaperCharacter, Move, MoveDown, B33::Math::Vec3 { 0.f, 0.1f, 0.f } );
 
-    AB_DECL_ACTION( PaperCharacter, PlaceBlock, PlaceBlock );
+    B33_DECL_ACTION( PaperCharacter, PlaceBlock, PlaceBlock );
 
-    AB_DECL_ACTION( PaperCharacter, RemoveBlock, RemoveBlock );
+    B33_DECL_ACTION( PaperCharacter, RemoveBlock, RemoveBlock );
 
-    AB_DECL_ACTION( PaperCharacter, Push, PushBlockLowForce, 10.f );
+    B33_DECL_ACTION( PaperCharacter, Push, PushBlockLowForce, 10.f );
 
-    AB_DECL_ACTION( PaperCharacter, Push, PushBlockMediumForce, 50.f );
+    B33_DECL_ACTION( PaperCharacter, Push, PushBlockMediumForce, 50.f );
 
-    AB_DECL_ACTION( PaperCharacter, Push, PushBlockHighForce, 100.f );
+    B33_DECL_ACTION( PaperCharacter, Push, PushBlockHighForce, 100.f );
 
-    AB_DECL_ACTION( PaperCharacter, ActivateSprint, Sprint );
+    B33_DECL_ACTION( PaperCharacter, ActivateSprint, Sprint );
 
-    AB_DECL_ACTION( PaperCharacter, ActivateWalk, Walk );
+    B33_DECL_ACTION( PaperCharacter, ActivateWalk, Walk );
 
     AB_DECL_MOUSE_ACTION( PaperCharacter, MouseMove, Mouse );
 };

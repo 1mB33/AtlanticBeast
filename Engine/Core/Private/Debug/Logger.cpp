@@ -86,6 +86,8 @@ const wchar_t *Logger::GetTag( const ESeverity sev ) const
     {
         case ESeverity::Info:
             return L"Info";
+        case ESeverity::Trace:
+            return L"Trace";
         case ESeverity::Warning:
             return L"Warning";
         case ESeverity::Error:
@@ -149,8 +151,8 @@ void Logger::WriteLoop()
 
         if ( m_MessageQueue.empty() )
         {
-            m_FlushCondition.notify_all();
             m_InstanceLock.unlock();
+            m_FlushCondition.notify_all();
             this_thread::sleep_for( 10ms );
             continue;
         }

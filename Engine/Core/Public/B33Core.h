@@ -21,9 +21,14 @@ static const char szLogPostfix[] = "_AtlanticBeast.log";
 #    include "Debug/Logger.hpp"
 
 #    ifdef _DEBUG
-#        define AB_LOG( ... ) ::B33::Core::Debug::Logger::Get().Log( __VA_ARGS__ )
+#        define AB_LOG( ... )   ::B33::Core::Debug::Logger::Get().Log( __VA_ARGS__ )
+#        define B33_INFO( ... ) ::B33::Core::Debug::Logger::Get().Log( ::B33::Core::Debug::Info, __VA_ARGS__ )
+// #        define B33_TRACE( ... ) ::B33::Core::Debug::Logger::Get().Log( ::B33::Core::Debug::Trace, __VA_ARGS__ )
+#        define B33_TRACE( ... )
 #    else
 #        define AB_LOG( ... )
+#        define B33_INFO( ... )
+#        define B33_TRACE( ... )
 #    endif // !_DEBUG
 
 // Workaround for empty __VA_ARGS__

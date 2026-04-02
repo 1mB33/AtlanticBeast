@@ -4,6 +4,7 @@ SET(BEE_CORE_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Debug/Logger.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Synchronization/DeltaTime.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Synchronization/FpsLimiter.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Synchronization/JobSystem.cpp"
 )
 SET(BEE_CORE_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/CStandard.h"
@@ -20,6 +21,7 @@ SET(BEE_CORE_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Core.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Synchronization/FpsLimiter.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Synchronization/DeltaTime.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Utility.hpp"
 )
 
 ADD_LIBRARY(B33Core SHARED
@@ -35,7 +37,7 @@ IF (MSVC)
     IF (NOT CMAKE_BUILD_TYPE=="Debug")
 
         TARGET_COMPILE_OPTIONS(B33Core PUBLIC "/O2")
-        
+
     ENDIF()
 
 ELSE()

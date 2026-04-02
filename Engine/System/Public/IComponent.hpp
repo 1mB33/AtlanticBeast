@@ -1,11 +1,30 @@
 #ifndef AB_ICOMPONENT_H
 #define AB_ICOMPONENT_H
 
+#include "B33System.hpp"
+
 namespace B33::System
 {
 
+enum EComponentType
+{
+    Abstract,
+    Default,
+    Async,
+};
+
+class IComponent;
+using ComponentInstance = ::std::unique_ptr<IComponent>;
+using ComponentFactory  = ComponentInstance ( * )();
+
 class IComponent
 {
+  public:
+    virtual ::B33::System::EComponentType GetComponentType()
+    {
+        return ::B33::System::EComponentType::Abstract;
+    }
+
   public:
     virtual ~IComponent() = default;
 
@@ -14,9 +33,6 @@ class IComponent
     virtual void Update( class ComponentBridge &bridge, float fDelta ) = 0;
     virtual void Destroy( class ComponentBridge &bridge )              = 0;
 };
-
-using ComponentInstance = ::std::unique_ptr<IComponent>;
-using ComponentFactory  = ComponentInstance ( * )();
 
 struct ComponentInstanceRegister
 {
@@ -49,20 +65,43 @@ struct ComponentInstanceRegister
     BEAST_API static void RegisterInternal( const ::std::string_view &className, ComponentFactory factory );
 };
 
-#define B33_COMPONENT( CLASS_NAME )                                                                                    \
+#define B33_COMPONENT_HELPER( CLASS_NAME )                                                                             \
   public:                                                                                                              \
     static ::B33::System::ComponentInstance GetComponentFactory()                                                      \
     {                                                                                                                  \
         return ::std::make_unique<CLASS_NAME>();                                                                       \
     }                                                                                                                  \
-    static constexpr ::std::string_view GetComponentName()                                                             \
+    static ::std::string_view GetComponentName()                                                                       \
     {                                                                                                                  \
         return #CLASS_NAME;                                                                                            \
     }                                                                                                                  \
                                                                                                                        \
   private:                                                                                                             \
     static inline const ::B33::System::ComponentInstanceRegister RegisteredComponent =                                 \
-        ::B33::System::ComponentInstanceRegister::Register( CLASS_NAME::GetComponentName(), &GetComponentFactory );
+        ::B33::System::ComponentInstanceRegister::Register( #CLASS_NAME, &GetComponentFactory );
+
+
+#define B33_COMPONENT( CLASS_NAME )                                                                                    \
+    B33_COMPONENT_HELPER( CLASS_NAME );                                                                                \
+                                                                                                                       \
+  public:                                                                                                              \
+    virtual ::B33::System::EComponentType GetComponentType() override                                                  \
+    {                                                                                                                  \
+        return ::B33::System::EComponentType::Default;                                                                 \
+    }                                                                                                                  \
+                                                                                                                       \
+  private:
+
+#define B33_ASYNC_COMPONENT( CLASS_NAME )                                                                              \
+    B33_COMPONENT_HELPER( CLASS_NAME );                                                                                \
+                                                                                                                       \
+  public:                                                                                                              \
+    virtual ::B33::System::EComponentType GetComponentType() override                                                  \
+    {                                                                                                                  \
+        return ::B33::System::EComponentType::Async;                                                                   \
+    }                                                                                                                  \
+                                                                                                                       \
+  private:
 
 } // namespace B33::System
 #endif // !AB_ICOMPONENT_H

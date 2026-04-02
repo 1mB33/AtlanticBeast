@@ -51,7 +51,7 @@ class ControllerObject
 
 } // namespace B33::App
 
-#define AB_DECL_ACTION( baseClass, action, customName, ... )                                                           \
+#define B33_DECL_ACTION( baseClass, action, customName, ... )                                                          \
     static ::AbActionType UseAction##customName( const float fDelta, void *pThis )                                     \
     {                                                                                                                  \
         AB_ASSERT( pThis != nullptr );                                                                                 \
