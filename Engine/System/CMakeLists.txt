@@ -22,7 +22,7 @@ IF (MSVC)
     TARGET_COMPILE_OPTIONS(B33System PUBLIC "/permissive-")
     TARGET_COMPILE_OPTIONS(B33System PUBLIC "/GR")
 
-    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+    IF (CMAKE_BUILD_TYPE!="Debug")
 
         TARGET_COMPILE_OPTIONS(B33System PUBLIC "/O2")
         

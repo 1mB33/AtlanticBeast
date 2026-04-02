@@ -24,7 +24,7 @@ class JobSystem
         PushJobInternal( ::std::move( newJob ) );
     }
 
-    void BlockAndWait();
+    BEAST_API void BlockAndWait();
 
   private:
     struct Job
@@ -43,11 +43,7 @@ class JobSystem
     };
 
   private:
-    void PushJobInternal( Job newJob );
-
-    void PopJobInternal();
-
-    void StealJobInternal();
+    BEAST_API void PushJobInternal( Job newJob );
 
     static void JobProcessorLoop( ::std::mutex              &mutex,
                                   ::std::condition_variable &condition,

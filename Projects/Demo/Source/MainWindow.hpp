@@ -11,7 +11,7 @@ B33_CREATE_COMPONENTS( "MainWindow", "MyGame", "Renderer" )
 
 class MainWindow : public ::B33::System::IComponent
 {
-    B33_ASYNC_COMPONENT( MainWindow );
+    B33_COMPONENT( MainWindow );
 
   public:
     MainWindow()

@@ -16,7 +16,7 @@ IF (MSVC)
     TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/permissive-")
     TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/GR")
 
-    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+    IF (CMAKE_BUILD_TYPE!="Debug")
 
         TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "/O2")
         
@@ -24,7 +24,7 @@ IF (MSVC)
 
 ELSE()
 
-    IF (NOT CMAKE_BUILD_TYPE=="Debug")
+    IF (CMAKE_BUILD_TYPE!="Debug")
 
         TARGET_COMPILE_OPTIONS(AtlBee PUBLIC "-O2")
 
