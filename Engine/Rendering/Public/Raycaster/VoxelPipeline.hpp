@@ -1,7 +1,6 @@
 #ifndef B33_PIPELINE_H
 #define B33_PIPELINE_H
 
-#include "ExportImport.h"
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/IPipeline.hpp"
 #include "Vulkan/Memory.hpp"
@@ -17,7 +16,7 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     using Vec  = ::B33::Math::Vec3;
     using iVec = ::B33::Math::iVec3;
 
-  public:
+  private:
     enum EShaderResource
     {
         VoxelGrid       = 1,
@@ -46,7 +45,8 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
   public:
     BEAST_API virtual void Update() override final;
 
-    BEAST_API virtual void RecordCommands( VkCommandBuffer &cmdBuffer ) override final;
+    BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
+                                           VkCommandBuffer        &cmdBuffer ) override final;
 
     BEAST_API virtual void Reset() override final;
 

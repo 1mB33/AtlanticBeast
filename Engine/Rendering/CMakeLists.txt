@@ -12,6 +12,7 @@ SET(BEE_RENDERING_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/Rays.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelPipeline.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Raycaster/VoxelGrid.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Editor/EditorPipeline.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/B33Rendering.cpp"
 )
 SET(BEE_RENDERING_HEADRES
@@ -35,6 +36,7 @@ SET(BEE_RENDERING_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Voxel.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/VoxelGrid.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Raycaster/Rays.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Editor/EditorPipeline.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp"
 )
 
@@ -47,11 +49,11 @@ IF (MSVC)
 
     TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/permissive-")
     TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/GR")
-    
+
     IF (CMAKE_BUILD_TYPE!="Debug")
 
         TARGET_COMPILE_OPTIONS(B33Rendering PUBLIC "/O2")
-        
+
     ENDIF()
 
 ELSE()

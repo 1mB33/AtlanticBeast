@@ -66,7 +66,7 @@ class PipelineWrapper
   public:
     virtual void Update() = 0;
 
-    virtual void RecordCommands( VkCommandBuffer &cmdBuffer ) = 0;
+    virtual void RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer ) = 0;
 
     virtual void Reset() = 0;
 

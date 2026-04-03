@@ -1,6 +1,7 @@
 #include "MyGame.hpp"
 #include "Renderer.hpp"
 #include "MainWindow.hpp"
+#include "Editor/EditorPipeline.hpp"
 
 using namespace B33;
 using namespace B33::Math;
@@ -14,8 +15,11 @@ void Renderer::Initialize( ::B33::System::ComponentBridge &bridge )
     }
 
     m_RendererInstance.Initialize( bridge.QueryComponent<MainWindow>().GetWindowInstance().GetWindowDesc() );
+
     m_RendererInstance.PushPipeline<::B33::Rendering::VoxelPipeline>(
         bridge.QueryComponent<MyGame>().GetGameInstance().GetWorld() );
+
+    m_RendererInstance.PushPipeline<::B33::Rendering::EditorPipeline>();
 }
 
 void Renderer::Update( ::B33::System::ComponentBridge &bridge, float fDelta )
@@ -39,6 +43,7 @@ void Renderer::Update( ::B33::System::ComponentBridge &bridge, float fDelta )
     constants.uMode                              = m_RendererMaster.GetGameMaster().GetDebugMode();
 
     m_RendererInstance.GetPipeline( 0 )->LoadPushConstants( constants, sizeof( constants ) );
+    m_RendererInstance.GetPipeline( 1 )->LoadPushConstants( constants, sizeof( constants ) );
     m_RendererInstance.Update( fDelta );
     m_RendererInstance.Render();
 }

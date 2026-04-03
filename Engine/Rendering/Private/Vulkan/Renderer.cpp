@@ -214,7 +214,9 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
 
     THROW_IF_FAILED( vkBeginCommandBuffer( cmdBuff, &beginInfo ) );
 
-    VkPipelineStageFlagBits lastStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    VkPipelineStageFlagBits lastStage     = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    VkImageLayout           lastImgLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+    VkImageLayout           newImgLayout  = VK_IMAGE_LAYOUT_GENERAL;
     for ( auto &pipeline : m_vPipeline )
     {
         pipeline->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
@@ -224,8 +226,8 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
         barrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
         barrier.srcQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
         barrier.dstQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
-        barrier.oldLayout            = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        barrier.newLayout            = VK_IMAGE_LAYOUT_GENERAL;
+        barrier.oldLayout            = lastImgLayout;
+        barrier.newLayout            = newImgLayout;
         barrier.srcAccessMask        = 0;
         barrier.dstAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
         barrier.image                = m_pSwapChain->GetImage( uImageIndex );
@@ -251,15 +253,16 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
                                  0,
                                  NULL );
 
-        lastStage = pipeline->GetPipelineStageFlagBits();
-        pipeline->RecordCommands( cmdBuff );
+        pipeline->RecordCommands( lastStage, cmdBuff );
+        lastStage     = pipeline->GetPipelineStageFlagBits();
+        lastImgLayout = newImgLayout;
     }
 
     VkImageMemoryBarrier presentBarrier = {};
     presentBarrier.sType                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     presentBarrier.dstQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
     presentBarrier.srcQueueFamilyIndex  = VK_QUEUE_FAMILY_IGNORED;
-    presentBarrier.oldLayout            = VK_IMAGE_LAYOUT_GENERAL;
+    presentBarrier.oldLayout            = lastImgLayout;
     presentBarrier.newLayout            = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     presentBarrier.srcAccessMask        = VK_ACCESS_SHADER_WRITE_BIT;
     presentBarrier.dstAccessMask        = 0;

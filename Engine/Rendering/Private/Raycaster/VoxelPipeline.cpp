@@ -5,7 +5,6 @@
 #include "Vulkan/GPUStreamBuffer.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/SwapChain.hpp"
-#include <vulkan/vulkan_core.h>
 
 namespace B33::Rendering
 {
@@ -94,7 +93,7 @@ void VoxelPipeline::Update()
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
+void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
 {
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),
@@ -198,7 +197,7 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
     bufferBarriers[ 3 ].buffer = m_HalfSizesBuffer->GetBufferHandle();
 
     vkCmdPipelineBarrier( cmdBuffer,
-                          VK_PIPELINE_STAGE_TRANSFER_BIT,
+                          lastStage,
                           VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                           0,
                           0,
