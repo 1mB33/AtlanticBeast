@@ -1,5 +1,5 @@
-#ifndef AB_DEFAULT_SYSTEM_ENTRY_POINT_HPP
-#define AB_DEFAULT_SYSTEM_ENTRY_POINT_HPP
+#ifndef B33_DEFAULT_SYSTEM_ENTRY_POINT_HPP
+#define B33_DEFAULT_SYSTEM_ENTRY_POINT_HPP
 
 #if defined( _WIN32 )
 #    include "Win32/Win32Entry.hpp"
@@ -7,4 +7,4 @@
 #    include "Linux/LinuxEntry.hpp"
 #endif
 
-#endif // !AB_DEFAULT_SYSTEM_ENTRY_POINT_HPP
+#endif // !B33_DEFAULT_SYSTEM_ENTRY_POINT_HPP

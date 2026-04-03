@@ -1,5 +1,5 @@
-#ifndef AB_WRAPPER_H
-#define AB_WRAPPER_H
+#ifndef B33_WRAPPER_H
+#define B33_WRAPPER_H
 
 #include "WrapperAdapter.hpp"
 
@@ -39,4 +39,4 @@ class IAdapter : public AdapterWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_WRAPPER_H
+#endif // !B33_WRAPPER_H

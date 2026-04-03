@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_H
-#define AB_OBJECT_H
+#ifndef B33_OBJECT_H
+#define B33_OBJECT_H
 
 #include "B33Math.hpp"
 
@@ -53,4 +53,4 @@ class alignas( 16 ) WorldObject
 };
 
 } // namespace B33::Math
-#endif // !AB_OBJECT_H
+#endif // !B33_OBJECT_H

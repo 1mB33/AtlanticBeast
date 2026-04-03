@@ -25,16 +25,16 @@ void GameLinuxWindowPolicy::OnCreate( WindowDesc *pWd )
 
     if ( !XQueryExtension( pDisplay, "XInputExtension", &m_OpCode, &event, &error ) )
     {
-        AB_LOG( Error, L"XInput2 not available." );
+        B33_LOG( Error, L"XInput2 not available." );
         return;
     }
 
     if ( XIQueryVersion( pDisplay, &major, &minor ) == BadRequest )
     {
-        AB_LOG( Error, L"XInput2 isn't available. Need at least 2.0." );
+        B33_LOG( Error, L"XInput2 isn't available. Need at least 2.0." );
         return;
     }
-    AB_LOG( Info, L"XInput2 version: %d.%d", major, minor );
+    B33_LOG( Info, L"XInput2 version: %d.%d", major, minor );
 
     XISetMask( pMask, XI_RawMotion );
 
@@ -45,7 +45,7 @@ void GameLinuxWindowPolicy::OnCreate( WindowDesc *pWd )
     int status = XISelectEvents( pDisplay, window, &evmask, 1 );
     if ( status != Success )
     {
-        AB_LOG( Error, L"XISelectEvents failed." );
+        B33_LOG( Error, L"XISelectEvents failed." );
     }
 
     XFlush( pDisplay );

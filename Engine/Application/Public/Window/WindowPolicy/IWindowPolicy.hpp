@@ -1,5 +1,5 @@
-#ifndef AB_IWINDOW_POLICY_H
-#define AB_IWINDOW_POLICY_H
+#ifndef B33_IWINDOW_POLICY_H
+#define B33_IWINDOW_POLICY_H
 
 #include "Window/WindowDesc.hpp"
 
@@ -49,4 +49,4 @@ class IWindowPolicy
 };
 
 } // namespace B33::App
-#endif // !AB_IWINDOW_POLICY_H
+#endif // !B33_IWINDOW_POLICY_H

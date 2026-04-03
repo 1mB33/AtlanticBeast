@@ -1,5 +1,5 @@
-#ifndef AB_COMPONENTS_ORDER_HPP
-#define AB_COMPONENTS_ORDER_HPP
+#ifndef B33_COMPONENTS_ORDER_HPP
+#define B33_COMPONENTS_ORDER_HPP
 
 #include "B33System.hpp"
 
@@ -36,4 +36,4 @@ struct ComponentOrderRegister
         ::B33::System::ComponentOrderRegister::RegisterOrder( { __VA_ARGS__ } );
 
 } // namespace B33::System
-#endif // !AB_COMPONENTS_ORDER_HPP
+#endif // !B33_COMPONENTS_ORDER_HPP

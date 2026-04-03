@@ -50,7 +50,7 @@ void AbAskToCloseDisplayLinux( const char *pszDisplayName )
 
     if ( Displays.find( pszDisplayName ) == Displays.end() )
     {
-        throw AB_EXCEPT( "Traying to close a conection with display that doesn't exists!!!" );
+        throw B33_EXCEPT( "Traying to close a conection with display that doesn't exists!!!" );
     }
 
     auto &mapped = Displays[ pszDisplayName ];
@@ -85,14 +85,14 @@ void AbAskToRegisterWindowClass( const wchar_t *pwszClassName, WNDCLASSEX &wcex 
 
     if ( RegisteredClasses.find( className ) != RegisteredClasses.end() && RegisteredClasses[ className ] != 0 )
     {
-        throw AB_EXCEPT( "Trying to register a class that already exists!!!" );
+        throw B33_EXCEPT( "Trying to register a class that already exists!!!" );
     }
 
     ++RegisteredClasses[ className ];
 
     if ( RegisterClassEx( &wcex ) == 0 )
     {
-        throw AB_EXCEPT( "Failed to register window" );
+        throw B33_EXCEPT( "Failed to register window" );
     }
 }
 
@@ -102,7 +102,7 @@ void AbAskToCloseWindowClass( const wchar_t *pwszClassName )
     if ( RegisteredClasses.find( wstring( pwszClassName ) ) == RegisteredClasses.end() ||
          RegisteredClasses[ pwszClassName ] == 0 )
     {
-        throw AB_EXCEPT( "Traying to unregister a class that doesn't exists!!!" );
+        throw B33_EXCEPT( "Traying to unregister a class that doesn't exists!!!" );
     }
 
     --RegisteredClasses[ pwszClassName ];

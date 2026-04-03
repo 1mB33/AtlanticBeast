@@ -1,5 +1,5 @@
-#ifndef AB_WINDOW_LISTENER_H
-#define AB_WINDOW_LISTENER_H
+#ifndef B33_WINDOW_LISTENER_H
+#define B33_WINDOW_LISTENER_H
 
 #include "B33Core.h"
 
@@ -44,14 +44,14 @@ class WindowListener
   public:
     void ListenToWindow( ::std::shared_ptr<WindowDesc> pWd )
     {
-        AB_ASSERT( pWd != nullptr );
+        B33_ASSERT( pWd != nullptr );
         m_pWindowDesc = pWd;
     }
 
   protected:
     const ::std::shared_ptr<WindowDesc> &GetWindowDesc() const
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
         return m_pWindowDesc;
     }
 
@@ -60,4 +60,4 @@ class WindowListener
 };
 
 } // namespace B33::App
-#endif //! AB_WINDOW_LISTENER_H
+#endif //! B33_WINDOW_LISTENER_H

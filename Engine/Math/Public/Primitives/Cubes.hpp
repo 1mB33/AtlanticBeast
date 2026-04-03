@@ -1,5 +1,5 @@
-#ifndef AB_CUBES_H
-#define AB_CUBES_H
+#ifndef B33_CUBES_H
+#define B33_CUBES_H
 
 #include "B33Math.hpp"
 
@@ -41,7 +41,7 @@ class Cubes : public WorldObjects
         ::size_t i = WorldObjects::AddObject();
         m_vHalfSizes.push_back( Vec3() );
 
-        AB_ASSERT( i == m_vHalfSizes.size() - 1 );
+        B33_ASSERT( i == m_vHalfSizes.size() - 1 );
 
         return i;
     }
@@ -56,4 +56,4 @@ class Cubes : public WorldObjects
 };
 
 } // namespace B33::Math
-#endif // !AB_CUBES_H
+#endif // !B33_CUBES_H

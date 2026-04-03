@@ -1,5 +1,5 @@
-#ifndef AB_GPU_BUFFER_H
-#define AB_GPU_BUFFER_H
+#ifndef B33_GPU_BUFFER_H
+#define B33_GPU_BUFFER_H
 
 #include "WrapperAdapter.hpp"
 
@@ -96,4 +96,4 @@ class GPUBuffer
 };
 
 } // namespace B33::Rendering
-#endif //! AB_GPU_BUFFER_H
+#endif //! B33_GPU_BUFFER_H

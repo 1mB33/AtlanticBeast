@@ -1,6 +1,6 @@
 #ifdef _WIN32
-#    ifndef AB_BORDERLESS_GAME_WIN32_POLICY_H
-#        define AB_BORDERLESS_GAME_WIN32_POLICY_H
+#    ifndef B33_BORDERLESS_GAME_WIN32_POLICY_H
+#        define B33_BORDERLESS_GAME_WIN32_POLICY_H
 
 #        include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"
 
@@ -31,7 +31,7 @@ class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
         pWd->Wcex.lpszClassName = pWd->pwszClassName;
         pWd->Wcex.lpfnWndProc   = WindowProc<WindowModeGameWin32WindowPolicy>;
 
-        HMONITOR hMonitor = MonitorFromWindow( pWd->hWnd, MONITOR_DEFAULTTONEAREST );
+        HMONITOR    hMonitor = MonitorFromWindow( pWd->hWnd, MONITOR_DEFAULTTONEAREST );
         MONITORINFO mi;
 
         mi.cbSize = sizeof( mi );
@@ -62,7 +62,7 @@ class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
 
         if ( hWnd == NULL )
         {
-            AB_LOG( Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError() );
+            B33_LOG( Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError() );
             return;
         }
 
@@ -71,5 +71,5 @@ class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
 };
 
 } // namespace B33::App
-#    endif // !AB_BORDERLESS_GAME_WIN32_POLICY_H
+#    endif // !B33_BORDERLESS_GAME_WIN32_POLICY_H
 #endif     // !_WIN32

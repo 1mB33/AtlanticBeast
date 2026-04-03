@@ -1,5 +1,5 @@
-#ifndef AB_RTX_HARDWARE_H
-#define AB_RTX_HARDWARE_H
+#ifndef B33_RTX_HARDWARE_H
+#define B33_RTX_HARDWARE_H
 
 #include "Instance.hpp"
 #include "WrapperHardware.hpp"
@@ -23,4 +23,4 @@ class RTXHardware : public ::B33::Rendering::HardwareWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_RTX_HARDWARE_H
+#endif // !B33_RTX_HARDWARE_H

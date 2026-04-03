@@ -1,5 +1,5 @@
-#ifndef AB_MEMORY_H
-#define AB_MEMORY_H
+#ifndef B33_MEMORY_H
+#define B33_MEMORY_H
 
 #include "GPUBuffer.hpp"
 #include "GPUStreamBuffer.hpp"
@@ -115,4 +115,4 @@ class Memory
 };
 
 } // namespace B33::Rendering
-#endif //! AB_MEMORY_H
+#endif //! B33_MEMORY_H

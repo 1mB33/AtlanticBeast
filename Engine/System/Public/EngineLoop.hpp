@@ -1,5 +1,5 @@
-#ifndef AB_ENGINE_LOOP_H
-#define AB_ENGINE_LOOP_H
+#ifndef B33_ENGINE_LOOP_H
+#define B33_ENGINE_LOOP_H
 
 #include "B33System.hpp"
 #include "IComponent.hpp"
@@ -62,4 +62,4 @@ class EngineLoop
 };
 
 } // namespace B33::System
-#endif // !AB_ENGINE_LOOP_H
+#endif // !B33_ENGINE_LOOP_H

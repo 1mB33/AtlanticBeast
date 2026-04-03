@@ -1,5 +1,5 @@
-#ifndef AB_MOUSE_MAP_H
-#define AB_MOUSE_MAP_H
+#ifndef B33_MOUSE_MAP_H
+#define B33_MOUSE_MAP_H
 
 #include "IBindMap.hpp"
 
@@ -28,4 +28,4 @@ class MouseMap : public IBindMap<MouseMap>
 
 } // namespace B33::App
 
-#endif // !AB_MOUSE_MAP_H
+#endif // !B33_MOUSE_MAP_H

@@ -22,7 +22,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
 
     if ( pWd->pDisplayHandle == NULL )
     {
-        throw AB_EXCEPT( "pDisplayHandle is null!" );
+        throw B33_EXCEPT( "pDisplayHandle is null!" );
     }
 
     int      screen   = DefaultScreen( pWd->pDisplayHandle );
@@ -39,7 +39,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
                                          WhitePixel( pDisplay, screen ) );
 
     XTextProperty windowName;
-    char         *szWindowName = (char *)malloc( sizeof( char ) * AB_SMALL_STRING );
+    char         *szWindowName = (char *)malloc( sizeof( char ) * B33_SMALL_STRING );
     size_t        uWriten      = wcstombs( szWindowName, pWd->Name.c_str(), pWd->Name.length() );
     szWindowName[ uWriten ]    = '\0';
 
@@ -52,7 +52,7 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
     XkbSetDetectableAutoRepeat( pDisplay, True, &bSupported );
     if ( !bSupported )
     {
-        AB_LOG( Error, L"Detectable auto repeat ISN'T SUPPORTED!" );
+        B33_LOG( Error, L"Detectable auto repeat ISN'T SUPPORTED!" );
     }
 
     XSelectInput( pDisplay,
@@ -76,10 +76,10 @@ uint32_t BasicLinuxWindowPolicy::CreateImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::ShowImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd );
-    AB_ASSERT( pWd->bIsAlive );
-    AB_ASSERT( pWd->pDisplayHandle );
-    AB_ASSERT( pWd->WindowHandle );
+    B33_ASSERT( pWd );
+    B33_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd->pDisplayHandle );
+    B33_ASSERT( pWd->WindowHandle );
 
     XMapWindow( pWd->pDisplayHandle, pWd->WindowHandle );
 }
@@ -87,10 +87,10 @@ void BasicLinuxWindowPolicy::ShowImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::HideImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd );
-    AB_ASSERT( pWd->bIsAlive );
-    AB_ASSERT( pWd->pDisplayHandle );
-    AB_ASSERT( pWd->WindowHandle );
+    B33_ASSERT( pWd );
+    B33_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd->pDisplayHandle );
+    B33_ASSERT( pWd->WindowHandle );
 
     XUnmapWindow( pWd->pDisplayHandle, pWd->WindowHandle );
 }
@@ -98,10 +98,10 @@ void BasicLinuxWindowPolicy::HideImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::DestroyImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd );
-    AB_ASSERT( pWd->bIsAlive );
-    AB_ASSERT( pWd->pDisplayHandle );
-    AB_ASSERT( pWd->WindowHandle );
+    B33_ASSERT( pWd );
+    B33_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd->pDisplayHandle );
+    B33_ASSERT( pWd->WindowHandle );
 
     XDestroyWindow( pWd->pDisplayHandle, pWd->WindowHandle );
     AbAskToCloseDisplayLinux( NULL );
@@ -114,10 +114,10 @@ void BasicLinuxWindowPolicy::DestroyImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicLinuxWindowPolicy::UpdateImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd );
-    AB_ASSERT( pWd->bIsAlive );
-    AB_ASSERT( pWd->pDisplayHandle );
-    AB_ASSERT( pWd->WindowHandle );
+    B33_ASSERT( pWd );
+    B33_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd->pDisplayHandle );
+    B33_ASSERT( pWd->WindowHandle );
 
     Display *display = pWd->pDisplayHandle;
     Window   window  = pWd->WindowHandle;

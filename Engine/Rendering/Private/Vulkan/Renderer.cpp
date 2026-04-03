@@ -18,7 +18,7 @@ using namespace ::B33::Math;
 // ---------------------------------------------------------------------------------------------------------------------
 void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
 {
-    AB_LOG( Core::Debug::Info, L"Initializing renderer!" );
+    B33_LOG( Core::Debug::Info, L"Initializing renderer!" );
 
     m_pInstance      = make_shared<Instance>();
     m_pHardware      = make_shared<MinimalHardware>( m_pInstance );
@@ -26,7 +26,7 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
     m_pMemory        = make_unique<Memory>( m_pHardware, m_pDeviceAdapter );
     m_pWindowDesc    = wd;
 
-    AB_LOG( Core::Debug::Info, L"Initializing command pool" );
+    B33_LOG( Core::Debug::Info, L"Initializing command pool" );
     m_CommandPool = CreateCommandPool( static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                        m_pDeviceAdapter->GetQueueFamilyIndex() );
 
@@ -113,7 +113,7 @@ void Renderer::Render()
 // ---------------------------------------------------------------------------------------------------------------------
 void Renderer::Destroy()
 {
-    AB_LOG( Core::Debug::Info, L"Destroying renderer" );
+    B33_LOG( Core::Debug::Info, L"Destroying renderer" );
 
     if ( m_pDeviceAdapter != nullptr )
         vkDeviceWaitIdle( m_pDeviceAdapter->GetAdapterHandle() );
@@ -189,7 +189,7 @@ Renderer::FramesArray Renderer::CreateFrameResources( const shared_ptr<const Ada
              vkCreateSemaphore( device, &semaphoreInfo, NULL, &result[ i ].RenderFinished ) != VK_SUCCESS ||
              vkCreateFence( device, &fenceInfo, NULL, &result[ i ].InFlightFence ) != VK_SUCCESS )
         {
-            throw AB_EXCEPT( "Failed to create frame resources!" );
+            throw B33_EXCEPT( "Failed to create frame resources!" );
         }
 
         result[ i ].CommandBuffer = CreateCommandBuffer( da, cmdPool );
@@ -283,7 +283,7 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
 // --------------------------------------------------------------------------------------------------------------------
 void Renderer::DestroyFrameResources()
 {
-    AB_LOG( Core::Debug::Info, L"Destroying frame resources" );
+    B33_LOG( Core::Debug::Info, L"Destroying frame resources" );
 
     if ( m_vFrames != nullptr )
     {
@@ -305,7 +305,7 @@ void Renderer::DestroyFrameResources()
 // ---------------------------------------------------------------------------------------------------------------------
 void Renderer::RecreateSwapChain()
 {
-    AB_LOG( Core::Debug::Info, L"Recreating swapchain" );
+    B33_LOG( Core::Debug::Info, L"Recreating swapchain" );
     if ( m_pWindowDesc->bIsAlive == false )
     {
         return;
@@ -322,7 +322,7 @@ void Renderer::RecreateSwapChain()
     m_vFrames = make_unique<FramesArray>(
         std::move( CreateFrameResources( m_pDeviceAdapter, m_pMemory, m_CommandPool, Frame::MAX_FRAMES_IN_FLIGHT ) ) );
     m_uCurrentFrame = 0;
-    AB_LOG( Core::Debug::Info, L"Swapchain recreated" );
+    B33_LOG( Core::Debug::Info, L"Swapchain recreated" );
 }
 
 } // namespace B33::Rendering

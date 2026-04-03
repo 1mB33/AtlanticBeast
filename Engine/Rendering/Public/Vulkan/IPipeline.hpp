@@ -1,5 +1,5 @@
-#ifndef AB_IPIPELINE_H
-#define AB_IPIPELINE_H
+#ifndef B33_IPIPELINE_H
+#define B33_IPIPELINE_H
 
 #include "Vulkan/IPushConstants.hpp"
 #include "Vulkan/WrapperPipeline.hpp"
@@ -88,4 +88,4 @@ class IPipeline : public PipelineWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_IPIPELINE_H
+#endif // !B33_IPIPELINE_H

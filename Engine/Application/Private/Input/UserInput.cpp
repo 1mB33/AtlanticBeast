@@ -111,7 +111,7 @@ void UserInput::StopCapturing()
 // ---------------------------------------------------------------------------------------------------------------------
 void UserInput::Update( const float fDelta )
 {
-    AB_ASSERT( this->GetWindowDesc().get() != nullptr );
+    B33_ASSERT( this->GetWindowDesc().get() != nullptr );
 
     if ( !m_bIsCapturing )
     {
@@ -123,7 +123,7 @@ void UserInput::Update( const float fDelta )
     // Always replay the continuos keybinds that are currently pressed
     if ( m_vCurrentlyPressedKeys.any() )
     {
-        for ( AbKeyId i = 0; i < AB_KEY_COUNT; ++i )
+        for ( AbKeyId i = 0; i < B33_KEY_COUNT; ++i )
         {
             if ( !m_vCurrentlyPressedKeys.test( i ) )
                 continue;
@@ -142,7 +142,7 @@ void UserInput::Update( const float fDelta )
             {
                 AbKeyId key = is.Keyboard.KeyId;
 
-                if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                if ( key <= B33_INVALID_KEY || key >= B33_KEY_COUNT )
                     break;
 
                 if ( m_vCurrentlyPressedKeys.test( key ) )
@@ -160,7 +160,7 @@ void UserInput::Update( const float fDelta )
             {
                 AbKeyId key = is.Keyboard.KeyId;
 
-                if ( key <= AB_INVALID_KEY || key >= AB_KEY_COUNT )
+                if ( key <= B33_INVALID_KEY || key >= B33_KEY_COUNT )
                     break;
 
                 if ( !m_vCurrentlyPressedKeys.test( key ) )
@@ -176,7 +176,7 @@ void UserInput::Update( const float fDelta )
             {
                 AbKeyId button = is.Keyboard.KeyId;
 
-                if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
+                if ( button <= B33_INVALID_BUTTON || button >= B33_MOUSE_BUTTONS_COUNT )
                     break;
 
                 m_pImpl->ButtonPressMap.PlayAction( fDelta, button );
@@ -187,7 +187,7 @@ void UserInput::Update( const float fDelta )
             {
                 AbKeyId button = is.Keyboard.KeyId;
 
-                if ( button <= AB_INVALID_BUTTON || button >= AB_MOUSE_BUTTONS_COUNT )
+                if ( button <= B33_INVALID_BUTTON || button >= B33_MOUSE_BUTTONS_COUNT )
                     break;
 
                 m_pImpl->ButtonReleaseMap.PlayAction( fDelta, button );
@@ -223,7 +223,7 @@ void UserInput::Bind( void *pThis, ControllerObject *pCo, AbAction action, AbMou
 
     if ( bind.Type & EAbBindType::Keyboard )
     {
-        if ( bind.Keyboard.KeyCode <= AB_INVALID_KEY || bind.Keyboard.KeyCode >= AB_KEY_COUNT )
+        if ( bind.Keyboard.KeyCode <= B33_INVALID_KEY || bind.Keyboard.KeyCode >= B33_KEY_COUNT )
         {
             Logger::Get().Log( Error, L"Key code is an invalid code (code outside of boundries for keys)." );
             Logger::Get().Log( Error, L"Can't bind the action for the keyboard." );
@@ -270,7 +270,7 @@ void UserInput::Bind( void *pThis, ControllerObject *pCo, AbAction action, AbMou
     }
 
     m_BindsHandles[ pCo ].push_back( { bind, pThis } );
-    AB_LOG( Info, L"New bind [Controller address: %p] [Bind type: %d]", pCo, bind.Type );
+    B33_LOG( Info, L"New bind [Controller address: %p] [Bind type: %d]", pCo, bind.Type );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ void UserInput::Unbind( ControllerObject *pCo )
                            pCo );
         return;
     }
-    AB_LOG( Info, L"Unbind [Controller address: %p]", pCo );
+    B33_LOG( Info, L"Unbind [Controller address: %p]", pCo );
 
     for ( const auto &bindHandle : handle->second )
     {

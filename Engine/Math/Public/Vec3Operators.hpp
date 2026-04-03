@@ -1,5 +1,5 @@
-#ifndef AB_VEC3_OPERATORS_H
-#define AB_VEC3_OPERATORS_H
+#ifndef B33_VEC3_OPERATORS_H
+#define B33_VEC3_OPERATORS_H
 
 #include "Operations.hpp"
 #include "Vec3.hpp"
@@ -10,7 +10,7 @@ namespace B33::Math
 // --------------------------------------------------------------------------------------------------------------------
 constexpr float &Vec3::operator[]( size_t uIndex )
 {
-    AB_ASSERT( uIndex < Size );
+    B33_ASSERT( uIndex < Size );
 
     if ( uIndex == 0 )
     {
@@ -26,7 +26,7 @@ constexpr float &Vec3::operator[]( size_t uIndex )
 // --------------------------------------------------------------------------------------------------------------------
 constexpr float Vec3::operator[]( size_t uIndex ) const
 {
-    AB_ASSERT( uIndex < Size );
+    B33_ASSERT( uIndex < Size );
 
     if ( uIndex == 0 )
     {
@@ -121,4 +121,4 @@ inline iVec3 iVec3::operator*( const uint32_t vB ) const
 }
 
 } // namespace B33::Math
-#endif // !AB_VEC3_OPERATORS_H
+#endif // !B33_VEC3_OPERATORS_H

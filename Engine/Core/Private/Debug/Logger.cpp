@@ -45,11 +45,11 @@ Logger &Logger::Get()
 void Logger::Log( const ESeverity sev, const wchar_t wszFmt[], ... )
 {
     const auto timeStamp   = Clock::now();
-    wchar_t   *pwszMessage = new wchar_t[ AB_LONG_STRING ];
+    wchar_t   *pwszMessage = new wchar_t[ B33_LONG_STRING ];
 
     va_list args;
     va_start( args, wszFmt );
-    vswprintf( pwszMessage, AB_LONG_STRING, wszFmt, args );
+    vswprintf( pwszMessage, B33_LONG_STRING, wszFmt, args );
     va_end( args );
 
     lock_guard<mutex> lock( m_InstanceLock );

@@ -16,7 +16,7 @@ void WindowModeGameWin32WindowPolicy::OnPreWcex()
     WindowDesc *pWd = this->GetWindowDesc();
 
     pWd->pwszClassName = L"GameAtlanticClass";
-    
+
     memset( &pWd->Wcex, 0, sizeof( WNDCLASSEX ) );
 
     pWd->Wcex.cbSize        = sizeof( WNDCLASSEX );
@@ -36,17 +36,17 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
 
     switch ( uMsg )
     {
-        case WM_SHOWWINDOW: 
+        case WM_SHOWWINDOW:
             // Window is being hidden
             if ( wParam != TRUE )
             {
                 break;
             }
-        [[fallthrough]];
+            [[fallthrough]];
         case WM_CREATE:
         case WM_SETFOCUS:
         {
-            AB_LOG( B33::Core::Debug::Info, L"Capturing focus" );
+            B33_LOG( B33::Core::Debug::Info, L"Capturing focus" );
             RAWINPUTDEVICE rid;
             RECT           rect;
 
@@ -57,7 +57,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
 
             if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
             {
-                AB_LOG( B33::Core::Debug::Error, L"Couldn't register raw input" );
+                B33_LOG( B33::Core::Debug::Error, L"Couldn't register raw input" );
             }
 
             ShowCursor( FALSE );
@@ -73,7 +73,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
         case WM_KILLFOCUS:
         case WM_DESTROY:
         {
-            AB_LOG( B33::Core::Debug::Info, L"Leaving focus" );
+            B33_LOG( B33::Core::Debug::Info, L"Leaving focus" );
             RAWINPUTDEVICE rid;
 
             rid.usUsagePage = 0x01;
@@ -82,7 +82,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
             rid.hwndTarget  = NULL;
 
             if ( !RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) )
-                throw AB_EXCEPT( "Couldn't register raw input" );
+                throw B33_EXCEPT( "Couldn't register raw input" );
 
             ShowCursor( TRUE );
             ClipCursor( NULL );
@@ -101,7 +101,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
 
             if ( GetRawInputBuffer( NULL, &cbSize, sizeof( RAWINPUTHEADER ) ) != 0 )
             {
-                AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
+                B33_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
                 break;
             }
 
@@ -115,7 +115,7 @@ void WindowModeGameWin32WindowPolicy::OnUpdate( UINT uMsg, WPARAM wParam, LPARAM
             uRiRead = GetRawInputBuffer( reinterpret_cast<PRAWINPUT>( &vRi[ 0 ] ), &cbSize2, sizeof( RAWINPUTHEADER ) );
             if ( uRiRead == static_cast<UINT>( -1 ) )
             {
-                AB_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
+                B33_LOG( B33::Core::Debug::Error, L"GetRawInputBuffer error %d", GetLastError() );
                 break;
             }
 

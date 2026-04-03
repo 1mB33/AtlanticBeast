@@ -1,5 +1,5 @@
-#ifndef AB_RAYS_H
-#define AB_RAYS_H
+#ifndef B33_RAYS_H
+#define B33_RAYS_H
 
 #include "Raycaster/VoxelGrid.hpp"
 
@@ -24,4 +24,4 @@ BEAST_API HitResult MarchTheRay( const ::B33::Rendering::IWorldGrid *worldGrid,
                                  ::size_t                            maxSteps );
 
 } // namespace B33::Rendering
-#endif //! AB_RAYS_H
+#endif //! B33_RAYS_H

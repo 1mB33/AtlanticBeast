@@ -1,5 +1,5 @@
-#ifndef AB_WRAPPER_ADAPTER_H
-#define AB_WRAPPER_ADAPTER_H
+#ifndef B33_WRAPPER_ADAPTER_H
+#define B33_WRAPPER_ADAPTER_H
 
 #include "Vulkan/WrapperHardware.hpp"
 
@@ -21,12 +21,12 @@ class AdapterWrapper
                                 m_uQueueFamily ) )
       , m_Queue( CreateQueue( m_Device, m_uQueueFamily ) )
     {
-        AB_LOG( Core::Debug::Info, L"Initializing adapter" );
+        B33_LOG( Core::Debug::Info, L"Initializing adapter" );
     }
 
     ~AdapterWrapper()
     {
-        AB_LOG( Core::Debug::Info, L"Destroying adapter" );
+        B33_LOG( Core::Debug::Info, L"Destroying adapter" );
         if ( m_Device != VK_NULL_HANDLE )
         {
             vkDestroyDevice( m_Device, NULL );
@@ -77,4 +77,4 @@ class AdapterWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_WRAPPER_ADAPTER_H
+#endif // !B33_WRAPPER_ADAPTER_H

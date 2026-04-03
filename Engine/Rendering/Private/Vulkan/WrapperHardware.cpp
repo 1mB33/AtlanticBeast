@@ -19,8 +19,8 @@ vector<VkPhysicalDevice> HardwareWrapper::GetPhysicalDevices( VkInstance instanc
     vPhysicalDevices.resize( uDeviceCount );
     if ( !uDeviceCount )
     {
-        AB_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! No GPU found!" );
-        throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! No GPU found!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
     }
 
     THROW_IF_FAILED( vkEnumeratePhysicalDevices( instance, &uDeviceCount, &vPhysicalDevices[ 0 ] ) );

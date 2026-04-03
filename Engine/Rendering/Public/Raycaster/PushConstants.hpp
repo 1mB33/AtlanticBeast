@@ -1,5 +1,5 @@
-#ifndef AB_VOXEL_PUSH_CONSTANTS_H
-#define AB_VOXEL_PUSH_CONSTANTS_H
+#ifndef B33_VOXEL_PUSH_CONSTANTS_H
+#define B33_VOXEL_PUSH_CONSTANTS_H
 
 #include "Vulkan/IPushConstants.hpp"
 
@@ -23,4 +23,4 @@ struct alignas( 16 ) VoxelPushConstants : IPushConstants
 };
 
 } // namespace B33::Rendering
-#endif // !AB_VOXEL_PUSH_CONSTANTS_H
+#endif // !B33_VOXEL_PUSH_CONSTANTS_H

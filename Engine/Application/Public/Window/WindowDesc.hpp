@@ -1,5 +1,5 @@
-#ifndef AB_WINDOW_DESC_H
-#define AB_WINDOW_DESC_H
+#ifndef B33_WINDOW_DESC_H
+#define B33_WINDOW_DESC_H
 
 #include "B33App.h"
 #include "Input/InputEvents.h"
@@ -54,4 +54,4 @@ WindowDesc CreateWindowDesc( U &&wstrName, int32_t width = 1200, int32_t height 
     return wd;
 }
 
-#endif // !AB_WINDOW_DESC_H
+#endif // !B33_WINDOW_DESC_H

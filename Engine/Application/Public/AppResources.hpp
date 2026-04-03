@@ -1,5 +1,5 @@
-#ifndef AB_APP_RESOURCES_H
-#define AB_APP_RESOURCES_H
+#ifndef B33_APP_RESOURCES_H
+#define B33_APP_RESOURCES_H
 
 #include "B33Core.h"
 
@@ -41,4 +41,4 @@ class AppResources
 };
 
 } // namespace B33::App
-#endif // !AB_APP_RESOURCES_H
+#endif // !B33_APP_RESOURCES_H

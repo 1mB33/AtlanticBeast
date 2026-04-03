@@ -1,5 +1,5 @@
-#ifndef AB_WRAPPER_HARDWARE_H
-#define AB_WRAPPER_HARDWARE_H
+#ifndef B33_WRAPPER_HARDWARE_H
+#define B33_WRAPPER_HARDWARE_H
 
 #include "Instance.hpp"
 
@@ -16,12 +16,12 @@ class HardwareWrapper
       : m_pInstance( pInstance )
       , m_PhysicalDevice( physicalDevice )
     {
-        AB_LOG( Core::Debug::Info, L"Initializing hardware" );
+        B33_LOG( Core::Debug::Info, L"Initializing hardware" );
     }
 
     ~HardwareWrapper()
     {
-        AB_LOG( Core::Debug::Info, L"Destroying hardware" );
+        B33_LOG( Core::Debug::Info, L"Destroying hardware" );
     }
 
   public:
@@ -48,4 +48,4 @@ class HardwareWrapper
 
 } // namespace B33::Rendering
 
-#endif // !AB_WRAPPER_HARDWARE_H
+#endif // !B33_WRAPPER_HARDWARE_H

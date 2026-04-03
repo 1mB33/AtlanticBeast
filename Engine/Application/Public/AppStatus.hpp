@@ -1,5 +1,5 @@
-#ifndef AB_APPSTATUS_H
-#define AB_APPSTATUS_H
+#ifndef B33_APPSTATUS_H
+#define B33_APPSTATUS_H
 
 #include "B33App.h"
 
@@ -58,4 +58,4 @@ class BEAST_API AppStatus
 };
 
 } // namespace B33::App
-#endif // !AB_APPSTATUS_H
+#endif // !B33_APPSTATUS_H

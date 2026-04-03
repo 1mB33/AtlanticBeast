@@ -1,5 +1,5 @@
-#ifndef AB_LOGGER_H
-#define AB_LOGGER_H
+#ifndef B33_LOGGER_H
+#define B33_LOGGER_H
 
 namespace B33::Core::Debug
 {
@@ -71,4 +71,4 @@ class Logger
 };
 
 } // namespace B33::Core::Debug
-#endif // !AB_LOGGER_H
+#endif // !B33_LOGGER_H

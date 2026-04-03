@@ -145,7 +145,7 @@ class Physics
   public:
     B33::Math::Vec3 GetCubePos( const JPH::BodyID &id )
     {
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         auto cubePos = m_pPhysicsSystem->GetBodyInterface().GetCenterOfMassPosition( id );
 
@@ -154,7 +154,7 @@ class Physics
 
     B33::Math::Rot3 GetCubeRot( const JPH::BodyID &id )
     {
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         auto rotEuler = m_pPhysicsSystem->GetBodyInterface().GetRotation( id ).GetEulerAngles();
 
@@ -206,7 +206,7 @@ class Physics
   public:
     void PushCube( const JPH::BodyID &bodyId, const B33::Math::Vec3 &normal, const float fForceMul )
     {
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         JPH::Vec3 force = {};
         force.SetX( -normal.x * fForceMul );
@@ -220,7 +220,7 @@ class Physics
     {
         using namespace JPH::literals;
 
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         const auto                epsilon = 0.008_r;
         JPH::BodyCreationSettings boxSettings(
@@ -237,7 +237,7 @@ class Physics
     {
         using namespace JPH::literals;
 
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         const auto epsilon  = 0.008_r;
         JPH::RVec3 position = m_pPhysicsSystem->GetBodyInterface().GetPosition( id );
@@ -255,7 +255,7 @@ class Physics
     {
         using namespace JPH::literals;
 
-        AB_ASSERT( m_pPhysicsSystem != nullptr );
+        B33_ASSERT( m_pPhysicsSystem != nullptr );
 
         // Next we can create a rigid body to serve as the floor, we make a large box
         // Create the settings for the collision volume (the shape).
@@ -370,7 +370,7 @@ class InWorldCube
             return pLock->GetStoredObjects().GetPosition( m_uCubeId );
         }
 
-        throw AB_EXCEPT( "Couldn't lock the world or the cube has wrong id." );
+        throw B33_EXCEPT( "Couldn't lock the world or the cube has wrong id." );
     }
 
   public:
@@ -378,7 +378,7 @@ class InWorldCube
     {
         if ( m_pPhysics.expired() )
         {
-            AB_LOG( ::B33::Core::Debug::Info, L"InWorldCube update, physics expired" );
+            B33_LOG( ::B33::Core::Debug::Info, L"InWorldCube update, physics expired" );
             return;
         }
 
@@ -452,7 +452,7 @@ class Game
 
     void GenerateCube( const B33::Math::iVec3 &p )
     {
-        AB_LOG( ::B33::Core::Debug::Info, L"Generating cube" );
+        B33_LOG( ::B33::Core::Debug::Info, L"Generating cube" );
 
         ::B33::Rendering::ColoredCube cc = ::B33::Rendering::ColoredCube();
         ::B33::Math::Vec3             setP( 0.5f + p.x, 0.5f + p.y, 0.5f + p.z );
@@ -472,13 +472,13 @@ class Game
 
     void RemoveCube( size_t uCubeId )
     {
-        AB_LOG( ::B33::Core::Debug::Info, L"Removing cube %d", uCubeId );
+        B33_LOG( ::B33::Core::Debug::Info, L"Removing cube %d", uCubeId );
 
         InWorldCube *pWC = nullptr;
 
         if ( uCubeId == -1 )
         {
-            AB_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
+            B33_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
             return;
         }
 
@@ -493,7 +493,7 @@ class Game
 
         if ( !pWC )
         {
-            AB_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
+            B33_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
             return;
         }
 
@@ -520,7 +520,7 @@ class Game
 
         if ( uCubeId == -1 )
         {
-            AB_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
+            B33_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
             return;
         }
 
@@ -535,7 +535,7 @@ class Game
 
         if ( !pWC )
         {
-            AB_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
+            B33_LOG( ::B33::Core::Debug::Info, L"Invalid id on push" );
             return;
         }
 

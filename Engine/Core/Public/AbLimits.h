@@ -1,8 +1,8 @@
-#ifndef AB_LIMITS_H
-#define AB_LIMITS_H
+#ifndef B33_LIMITS_H
+#define B33_LIMITS_H
 
-#define AB_LONG_STRING   1024
-#define AB_MEDIUM_STRING 512
-#define AB_SMALL_STRING  64
+#define B33_LONG_STRING   1024
+#define B33_MEDIUM_STRING 512
+#define B33_SMALL_STRING  64
 
-#endif // !AB_LIMITS_H
+#endif // !B33_LIMITS_H

@@ -1,5 +1,5 @@
-#ifndef AB_BASIC_SYSTEM_POLICY_H
-#define AB_BASIC_SYSTEM_POLICY_H
+#ifndef B33_BASIC_SYSTEM_POLICY_H
+#define B33_BASIC_SYSTEM_POLICY_H
 
 #if _WIN32
 #    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
@@ -19,4 +19,4 @@ typedef
         DefaultSystemWindowPolicy;
 
 } // namespace B33::App
-#endif // !AB_BASIC_SYSTEM_POLICY_H
+#endif // !B33_BASIC_SYSTEM_POLICY_H

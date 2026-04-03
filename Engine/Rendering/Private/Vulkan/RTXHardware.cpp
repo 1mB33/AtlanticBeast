@@ -11,7 +11,7 @@ using namespace std;
 RTXHardware::RTXHardware( shared_ptr<const Instance> pInstance )
   : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
 {
-    AB_LOG( Core::Debug::Info, L"Creating a hardware!" );
+    B33_LOG( Core::Debug::Info, L"Creating a hardware!" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -60,8 +60,8 @@ VkPhysicalDevice RTXHardware::ChooseGPU( const shared_ptr<const Instance> &pInst
 
     if ( chosenPhysicalDevice == VK_NULL_HANDLE )
     {
-        AB_LOG( Core::Debug::Error, L"Ohh nooo... Couldn't choose a valid physical gpu!!!" );
-        throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Couldn't choose a valid physical gpu!!!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
     }
 
     return chosenPhysicalDevice;

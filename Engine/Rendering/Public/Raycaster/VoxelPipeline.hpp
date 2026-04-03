@@ -1,5 +1,5 @@
-#ifndef AB_PIPELINE_H
-#define AB_PIPELINE_H
+#ifndef B33_PIPELINE_H
+#define B33_PIPELINE_H
 
 #include "ExportImport.h"
 #include "Vulkan/GPUStreamBuffer.hpp"
@@ -38,7 +38,7 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
       , m_pWindowDesc( win )
       , m_pVoxelGrid( nullptr )
     {
-        AB_LOG( Core::Debug::Info, L"Creating a pipeline!" );
+        B33_LOG( Core::Debug::Info, L"Creating a pipeline!" );
     }
 
     BEAST_API ~VoxelPipeline();
@@ -104,4 +104,4 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
 };
 
 } // namespace B33::Rendering
-#endif // !AB_PIPELINE_H
+#endif // !B33_PIPELINE_H

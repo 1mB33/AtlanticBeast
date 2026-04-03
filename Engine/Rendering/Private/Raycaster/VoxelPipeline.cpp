@@ -16,7 +16,7 @@ using namespace ::B33::Math;
 // ---------------------------------------------------------------------------------------------------------------------
 VoxelPipeline::~VoxelPipeline()
 {
-    AB_LOG( Core::Debug::Info, L"Destroying pipeline" );
+    B33_LOG( Core::Debug::Info, L"Destroying pipeline" );
 
     if ( m_ImageView != VK_NULL_HANDLE )
     {
@@ -137,9 +137,8 @@ void VoxelPipeline::RecordCommands( VkCommandBuffer &cmdBuffer )
 
         if ( m_uStorageBuffersFlags & EGridChanged::HalfSize )
         {
-            copyRegion.size =
-                ( static_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() *
-                sizeof( Vec3 );
+            copyRegion.size = ( static_cast<const Cubes &>( m_pVoxelGrid->GetStoredObjects() ) ).GetHalfSizes().size() *
+                              sizeof( Vec3 );
             vkCmdCopyBuffer( cmdBuffer,
                              m_StageHalfSizesBuffer->GetBufferHandle(),
                              m_HalfSizesBuffer->GetBufferHandle(),
@@ -411,8 +410,8 @@ VkShaderModule VoxelPipeline::LoadShaderImpl( const string &strPath )
 
     if ( !file.is_open() )
     {
-        AB_LOG( Core::Debug::Error, L"%s", strPath.c_str() );
-        throw AB_EXCEPT( "Failed to open shader file!" );
+        B33_LOG( Core::Debug::Error, L"%s", strPath.c_str() );
+        throw B33_EXCEPT( "Failed to open shader file!" );
     }
 
     uFileSize = static_cast<size_t>( file.tellg() );

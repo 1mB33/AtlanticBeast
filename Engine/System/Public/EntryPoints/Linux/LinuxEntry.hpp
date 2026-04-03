@@ -1,6 +1,6 @@
 #if defined( __linux__ )
-#    ifndef AB_ENTRY_POINT_HPP
-#        define AB_ENTRY_POINT_HPP
+#    ifndef B33_ENTRY_POINT_HPP
+#        define B33_ENTRY_POINT_HPP
 
 #        include "../../B33System.hpp"
 #        include "Synchronization/DeltaTime.hpp"
@@ -29,5 +29,5 @@ int main( int argc, char *pArgv[] )
     ::B33::Core::Debug::Logger::Get().Flush();
 }
 
-#    endif // !AB_ENTRY_POINT_HPP
+#    endif // !B33_ENTRY_POINT_HPP
 #endif     // !__linux__

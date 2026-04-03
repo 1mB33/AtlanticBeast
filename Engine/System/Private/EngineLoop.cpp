@@ -1,5 +1,7 @@
+#include "B33Core.h"
 #include "B33System.hpp"
 #include "ComponentBridge.hpp"
+#include "Debug/Assert.hpp"
 #include "EngineLoop.hpp"
 #include "IComponent.hpp"
 
@@ -44,8 +46,8 @@ void EngineLoop::DestroyComponents()
 
 void EngineLoop::AddComponentInternal( ::std::string_view componentName )
 {
-    AB_ASSERT_MSG( m_ComponentRegistry.find( componentName ) != m_ComponentRegistry.end(),
-                   "That component isn't registered. B33COMPONENT macro might be missing in the class body. " );
+    B33_ASSERT_MSG( m_ComponentRegistry.find( componentName ) != m_ComponentRegistry.end(),
+                    "That component isn't registered. B33COMPONENT macro might be missing in the class body. " );
 
     m_ComponentBridge.m_ComponentMap[ componentName ] = m_ComponentRegistry[ componentName ]();
 
@@ -54,6 +56,7 @@ void EngineLoop::AddComponentInternal( ::std::string_view componentName )
     {
         case Abstract:
         {
+            throw B33_EXCEPT( "Component type is abstract? Shouldn't be created." );
         }
         case Default:
         {
@@ -70,6 +73,10 @@ void EngineLoop::AddComponentInternal( ::std::string_view componentName )
 
             m_AsyncComponents.push_back( component );
             break;
+        }
+        default:
+        {
+            B33_ASSERT_MSG( false, "Unknown component type" );
         }
     }
 }

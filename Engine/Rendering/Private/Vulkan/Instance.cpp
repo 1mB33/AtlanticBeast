@@ -11,13 +11,13 @@ using namespace std;
 Instance::Instance()
   : m_Instance( CreateInstance() )
 {
-    AB_LOG( B33::Core::Debug::Info, L"Creating an instance!" );
+    B33_LOG( B33::Core::Debug::Info, L"Creating an instance!" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 Instance::~Instance()
 {
-    AB_LOG( B33::Core::Debug::Info, L"Destroying instance" );
+    B33_LOG( B33::Core::Debug::Info, L"Destroying instance" );
     if ( m_Instance != VK_NULL_HANDLE )
     {
         vkDestroyInstance( m_Instance, NULL );
@@ -124,8 +124,8 @@ VkInstance Instance::CreateInstance()
 
     if ( result != VK_SUCCESS )
     {
-        AB_LOG( B33::Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! Error code is: %d", result );
-        throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+        B33_LOG( B33::Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! Error code is: %d", result );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
     }
 
     return instance;

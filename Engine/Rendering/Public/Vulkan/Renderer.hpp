@@ -1,5 +1,5 @@
-#ifndef AB_RENDERER_H
-#define AB_RENDERER_H
+#ifndef B33_RENDERER_H
+#define B33_RENDERER_H
 
 #include "B33Rendering.hpp"
 
@@ -101,4 +101,4 @@ class Renderer
 };
 
 } // namespace B33::Rendering
-#endif // !AB_RENDERER_H
+#endif // !B33_RENDERER_H

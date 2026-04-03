@@ -38,11 +38,11 @@ EAppStatus AppStatus::GetAppCurrentStatus()
 // --------------------------------------------------------------------------------------------------------------------
 void AppStatus::SendExitSignal()
 {
-    AB_LOG( Warning, L"B33::AppStatus Exiting [Number of active windows: %d]", m_uNumberOfWindows );
+    B33_LOG( Warning, L"B33::AppStatus Exiting [Number of active windows: %d]", m_uNumberOfWindows );
 
     if ( m_WindowHandles.empty() )
     {
-        AB_LOG( Error, L"B33::AppStatus m_WindowHandles is empty!!!" );
+        B33_LOG( Error, L"B33::AppStatus m_WindowHandles is empty!!!" );
     }
 
     while ( !m_WindowHandles.empty() )
@@ -56,7 +56,7 @@ void AppStatus::SendExitSignal()
 // --------------------------------------------------------------------------------------------------------------------
 uint32_t AppStatus::SendOpenWindowSignal( shared_ptr<WindowDesc> pWd )
 {
-    AB_LOG( Info, L"Got new window signal" );
+    B33_LOG( Info, L"Got new window signal" );
 
     ++m_uNumberOfWindows;
 
@@ -69,7 +69,7 @@ uint32_t AppStatus::SendOpenWindowSignal( shared_ptr<WindowDesc> pWd )
 // --------------------------------------------------------------------------------------------------------------------
 uint32_t AppStatus::SendCloseWindowSignal( shared_ptr<WindowDesc> pWd )
 {
-    AB_LOG( Info, L"Got close window signal" );
+    B33_LOG( Info, L"Got close window signal" );
 
     m_uNumberOfWindows = m_uNumberOfWindows > 0 ? --m_uNumberOfWindows : m_uNumberOfWindows;
     UpdateStatus();
@@ -88,7 +88,7 @@ uint32_t AppStatus::SendCloseWindowSignal( shared_ptr<WindowDesc> pWd )
 // --------------------------------------------------------------------------------------------------------------------
 void AppStatus::UpdateStatus()
 {
-    AB_LOG( Info, L"B33::AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows );
+    B33_LOG( Info, L"B33::AppStatus updated [Number of active windows: %d]", m_uNumberOfWindows );
 
     if ( m_uNumberOfWindows == 0 )
     {

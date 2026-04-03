@@ -28,12 +28,12 @@ AppResources &AppResources::Get()
 // ---------------------------------------------------------------------------------------------------------------------
 wstring AppResources::InternalGetExecutablePathW() const
 {
-    char    sPath[ AB_LONG_STRING ];
+    char    sPath[ B33_LONG_STRING ];
     ssize_t uLen = readlink( "/proc/self/exe", sPath, sizeof( sPath ) - 1 );
 
     if ( uLen == -1 )
     {
-        AB_LOG( Error, L"Couldn't get path to executable!!! Falling back to `./`" );
+        B33_LOG( Error, L"Couldn't get path to executable!!! Falling back to `./`" );
         return wstring( L"./" );
     }
 

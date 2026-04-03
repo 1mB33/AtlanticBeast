@@ -1,5 +1,5 @@
-#ifndef AB_CONTROLLER_OBJECT_H
-#define AB_CONTROLLER_OBJECT_H
+#ifndef B33_CONTROLLER_OBJECT_H
+#define B33_CONTROLLER_OBJECT_H
 
 #include "B33Core.h"
 
@@ -37,8 +37,8 @@ class ControllerObject
         // We can be signed by only one UserInput
         if ( !m_pUserInput.expired() )
         {
-            AB_ASSERT( m_pUserInput.lock().get() == pUserInput.lock().get() );
-            AB_LOG( Core::Debug::Warning, L"ControllerObject can be signed only by one UserInput." );
+            B33_ASSERT( m_pUserInput.lock().get() == pUserInput.lock().get() );
+            B33_LOG( Core::Debug::Warning, L"ControllerObject can be signed only by one UserInput." );
             return;
         }
 
@@ -54,19 +54,19 @@ class ControllerObject
 #define B33_DECL_ACTION( baseClass, action, customName, ... )                                                          \
     static ::AbActionType UseAction##customName( const float fDelta, void *pThis )                                     \
     {                                                                                                                  \
-        AB_ASSERT( pThis != nullptr );                                                                                 \
+        B33_ASSERT( pThis != nullptr );                                                                                \
                                                                                                                        \
-        static_cast<baseClass *>( pThis )->action( fDelta AB_VA_ARGS_( __VA_ARGS__ ) );                                \
+        static_cast<baseClass *>( pThis )->action( fDelta B33_VA_ARGS_( __VA_ARGS__ ) );                               \
         return ::AbActionType();                                                                                       \
     }
 
-#define AB_DECL_MOUSE_ACTION( baseClass, action, customName )                                                          \
+#define B33_DECL_MOUSE_ACTION( baseClass, action, customName )                                                         \
     static ::AbActionType UseAction##customName( const float fDelta, void *pThis, int32_t fX, int32_t fY )             \
     {                                                                                                                  \
-        AB_ASSERT( pThis != nullptr );                                                                                 \
+        B33_ASSERT( pThis != nullptr );                                                                                \
                                                                                                                        \
         static_cast<baseClass *>( pThis )->action( fDelta, fX, fY );                                                   \
         return ::AbActionType();                                                                                       \
     }
 
-#endif // !AB_CONTROLLER_OBJECT_H
+#endif // !B33_CONTROLLER_OBJECT_H

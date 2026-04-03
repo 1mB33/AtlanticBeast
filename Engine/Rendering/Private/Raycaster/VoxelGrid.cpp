@@ -15,7 +15,7 @@ void IWorldGrid::SetVoxel( const iVec &pos, uint32_t uColor )
     const size_t   uDim       = this->GetGridWidth();
     const size_t   uIndex     = CalcIndex( pos );
 
-    AB_ASSERT( uIndex < voxelsGrid.size() );
+    B33_ASSERT( uIndex < voxelsGrid.size() );
 
     voxelsGrid[ uIndex ].Type  = Voxel::FullSolid;
     voxelsGrid[ uIndex ].Color = uColor;
@@ -51,7 +51,7 @@ void IWorldGrid::PlaceOnGrid( const iVec &pos, const iVec &area, const size_t uI
 
                 if ( voxel.Type >= Voxel::MaxPerInstance )
                 {
-                    AB_LOG( Core::Debug::Warning, L"Reached object limit for the connected voxel" );
+                    B33_LOG( Core::Debug::Warning, L"Reached object limit for the connected voxel" );
                     continue;
                 }
 

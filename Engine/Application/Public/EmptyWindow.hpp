@@ -1,5 +1,5 @@
-#ifndef AB_EMPTYWINDOW_H
-#define AB_EMPTYWINDOW_H
+#ifndef B33_EMPTYWINDOW_H
+#define B33_EMPTYWINDOW_H
 
 #include "Window/IBaseWindow.hpp"
 
@@ -28,9 +28,9 @@ class EmptyWindow : public ::B33::App::IBaseWindow<EmptyWindow>
   private:
     virtual void HandleMessageImpl( const float, EAbWindowEventsFlags )
     {
-        // AB_LOG(Debug::Info, L"Proccessing a message! ... %u", msg);
+        // B33_LOG(Debug::Info, L"Proccessing a message! ... %u", msg);
     }
 };
 
 } // namespace B33::App
-#endif // !AB_EMPTYWINDOW_H
+#endif // !B33_EMPTYWINDOW_H

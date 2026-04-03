@@ -1,5 +1,5 @@
-#ifndef AB_USER_INPUT_H
-#define AB_USER_INPUT_H
+#ifndef B33_USER_INPUT_H
+#define B33_USER_INPUT_H
 
 #include "Input/Bind.h"
 #include "Input/KeyList.hpp"
@@ -23,7 +23,7 @@ class UserInput : public WindowListener
     struct UserInputImpl;
 
     using HandlesMap = ::std::unordered_map<void *, ::std::vector<BindHandle>>;
-    using KeysStatus = ::std::bitset<AB_KEY_COUNT>;
+    using KeysStatus = ::std::bitset<B33_KEY_COUNT>;
 
   public:
     BEAST_API explicit UserInput( ::std::shared_ptr<WindowDesc> pWd = nullptr );
@@ -90,4 +90,4 @@ class UserInput : public WindowListener
 };
 
 } // namespace B33::App
-#endif // !AB_USER_INPUT_H
+#endif // !B33_USER_INPUT_H

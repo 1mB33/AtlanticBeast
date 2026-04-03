@@ -1,5 +1,5 @@
-#ifndef AB_FRAME_RESOURCES_H
-#define AB_FRAME_RESOURCES_H
+#ifndef B33_FRAME_RESOURCES_H
+#define B33_FRAME_RESOURCES_H
 
 namespace B33::Rendering
 {
@@ -15,4 +15,4 @@ struct Frame
 };
 
 } // namespace B33::Rendering
-#endif // !AB_FRAME_RESOURCES_H
+#endif // !B33_FRAME_RESOURCES_H

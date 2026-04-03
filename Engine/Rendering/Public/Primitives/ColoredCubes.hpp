@@ -1,5 +1,5 @@
-#ifndef AB_COLORED_CUBES_AB
-#define AB_COLORED_CUBES_AB
+#ifndef B33_COLORED_CUBES_AB
+#define B33_COLORED_CUBES_AB
 
 #include "Primitives/Cubes.hpp"
 #include "Primitives/MaterialProperties/ColorProperty.hpp"
@@ -18,4 +18,4 @@ class ColoredCubes
 };
 
 } // namespace B33::Rendering
-#endif // !AB_COLORED_CUBES_AB
+#endif // !B33_COLORED_CUBES_AB

@@ -1,5 +1,5 @@
-#ifndef AB_DELTA_TIME_H
-#define AB_DELTA_TIME_H
+#ifndef B33_DELTA_TIME_H
+#define B33_DELTA_TIME_H
 
 #include "B33Core.h"
 
@@ -47,4 +47,4 @@ class DeltaTime
 };
 
 } // namespace B33::Core
-#endif //! AB_DELTA_TIME_H
+#endif //! B33_DELTA_TIME_H

@@ -1,6 +1,6 @@
 #ifdef _WIN32
-#    ifndef AB_WINDOW_POLICY_H
-#        define AB_WINDOW_POLICY_H
+#    ifndef B33_WINDOW_POLICY_H
+#        define B33_WINDOW_POLICY_H
 
 #        include "Window/WindowPolicy/IWindowPolicy.hpp"
 
@@ -76,5 +76,5 @@ class BEAST_API BasicWin32WindowPolicy : public IWindowPolicy<BasicWin32WindowPo
 };
 
 } // namespace B33::App
-#    endif // !AB_WINDOW_POLICY_H
+#    endif // !B33_WINDOW_POLICY_H
 #endif     // _WIN32

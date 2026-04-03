@@ -29,7 +29,7 @@ void Renderer::Update( ::B33::System::ComponentBridge &bridge, float fDelta )
     const Vec3 cameraUp    = Cross( cameraRight, rotVec );
 
     B33::Rendering::VoxelPushConstants constants = {};
-    constants.fFov                               = characterHandle.GetFov() * AB_DEG_TO_RAD;
+    constants.fFov                               = characterHandle.GetFov() * B33_DEG_TO_RAD;
     constants.CameraPos                          = characterHandle.GetPosition();
     constants.CameraLookDir                      = rotVec;
     constants.CameraRight                        = cameraRight;

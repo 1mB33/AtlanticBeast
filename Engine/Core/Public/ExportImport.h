@@ -1,5 +1,5 @@
-#ifndef AB_EXPORT_IMPORT_H
-#define AB_EXPORT_IMPORT_H
+#ifndef B33_EXPORT_IMPORT_H
+#define B33_EXPORT_IMPORT_H
 #ifdef __linux__
 #    ifdef _BEAST_EXPORTS
 #        define BEAST_API __attribute__( ( visibility( "default" ) ) )
@@ -13,4 +13,4 @@
 #        define BEAST_API __declspec( dllimport )
 #    endif // !_BEAST_EXPORTS
 #endif     // !__linux__
-#endif     // !AB_EXPORT_IMPORT_
+#endif     // !B33_EXPORT_IMPORT_

@@ -1,6 +1,6 @@
 #if defined( _WIN32 )
-#    ifndef AB_ENTRY_POINT_HPP
-#        define AB_ENTRY_POINT_HPP
+#    ifndef B33_ENTRY_POINT_HPP
+#        define B33_ENTRY_POINT_HPP
 
 #        include "../../B33System.hpp"
 #        include "Synchronization/DeltaTime.hpp"
@@ -29,5 +29,5 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLi
     return 0;
 }
 
-#    endif // !AB_ENTRY_POINT_HPP
+#    endif // !B33_ENTRY_POINT_HPP
 #endif     // !_WIN32

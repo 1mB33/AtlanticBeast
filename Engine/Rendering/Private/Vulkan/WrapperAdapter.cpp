@@ -18,24 +18,24 @@ uint32_t AdapterWrapper::ChooseQueueFamily( VkPhysicalDevice gpu, const uint32_t
     vkGetPhysicalDeviceQueueFamilyProperties( physicalDevice, &uFamilyCount, NULL );
     if ( !uFamilyCount )
     {
-        AB_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
-        throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
     }
     vProperties.resize( uFamilyCount );
 
     vkGetPhysicalDeviceQueueFamilyProperties( physicalDevice, &uFamilyCount, &vProperties[ 0 ] );
     if ( !uFamilyCount )
     {
-        AB_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
-        throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
     }
 
     for ( uint32_t i = 0; i < uFamilyCount; ++i )
         if ( vProperties[ i ].queueFlags & uFlags )
             return i;
 
-    AB_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
-    throw AB_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+    B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!!" );
+    throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
 }
 
 // --------------------------------------------------------------------------------------------------------------------

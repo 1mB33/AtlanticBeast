@@ -1,5 +1,5 @@
-#ifndef AB_BIND_MAP_H
-#define AB_BIND_MAP_H
+#ifndef B33_BIND_MAP_H
+#define B33_BIND_MAP_H
 
 #include "Input/Bind.h"
 
@@ -34,4 +34,4 @@ class IBindMap
 };
 
 } // namespace B33::App
-#endif // !AB_BIND_MAP_H
+#endif // !B33_BIND_MAP_H

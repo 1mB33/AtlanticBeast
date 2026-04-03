@@ -3,7 +3,6 @@
 #include "B33System.hpp"
 #include "ComponentsOrder.hpp"
 #include "EmptyCanvas.hpp"
-#include "Input/UserInput.hpp"
 #include "WindowMaster.hpp"
 #include "Window/WindowPolicy/GameSystemPolicy.hpp"
 

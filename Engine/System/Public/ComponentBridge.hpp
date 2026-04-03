@@ -1,5 +1,5 @@
-#ifndef AB_COMPONENT_BRIDGE_H
-#define AB_COMPONENT_BRIDGE_H
+#ifndef B33_COMPONENT_BRIDGE_H
+#define B33_COMPONENT_BRIDGE_H
 
 #include "IComponent.hpp"
 
@@ -27,16 +27,16 @@ class ComponentBridge
   public:
     BEAST_API IComponent &QueryComponent( ::std::string strComponentName )
     {
-        AB_ASSERT( m_ComponentMap.find( strComponentName ) != m_ComponentMap.end() );
+        B33_ASSERT( m_ComponentMap.find( strComponentName ) != m_ComponentMap.end() );
         return *m_ComponentMap[ strComponentName ].get();
     }
 
     template <class COMPONENT_DERIVED>
     COMPONENT_DERIVED &QueryComponent()
     {
-        AB_ASSERT( m_ComponentMap.find( COMPONENT_DERIVED::GetComponentName() ) != m_ComponentMap.end() );
+        B33_ASSERT( m_ComponentMap.find( COMPONENT_DERIVED::GetComponentName() ) != m_ComponentMap.end() );
         IComponent        *result        = m_ComponentMap[ COMPONENT_DERIVED::GetComponentName() ].get();
-        COMPONENT_DERIVED* resultDerived = dynamic_cast<COMPONENT_DERIVED *>( result );
+        COMPONENT_DERIVED *resultDerived = dynamic_cast<COMPONENT_DERIVED *>( result );
         return *resultDerived;
     }
 
@@ -45,4 +45,4 @@ class ComponentBridge
 };
 
 } // namespace B33::System
-#endif // !AB_COMPONENT_BRIDGE_H
+#endif // !B33_COMPONENT_BRIDGE_H

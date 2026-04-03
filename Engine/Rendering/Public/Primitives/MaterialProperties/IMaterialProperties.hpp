@@ -1,5 +1,5 @@
-#ifndef AB_IMATERIAL_PROPERTIES_H
-#define AB_IMATERIAL_PROPERTIES_H
+#ifndef B33_IMATERIAL_PROPERTIES_H
+#define B33_IMATERIAL_PROPERTIES_H
 
 namespace B33::Rendering
 {
@@ -20,4 +20,4 @@ class alignas( 4 ) IMaterialProperties
 };
 
 } // namespace B33::Rendering
-#endif // !AB_IMATERIAL_PROPERTIES
+#endif // !B33_IMATERIAL_PROPERTIES

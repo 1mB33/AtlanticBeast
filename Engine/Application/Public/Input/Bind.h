@@ -1,5 +1,5 @@
-#ifndef AB_KEY_BIND_H
-#define AB_KEY_BIND_H
+#ifndef B33_KEY_BIND_H
+#define B33_KEY_BIND_H
 
 #include "B33Core.h"
 
@@ -59,4 +59,4 @@ typedef struct AbInputBind
 typedef AbActionType ( *AbAction )( const float fDelta, void *pThis );
 typedef AbActionType ( *AbMouseAction )( const float fDelta, void *pThis, int32_t X, int32_t y );
 
-#endif // !AB_KEY_BIND_H
+#endif // !B33_KEY_BIND_H

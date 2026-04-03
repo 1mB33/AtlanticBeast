@@ -1,5 +1,5 @@
-#ifndef AB_VOXELS_H
-#define AB_VOXELS_H
+#ifndef B33_VOXELS_H
+#define B33_VOXELS_H
 
 #ifdef _WIN32
 #    define VK_USE_PLATFORM_WIN32_KHR
@@ -21,4 +21,4 @@
 #        undef LoadImage
 #    endif // !_WIN32
 #endif     // !__cplusplus
-#endif     // !AB_VOXELS_H
+#endif     // !B33_VOXELS_H

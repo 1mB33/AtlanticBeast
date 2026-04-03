@@ -1,5 +1,5 @@
-#ifndef AB_EXCEPT_H
-#define AB_EXCEPT_H
+#ifndef B33_EXCEPT_H
+#define B33_EXCEPT_H
 
 #include "B33CoreMinimal.h"
 
@@ -49,4 +49,4 @@ class BEAST_API Exception : public ::std::exception
 };
 
 } // namespace B33::Core
-#endif // !AB_EXCEPT_H
+#endif // !B33_EXCEPT_H

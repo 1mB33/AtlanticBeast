@@ -1,5 +1,5 @@
-#ifndef AB_GPU_STREAM_BUFFER_H
-#define AB_GPU_STREAM_BUFFER_H
+#ifndef B33_GPU_STREAM_BUFFER_H
+#define B33_GPU_STREAM_BUFFER_H
 
 #include "Vulkan/GPUBuffer.hpp"
 
@@ -81,4 +81,4 @@ class GPUStreamBuffer : public ::B33::Rendering::GPUBuffer
 };
 
 } // namespace B33::Rendering
-#endif // !AB_GPU_STREAM_BUFFER_H
+#endif // !B33_GPU_STREAM_BUFFER_H

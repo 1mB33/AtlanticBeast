@@ -75,7 +75,7 @@ class PaperCharacter : public ::B33::Rendering::Camera
     {
         B33::Math::Rot3 rot = this->GetRotation();
         B33::Math::Vec3 lookDir =
-            ::B33::Math::RotateY( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.y + ( 90.f * ::B33::Math::AB_DEG_TO_RAD ) );
+            ::B33::Math::RotateY( ::B33::Math::Vec3 { 0.f, 0.f, 1.f }, rot.y + ( 90.f * ::B33::Math::B33_DEG_TO_RAD ) );
 
         this->AddPositon( lookDir * fDir * ( fDelta * m_fSpeed ) );
     }
@@ -144,7 +144,7 @@ class PaperController : public B33::App::ControllerObject
 
     B33_DECL_ACTION( PaperCharacter, ActivateWalk, Walk );
 
-    AB_DECL_MOUSE_ACTION( PaperCharacter, MouseMove, Mouse );
+    B33_DECL_MOUSE_ACTION( PaperCharacter, MouseMove, Mouse );
 };
 
 class PlayablePaper

@@ -6,7 +6,7 @@
 
 class MyGame : public ::B33::System::IComponent
 {
-    B33_ASYNC_COMPONENT( MyGame );
+    B33_ASYNC_UPDATE_COMPONENT( MyGame );
 
   public:
     MyGame()

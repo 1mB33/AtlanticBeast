@@ -1,5 +1,5 @@
-#ifndef AB_COLOR_PROPERTY_H
-#define AB_COLOR_PROPERTY_H
+#ifndef B33_COLOR_PROPERTY_H
+#define B33_COLOR_PROPERTY_H
 
 namespace B33::Rendering
 {
@@ -34,4 +34,4 @@ class alignas( 8 ) ColorProperty // : public IMaterialProperties
 };
 
 } // namespace B33::Rendering
-#endif // !AB_COLOR_PROPERTY_H
+#endif // !B33_COLOR_PROPERTY_H

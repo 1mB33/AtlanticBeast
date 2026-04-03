@@ -1,5 +1,5 @@
-#if !defined( AB_JOB_SYSTEM_HPP )
-#    define AB_JOB_SYSTEM_HPP
+#if !defined( B33_JOB_SYSTEM_HPP )
+#    define B33_JOB_SYSTEM_HPP
 
 #    include "B33Core.h"
 
@@ -58,4 +58,4 @@ class JobSystem
 
 } // namespace B33::Core
 
-#endif // !AB_JOB_SYSTEM_HPP
+#endif // !B33_JOB_SYSTEM_HPP

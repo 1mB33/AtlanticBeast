@@ -34,7 +34,7 @@ Swapchain::Swapchain( shared_ptr<const Instance>        pInst,
   , m_uCurrentImageIndex( 0 )
   , m_SwapChainImages( CreateSwapChainImages( m_pDeviceAdapter, m_pSwapChain, m_uImageCount ) )
 {
-    AB_LOG( Core::Debug::Info, L"Creating a swapchain!" );
+    B33_LOG( Core::Debug::Info, L"Creating a swapchain!" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -92,8 +92,8 @@ VkSurfaceCapabilitiesKHR Swapchain::GetCapabilitesInternal( shared_ptr<const Har
 
     if ( ( capabilities.supportedUsageFlags & VK_IMAGE_USAGE_STORAGE_BIT ) == 0 )
     {
-        AB_LOG( Core::Debug::Error, L"VK_IMAGE_USAGE_STORAGE_BIT not supported for swapchain images." );
-        throw AB_EXCEPT( "Ohh no...  vulkan isn't working" );
+        B33_LOG( Core::Debug::Error, L"VK_IMAGE_USAGE_STORAGE_BIT not supported for swapchain images." );
+        throw B33_EXCEPT( "Ohh no...  vulkan isn't working" );
     }
 
     return capabilities;
@@ -174,7 +174,7 @@ VkSurfaceFormatKHR Swapchain::PickFormat( shared_ptr<const HardwareWrapper> &pHa
     THROW_IF_FAILED(
         vkGetPhysicalDeviceSurfaceFormatsKHR( physicalDeviceHandle, surface, &uFormatCount, &vFormats[ 0 ] ) );
 
-    AB_ASSERT( !vFormats.empty() );
+    B33_ASSERT( !vFormats.empty() );
 
     for ( size_t i = 0; i < vFormats.size(); ++i )
     {
@@ -194,12 +194,12 @@ VkSurfaceFormatKHR Swapchain::PickFormat( shared_ptr<const HardwareWrapper> &pHa
 
     if ( !bPicked )
     {
-        AB_LOG( Core::Debug::Warning, L"Chosen random surface format" );
+        B33_LOG( Core::Debug::Warning, L"Chosen random surface format" );
         return vFormats[ 0 ];
     }
     else
     {
-        AB_LOG( Core::Debug::Warning, L"Picked random color space" );
+        B33_LOG( Core::Debug::Warning, L"Picked random color space" );
     }
 
     return vFormats[ choosenFormatIndex ];
@@ -219,7 +219,7 @@ VkPresentModeKHR Swapchain::PickPresentationMode( shared_ptr<const HardwareWrapp
                                                                 surface,
                                                                 &uPresentModeCount,
                                                                 &vPresentModes[ 0 ] ) );
-    AB_ASSERT( !vPresentModes.empty() );
+    B33_ASSERT( !vPresentModes.empty() );
 
     for ( const auto &mode : vPresentModes )
         if ( mode == VK_PRESENT_MODE_MAILBOX_KHR )

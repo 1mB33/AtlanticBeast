@@ -1,5 +1,5 @@
-#ifndef AB_CAMERA_H
-#define AB_CAMERA_H
+#ifndef B33_CAMERA_H
+#define B33_CAMERA_H
 
 #include "Primitives/Object.hpp"
 
@@ -42,4 +42,4 @@ class Camera : public ::B33::Math::WorldObject
 };
 
 } // namespace B33::Rendering
-#endif // !AB_CAMERA_H
+#endif // !B33_CAMERA_H

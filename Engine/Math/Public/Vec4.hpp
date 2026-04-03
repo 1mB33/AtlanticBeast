@@ -1,5 +1,5 @@
-#ifndef AB_VEC4_H
-#define AB_VEC4_H
+#ifndef B33_VEC4_H
+#define B33_VEC4_H
 
 #include "B33Core.h"
 
@@ -45,7 +45,7 @@ struct alignas( 16 ) Vec4
   public:
     constexpr float operator[]( size_t uIndex ) const
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -64,7 +64,7 @@ struct alignas( 16 ) Vec4
 
     constexpr float &operator[]( size_t uIndex )
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -121,7 +121,7 @@ struct alignas( 16 ) iVec4
   public:
     constexpr int32_t operator[]( size_t uIndex ) const
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -140,7 +140,7 @@ struct alignas( 16 ) iVec4
 
     constexpr int32_t &operator[]( size_t uIndex )
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -159,4 +159,4 @@ struct alignas( 16 ) iVec4
 };
 
 } // namespace B33::Math
-#endif // !AB_VEC4_H
+#endif // !B33_VEC4_H

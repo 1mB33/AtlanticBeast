@@ -1,5 +1,5 @@
-#ifndef AB_OPERATIONS_H
-#define AB_OPERATIONS_H
+#ifndef B33_OPERATIONS_H
+#define B33_OPERATIONS_H
 
 #include "Vec3.hpp"
 
@@ -243,4 +243,4 @@ inline iVec3 MultiplyScalar( const iVec3 &vA, const float vB )
 }
 
 } // namespace B33::Math
-#endif // !AB_OPERATIONS_H
+#endif // !B33_OPERATIONS_H

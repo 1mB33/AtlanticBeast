@@ -1,5 +1,5 @@
-#ifndef AB_COLORED_CUBE_AB
-#define AB_COLORED_CUBE_AB
+#ifndef B33_COLORED_CUBE_AB
+#define B33_COLORED_CUBE_AB
 
 #include "Primitives/Cube.hpp"
 #include "Primitives/MaterialProperties/ColorProperty.hpp"
@@ -19,4 +19,4 @@ class alignas( 16 ) ColoredCube
 };
 
 } // namespace B33::Rendering
-#endif // !AB_COLORED_CUBE_AB
+#endif // !B33_COLORED_CUBE_AB

@@ -1,5 +1,5 @@
-#ifndef AB_WRAPPER_PIPELINE_H
-#define AB_WRAPPER_PIPELINE_H
+#ifndef B33_WRAPPER_PIPELINE_H
+#define B33_WRAPPER_PIPELINE_H
 
 #include "Vulkan/IPushConstants.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
@@ -28,7 +28,7 @@ class PipelineWrapper
 
     ~PipelineWrapper()
     {
-        AB_LOG( Core::Debug::Info, L"Destroying pipeline" );
+        B33_LOG( Core::Debug::Info, L"Destroying pipeline" );
         if ( m_ShaderModule != VK_NULL_HANDLE )
         {
             vkDestroyShaderModule( GetAdaterInternal()->GetAdapterHandle(), m_ShaderModule, NULL );
@@ -75,7 +75,7 @@ class PipelineWrapper
     template <class T>
     void Initialize( T &pPipeline )
     {
-        AB_LOG( Core::Debug::Info, L"Initializing pipeline" );
+        B33_LOG( Core::Debug::Info, L"Initializing pipeline" );
         m_uPushConstantsByteSize = pPipeline.GetPushConstantsByteSize();
         m_pPushConstants         = pPipeline.GetPushConstants();
         m_DescriptorLayout       = pPipeline.CreateDescriptorLayout();
@@ -88,7 +88,7 @@ class PipelineWrapper
 
     void LoadPushConstants( const IPushConstants &constants, ::size_t uByteSize )
     {
-        AB_ASSERT( uByteSize == m_uPushConstantsByteSize );
+        B33_ASSERT( uByteSize == m_uPushConstantsByteSize );
 
         memcpy( m_pPushConstants, &constants, m_uPushConstantsByteSize );
     }
@@ -159,4 +159,4 @@ class PipelineWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_WRAPPER_PIPELINE_H
+#endif // !B33_WRAPPER_PIPELINE_H

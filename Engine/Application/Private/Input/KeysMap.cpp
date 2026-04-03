@@ -22,11 +22,11 @@ KeysMap::KeysMap( size_t uAmountOfBindableKeys )
 // ---------------------------------------------------------------------------------------------------------------------
 void KeysMap::BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, AbMouseAction ma )
 {
-    AB_ASSERT( ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton );
-    AB_ASSERT( ib.Keyboard.KeyCode > AB_INVALID_KEY && ib.Keyboard.KeyCode < AB_KEY_COUNT );
-    AB_ASSERT( m_vKeys[ ib.Keyboard.KeyCode ].pThis == nullptr );
-    AB_ASSERT( ma == nullptr );
-    AB_ASSERT( pThis != nullptr );
+    B33_ASSERT( ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton );
+    B33_ASSERT( ib.Keyboard.KeyCode > B33_INVALID_KEY && ib.Keyboard.KeyCode < B33_KEY_COUNT );
+    B33_ASSERT( m_vKeys[ ib.Keyboard.KeyCode ].pThis == nullptr );
+    B33_ASSERT( ma == nullptr );
+    B33_ASSERT( pThis != nullptr );
 
     m_vKeys[ ib.Keyboard.KeyCode ] = ActionReplayData { pThis, a };
 }
@@ -34,9 +34,9 @@ void KeysMap::BindActionImpl( const AbInputBind &ib, void *pThis, AbAction a, Ab
 // ---------------------------------------------------------------------------------------------------------------------
 void KeysMap::UnbindActionImpl( const AbInputBind &ib, void *pThis )
 {
-    AB_ASSERT( ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton );
-    AB_ASSERT( ib.Keyboard.KeyCode > AB_INVALID_KEY && ib.Keyboard.KeyCode < AB_KEY_COUNT );
-    AB_ASSERT( pThis != nullptr );
+    B33_ASSERT( ib.Type == EAbBindType::Keyboard || ib.Type == EAbBindType::MouseButton );
+    B33_ASSERT( ib.Keyboard.KeyCode > B33_INVALID_KEY && ib.Keyboard.KeyCode < B33_KEY_COUNT );
+    B33_ASSERT( pThis != nullptr );
 
     m_vKeys[ ib.Keyboard.KeyCode ].pThis = nullptr;
 }
@@ -44,7 +44,7 @@ void KeysMap::UnbindActionImpl( const AbInputBind &ib, void *pThis )
 // ---------------------------------------------------------------------------------------------------------------------
 void KeysMap::PlayAction( const float fDelta, AbKeyId keyCode )
 {
-    AB_ASSERT( keyCode > AB_INVALID_KEY && keyCode < AB_KEY_COUNT );
+    B33_ASSERT( keyCode > B33_INVALID_KEY && keyCode < B33_KEY_COUNT );
 
     const auto &playableAction = m_vKeys[ keyCode ];
 

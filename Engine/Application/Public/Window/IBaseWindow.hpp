@@ -1,5 +1,5 @@
-#ifndef AB_IBASEWINDOW_H
-#define AB_IBASEWINDOW_H
+#ifndef B33_IBASEWINDOW_H
+#define B33_IBASEWINDOW_H
 
 #include "B33Core.h"
 
@@ -65,7 +65,7 @@ class IBaseWindow
     template <class NewPolicy>
     void ChangePolicy()
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
 
         bool                                         bWasAlive  = this->m_pWindowDesc->bIsAlive;
         ::std::unique_ptr<DefaultSystemWindowPolicy> pNewPolicy = ::std::make_unique<NewPolicy>();
@@ -85,14 +85,14 @@ class IBaseWindow
         SetWindowDescBufferStateInternal( newDesc );
         try
         {
-            AB_LOG( Core::Debug::Warning, L"Creating new window!" );
+            B33_LOG( Core::Debug::Warning, L"Creating new window!" );
             this->Create();
         }
         catch ( ... )
         {
             SetWindowDescBufferStateInternal( oldDesc );
             m_Policy.swap( pNewPolicy );
-            AB_LOG( Core::Debug::Error, L"We couldn't change this window policy!" );
+            B33_LOG( Core::Debug::Error, L"We couldn't change this window policy!" );
             return;
         }
 
@@ -102,19 +102,19 @@ class IBaseWindow
         m_Policy.swap( pNewPolicy );
         try
         {
-            AB_LOG( Core::Debug::Warning, L"Destroying the old window!" );
+            B33_LOG( Core::Debug::Warning, L"Destroying the old window!" );
             this->Destroy();
         }
         catch ( ... )
         {
-            AB_LOG( Core::Debug::Error, L"Old verison of window wasn't properly closed!" );
+            B33_LOG( Core::Debug::Error, L"Old verison of window wasn't properly closed!" );
         }
 
         // Load our new policy and new state
         SetWindowDescBufferStateInternal( newDesc );
         m_Policy.swap( pNewPolicy );
         m_pWindowDesc->LastEvent = EAbWindowEvents::ChangedBehavior;
-        
+
         // This helps with pinning the focus to the window on Windows OS
         this->Hide();
         this->Show();
@@ -123,12 +123,12 @@ class IBaseWindow
   public:
     void Create()
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
-        AB_ASSERT( m_Policy != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_Policy != nullptr );
 
         if ( m_pWindowDesc->bIsAlive )
         {
-            AB_LOG( Core::Debug::Warning, L"Cannot create alive window" );
+            B33_LOG( Core::Debug::Warning, L"Cannot create alive window" );
             return;
         }
 
@@ -136,7 +136,7 @@ class IBaseWindow
 
         if ( m_Policy->WindowPolicyCreate( m_pWindowDesc.get() ) != 0 )
         {
-            throw AB_EXCEPT( "Couldn't create the window" );
+            throw B33_EXCEPT( "Couldn't create the window" );
         }
 
         m_pWindowDesc->bIsAlive = true;
@@ -144,28 +144,28 @@ class IBaseWindow
 
     void Show()
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
-        AB_ASSERT( m_Policy != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_Policy != nullptr );
 
         m_Policy->WindowPolicyShow( m_pWindowDesc.get() );
     }
 
     void Hide()
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
-        AB_ASSERT( m_Policy != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_Policy != nullptr );
 
         m_Policy->WindowPolicyHide( m_pWindowDesc.get() );
     }
 
     void Destroy()
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
-        AB_ASSERT( m_Policy != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_Policy != nullptr );
 
         if ( !m_pWindowDesc->bIsAlive )
         {
-            AB_LOG( Core::Debug::Warning, L"Cannot destroy dead window" );
+            B33_LOG( Core::Debug::Warning, L"Cannot destroy dead window" );
             return;
         }
 
@@ -178,8 +178,8 @@ class IBaseWindow
 
     void Update( const float fDelta )
     {
-        AB_ASSERT( m_pWindowDesc != nullptr );
-        AB_ASSERT( m_Policy != nullptr );
+        B33_ASSERT( m_pWindowDesc != nullptr );
+        B33_ASSERT( m_Policy != nullptr );
 
         if ( !m_pWindowDesc->bIsAlive )
         {
@@ -197,7 +197,7 @@ class IBaseWindow
 
         if ( m_pWindowDesc->LastEvent & EAbWindowEvents::Destroy )
         {
-            AB_LOG( Core::Debug::Info, L"Window is being closed by user" );
+            B33_LOG( Core::Debug::Info, L"Window is being closed by user" );
             this->Destroy();
         }
 
@@ -229,4 +229,4 @@ class IBaseWindow
 };
 
 } // namespace B33::App
-#endif // !AB_IBASEWINDOW_H
+#endif // !B33_IBASEWINDOW_H

@@ -1,5 +1,5 @@
-#ifndef AB_VEC3_H
-#define AB_VEC3_H
+#ifndef B33_VEC3_H
+#define B33_VEC3_H
 
 #include "B33Core.h"
 
@@ -135,7 +135,7 @@ struct alignas( 16 ) iVec3
 
     constexpr int32_t operator[]( size_t uIndex ) const
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -150,7 +150,7 @@ struct alignas( 16 ) iVec3
 
     constexpr int32_t &operator[]( size_t uIndex )
     {
-        AB_ASSERT( uIndex < Size );
+        B33_ASSERT( uIndex < Size );
 
         if ( uIndex == 0 )
         {
@@ -171,4 +171,4 @@ struct alignas( 16 ) iVec3
 };
 
 } // namespace B33::Math
-#endif // !AB_VEC3_H
+#endif // !B33_VEC3_H

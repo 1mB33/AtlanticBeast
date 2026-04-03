@@ -1,6 +1,6 @@
 #ifdef __linux__
-#    ifndef AB_GAME_WINDOW_POLICY_H
-#        define AB_GAME_WINDOW_POLICY_H
+#    ifndef B33_GAME_WINDOW_POLICY_H
+#        define B33_GAME_WINDOW_POLICY_H
 
 #        include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 
@@ -30,5 +30,5 @@ class BEAST_API GameLinuxWindowPolicy : public BasicLinuxWindowPolicy
 };
 
 } // namespace B33::App
-#    endif // !AB_GAME_WINDOW_POLICY_H
+#    endif // !B33_GAME_WINDOW_POLICY_H
 #endif     // __linux__

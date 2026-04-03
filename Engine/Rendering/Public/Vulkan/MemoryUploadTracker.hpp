@@ -1,5 +1,5 @@
-#ifndef AB_MEMORY_UPLOAD_TRACKER_H
-#define AB_MEMORY_UPLOAD_TRACKER_H
+#ifndef B33_MEMORY_UPLOAD_TRACKER_H
+#define B33_MEMORY_UPLOAD_TRACKER_H
 
 namespace B33::Rendering
 {
@@ -65,4 +65,4 @@ class MemoryUploadTracker
 };
 
 } // namespace B33::Rendering
-#endif //! AB_MEMORY_UPLOAD_TRACKER_H
+#endif //! B33_MEMORY_UPLOAD_TRACKER_H

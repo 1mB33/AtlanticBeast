@@ -1,5 +1,5 @@
-#ifndef AB_VOXEL_GRID_H
-#define AB_VOXEL_GRID_H
+#ifndef B33_VOXEL_GRID_H
+#define B33_VOXEL_GRID_H
 
 #include "B33Core.h"
 
@@ -133,7 +133,7 @@ class WorldGrid : public IWorldGrid
   public:
     virtual bool CheckIfVoxelOccupied( const iVec &pos ) const override
     {
-        // AB_ASSERT(CalcIndex(pos) < voxelsGrid.size());
+        // B33_ASSERT(CalcIndex(pos) < voxelsGrid.size());
 
         const ::std::vector<Voxel> &voxelsGrid = this->GetGrid();
         const ::size_t              uDim       = this->GetGridWidth();
@@ -182,7 +182,7 @@ class WorldGrid : public IWorldGrid
     void UpdatePos( const Vec &newPos, size_t uObjectId )
     {
         // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     B33_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
         //     return;
         // }
 
@@ -202,13 +202,13 @@ class WorldGrid : public IWorldGrid
     void UpdateRot( const Rot &newRot, ::size_t uId )
     {
         // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     B33_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
         //     return;
         // }
 
         if ( m_StoredObjects.GetRotation( uId ) == newRot )
         {
-            // AB_LOG(::B33::Core::Debug::Info, L"New rotation is equal to old one");
+            // B33_LOG(::B33::Core::Debug::Info, L"New rotation is equal to old one");
             return;
         }
 
@@ -225,7 +225,7 @@ class WorldGrid : public IWorldGrid
         const size_t uObjId = m_StoredObjects.AddObject();
 
         // if (m_uObjectsCount >= m_StoredObjects.size() - 1) {
-        //     AB_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
+        //     B33_LOG(Core::Debug::Warning, L"Reached object limit of objects in the world");
         //     return -1;
         // }
 
@@ -249,4 +249,4 @@ class WorldGrid : public IWorldGrid
 typedef ::B33::Rendering::WorldGrid<ColoredCubes> CubeWorld;
 
 } // namespace B33::Rendering
-#endif // !AB_VOXEL_GRID_H
+#endif // !B33_VOXEL_GRID_H

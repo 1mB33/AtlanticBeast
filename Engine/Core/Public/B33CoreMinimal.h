@@ -1,5 +1,5 @@
-#ifndef AB_CORE_MINIMAL_H
-#define AB_CORE_MINIMAL_H
+#ifndef B33_CORE_MINIMAL_H
+#define B33_CORE_MINIMAL_H
 
 #include "AbLimits.h"
 #include "CStandard.h"
@@ -11,4 +11,4 @@
 #include "ExportImport.h"
 #include "MinimalSystemIncludes.h"
 
-#endif //! AB_CORE_MINIMAL_H
+#endif //! B33_CORE_MINIMAL_H

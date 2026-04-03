@@ -1,5 +1,5 @@
-#ifndef AB_MINIMAL_HARDWARE_H
-#define AB_MINIMAL_HARDWARE_H
+#ifndef B33_MINIMAL_HARDWARE_H
+#define B33_MINIMAL_HARDWARE_H
 
 #include "Instance.hpp"
 #include "WrapperHardware.hpp"
@@ -17,4 +17,4 @@ class MinimalHardware : public ::B33::Rendering::HardwareWrapper
 };
 
 } // namespace B33::Rendering
-#endif // !AB_MINIMAL_HARDWARE_H
+#endif // !B33_MINIMAL_HARDWARE_H

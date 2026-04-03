@@ -1,6 +1,6 @@
 #ifdef __linux__
-#    ifndef AB_BORDERLESS_GAME_WINDOW_POLICY_H
-#        define AB_BORDERLESS_GAME_WINDOW_POLICY_H
+#    ifndef B33_BORDERLESS_GAME_WINDOW_POLICY_H
+#        define B33_BORDERLESS_GAME_WINDOW_POLICY_H
 
 #        include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
 
@@ -22,5 +22,5 @@ class BEAST_API BorderlessGameLinuxWindowPolicy : public GameLinuxWindowPolicy
 };
 
 } // namespace B33::App
-#    endif // !AB_BORDERLESS_GAME_WINDOW_POLICY_H
+#    endif // !B33_BORDERLESS_GAME_WINDOW_POLICY_H
 #endif     // __linux__

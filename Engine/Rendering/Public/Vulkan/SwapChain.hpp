@@ -1,5 +1,5 @@
-#ifndef AB_SWAPCHAIN_H
-#define AB_SWAPCHAIN_H
+#ifndef B33_SWAPCHAIN_H
+#define B33_SWAPCHAIN_H
 
 #include "Instance.hpp"
 #include "Window/WindowDesc.hpp"
@@ -39,7 +39,7 @@ class Swapchain
 
     ::VkImage GetImage( ::uint32_t i ) const
     {
-        AB_ASSERT( i < m_SwapChainImages.size() );
+        B33_ASSERT( i < m_SwapChainImages.size() );
         return m_SwapChainImages[ i ];
     }
 
@@ -96,4 +96,4 @@ class Swapchain
 };
 
 } // namespace B33::Rendering
-#endif // !AB_SWAPCHAIN_H
+#endif // !B33_SWAPCHAIN_H

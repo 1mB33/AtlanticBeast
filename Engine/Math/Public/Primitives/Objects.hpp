@@ -1,5 +1,5 @@
-#ifndef AB_OBJECTS_H
-#define AB_OBJECTS_H
+#ifndef B33_OBJECTS_H
+#define B33_OBJECTS_H
 
 #include "B33Math.hpp"
 
@@ -68,8 +68,8 @@ class WorldObjects
         m_vPositions.push_back( Vec3() );
         m_vRotations.push_back( Vec3() );
 
-        AB_ASSERT( i == m_vPositions.size() - 1 );
-        AB_ASSERT( i == m_vRotations.size() - 1 );
+        B33_ASSERT( i == m_vPositions.size() - 1 );
+        B33_ASSERT( i == m_vRotations.size() - 1 );
 
         return i;
     }
@@ -83,4 +83,4 @@ class WorldObjects
 };
 
 } // namespace B33::Math
-#endif // !AB_OBJECTS_H
+#endif // !B33_OBJECTS_H

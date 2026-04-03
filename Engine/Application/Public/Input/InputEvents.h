@@ -1,5 +1,5 @@
-#ifndef AB_INPUT_EVENTS_H
-#define AB_INPUT_EVENTS_H
+#ifndef B33_INPUT_EVENTS_H
+#define B33_INPUT_EVENTS_H
 
 #include "Bind.h"
 
@@ -36,4 +36,4 @@ typedef struct AbInputStruct
     };
 } AbInputStruct;
 
-#endif // !AB_INPUT_EVENTS_H
+#endif // !B33_INPUT_EVENTS_H

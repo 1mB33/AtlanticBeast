@@ -1,5 +1,5 @@
-#ifndef AB_APP_H
-#define AB_APP_H
+#ifndef B33_APP_H
+#define B33_APP_H
 
 #include "B33Core.h"
 
@@ -14,4 +14,4 @@
 #    include "Window/WindowDesc.hpp"
 
 #endif //!__cplusplus
-#endif //! AB_APP_H
+#endif //! B33_APP_H

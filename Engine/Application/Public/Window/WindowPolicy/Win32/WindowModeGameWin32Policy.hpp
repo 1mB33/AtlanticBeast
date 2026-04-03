@@ -1,6 +1,6 @@
 #ifdef _WIN32
-#    ifndef AB_GAME_POLICY_H
-#        define AB_GAME_POLICY_H
+#    ifndef B33_GAME_POLICY_H
+#        define B33_GAME_POLICY_H
 
 #        include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
 
@@ -20,5 +20,5 @@ class BEAST_API WindowModeGameWin32WindowPolicy : public BasicWin32WindowPolicy
 };
 
 } // namespace B33::App
-#    endif // !AB_GAME_POLICY_H
+#    endif // !B33_GAME_POLICY_H
 #endif     // _WIN32

@@ -1,5 +1,5 @@
-#ifndef AB_BASE_WINDOW_DETAILS_H
-#define AB_BASE_WINDOW_DETAILS_H
+#ifndef B33_BASE_WINDOW_DETAILS_H
+#define B33_BASE_WINDOW_DETAILS_H
 
 #include "B33Core.h"
 
@@ -34,4 +34,4 @@ BEAST_API void AbAskToCloseWindowClass( const wchar_t *pwszClassName );
 
 #    endif // !_WIN32
 #endif     // !__cplusplus
-#endif     // !AB_BASE_WINDOW_DETAILS_H
+#endif     // !B33_BASE_WINDOW_DETAILS_H

@@ -1,5 +1,5 @@
-#ifndef AB_ICOMPONENT_H
-#define AB_ICOMPONENT_H
+#ifndef B33_ICOMPONENT_H
+#define B33_ICOMPONENT_H
 
 #include "B33System.hpp"
 
@@ -92,7 +92,7 @@ struct ComponentInstanceRegister
                                                                                                                        \
   private:
 
-#define B33_ASYNC_COMPONENT( CLASS_NAME )                                                                              \
+#define B33_ASYNC_UPDATE_COMPONENT( CLASS_NAME )                                                                       \
     B33_COMPONENT_HELPER( CLASS_NAME );                                                                                \
                                                                                                                        \
   public:                                                                                                              \
@@ -104,4 +104,4 @@ struct ComponentInstanceRegister
   private:
 
 } // namespace B33::System
-#endif // !AB_ICOMPONENT_H
+#endif // !B33_ICOMPONENT_H

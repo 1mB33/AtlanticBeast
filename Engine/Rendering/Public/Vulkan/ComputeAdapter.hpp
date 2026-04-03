@@ -1,5 +1,5 @@
-#ifndef AB_COMPUTE_DEVICE_ADAPTER_H
-#define AB_COMPUTE_DEVICE_ADAPTER_H
+#ifndef B33_COMPUTE_DEVICE_ADAPTER_H
+#define B33_COMPUTE_DEVICE_ADAPTER_H
 
 #include "Vulkan/IAdapter.hpp"
 #include "Vulkan/WrapperHardware.hpp"
@@ -22,4 +22,4 @@ class ComputeAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::Compu
 };
 
 } // namespace B33::Rendering
-#endif // !AB_COMPUTE_DEVICE_ADAPTER_H
+#endif // !B33_COMPUTE_DEVICE_ADAPTER_H

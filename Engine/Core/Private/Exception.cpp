@@ -26,27 +26,27 @@ Exception::Exception( const char *szMessage,
         return;
     }
 
-    char   szLine[ AB_SMALL_STRING ] = { 0 };
-    char   szAtLine[]                = "\nAt line: ";
-    char   szInFile[]                = "\nIn file: ";
-    size_t uFutureLen                = m_uMesLen;
+    char   szLine[ B33_SMALL_STRING ] = { 0 };
+    char   szAtLine[]                 = "\nAt line: ";
+    char   szInFile[]                 = "\nIn file: ";
+    size_t uFutureLen                 = m_uMesLen;
     size_t uCurLen;
 
-    // If length is bigger then the AB_LONG_STRING, there is nothing to do, return
-    if ( m_uMesLen >= AB_LONG_STRING )
+    // If length is bigger then the B33_LONG_STRING, there is nothing to do, return
+    if ( m_uMesLen >= B33_LONG_STRING )
     {
         LogAndReturnMessage( m_pszMessage, m_uMesLen );
         return;
     }
 
-    char *szErrorMessage = new char[ AB_LONG_STRING ];
+    char *szErrorMessage = new char[ B33_LONG_STRING ];
 
     strcpy( szErrorMessage, m_pszMessage );
     m_pszMessage = szErrorMessage;
 
     uCurLen = uFutureLen;
     uFutureLen += sprintf( szLine, "\nAt line: %d", static_cast<int>( m_Line ) );
-    if ( uFutureLen >= AB_LONG_STRING || m_Line == InvalidLine )
+    if ( uFutureLen >= B33_LONG_STRING || m_Line == InvalidLine )
     {
         LogAndReturnMessage( szErrorMessage, uCurLen );
         m_uMesLen = uCurLen;
@@ -56,7 +56,7 @@ Exception::Exception( const char *szMessage,
 
     uCurLen = uFutureLen;
     uFutureLen += sizeof( szInFile ) + m_uFileNameLen;
-    if ( uFutureLen >= AB_LONG_STRING || !m_pszFileName )
+    if ( uFutureLen >= B33_LONG_STRING || !m_pszFileName )
     {
         LogAndReturnMessage( szErrorMessage, uCurLen );
         m_uMesLen = uCurLen;
@@ -72,7 +72,7 @@ Exception::Exception( const char *szMessage,
 // ---------------------------------------------------------------------------------------------------------------------
 Exception::~Exception() noexcept
 {
-    if ( m_uMesLen < AB_LONG_STRING )
+    if ( m_uMesLen < B33_LONG_STRING )
     {
         delete[] m_pszMessage;
     }
@@ -86,14 +86,14 @@ Exception::Exception( const Exception &other ) noexcept
   , m_pszFileName( other.m_pszFileName )
   , m_uFileNameLen( other.m_uFileNameLen )
 {
-    if ( other.m_uMesLen != InvalidLine && other.m_uMesLen >= AB_LONG_STRING )
+    if ( other.m_uMesLen != InvalidLine && other.m_uMesLen >= B33_LONG_STRING )
     {
         this->m_pszMessage = other.m_pszMessage;
         this->m_uMesLen    = other.m_uMesLen;
         return;
     }
 
-    char *pszMessage = new char[ AB_LONG_STRING ];
+    char *pszMessage = new char[ B33_LONG_STRING ];
     strcpy( pszMessage, other.m_pszMessage );
 
     this->m_pszMessage = pszMessage;

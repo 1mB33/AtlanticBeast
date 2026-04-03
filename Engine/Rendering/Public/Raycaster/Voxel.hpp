@@ -1,5 +1,5 @@
-#ifndef AB_VOXEL_H
-#define AB_VOXEL_H
+#ifndef B33_VOXEL_H
+#define B33_VOXEL_H
 
 namespace B33::Rendering
 {
@@ -15,4 +15,4 @@ struct alignas( 16 ) Voxel
 };
 
 } // namespace B33::Rendering
-#endif // !AB_VOXEL_H
+#endif // !B33_VOXEL_H

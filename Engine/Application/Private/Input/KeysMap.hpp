@@ -1,5 +1,5 @@
-#ifndef AB_KEYS_MAP_H
-#define AB_KEYS_MAP_H
+#ifndef B33_KEYS_MAP_H
+#define B33_KEYS_MAP_H
 
 #include "IBindMap.hpp"
 #include "Input/KeyList.hpp"
@@ -9,7 +9,7 @@ namespace B33::App
 
 class KeysMap : public IBindMap<KeysMap>
 {
-    static constexpr size_t AmountOfBindableKeys = AB_KEY_COUNT;
+    static constexpr size_t AmountOfBindableKeys = B33_KEY_COUNT;
 
     struct ActionReplayData
     {
@@ -35,4 +35,4 @@ class KeysMap : public IBindMap<KeysMap>
 };
 
 } // namespace B33::App
-#endif // !AB_KEYS_MAP_H
+#endif // !B33_KEYS_MAP_H

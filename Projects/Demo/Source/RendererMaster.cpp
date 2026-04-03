@@ -7,6 +7,6 @@ void RendererMasterPuppet::BindToInput( const ::std::shared_ptr<B33::App::UserIn
 
     AbInputBind ib;
     ib.Type     = EAbBindType::Keyboard;
-    ib.Keyboard = AbKeyboardBind { EAbOnState::Press, B33::App::AB_KEY_Z };
+    ib.Keyboard = AbKeyboardBind { EAbOnState::Press, B33::App::B33_KEY_Z };
     pInput->Bind( &m_Master, &m_Controller, &RendererMasterController::UseActionSetWindowMode, nullptr, ib );
 }

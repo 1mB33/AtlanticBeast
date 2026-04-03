@@ -20,7 +20,7 @@ Memory::Memory( shared_ptr<const HardwareWrapper> pHardware, shared_ptr<const Ad
 // --------------------------------------------------------------------------------------------------------------------
 shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer( const size_t uSizeInBytes )
 {
-    AB_LOG( Info, L"Reserving staging buffer of %llu bytes", uSizeInBytes );
+    B33_LOG( Info, L"Reserving staging buffer of %llu bytes", uSizeInBytes );
 
     const VkDevice       da = m_pAdapter->GetAdapterHandle();
     VkMemoryRequirements memRequirements;
@@ -53,7 +53,7 @@ shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer( const size_t uSizeInBy
 // --------------------------------------------------------------------------------------------------------------------
 shared_ptr<GPUBuffer> Memory::ReserveGPUBuffer( const size_t uSizeInBytes )
 {
-    AB_LOG( Info, L"Reserving gpu buffer of %llu bytes", uSizeInBytes );
+    B33_LOG( Info, L"Reserving gpu buffer of %llu bytes", uSizeInBytes );
 
     const VkDevice       da = m_pAdapter->GetAdapterHandle();
     VkMemoryRequirements memRequirements;
@@ -84,9 +84,9 @@ shared_ptr<GPUBuffer> Memory::ReserveGPUBuffer( const size_t uSizeInBytes )
 // --------------------------------------------------------------------------------------------------------------------
 void Memory::UploadOnStreamBuffer( const void *pUpload, const size_t uUploadSize, const UploadDescriptor &onSet )
 {
-    AB_ASSERT( onSet.Buffer->GetMemoryHandle() != VK_NULL_HANDLE );
-    AB_ASSERT( onSet.Buffer->GetBufferHandle() != VK_NULL_HANDLE );
-    AB_ASSERT( onSet.Buffer->GetSizeInBytes() >= uUploadSize );
+    B33_ASSERT( onSet.Buffer->GetMemoryHandle() != VK_NULL_HANDLE );
+    B33_ASSERT( onSet.Buffer->GetBufferHandle() != VK_NULL_HANDLE );
+    B33_ASSERT( onSet.Buffer->GetSizeInBytes() >= uUploadSize );
 
     if ( onSet.Type != UploadDescriptor::EUploadType::StreamBuffer )
     {
@@ -132,7 +132,7 @@ uint32_t Memory::FindMemoryType( uint32_t typeFilter, VkMemoryPropertyFlags prop
         }
     }
 
-    throw AB_EXCEPT( "Failed to find suitable memory type!" );
+    throw B33_EXCEPT( "Failed to find suitable memory type!" );
 }
 
 } // namespace B33::Rendering

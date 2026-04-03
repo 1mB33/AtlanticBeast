@@ -1,5 +1,5 @@
-#ifndef AB_CUBE_H
-#define AB_CUBE_H
+#ifndef B33_CUBE_H
+#define B33_CUBE_H
 
 #include "B33Math.hpp"
 
@@ -34,4 +34,4 @@ class alignas( 16 ) Cube : public WorldObject
 };
 
 } // namespace B33::Math
-#endif // !AB_CUBE_H
+#endif // !B33_CUBE_H

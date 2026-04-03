@@ -1,5 +1,5 @@
-#ifndef AB_REFLECTION_PROPERTY_H
-#define AB_REFLECTION_PROPERTY_H
+#ifndef B33_REFLECTION_PROPERTY_H
+#define B33_REFLECTION_PROPERTY_H
 
 namespace B33::Rendering
 {
@@ -29,4 +29,4 @@ class alignas( 8 ) ReflectionProperty //: public IMaterialProperties
 };
 
 } // namespace B33::Rendering
-#endif // !AB_REFLECTION_PROPERTY_H
+#endif // !B33_REFLECTION_PROPERTY_H

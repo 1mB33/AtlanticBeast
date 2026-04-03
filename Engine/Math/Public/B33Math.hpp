@@ -1,5 +1,5 @@
-#ifndef AB_ATLANTIC_MATH_H
-#define AB_ATLANTIC_MATH_H
+#ifndef B33_ATLANTIC_MATH_H
+#define B33_ATLANTIC_MATH_H
 
 #include "B33Core.h"
 
@@ -10,4 +10,4 @@
 #include "Vec3Operators.hpp"
 #include "Vec4.hpp"
 
-#endif //! AB_ATLANTIC_MATH_H
+#endif //! B33_ATLANTIC_MATH_H

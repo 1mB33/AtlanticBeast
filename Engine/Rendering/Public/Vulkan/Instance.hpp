@@ -1,5 +1,5 @@
-#ifndef AB_INSTANCE_H
-#define AB_INSTANCE_H
+#ifndef B33_INSTANCE_H
+#define B33_INSTANCE_H
 
 #include "B33Rendering.hpp"
 
@@ -44,4 +44,4 @@ class Instance
 };
 
 } // namespace B33::Rendering
-#endif // !AB_INSTANCE_H
+#endif // !B33_INSTANCE_H

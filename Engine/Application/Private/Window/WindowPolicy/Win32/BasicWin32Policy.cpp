@@ -12,9 +12,9 @@ using namespace B33::Core;
 // ---------------------------------------------------------------------------------------------------------------------
 uint32_t BasicWin32WindowPolicy::CreateImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd != NULL );
-    AB_ASSERT( pWd->hWnd == NULL );
-    AB_ASSERT( !pWd->bIsAlive );
+    B33_ASSERT( pWd != NULL );
+    B33_ASSERT( pWd->hWnd == NULL );
+    B33_ASSERT( !pWd->bIsAlive );
 
     HWND hWnd;
 
@@ -59,7 +59,7 @@ uint32_t BasicWin32WindowPolicy::CreateImpl( WindowDesc *pWd )
 
         if ( hWnd == NULL )
         {
-            AB_LOG( B33::Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError() );
+            B33_LOG( B33::Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError() );
             return -1;
         }
 
@@ -74,8 +74,8 @@ uint32_t BasicWin32WindowPolicy::CreateImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::ShowImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd != NULL );
-    AB_ASSERT( pWd->hWnd != NULL );
+    B33_ASSERT( pWd != NULL );
+    B33_ASSERT( pWd->hWnd != NULL );
 
     ShowWindow( pWd->hWnd, SW_SHOW );
 }
@@ -83,8 +83,8 @@ void BasicWin32WindowPolicy::ShowImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::HideImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd != NULL );
-    AB_ASSERT( pWd->hWnd != NULL );
+    B33_ASSERT( pWd != NULL );
+    B33_ASSERT( pWd->hWnd != NULL );
 
     ShowWindow( pWd->hWnd, SW_HIDE );
 }
@@ -92,9 +92,9 @@ void BasicWin32WindowPolicy::HideImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::DestroyImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd != NULL );
-    AB_ASSERT( pWd->hWnd != NULL );
-    AB_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd != NULL );
+    B33_ASSERT( pWd->hWnd != NULL );
+    B33_ASSERT( pWd->bIsAlive );
 
     if ( DestroyWindow( pWd->hWnd ) )
     {
@@ -107,8 +107,8 @@ void BasicWin32WindowPolicy::DestroyImpl( WindowDesc *pWd )
 // ---------------------------------------------------------------------------------------------------------------------
 void BasicWin32WindowPolicy::UpdateImpl( WindowDesc *pWd )
 {
-    AB_ASSERT( pWd != NULL );
-    AB_ASSERT( pWd->bIsAlive );
+    B33_ASSERT( pWd != NULL );
+    B33_ASSERT( pWd->bIsAlive );
 
     MSG msg;
     while ( PeekMessage( &msg, pWd->hWnd, 0, 0, PM_REMOVE ) != 0 )

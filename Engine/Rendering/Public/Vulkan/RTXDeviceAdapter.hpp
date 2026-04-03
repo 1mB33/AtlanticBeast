@@ -1,5 +1,5 @@
-#ifndef AB_DEVICE_ADAPTER_H
-#define AB_DEVICE_ADAPTER_H
+#ifndef B33_DEVICE_ADAPTER_H
+#define B33_DEVICE_ADAPTER_H
 
 #include "Vulkan/IAdapter.hpp"
 #include "Vulkan/WrapperHardware.hpp"
@@ -22,4 +22,4 @@ class RTXDeviceAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::RTX
 };
 
 } // namespace B33::Rendering
-#endif // !AB_DEVICE_ADAPTER_H
+#endif // !B33_DEVICE_ADAPTER_H

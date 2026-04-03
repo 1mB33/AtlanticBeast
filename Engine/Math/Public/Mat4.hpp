@@ -1,5 +1,5 @@
-#ifndef AB_MAT4_H
-#define AB_MAT4_H
+#ifndef B33_MAT4_H
+#define B33_MAT4_H
 
 namespace B33::Math
 {
@@ -10,4 +10,4 @@ struct alignas( 16 ) Mat4
 };
 
 } // namespace B33::Math
-#endif // !AB_MAT4_H
+#endif // !B33_MAT4_H

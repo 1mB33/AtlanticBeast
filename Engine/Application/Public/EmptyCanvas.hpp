@@ -1,5 +1,5 @@
-#ifndef AB_EMPTYCANVAS_H
-#define AB_EMPTYCANVAS_H
+#ifndef B33_EMPTYCANVAS_H
+#define B33_EMPTYCANVAS_H
 
 #include "B33App.h"
 #include "Input/UserInput.hpp"
@@ -59,4 +59,4 @@ class EmptyCanvas : public ::B33::App::IBaseWindow<EmptyCanvas<bManualInputUpdat
 };
 
 } // namespace B33::App
-#endif // !AB_EMPTYCANVAS_H
+#endif // !B33_EMPTYCANVAS_H
