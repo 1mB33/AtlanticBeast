@@ -1,14 +1,51 @@
 #include <cassert>
 #include <chrono>
-#include <exception>
-#include <fstream>
-#include <ios>
 #include <iostream>
 #include <memory>
-#include <string>
 #include <string_view>
 #include <unordered_map>
 
+// --------------------------------------------------------------------------------------------------------------------
+enum EAssetType
+{
+    Unkonwn,
+    Mesh,
+    Texture,
+    Sound,
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+struct AssetMetadata
+{
+    using Clock = ::std::chrono::system_clock;
+
+    EAssetType        Type;
+    Clock::time_point CreationTime;
+    Clock::time_point LastModificationTime;
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+class Asset
+{
+    using Clock = ::std::chrono::system_clock;
+
+  public:
+    explicit Asset( AssetMetadata metadata = { .Type                 = EAssetType::Unkonwn,
+                                               .CreationTime         = Clock::now(),
+                                               .LastModificationTime = Clock::now() } )
+      : m_Metadata( metadata )
+      , m_pData( nullptr )
+    {
+    }
+
+    ~Asset() = default;
+
+  private:
+    const AssetMetadata m_Metadata = {};
+    void               *m_pData    = nullptr;
+};
+
+// --------------------------------------------------------------------------------------------------------------------
 class ExampleAsset
 {
   public:
@@ -25,11 +62,13 @@ class ExampleAsset
     long long State = 0;
 };
 
+// --------------------------------------------------------------------------------------------------------------------
 class AssetsReader
 {
   public:
 };
 
+// --------------------------------------------------------------------------------------------------------------------
 class AssetsManager
 {
   public:
@@ -63,6 +102,7 @@ class AssetsManager
     ::std::unordered_map<::std::string_view, ::std::shared_ptr<ExampleAsset>> m_vAssets = {};
 };
 
+// --------------------------------------------------------------------------------------------------------------------
 using namespace std;
 
 int main()
@@ -78,8 +118,6 @@ int main()
         anAsset->DoAthing();
         anotherAsset->DoAthing();
 
-        cout << anotherAsset.get() << " " << anAsset.get() << endl;
-
         assert( anAsset.get() == anotherAsset.get() );
 
         anAsset->State = chrono::system_clock::now().time_since_epoch().count();
@@ -87,6 +125,5 @@ int main()
     catch ( ... )
     {
     }
-
     cout << "___END" << endl;
 }
