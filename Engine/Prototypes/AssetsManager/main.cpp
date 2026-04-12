@@ -5,13 +5,57 @@
 #include <string_view>
 #include <unordered_map>
 
+#define B33_ASSET( className )                                                                                         \
+  public:                                                                                                              \
+    static ::std::string_view GetAssetTypeName()                                                                       \
+    {                                                                                                                  \
+        return #className;                                                                                             \
+    }                                                                                                                  \
+                                                                                                                       \
+  private:
+
+// --------------------------------------------------------------------------------------------------------------------
+class Mesh
+{
+    B33_ASSET( Mesh );
+
+  public:
+    Mesh()  = default;
+    ~Mesh() = default;
+
+    void Action() const
+    {
+        ::std::cout << "I'm a mesh" << ::std::endl;
+    }
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+class Texture
+{
+    B33_ASSET( Texture );
+
+  public:
+    Texture()  = default;
+    ~Texture() = default;
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+class Sound
+{
+    B33_ASSET( Sound );
+
+  public:
+    Sound()  = default;
+    ~Sound() = default;
+};
+
 // --------------------------------------------------------------------------------------------------------------------
 enum EAssetType
 {
-    Unkonwn,
-    Mesh,
-    Texture,
-    Sound,
+    EUnkonwn,
+    EMesh,
+    ETexture,
+    ESound,
 };
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -25,47 +69,52 @@ struct AssetMetadata
 };
 
 // --------------------------------------------------------------------------------------------------------------------
-class Asset
+class AssetWrapper
+{
+};
+
+// --------------------------------------------------------------------------------------------------------------------
+template <class ASSET_TYPE>
+class Asset : public AssetWrapper
 {
     using Clock = ::std::chrono::system_clock;
 
   public:
-    explicit Asset( AssetMetadata metadata = { .Type                 = EAssetType::Unkonwn,
-                                               .CreationTime         = Clock::now(),
-                                               .LastModificationTime = Clock::now() } )
+    Asset( AssetMetadata metadata = { .Type                 = EAssetType::EUnkonwn,
+                                      .CreationTime         = Clock::now(),
+                                      .LastModificationTime = Clock::now() },
+           ::std::string strName  = "UnknownAsset" )
       : m_Metadata( metadata )
-      , m_pData( nullptr )
+      , m_strName( strName )
+      , m_pData()
     {
     }
 
     ~Asset() = default;
 
+    Asset( const Asset & ) = delete;
+    Asset( Asset && )      = default;
+
+  public:
+    const AssetMetadata &GetMetadata() const
+    {
+        return m_Metadata;
+    }
+
+    const ASSET_TYPE &GetData() const
+    {
+        return *m_pData;
+    }
+
+    const ::std::string &GetName() const
+    {
+        return m_strName;
+    }
+
   private:
     const AssetMetadata m_Metadata = {};
-    void               *m_pData    = nullptr;
-};
-
-// --------------------------------------------------------------------------------------------------------------------
-class ExampleAsset
-{
-  public:
-    static ::std::string_view GetAssetsName()
-    {
-        return "ExampleAsset";
-    }
-
-    void DoAthing() const
-    {
-        ::std::cout << State << ::std::endl;
-    }
-
-    long long State = 0;
-};
-
-// --------------------------------------------------------------------------------------------------------------------
-class AssetsReader
-{
-  public:
+    const ::std::string m_strName  = "Unknown";
+    ASSET_TYPE         *m_pData    = {};
 };
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -77,29 +126,37 @@ class AssetsManager
     ~AssetsManager()
     {
         ::std::cout << "List of loaded assets:" << ::std::endl;
-        for ( auto &vk : m_vAssets )
-            ::std::cout << vk.first << " " << vk.second->GetAssetsName() << ::std::endl;
+        for ( auto &vk : m_Assets )
+            ::std::cout << vk.first << ::std::endl;
     }
 
   public:
-    ::std::weak_ptr<ExampleAsset> GenerateAsset()
+    template <class ASSET_TYPE>
+    ::std::weak_ptr<Asset<ASSET_TYPE>> GenerateAsset( ::std::string_view assetName )
     {
         ::std::cout << "Generating asset" << ::std::endl;
 
-        const auto assetName = ExampleAsset::GetAssetsName();
+        const auto fullAssetName = ConstructFullAssetNameInternal<ASSET_TYPE>( assetName );
 
-        if ( m_vAssets.find( assetName ) != m_vAssets.end() )
+        if ( m_Assets.find( fullAssetName ) != m_Assets.end() )
         {
-            return m_vAssets[ assetName ];
+            return ::std::static_pointer_cast<Asset<ASSET_TYPE>>( m_Assets[ fullAssetName ] );
         }
 
-        auto resultVal         = ::std::make_shared<ExampleAsset>();
-        m_vAssets[ assetName ] = resultVal;
+        auto resultVal            = ::std::make_shared<Asset<ASSET_TYPE>>();
+        m_Assets[ fullAssetName ] = resultVal;
         return resultVal;
     }
 
   private:
-    ::std::unordered_map<::std::string_view, ::std::shared_ptr<ExampleAsset>> m_vAssets = {};
+    template <class ASSET_TYPE>
+    ::std::string ConstructFullAssetNameInternal( ::std::string_view assetName )
+    {
+        return ::std::string( assetName ) + '_' + ::std::string( ASSET_TYPE::GetAssetTypeName() );
+    }
+
+  private:
+    ::std::unordered_map<::std::string, ::std::shared_ptr<AssetWrapper>> m_Assets = {};
 };
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -112,15 +169,13 @@ int main()
     {
         AssetsManager assetsManager = {};
 
-        auto anAsset      = assetsManager.GenerateAsset().lock();
-        auto anotherAsset = assetsManager.GenerateAsset().lock();
+        auto anAsset      = assetsManager.GenerateAsset<Mesh>( "Test" ).lock();
+        auto anotherAsset = assetsManager.GenerateAsset<Mesh>( "Test" ).lock();
 
-        anAsset->DoAthing();
-        anotherAsset->DoAthing();
+        anAsset->GetData().Action();
+        anotherAsset->GetData().Action();
 
         assert( anAsset.get() == anotherAsset.get() );
-
-        anAsset->State = chrono::system_clock::now().time_since_epoch().count();
     }
     catch ( ... )
     {
