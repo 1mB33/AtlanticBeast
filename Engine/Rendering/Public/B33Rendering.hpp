@@ -16,7 +16,6 @@
 #ifdef __cplusplus
 #    include "B33Math.hpp"
 
-#    include <vulkan/vulkan.hpp>
 #    ifdef _WIN32
 #        undef LoadImage
 #    endif // !_WIN32
