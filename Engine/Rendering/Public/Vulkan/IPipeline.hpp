@@ -13,11 +13,8 @@ class IPipeline : public PipelineWrapper
   public:
     IPipeline() = delete;
 
-    IPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-               const ::std::string                                      &strPath,
-               VkPipelineStageFlagBits                                   stage,
-               VkPipelineBindPoint                                       bindPoint )
-      : PipelineWrapper( da, strPath, stage, bindPoint )
+    IPipeline( const ::std::string &strPath, VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
+      : PipelineWrapper( strPath, stage, bindPoint )
     {
     }
 

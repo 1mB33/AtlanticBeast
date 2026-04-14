@@ -1,6 +1,7 @@
 #ifndef B33_SWAPCHAIN_H
 #define B33_SWAPCHAIN_H
 
+#include "B33Core.h"
 #include "Instance.hpp"
 #include "Window/WindowDesc.hpp"
 #include "WrapperAdapter.hpp"
@@ -37,10 +38,30 @@ class Swapchain
         return m_pSwapChain;
     }
 
-    const ::VkImage GetImage( ::uint32_t i ) const
+    const ::VkImage &GetImage( ::uint32_t i ) const
     {
         B33_ASSERT( i < m_SwapChainImages.size() );
+        B33_TRACE( L"Getting swapchain image with custom index %d", i );
         return m_SwapChainImages[ i ];
+    }
+
+    const ::VkImage &GetImage() const
+    {
+        B33_TRACE( L"Getting swapchain image with index %d", m_uCurrentImageIndex );
+        return m_SwapChainImages[ m_uCurrentImageIndex ];
+    }
+
+    const ::uint32_t &GetImageindex() const
+    {
+        B33_TRACE( L"Getting swapchain image index %d", m_uCurrentImageIndex );
+        return m_uCurrentImageIndex;
+    }
+
+  public:
+    void SetCurrentImage( uint32_t uImageIndex )
+    {
+        B33_INFO( L"Current swapchain image %d", uImageIndex );
+        m_uCurrentImageIndex = uImageIndex;
     }
 
   private:

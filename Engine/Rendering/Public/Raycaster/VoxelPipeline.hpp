@@ -26,15 +26,10 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     };
 
   public:
-    VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-                   ::std::shared_ptr<::B33::Rendering::Memory>               mem,
-                   ::std::shared_ptr<const ::WindowDesc>                     win )
-      : IPipeline( da,
-                   ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
+    VoxelPipeline()
+      : IPipeline( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
                    VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                    VK_PIPELINE_BIND_POINT_COMPUTE )
-      , m_pMemory( mem )
-      , m_pWindowDesc( win )
       , m_pVoxelGrid( nullptr )
     {
         B33_LOG( Core::Debug::Info, L"Creating a pipeline!" );
@@ -46,8 +41,7 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     BEAST_API virtual void Update() override final;
 
     BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
-                                           VkCommandBuffer        &cmdBuffer,
-                                           uint32_t                uImageIndex ) override final;
+                                           VkCommandBuffer        &cmdBuffer ) override final;
 
     BEAST_API virtual void Reset() override final;
 
@@ -82,10 +76,6 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     void LoadImage( VkImage image );
 
   private:
-    ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
-    ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
-
     ::B33::Rendering::VoxelPushConstants m_Vpc = {};
 
     // Shader uniforms

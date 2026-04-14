@@ -2,6 +2,8 @@
 #define B33_WRAPPER_PIPELINE_H
 
 #include "Vulkan/IPushConstants.hpp"
+#include "Vulkan/Memory.hpp"
+#include "Vulkan/SwapChain.hpp"
 #include "Vulkan/WrapperAdapter.hpp"
 
 namespace B33::Rendering
@@ -15,11 +17,11 @@ class PipelineWrapper
   public:
     PipelineWrapper() = delete;
 
-    PipelineWrapper( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pAdapter,
-                     const ::std::string                                      &strShaderPath,
-                     VkPipelineStageFlagBits                                   stage,
-                     VkPipelineBindPoint                                       bindPoint )
-      : m_pDeviceAdapter( pAdapter )
+    PipelineWrapper( const ::std::string &strShaderPath, VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
+      : m_pDeviceAdapter( nullptr )
+      , m_pMemory( nullptr )
+      , m_pWindowDesc( nullptr )
+      , m_pSwapChain()
       , m_strShaderPath( strShaderPath )
       , m_StageBits( stage )
       , m_BindPoint( bindPoint )
@@ -66,10 +68,20 @@ class PipelineWrapper
   public:
     virtual void Update() = 0;
 
-    virtual void
-    RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer, uint32_t uImageIndex ) = 0;
+    virtual void RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer ) = 0;
 
     virtual void Reset() = 0;
+
+    void InitializeRendererResources( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pDeviceAdapter,
+                                      ::std::shared_ptr<::B33::Rendering::Memory>               pMemory,
+                                      ::std::shared_ptr<const ::WindowDesc>                     pWindowDesc,
+                                      ::std::shared_ptr<const ::B33::Rendering::Swapchain>      pSwapChain )
+    {
+        m_pDeviceAdapter = pDeviceAdapter;
+        m_pMemory        = pMemory;
+        m_pWindowDesc    = pWindowDesc;
+        m_pSwapChain     = pSwapChain;
+    }
 
     template <class T>
     void Initialize( T &pPipeline )
@@ -118,10 +130,31 @@ class PipelineWrapper
         return m_BindPoint;
     }
 
+  public:
+    void SetNewSwapChain( ::std::weak_ptr<const ::B33::Rendering::Swapchain> pSwapChain )
+    {
+        m_pSwapChain = pSwapChain;
+    }
+
   protected:
-    ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> GetAdaterInternal()
+    const ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> &GetAdaterInternal()
     {
         return m_pDeviceAdapter;
+    }
+
+    const ::std::shared_ptr<::B33::Rendering::Memory> &GetMemoryInternal() const
+    {
+        return m_pMemory;
+    }
+
+    const ::std::shared_ptr<const ::WindowDesc> &GetWindowDescInternal() const
+    {
+        return m_pWindowDesc;
+    }
+
+    const ::std::weak_ptr<const ::B33::Rendering::Swapchain> &GetSwapChainInternal() const
+    {
+        return m_pSwapChain;
     }
 
     ::VkShaderModule GetShaderModuleInternal()
@@ -141,6 +174,9 @@ class PipelineWrapper
 
   private:
     ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> m_pDeviceAdapter = nullptr;
+    ::std::shared_ptr<::B33::Rendering::Memory>               m_pMemory        = nullptr;
+    ::std::shared_ptr<const ::WindowDesc>                     m_pWindowDesc    = nullptr;
+    ::std::weak_ptr<const ::B33::Rendering::Swapchain>        m_pSwapChain     = {};
 
     const ::std::string m_strShaderPath          = {};
     ::size_t            m_uPushConstantsByteSize = 0;

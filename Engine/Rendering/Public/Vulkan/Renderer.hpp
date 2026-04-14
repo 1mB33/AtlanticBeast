@@ -29,6 +29,7 @@ class Renderer
       , m_pMemory( nullptr )
       , m_vPipeline()
       , m_CommandPool( VK_NULL_HANDLE )
+      , m_LastResultState( VK_SUCCESS )
       , m_uCurrentFrame( 0 )
       , m_vFrames()
     {
@@ -48,12 +49,19 @@ class Renderer
 
     BEAST_API void Destroy();
 
-    template <class PIPE_LINE = ::B33::Rendering::PipelineWrapper, class... RESOURCES_ARGS>
+    /**
+     * @brief Pushes new pipeline stage on to rendering stack
+     *
+     * @tparam PIPE_LINE Class derived from IPipeline class
+     * @tparam RESOURCES_ARGS Types of arguments passed to the pipeline CreatePipelineResources method implementation
+     * @param args Arguments passed to the pipeline CreatePipelineResources method implementation
+     */
+    template <class PIPE_LINE, class... RESOURCES_ARGS>
     void PushPipeline( RESOURCES_ARGS... args )
     {
-        auto pipeline = ::std::make_shared<PIPE_LINE>( ::std::static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
-                                                       m_pMemory,
-                                                       m_pWindowDesc );
+        auto pipeline = ::std::make_shared<PIPE_LINE>();
+
+        pipeline->InitializeRendererResources( m_pDeviceAdapter, m_pMemory, m_pWindowDesc, m_pSwapChain );
         pipeline->Initialize( *pipeline );
         pipeline->CreatePipelineResources( args... );
 
@@ -77,7 +85,7 @@ class Renderer
                                       ::VkCommandPool                                                  cmdPool,
                                       ::size_t                                                         uFrames );
 
-    void RecordCommands( ::VkCommandBuffer &cmdBuff, ::uint32_t uImageIndex );
+    void RecordCommands( ::VkCommandBuffer &cmdBuff );
 
   private:
     void DestroyFrameResources();
@@ -89,13 +97,14 @@ class Renderer
     ::std::shared_ptr<::B33::Rendering::Instance>        m_pInstance      = nullptr;
     ::std::shared_ptr<::B33::Rendering::HardwareWrapper> m_pHardware      = nullptr;
     ::std::shared_ptr<::B33::Rendering::AdapterWrapper>  m_pDeviceAdapter = nullptr;
-    ::std::unique_ptr<::B33::Rendering::Swapchain>       m_pSwapChain     = nullptr;
+    ::std::shared_ptr<::B33::Rendering::Swapchain>       m_pSwapChain     = nullptr;
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory        = nullptr;
 
     ::std::vector<::std::shared_ptr<::B33::Rendering::PipelineWrapper>> m_vPipeline = {};
 
     ::VkCommandPool m_CommandPool = VK_NULL_HANDLE;
 
+    VkResult                       m_LastResultState;
     ::size_t                       m_uCurrentFrame;
     ::std::unique_ptr<FramesArray> m_vFrames = nullptr;
 };

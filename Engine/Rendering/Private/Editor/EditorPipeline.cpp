@@ -31,9 +31,7 @@ void EditorPipeline::CreatePipelineResourcesImpl() {}
 void EditorPipeline::Update() {}
 
 // --------------------------------------------------------------------------------------------------------------------
-void EditorPipeline::RecordCommands( VkPipelineStageFlagBits lastStage,
-                                     VkCommandBuffer        &cmdBuffer,
-                                     uint32_t                uImageIndex )
+void EditorPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
 {
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),
@@ -44,8 +42,8 @@ void EditorPipeline::RecordCommands( VkPipelineStageFlagBits lastStage,
 
     vkCmdPipelineBarrier( cmdBuffer, lastStage, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 0, 0, NULL, 0, NULL, 0, NULL );
 
-    const uint32_t groupCountX = ( m_pWindowDesc->Width + 31 ) >> 5;
-    const uint32_t groupCountY = ( m_pWindowDesc->Height + 7 ) >> 3;
+    const uint32_t groupCountX = ( GetWindowDescInternal()->Width + 31 ) >> 5;
+    const uint32_t groupCountY = ( GetWindowDescInternal()->Height + 7 ) >> 3;
     vkCmdDispatch( cmdBuffer, groupCountX, groupCountY, 1 );
 }
 

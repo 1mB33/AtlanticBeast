@@ -15,15 +15,10 @@ class EditorPipeline : public IPipeline<EditorPipeline>
     using iVec = ::B33::Math::iVec3;
 
   public:
-    EditorPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-                    ::std::shared_ptr<::B33::Rendering::Memory>               mem,
-                    ::std::shared_ptr<const ::WindowDesc>                     win )
-      : IPipeline( da,
-                   ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Editor.spv",
+    EditorPipeline()
+      : IPipeline( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Editor.spv",
                    VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
                    VK_PIPELINE_BIND_POINT_COMPUTE )
-      , m_pMemory( mem )
-      , m_pWindowDesc( win )
     {
         B33_LOG( Core::Debug::Info, L"Creating a editor pipeline!" );
     }
@@ -34,8 +29,7 @@ class EditorPipeline : public IPipeline<EditorPipeline>
     BEAST_API virtual void Update() override final;
 
     BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
-                                           VkCommandBuffer        &cmdBuffer,
-                                           uint32_t                uImageIndex ) override final;
+                                           VkCommandBuffer        &cmdBuffer ) override final;
 
     BEAST_API virtual void Reset() override final;
 
@@ -67,10 +61,6 @@ class EditorPipeline : public IPipeline<EditorPipeline>
     void LoadImage( VkImage image );
 
   private:
-    ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
-    ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
-
     ::B33::Rendering::EditorPushConstants m_Vpc = {};
 
     ::uint32_t m_uStorageBuffersFlags = 0;
