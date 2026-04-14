@@ -11,17 +11,13 @@ class AdapterWrapper
   public:
     AdapterWrapper() = delete;
 
-    template <class T>
-    AdapterWrapper( ::std::shared_ptr<const HardwareWrapper> pHardware, const uint32_t uFlags, T *pIAdapter )
-      : m_pGPU( pHardware )
-      , m_uQueueFamily( ChooseQueueFamily( m_pGPU->GetPhysicalDevice(), uFlags ) )
-      , m_Device( CreateDevice( m_pGPU->GetPhysicalDevice(),
-                                pIAdapter->GetExtensions(),
-                                pIAdapter->GetFeatures(),
-                                m_uQueueFamily ) )
-      , m_Queue( CreateQueue( m_Device, m_uQueueFamily ) )
+    AdapterWrapper( const uint32_t uFlags )
+      : m_pHardware( nullptr )
+      , m_uFlags( uFlags )
+      , m_uQueueFamily()
+      , m_Device()
+      , m_Queue()
     {
-        B33_LOG( Core::Debug::Info, L"Initializing adapter" );
     }
 
     ~AdapterWrapper()
@@ -38,7 +34,7 @@ class AdapterWrapper
     AdapterWrapper( AdapterWrapper && ) noexcept = default;
     AdapterWrapper( const AdapterWrapper & )     = delete;
 
-    AdapterWrapper &operator=( AdapterWrapper && ) noexcept      = default;
+    AdapterWrapper &operator=( AdapterWrapper && ) noexcept      = delete;
     AdapterWrapper &operator=( const AdapterWrapper & ) noexcept = delete;
 
   public:
@@ -57,6 +53,25 @@ class AdapterWrapper
         return m_Queue;
     }
 
+  public:
+    void InitializeRendererResources( ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> pHardware )
+    {
+        m_pHardware = pHardware;
+    }
+
+    template <class T>
+    void Initialize( T &pIAdapter )
+    {
+        B33_LOG( Core::Debug::Info, L"Initializing adapter" );
+
+        m_uQueueFamily = ChooseQueueFamily( m_pHardware->GetPhysicalDevice(), m_uFlags );
+        m_Device       = CreateDevice( m_pHardware->GetPhysicalDevice(),
+                                       pIAdapter.GetExtensions(),
+                                       pIAdapter.GetFeatures(),
+                                       m_uQueueFamily );
+        m_Queue        = CreateQueue( m_Device, m_uQueueFamily );
+    }
+
   private:
     uint32_t ChooseQueueFamily( VkPhysicalDevice gpu, const uint32_t uFlags ) const;
 
@@ -68,9 +83,10 @@ class AdapterWrapper
     VkQueue CreateQueue( VkDevice dv, uint32_t uQueueIndex ) const;
 
   private:
-    ::std::shared_ptr<const HardwareWrapper> m_pGPU = nullptr;
+    ::std::shared_ptr<const HardwareWrapper> m_pHardware = nullptr;
 
-    uint32_t m_uQueueFamily = 0;
+    const uint32_t m_uFlags       = 0;
+    uint32_t       m_uQueueFamily = 0;
 
     VkDevice m_Device = VK_NULL_HANDLE;
     VkQueue  m_Queue  = VK_NULL_HANDLE;

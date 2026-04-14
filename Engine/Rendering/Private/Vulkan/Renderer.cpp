@@ -6,6 +6,7 @@
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/MinimalHardware.hpp"
+#include <memory>
 
 namespace B33::Rendering
 {
@@ -18,11 +19,15 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
 {
     B33_LOG( Core::Debug::Info, L"Initializing renderer!" );
 
-    m_pInstance      = make_shared<Instance>();
-    m_pHardware      = make_shared<MinimalHardware>( m_pInstance );
-    m_pDeviceAdapter = make_shared<ComputeAdapter>( static_pointer_cast<HardwareWrapper>( m_pHardware ) );
-    m_pMemory        = make_shared<Memory>( m_pHardware, m_pDeviceAdapter );
-    m_pWindowDesc    = wd;
+    m_pInstance = make_shared<Instance>();
+    m_pHardware = make_shared<MinimalHardware>( m_pInstance );
+
+    m_pDeviceAdapter = make_shared<ComputeAdapter>();
+    m_pDeviceAdapter->InitializeRendererResources( m_pHardware );
+    m_pDeviceAdapter->Initialize( *static_pointer_cast<ComputeAdapter>( m_pDeviceAdapter ).get() );
+
+    m_pMemory     = make_shared<Memory>( m_pHardware, m_pDeviceAdapter );
+    m_pWindowDesc = wd;
 
     B33_LOG( Core::Debug::Info, L"Initializing command pool" );
     m_CommandPool = CreateCommandPool( static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),

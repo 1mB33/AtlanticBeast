@@ -12,8 +12,8 @@ class IAdapter : public AdapterWrapper
   public:
     IAdapter() = delete;
 
-    IAdapter( ::std::shared_ptr<const HardwareWrapper> pHardware, const uint32_t uFlags )
-      : AdapterWrapper( pHardware, uFlags, this )
+    IAdapter( const uint32_t uFlags )
+      : AdapterWrapper( uFlags )
     {
     }
 

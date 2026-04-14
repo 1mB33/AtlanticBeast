@@ -10,11 +10,7 @@ using namespace std;
 // --------------------------------------------------------------------------------------------------------------------
 const vector<const char *> &ComputeAdapter::GetExtensionsImpl() const
 {
-    static const vector<const char *> vpszDeviceExtensions = {
-        VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-    };
-
-    return vpszDeviceExtensions;
+    return m_vExtensions;
 }
 
 // --------------------------------------------------------------------------------------------------------------------

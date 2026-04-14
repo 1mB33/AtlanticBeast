@@ -10,8 +10,8 @@ namespace B33::Rendering
 class RTXDeviceAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::RTXDeviceAdapter>
 {
   public:
-    RTXDeviceAdapter( ::std::shared_ptr<const HardwareWrapper> pGpu )
-      : IAdapter( pGpu, ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT )
+    RTXDeviceAdapter()
+      : IAdapter( ::VK_QUEUE_COMPUTE_BIT | ::VK_QUEUE_GRAPHICS_BIT )
     {
     }
 
