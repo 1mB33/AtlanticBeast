@@ -66,27 +66,20 @@ class PipelineWrapper
     PipelineWrapper &operator=( const PipelineWrapper & ) noexcept = delete;
 
   public:
-    virtual void Update() = 0;
-
-    virtual void RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer ) = 0;
-
-    virtual void Reset() = 0;
-
-    void InitializeRendererResources( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pDeviceAdapter,
-                                      ::std::shared_ptr<::B33::Rendering::Memory>               pMemory,
-                                      ::std::shared_ptr<const ::WindowDesc>                     pWindowDesc,
-                                      ::std::shared_ptr<const ::B33::Rendering::Swapchain>      pSwapChain )
+    template <class T>
+    void Initialize( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> pDeviceAdapter,
+                     ::std::shared_ptr<::B33::Rendering::Memory>               pMemory,
+                     ::std::shared_ptr<const ::WindowDesc>                     pWindowDesc,
+                     ::std::shared_ptr<const ::B33::Rendering::Swapchain>      pSwapChain,
+                     T                                                        &pPipeline )
     {
+        B33_LOG( Core::Debug::Info, L"Initializing pipeline" );
+
         m_pDeviceAdapter = pDeviceAdapter;
         m_pMemory        = pMemory;
         m_pWindowDesc    = pWindowDesc;
         m_pSwapChain     = pSwapChain;
-    }
 
-    template <class T>
-    void Initialize( T &pPipeline )
-    {
-        B33_LOG( Core::Debug::Info, L"Initializing pipeline" );
         m_uPushConstantsByteSize = pPipeline.GetPushConstantsByteSize();
         m_pPushConstants         = pPipeline.GetPushConstants();
         m_DescriptorLayout       = pPipeline.CreateDescriptorLayout();
@@ -96,6 +89,12 @@ class PipelineWrapper
         m_PipelineLayout         = pPipeline.CreatePipelineLayout();
         m_Pipeline               = pPipeline.CreatePipeline();
     }
+
+    virtual void Update() = 0;
+
+    virtual void RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer ) = 0;
+
+    virtual void Reset() = 0;
 
     void LoadPushConstants( const IPushConstants &constants, ::size_t uByteSize )
     {

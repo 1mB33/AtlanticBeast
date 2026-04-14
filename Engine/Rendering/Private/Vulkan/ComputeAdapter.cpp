@@ -8,13 +8,13 @@ namespace B33::Rendering
 using namespace std;
 
 // --------------------------------------------------------------------------------------------------------------------
-const vector<const char *> &ComputeAdapter::GetExtensionsImpl() const
+const vector<const char *> &GraphicsComputeAdapter::GetExtensionsImpl() const
 {
     return m_vExtensions;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void *ComputeAdapter::GetFeaturesImpl() const
+void *GraphicsComputeAdapter::GetFeaturesImpl() const
 {
     return NULL;
 }

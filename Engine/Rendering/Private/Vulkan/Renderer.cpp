@@ -1,3 +1,4 @@
+#include "B33Core.h"
 #include "B33Rendering.hpp"
 
 #include "Vulkan/Renderer.hpp"
@@ -6,7 +7,8 @@
 #include "Vulkan/FrameResources.hpp"
 #include "Vulkan/Memory.hpp"
 #include "Vulkan/MinimalHardware.hpp"
-#include <memory>
+#include "Vulkan/WrapperAdapter.hpp"
+#include "Vulkan/WrapperHardware.hpp"
 
 namespace B33::Rendering
 {
@@ -20,16 +22,17 @@ void Renderer::Initialize( shared_ptr<const WindowDesc> wd )
     B33_LOG( Core::Debug::Info, L"Initializing renderer!" );
 
     m_pInstance = make_shared<Instance>();
-    m_pHardware = make_shared<MinimalHardware>( m_pInstance );
 
-    m_pDeviceAdapter = make_shared<ComputeAdapter>();
-    m_pDeviceAdapter->InitializeRendererResources( m_pHardware );
-    m_pDeviceAdapter->Initialize( *static_pointer_cast<ComputeAdapter>( m_pDeviceAdapter ).get() );
+    m_pHardware = make_shared<HardwareWrapper>();
+    m_pHardware->Initialize( m_pInstance, MinimalHardware() );
+
+    m_pDeviceAdapter = make_shared<AdapterWrapper>();
+    m_pDeviceAdapter->Initialize( m_pHardware, GraphicsComputeAdapter() );
 
     m_pMemory     = make_shared<Memory>( m_pHardware, m_pDeviceAdapter );
     m_pWindowDesc = wd;
 
-    B33_LOG( Core::Debug::Info, L"Initializing command pool" );
+    B33_TRACE( L"Initializing command pool" );
     m_CommandPool = CreateCommandPool( static_pointer_cast<AdapterWrapper>( m_pDeviceAdapter ),
                                        m_pDeviceAdapter->GetQueueFamilyIndex() );
 

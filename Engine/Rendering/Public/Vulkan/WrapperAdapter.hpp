@@ -9,11 +9,9 @@ namespace B33::Rendering
 class AdapterWrapper
 {
   public:
-    AdapterWrapper() = delete;
-
-    AdapterWrapper( const uint32_t uFlags )
+    AdapterWrapper()
       : m_pHardware( nullptr )
-      , m_uFlags( uFlags )
+      , m_uFlags( -1 )
       , m_uQueueFamily()
       , m_Device()
       , m_Queue()
@@ -34,8 +32,8 @@ class AdapterWrapper
     AdapterWrapper( AdapterWrapper && ) noexcept = default;
     AdapterWrapper( const AdapterWrapper & )     = delete;
 
-    AdapterWrapper &operator=( AdapterWrapper && ) noexcept      = delete;
-    AdapterWrapper &operator=( const AdapterWrapper & ) noexcept = delete;
+    AdapterWrapper &operator=( AdapterWrapper && )      = delete;
+    AdapterWrapper &operator=( const AdapterWrapper & ) = delete;
 
   public:
     uint32_t GetQueueFamilyIndex() const
@@ -54,20 +52,17 @@ class AdapterWrapper
     }
 
   public:
-    void InitializeRendererResources( ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> pHardware )
-    {
-        m_pHardware = pHardware;
-    }
-
     template <class T>
-    void Initialize( T &pIAdapter )
+    void Initialize( ::std::shared_ptr<const ::B33::Rendering::HardwareWrapper> pHardware, const T &adapter )
     {
         B33_LOG( Core::Debug::Info, L"Initializing adapter" );
+        m_pHardware = pHardware;
 
+        m_uFlags       = adapter.GetQueueFlags();
         m_uQueueFamily = ChooseQueueFamily( m_pHardware->GetPhysicalDevice(), m_uFlags );
         m_Device       = CreateDevice( m_pHardware->GetPhysicalDevice(),
-                                       pIAdapter.GetExtensions(),
-                                       pIAdapter.GetFeatures(),
+                                       adapter.GetExtensions(),
+                                       adapter.GetFeatures(),
                                        m_uQueueFamily );
         m_Queue        = CreateQueue( m_Device, m_uQueueFamily );
     }
@@ -85,8 +80,8 @@ class AdapterWrapper
   private:
     ::std::shared_ptr<const HardwareWrapper> m_pHardware = nullptr;
 
-    const uint32_t m_uFlags       = 0;
-    uint32_t       m_uQueueFamily = 0;
+    uint32_t m_uFlags       = 0;
+    uint32_t m_uQueueFamily = 0;
 
     VkDevice m_Device = VK_NULL_HANDLE;
     VkQueue  m_Queue  = VK_NULL_HANDLE;

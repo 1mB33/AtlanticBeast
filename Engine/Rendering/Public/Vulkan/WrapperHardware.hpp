@@ -9,12 +9,9 @@ namespace B33::Rendering
 class HardwareWrapper
 {
   public:
-    HardwareWrapper() = delete;
-
-    explicit HardwareWrapper( ::std::shared_ptr<const B33::Rendering::Instance> pInstance,
-                              VkPhysicalDevice                                  physicalDevice )
-      : m_pInstance( pInstance )
-      , m_PhysicalDevice( physicalDevice )
+    HardwareWrapper()
+      : m_pInstance( nullptr )
+      , m_PhysicalDevice( nullptr )
     {
         B33_LOG( Core::Debug::Info, L"Initializing hardware" );
     }
@@ -37,8 +34,14 @@ class HardwareWrapper
         return m_PhysicalDevice;
     }
 
-  protected:
-    ::std::vector<VkPhysicalDevice> GetPhysicalDevices( VkInstance Instance );
+  public:
+    template <class T>
+    void Initialize( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance, const T &hardware )
+    {
+        B33_LOG( Core::Debug::Info, L"Initializing adapter" );
+        m_pInstance      = pInstance;
+        m_PhysicalDevice = hardware.ChooseHardware( pInstance );
+    }
 
   private:
     ::std::shared_ptr<const Instance> m_pInstance = nullptr;

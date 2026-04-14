@@ -2,16 +2,15 @@
 #define B33_COMPUTE_DEVICE_ADAPTER_H
 
 #include "Vulkan/IAdapter.hpp"
-#include "Vulkan/WrapperHardware.hpp"
 
 namespace B33::Rendering
 {
 
-class ComputeAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::ComputeAdapter>
+class GraphicsComputeAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::GraphicsComputeAdapter>
 {
   public:
-    ComputeAdapter()
-      : IAdapter( ::VK_QUEUE_COMPUTE_BIT )
+    GraphicsComputeAdapter()
+      : IAdapter()
       , m_vExtensions()
     {
         m_vExtensions.push_back( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
@@ -21,6 +20,11 @@ class ComputeAdapter : public ::B33::Rendering::IAdapter<::B33::Rendering::Compu
     const ::std::vector<const char *> &GetExtensionsImpl() const;
 
     void *GetFeaturesImpl() const;
+
+    uint32_t GetQueueFlagsImpl() const
+    {
+        return ::VK_QUEUE_COMPUTE_BIT;
+    }
 
   private:
     ::std::vector<const char *> m_vExtensions = {};

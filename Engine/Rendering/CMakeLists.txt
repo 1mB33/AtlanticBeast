@@ -1,6 +1,5 @@
 SET(BEE_RENDERING_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/Instance.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/WrapperHardware.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/WrapperAdapter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/MinimalHardware.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/RTXHardware.cpp"

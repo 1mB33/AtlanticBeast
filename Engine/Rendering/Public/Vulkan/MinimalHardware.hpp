@@ -2,18 +2,18 @@
 #define B33_MINIMAL_HARDWARE_H
 
 #include "Instance.hpp"
-#include "WrapperHardware.hpp"
+#include "Vulkan/IHardware.hpp"
 
 namespace B33::Rendering
 {
 
-class MinimalHardware : public ::B33::Rendering::HardwareWrapper
+class MinimalHardware : public ::B33::Rendering::IHardware<MinimalHardware>
 {
   public:
-    BEAST_API MinimalHardware( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance );
+    BEAST_API MinimalHardware();
 
-  private:
-    ::VkPhysicalDevice ChooseGPU( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance );
+  public:
+    ::VkPhysicalDevice ChooseHardwareImpl( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance ) const;
 };
 
 } // namespace B33::Rendering
