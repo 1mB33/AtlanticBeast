@@ -139,6 +139,7 @@ void Renderer::Destroy()
 
     m_vPipeline.clear();
     m_pSwapChain     = nullptr;
+    m_pMemory        = nullptr;
     m_pDeviceAdapter = nullptr;
     m_pHardware      = nullptr;
     m_pInstance      = nullptr;
