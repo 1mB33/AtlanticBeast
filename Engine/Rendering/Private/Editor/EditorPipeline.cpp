@@ -31,7 +31,9 @@ void EditorPipeline::CreatePipelineResourcesImpl() {}
 void EditorPipeline::Update() {}
 
 // --------------------------------------------------------------------------------------------------------------------
-void EditorPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
+void EditorPipeline::RecordCommands( VkPipelineStageFlagBits lastStage,
+                                     VkCommandBuffer        &cmdBuffer,
+                                     uint32_t                uImageIndex )
 {
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),

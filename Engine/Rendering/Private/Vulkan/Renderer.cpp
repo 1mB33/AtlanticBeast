@@ -219,7 +219,6 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
     VkImageLayout           newImgLayout  = VK_IMAGE_LAYOUT_GENERAL;
     for ( auto &pipeline : m_vPipeline )
     {
-        pipeline->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
         vkCmdBindPipeline( cmdBuff, pipeline->GetPipelineBindPoint(), pipeline->GetPipelineHandle() );
 
         VkImageMemoryBarrier barrier = {};
@@ -253,7 +252,7 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff, uint32_t uImageIndex )
                                  0,
                                  NULL );
 
-        pipeline->RecordCommands( lastStage, cmdBuff );
+        pipeline->RecordCommands( lastStage, cmdBuff, uImageIndex );
         lastStage     = pipeline->GetPipelineStageFlagBits();
         lastImgLayout = newImgLayout;
     }

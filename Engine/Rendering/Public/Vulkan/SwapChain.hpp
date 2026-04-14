@@ -32,12 +32,12 @@ class Swapchain
     Swapchain &operator=( const Swapchain & ) noexcept = delete;
 
   public:
-    ::VkSwapchainKHR &GetSwapChainHandle()
+    const ::VkSwapchainKHR &GetSwapChainHandle() const
     {
         return m_pSwapChain;
     }
 
-    ::VkImage GetImage( ::uint32_t i ) const
+    const ::VkImage GetImage( ::uint32_t i ) const
     {
         B33_ASSERT( i < m_SwapChainImages.size() );
         return m_SwapChainImages[ i ];

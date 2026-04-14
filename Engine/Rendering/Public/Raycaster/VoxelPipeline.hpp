@@ -46,11 +46,10 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     BEAST_API virtual void Update() override final;
 
     BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
-                                           VkCommandBuffer        &cmdBuffer ) override final;
+                                           VkCommandBuffer        &cmdBuffer,
+                                           uint32_t                uImageIndex ) override final;
 
     BEAST_API virtual void Reset() override final;
-
-    BEAST_API virtual void LoadImage( VkImage image ) override final;
 
     ::size_t GetPushConstantsByteSizeImpl()
     {
@@ -79,6 +78,8 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
   private:
     UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
                                                  const EShaderResource                                      &sr );
+
+    void LoadImage( VkImage image );
 
   private:
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;

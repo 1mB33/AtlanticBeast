@@ -93,8 +93,12 @@ void VoxelPipeline::Update()
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
+void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage,
+                                    VkCommandBuffer        &cmdBuffer,
+                                    uint32_t                uImageIndex )
 {
+    this->LoadImage( m_pSwapChain->GetImage( uImageIndex ) );
+
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),
                         VK_SHADER_STAGE_COMPUTE_BIT,

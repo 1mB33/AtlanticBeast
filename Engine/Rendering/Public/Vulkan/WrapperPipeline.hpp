@@ -66,11 +66,10 @@ class PipelineWrapper
   public:
     virtual void Update() = 0;
 
-    virtual void RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer ) = 0;
+    virtual void
+    RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer, uint32_t uImageIndex ) = 0;
 
     virtual void Reset() = 0;
-
-    virtual void LoadImage( VkImage image ) = 0;
 
     template <class T>
     void Initialize( T &pPipeline )

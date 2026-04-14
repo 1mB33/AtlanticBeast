@@ -34,11 +34,10 @@ class EditorPipeline : public IPipeline<EditorPipeline>
     BEAST_API virtual void Update() override final;
 
     BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
-                                           VkCommandBuffer        &cmdBuffer ) override final;
+                                           VkCommandBuffer        &cmdBuffer,
+                                           uint32_t                uImageIndex ) override final;
 
     BEAST_API virtual void Reset() override final;
-
-    BEAST_API virtual void LoadImage( VkImage image ) override final;
 
     ::size_t GetPushConstantsByteSizeImpl()
     {
@@ -63,6 +62,9 @@ class EditorPipeline : public IPipeline<EditorPipeline>
     BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
     BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
+
+  private:
+    void LoadImage( VkImage image );
 
   private:
     ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
