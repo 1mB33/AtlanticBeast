@@ -1,9 +1,9 @@
 #ifndef B33_BASIC_SYSTEM_POLICY_H
 #define B33_BASIC_SYSTEM_POLICY_H
 
-#if _WIN32
+#if defined( _WIN32 )
 #    include "Window/WindowPolicy/Win32/BasicWin32Policy.hpp"
-#elif __linux__
+#elif defined( X11_FOUND )
 #    include "Window/WindowPolicy/Linux/BasicLinuxPolicy.hpp"
 #endif // !_WIN32
 
@@ -11,9 +11,9 @@ namespace B33::App
 {
 
 typedef
-#if _WIN32
+#if defined( _WIN32 )
     BasicWin32WindowPolicy
-#elif __linux__
+#elif defined( X11_FOUND )
     BasicLinuxWindowPolicy
 #endif // !_WIN32
         DefaultSystemWindowPolicy;

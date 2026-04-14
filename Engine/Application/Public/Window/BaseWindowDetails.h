@@ -4,7 +4,7 @@
 #include "B33Core.h"
 
 #ifdef __cplusplus
-#    ifdef __linux__
+#    if defined( X11_FOUND )
 
 /**
  * Wraps display query logic for linux.

@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined( X11_FOUND )
 #    ifndef B33_WINDOW_POLICY_H
 #        define B33_WINDOW_POLICY_H
 

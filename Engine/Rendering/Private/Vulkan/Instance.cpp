@@ -32,9 +32,9 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverity
                                                      void                                       *pUserData )
 {
     constexpr wchar_t pwszFormat[] =
-#ifdef _WIN32
+#if defined( _WIN32 )
         L"[Vulkan]: %S";
-#elif __linux__
+#elif defined( __linux__ ) || defined( __APPLE__ )
         L"[Vulkan]: %s";
 #endif // !_WIN32
 

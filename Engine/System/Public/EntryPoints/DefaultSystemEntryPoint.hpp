@@ -3,7 +3,7 @@
 
 #if defined( _WIN32 )
 #    include "Win32/Win32Entry.hpp"
-#elif defined( __linux__ )
+#elif defined( __linux__ ) || defined( __APPLE__ )
 #    include "Linux/LinuxEntry.hpp"
 #endif
 

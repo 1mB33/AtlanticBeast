@@ -58,7 +58,7 @@ VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
 {
     VkSurfaceKHR surface = VK_NULL_HANDLE;
 
-#ifdef _WIN32
+#if defined( _WIN32 )
     VkWin32SurfaceCreateInfoKHR createInfo;
     createInfo.sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
     createInfo.pNext     = NULL;
@@ -67,7 +67,7 @@ VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
     createInfo.hwnd      = pWindowDesc->hWnd;
 
     THROW_IF_FAILED( vkCreateWin32SurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) );
-#elif __linux__
+#elif defined( X11_FOUND )
     VkXlibSurfaceCreateInfoKHR createInfo;
     createInfo.sType  = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
     createInfo.pNext  = NULL;

@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined( X11_FOUND )
 #    include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
 
 #    include <X11/X.h>
