@@ -1,4 +1,4 @@
-#if defined( X11_FOUND )
+#if defined( _X11 )
 #    include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
 
 #    include <X11/X.h>

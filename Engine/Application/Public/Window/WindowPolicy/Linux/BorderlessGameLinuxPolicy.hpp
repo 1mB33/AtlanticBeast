@@ -1,4 +1,4 @@
-#if defined( X11_FOUND )
+#if defined( _X11 )
 #    ifndef B33_BORDERLESS_GAME_WINDOW_POLICY_H
 #        define B33_BORDERLESS_GAME_WINDOW_POLICY_H
 

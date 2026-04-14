@@ -3,7 +3,7 @@
 
 #if defined( _WIN32 )
 #    define VK_USE_PLATFORM_WIN32_KHR
-#elif defined( X11_FOUND )
+#elif defined( _X11 )
 #    define VK_USE_PLATFORM_XLIB_KHR
 #endif
 

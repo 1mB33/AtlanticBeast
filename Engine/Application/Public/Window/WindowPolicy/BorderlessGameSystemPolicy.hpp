@@ -3,7 +3,7 @@
 
 #if defined( _WIN32 )
 #    include "Window/WindowPolicy/Win32/BorderlessGameWin32Policy.hpp"
-#elif defined( X11_FOUND )
+#elif defined( _X11 )
 #    include "Window/WindowPolicy/Linux/BorderlessGameLinuxPolicy.hpp"
 #endif // !_WIN32
 
@@ -13,7 +13,7 @@ namespace B33::App
 typedef
 #if defined( _WIN32 )
     BorderlessGameWin32Policy
-#elif defined( X11_FOUND )
+#elif defined( _X11 )
     BorderlessGameLinuxWindowPolicy
 #endif // !_WIN32
         BorderlessGameSystemPolicy;

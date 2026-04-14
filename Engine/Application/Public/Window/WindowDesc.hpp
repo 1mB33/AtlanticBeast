@@ -24,7 +24,7 @@ struct WindowDesc
 #if defined( _WIN32 )
     HWND       hWnd;
     WNDCLASSEX Wcex;
-#elif defined( X11_FOUND )
+#elif defined( _X11 )
     Display *pDisplayHandle;
     Window   WindowHandle;
     int32_t  Screen;
@@ -46,7 +46,7 @@ WindowDesc CreateWindowDesc( U &&wstrName, int32_t width = 1200, int32_t height 
 #if defined( _WIN32 )
     wd.hWnd = NULL;
     wd.Wcex = {};
-#elif defined( X11_FOUND )
+#elif defined( _X11 )
     wd.pDisplayHandle = NULL;
     wd.WindowHandle   = 0;
     wd.Screen         = 0;

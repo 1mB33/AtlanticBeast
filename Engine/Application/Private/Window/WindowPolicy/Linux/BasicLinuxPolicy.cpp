@@ -1,5 +1,5 @@
 #include "Input/InputEvents.h"
-#if defined( X11_FOUND )
+#if defined( _X11 )
 
 #    include "B33Core.h"
 
