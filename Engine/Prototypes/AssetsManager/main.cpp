@@ -171,6 +171,7 @@ int main()
 
         auto anAsset      = assetsManager.GenerateAsset<Mesh>( "Test" ).lock();
         auto anotherAsset = assetsManager.GenerateAsset<Mesh>( "Test" ).lock();
+        auto diffrentAsset = assetsManager.GenerateAsset<Sound>( "Test" ).lock();
 
         anAsset->GetData().Action();
         anotherAsset->GetData().Action();
