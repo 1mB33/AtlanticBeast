@@ -290,10 +290,17 @@ void Renderer::RecordCommands( VkCommandBuffer &cmdBuff )
         .dstAccessMask       = 0,
         .oldLayout           = lastImgLayout,
         .newLayout           = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
         .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
         .image               = m_pSwapChain->GetImage(),
-        .subresourceRange    = VkImageSubresourceRange { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 },
+        .subresourceRange =
+            {
+                .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+                .baseMipLevel   = 0,
+                .levelCount     = 1,
+                .baseArrayLayer = 0,
+                .layerCount     = 1,
+            },
     };
 
     vkCmdPipelineBarrier( cmdBuff,
