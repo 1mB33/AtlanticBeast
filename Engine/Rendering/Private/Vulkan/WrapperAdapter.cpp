@@ -47,20 +47,22 @@ VkDevice AdapterWrapper::CreateDevice( VkPhysicalDevice            gpu,
     VkDevice device            = VK_NULL_HANDLE;
     float    queuePriorities[] = { 1. };
 
-    VkDeviceQueueCreateInfo queueCreateInfo = {};
-    queueCreateInfo.sType                   = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-    queueCreateInfo.queueFamilyIndex        = uFamilyIndex;
-    queueCreateInfo.pQueuePriorities        = queuePriorities;
-    queueCreateInfo.queueCount              = size( queuePriorities );
+    VkDeviceQueueCreateInfo queueCreateInfo = {
+        .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+        .queueFamilyIndex = uFamilyIndex,
+        .queueCount       = size( queuePriorities ),
+        .pQueuePriorities = queuePriorities,
+    };
 
-    VkDeviceCreateInfo createInfo      = {};
-    createInfo.sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    createInfo.pNext                   = pFeatures;
-    createInfo.pQueueCreateInfos       = &queueCreateInfo;
-    createInfo.queueCreateInfoCount    = 1;
-    createInfo.ppEnabledExtensionNames = !vExtensions.empty() ? &vExtensions[ 0 ] : NULL;
-    createInfo.enabledExtensionCount   = static_cast<uint32_t>( !vExtensions.empty() ? vExtensions.size() : 0 );
-    createInfo.pEnabledFeatures        = NULL;
+    VkDeviceCreateInfo createInfo = {
+        .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .pNext                   = pFeatures,
+        .queueCreateInfoCount    = 1,
+        .pQueueCreateInfos       = &queueCreateInfo,
+        .enabledExtensionCount   = static_cast<uint32_t>( !vExtensions.empty() ? vExtensions.size() : 0 ),
+        .ppEnabledExtensionNames = !vExtensions.empty() ? &vExtensions[ 0 ] : NULL,
+        .pEnabledFeatures        = NULL,
+    };
 
     THROW_IF_FAILED( vkCreateDevice( gpu, &createInfo, NULL, &device ) );
 

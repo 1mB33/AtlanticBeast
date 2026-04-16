@@ -60,23 +60,23 @@ VkInstance Instance::CreateInstance()
         VK_VALIDATION_FEATURE_DISABLE_CORE_CHECKS_EXT,
     };
 
-    VkValidationFeaturesEXT validationFeatures        = {};
-    validationFeatures.sType                          = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-    validationFeatures.enabledValidationFeatureCount  = static_cast<uint32_t>( enabledVaditationFeatures.size() );
-    validationFeatures.pEnabledValidationFeatures     = &enabledVaditationFeatures[ 0 ];
-    validationFeatures.disabledValidationFeatureCount = static_cast<uint32_t>( disabledVaditationFeatures.size() );
-    validationFeatures.pDisabledValidationFeatures    = &disabledVaditationFeatures[ 0 ];
+    VkValidationFeaturesEXT validationFeatures = {
+        .sType                          = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT,
+        .enabledValidationFeatureCount  = static_cast<uint32_t>( enabledVaditationFeatures.size() ),
+        .pEnabledValidationFeatures     = &enabledVaditationFeatures[ 0 ],
+        .disabledValidationFeatureCount = static_cast<uint32_t>( disabledVaditationFeatures.size() ),
+        .pDisabledValidationFeatures    = &disabledVaditationFeatures[ 0 ],
+    };
 
-    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
-    debugCreateInfo.sType                              = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    debugCreateInfo.pNext                              = &validationFeatures;
-    debugCreateInfo.messageSeverity =
-        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
-        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-    debugCreateInfo.messageType     = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-                                      VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-                                      VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-    debugCreateInfo.pfnUserCallback = debugCallback;
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {
+        .sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
+        .pNext = &validationFeatures,
+        .messageSeverity =
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT,
+        .messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                       VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
+        .pfnUserCallback = debugCallback };
 #endif // !_DEBUG
 
     const vector<const char *> vpszValidationLayers = {
@@ -98,27 +98,29 @@ VkInstance Instance::CreateInstance()
 #endif
     };
 
-    VkApplicationInfo appInfo  = {};
-    appInfo.sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    appInfo.pApplicationName   = "B33::Rendering";
-    appInfo.applicationVersion = VK_MAKE_VERSION( 0, 1, 5 );
-    appInfo.pEngineName        = "AtlanticBeast";
-    appInfo.engineVersion      = VK_MAKE_VERSION( 0, 2, 0 );
-    appInfo.apiVersion         = VK_API_VERSION_1_1;
+    VkApplicationInfo appInfo = {
+        .sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+        .pApplicationName   = "B33::Rendering",
+        .applicationVersion = VK_MAKE_VERSION( 0, 1, 5 ),
+        .pEngineName        = "AtlanticBeast",
+        .engineVersion      = VK_MAKE_VERSION( 0, 2, 0 ),
+        .apiVersion         = VK_API_VERSION_1_1,
+    };
 
-    VkInstanceCreateInfo createInfo = {};
-    createInfo.sType                = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-    createInfo.pNext =
+    VkInstanceCreateInfo createInfo = {
+        .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+        .pNext =
 #ifdef _DEBUG
-        &debugCreateInfo;
+            &debugCreateInfo,
 #else
-        NULL;
+            NULL,
 #endif
-    createInfo.pApplicationInfo        = &appInfo;
-    createInfo.ppEnabledLayerNames     = !vpszValidationLayers.empty() ? &vpszValidationLayers[ 0 ] : nullptr;
-    createInfo.enabledLayerCount       = static_cast<uint32_t>( vpszValidationLayers.size() );
-    createInfo.ppEnabledExtensionNames = !vpszExtensions.empty() ? &vpszExtensions[ 0 ] : nullptr;
-    createInfo.enabledExtensionCount   = static_cast<uint32_t>( vpszExtensions.size() );
+        .pApplicationInfo        = &appInfo,
+        .enabledLayerCount       = static_cast<uint32_t>( vpszValidationLayers.size() ),
+        .ppEnabledLayerNames     = !vpszValidationLayers.empty() ? &vpszValidationLayers[ 0 ] : nullptr,
+        .enabledExtensionCount   = static_cast<uint32_t>( vpszExtensions.size() ),
+        .ppEnabledExtensionNames = !vpszExtensions.empty() ? &vpszExtensions[ 0 ] : nullptr,
+    };
 
     result = vkCreateInstance( &createInfo, NULL, &instance );
 

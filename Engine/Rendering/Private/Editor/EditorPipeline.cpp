@@ -59,31 +59,37 @@ void EditorPipeline::LoadImage( VkImage image )
         m_ImageView = VK_NULL_HANDLE;
     }
 
-    VkImageViewCreateInfo viewInfo           = {};
-    viewInfo.sType                           = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    viewInfo.image                           = image;
-    viewInfo.viewType                        = VK_IMAGE_VIEW_TYPE_2D;
-    viewInfo.format                          = Swapchain::TargetedFormat;
-    viewInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
-    viewInfo.subresourceRange.baseMipLevel   = 0;
-    viewInfo.subresourceRange.levelCount     = 1;
-    viewInfo.subresourceRange.baseArrayLayer = 0;
-    viewInfo.subresourceRange.layerCount     = 1;
+    VkImageViewCreateInfo viewInfo = {
+        .sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .image    = image,
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format   = Swapchain::TargetedFormat,
+        .subresourceRange =
+            {
+                .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+                .baseMipLevel   = 0,
+                .levelCount     = 1,
+                .baseArrayLayer = 0,
+                .layerCount     = 1,
+            },
+    };
 
     THROW_IF_FAILED( vkCreateImageView( GetAdaterInternal()->GetAdapterHandle(), &viewInfo, NULL, &m_ImageView ) );
 
-    VkDescriptorImageInfo imageInfo = {};
-    imageInfo.imageView             = m_ImageView;
-    imageInfo.imageLayout           = VK_IMAGE_LAYOUT_GENERAL;
+    VkDescriptorImageInfo imageInfo = {
+        .imageView   = m_ImageView,
+        .imageLayout = VK_IMAGE_LAYOUT_GENERAL,
+    };
 
-    VkWriteDescriptorSet imageWrite = {};
-    imageWrite.sType                = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    imageWrite.dstSet               = this->GetDescriptorSet();
-    imageWrite.dstBinding           = 0;
-    imageWrite.dstArrayElement      = 0;
-    imageWrite.descriptorType       = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
-    imageWrite.descriptorCount      = 1;
-    imageWrite.pImageInfo           = &imageInfo;
+    VkWriteDescriptorSet imageWrite = {
+        .sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+        .dstSet          = this->GetDescriptorSet(),
+        .dstBinding      = 0,
+        .dstArrayElement = 0,
+        .descriptorCount = 1,
+        .descriptorType  = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
+        .pImageInfo      = &imageInfo,
+    };
 
     vkUpdateDescriptorSets( GetAdaterInternal()->GetAdapterHandle(), 1, &imageWrite, 0, NULL );
 }
@@ -94,15 +100,18 @@ VkDescriptorSetLayout EditorPipeline::CreateDescriptorLayoutImpl()
     array<VkDescriptorSetLayoutBinding, 1> bindings = {};
     VkDescriptorSetLayout                  descriptorSetLayout;
 
-    bindings[ 0 ].binding         = 0;
-    bindings[ 0 ].descriptorType  = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
-    bindings[ 0 ].descriptorCount = 1;
-    bindings[ 0 ].stageFlags      = VK_SHADER_STAGE_COMPUTE_BIT;
+    bindings[ 0 ] = {
+        .binding         = 0,
+        .descriptorType  = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
+        .descriptorCount = 1,
+        .stageFlags      = VK_SHADER_STAGE_COMPUTE_BIT,
+    };
 
-    VkDescriptorSetLayoutCreateInfo layoutCreateInfo = {};
-    layoutCreateInfo.sType                           = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutCreateInfo.bindingCount                    = static_cast<uint32_t>( bindings.size() );
-    layoutCreateInfo.pBindings                       = &bindings[ 0 ];
+    VkDescriptorSetLayoutCreateInfo layoutCreateInfo = {
+        .sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .bindingCount = static_cast<uint32_t>( bindings.size() ),
+        .pBindings    = &bindings[ 0 ],
+    };
 
     THROW_IF_FAILED( vkCreateDescriptorSetLayout( GetAdaterInternal()->GetAdapterHandle(),
                                                   &layoutCreateInfo,
@@ -121,11 +130,12 @@ VkDescriptorPool EditorPipeline::CreateDescriptorPoolImpl()
 
     VkDescriptorPool descriptorPool;
 
-    VkDescriptorPoolCreateInfo poolInfo = {};
-    poolInfo.sType                      = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    poolInfo.poolSizeCount              = poolSizes.size();
-    poolInfo.pPoolSizes                 = &poolSizes[ 0 ];
-    poolInfo.maxSets                    = 1;
+    VkDescriptorPoolCreateInfo poolInfo = {
+        .sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .maxSets       = 1,
+        .poolSizeCount = static_cast<uint32_t>( poolSizes.size() ),
+        .pPoolSizes    = &poolSizes[ 0 ],
+    };
 
     THROW_IF_FAILED(
         vkCreateDescriptorPool( GetAdaterInternal()->GetAdapterHandle(), &poolInfo, NULL, &descriptorPool ) );
@@ -139,11 +149,12 @@ VkDescriptorSet EditorPipeline::CreateDescriptorSetImpl()
     VkDescriptorSetLayout descLayout = GetDescriptorLayoutInternal();
     VkDescriptorSet       descriptorSet;
 
-    VkDescriptorSetAllocateInfo allocInfo = {};
-    allocInfo.sType                       = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    allocInfo.descriptorPool              = GetDescriptorPoolInternal();
-    allocInfo.descriptorSetCount          = 1;
-    allocInfo.pSetLayouts                 = &descLayout;
+    VkDescriptorSetAllocateInfo allocInfo = {
+        .sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .descriptorPool     = GetDescriptorPoolInternal(),
+        .descriptorSetCount = 1,
+        .pSetLayouts        = &descLayout,
+    };
 
     THROW_IF_FAILED( vkAllocateDescriptorSets( GetAdaterInternal()->GetAdapterHandle(), &allocInfo, &descriptorSet ) );
 
@@ -153,28 +164,30 @@ VkDescriptorSet EditorPipeline::CreateDescriptorSetImpl()
 // ---------------------------------------------------------------------------------------------------------------------
 VkPipelineLayout EditorPipeline::CreatePipelineLayoutImpl()
 {
-    VkDescriptorSetLayout      descLayout = GetDescriptorLayoutInternal();
-    VkPushConstantRange        pushConstantRange;
-    VkPipelineLayoutCreateInfo layoutInfo;
-    VkPipelineLayout           pipelineLayout;
+    VkPipelineLayout      pipelineLayout;
+    VkDescriptorSetLayout descLayout = GetDescriptorLayoutInternal();
 
-    pushConstantRange.stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
-    pushConstantRange.offset     = 0;
-    pushConstantRange.size       = sizeof( EditorPushConstants );
+    VkPushConstantRange pushConstantRange = {
+        .stageFlags = VK_SHADER_STAGE_COMPUTE_BIT,
+        .offset     = 0,
+        .size       = sizeof( EditorPushConstants ),
+    };
 
-    layoutInfo.sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    layoutInfo.pNext                  = NULL;
-    layoutInfo.flags                  = 0;
-    layoutInfo.setLayoutCount         = 1;
-    layoutInfo.pSetLayouts            = &descLayout;
-    layoutInfo.pushConstantRangeCount = 1;
-    layoutInfo.pPushConstantRanges    = &pushConstantRange;
+    VkPipelineLayoutCreateInfo layoutInfo = {
+        .sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+        .pNext                  = NULL,
+        .flags                  = 0,
+        .setLayoutCount         = 1,
+        .pSetLayouts            = &descLayout,
+        .pushConstantRangeCount = 1,
+        .pPushConstantRanges    = &pushConstantRange,
+    };
 
     THROW_IF_FAILED(
         vkCreatePipelineLayout( GetAdaterInternal()->GetAdapterHandle(), &layoutInfo, NULL, &pipelineLayout ) );
 
     return pipelineLayout;
-}
+} // namespace B33::Rendering
 
 // ---------------------------------------------------------------------------------------------------------------------
 VkShaderModule EditorPipeline::LoadShaderImpl( const string &strPath )
@@ -199,10 +212,11 @@ VkShaderModule EditorPipeline::LoadShaderImpl( const string &strPath )
 
     file.close();
 
-    VkShaderModuleCreateInfo shaderCreateInfo = {};
-    shaderCreateInfo.sType                    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderCreateInfo.codeSize                 = vBuffer.size(); // Size is in bytes, so it's okay
-    shaderCreateInfo.pCode                    = reinterpret_cast<const uint32_t *>( &vBuffer[ 0 ] );
+    VkShaderModuleCreateInfo shaderCreateInfo = {
+        .sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+        .codeSize = vBuffer.size(), // Size is in bytes, so it's okay
+        .pCode    = reinterpret_cast<const uint32_t *>( &vBuffer[ 0 ] ),
+    };
 
     THROW_IF_FAILED(
         vkCreateShaderModule( GetAdaterInternal()->GetAdapterHandle(), &shaderCreateInfo, NULL, &shaderModule ) );

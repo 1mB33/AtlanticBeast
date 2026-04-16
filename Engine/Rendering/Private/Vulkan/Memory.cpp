@@ -27,22 +27,24 @@ shared_ptr<GPUStreamBuffer> Memory::ReserveStagingBuffer( const size_t uSizeInBy
     VkBuffer             voxelBuffer;
     VkDeviceMemory       voxelBufferMemory;
 
-    VkBufferCreateInfo bufferInfo = {};
-    bufferInfo.sType              = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size               = uSizeInBytes;
-    bufferInfo.usage              = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-    bufferInfo.sharingMode        = VK_SHARING_MODE_EXCLUSIVE;
+    VkBufferCreateInfo bufferInfo = {
+        .sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+        .size        = uSizeInBytes,
+        .usage       = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+    };
 
     THROW_IF_FAILED( vkCreateBuffer( da, &bufferInfo, NULL, &voxelBuffer ) );
 
     vkGetBufferMemoryRequirements( da, voxelBuffer, &memRequirements );
 
-    VkMemoryAllocateInfo allocInfo = {};
-    allocInfo.sType                = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    allocInfo.allocationSize       = memRequirements.size;
-    allocInfo.memoryTypeIndex =
-        FindMemoryType( memRequirements.memoryTypeBits,
-                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
+    VkMemoryAllocateInfo allocInfo = {
+        .sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .allocationSize  = memRequirements.size,
+        .memoryTypeIndex = FindMemoryType( memRequirements.memoryTypeBits,
+                                           VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+
+    };
 
     THROW_IF_FAILED( vkAllocateMemory( da, &allocInfo, NULL, &voxelBufferMemory ) );
     THROW_IF_FAILED( vkBindBufferMemory( da, voxelBuffer, voxelBufferMemory, 0 ) );
@@ -60,20 +62,22 @@ shared_ptr<GPUBuffer> Memory::ReserveGPUBuffer( const size_t uSizeInBytes )
     VkBuffer             buffer;
     VkDeviceMemory       deviceMem;
 
-    VkBufferCreateInfo bufferInfo = {};
-    bufferInfo.sType              = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size               = uSizeInBytes;
-    bufferInfo.usage              = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-    bufferInfo.sharingMode        = VK_SHARING_MODE_EXCLUSIVE;
+    VkBufferCreateInfo bufferInfo = {
+        .sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+        .size        = uSizeInBytes,
+        .usage       = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+    };
 
     THROW_IF_FAILED( vkCreateBuffer( da, &bufferInfo, NULL, &buffer ) );
 
     vkGetBufferMemoryRequirements( da, buffer, &memRequirements );
 
-    VkMemoryAllocateInfo allocInfo = {};
-    allocInfo.sType                = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    allocInfo.allocationSize       = memRequirements.size;
-    allocInfo.memoryTypeIndex = FindMemoryType( memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT );
+    VkMemoryAllocateInfo allocInfo = {
+        .sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .allocationSize  = memRequirements.size,
+        .memoryTypeIndex = FindMemoryType( memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ),
+    };
 
     THROW_IF_FAILED( vkAllocateMemory( da, &allocInfo, NULL, &deviceMem ) );
     THROW_IF_FAILED( vkBindBufferMemory( da, buffer, deviceMem, 0 ) );
