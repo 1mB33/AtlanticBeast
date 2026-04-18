@@ -132,7 +132,7 @@ bool MarchTheRay( in const float3 ro,
                   out int         hitType )
 {
     int3 voxel = int3( ro );
-    int3 step  = int3( sign( rd ) );
+    int3 stepV  = int3( sign( rd ) );
 
     float3 tDelta = abs( 1.0 / rd );
     float3 tMax;
@@ -170,7 +170,7 @@ bool MarchTheRay( in const float3 ro,
                 hitIndex  = index;
                 hitCoords = ro + rd * distance;
                 hitType   = HIT_TYPE_VOXEL;
-                normal    = -float3(step) * tMin;
+                normal    = -float3(stepV) * tMin;
                 return true;
             }
             if ( TestObjects( g_Voxels[ index ], ro, rd, hitIndex, distance, hitCoords, normal ) )
@@ -180,13 +180,18 @@ bool MarchTheRay( in const float3 ro,
             }
         }
 
-        tMin = bool3(
-            ( tMax.x < tMax.y && tMax.x < tMax.z ),
-            ( tMax.y < tMax.x && tMax.y < tMax.z ),
-            ( tMax.z < tMax.y && tMax.z < tMax.x )
+        // tMin = bool3(
+        //     ( tMax.x < tMax.y && tMax.x < tMax.z ),
+        //     ( tMax.y < tMax.x && tMax.y < tMax.z ),
+        //     ( tMax.z < tMax.y && tMax.z < tMax.x )
+        // );
+        tMin = int3(
+            ( 1 - step(tMax.y, tMax.x) ) * ( 1 - step(tMax.z, tMax.x) ),
+            ( 1 - step(tMax.x, tMax.y) ) * ( 1 - step(tMax.z, tMax.y) ),
+            ( 1 - step(tMax.x, tMax.z) ) * ( 1 - step(tMax.y, tMax.z) ),
         );
 
-        voxel += tMin * step;
+        voxel += tMin * stepV;
         tMax  += tMin * tDelta;
     }
 
