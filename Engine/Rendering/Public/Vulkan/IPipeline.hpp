@@ -72,8 +72,6 @@ class IPipeline : public PipelineWrapper
   protected:
     using PipelineWrapper::GetAdaterInternal;
 
-    using PipelineWrapper::GetShaderModuleInternal;
-
     using PipelineWrapper::GetDescriptorLayoutInternal;
 
     using PipelineWrapper::GetDescriptorPoolInternal;
