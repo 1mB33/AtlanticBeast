@@ -16,9 +16,8 @@ class EditorPipeline : public IPipeline<EditorPipeline>
 
   public:
     EditorPipeline()
-      : IPipeline( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Editor.spv",
-                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                   VK_PIPELINE_BIND_POINT_COMPUTE )
+      : IPipeline( VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_BIND_POINT_COMPUTE )
+      , m_ShaderModule( VK_NULL_HANDLE )
     {
         B33_LOG( Core::Debug::Info, L"Creating a editor pipeline!" );
     }
@@ -55,13 +54,15 @@ class EditorPipeline : public IPipeline<EditorPipeline>
 
     BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
-    BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
-
   private:
     void LoadImage( VkImage image );
 
+    BEAST_API ::VkShaderModule LoadShader( const ::std::string &strPath );
+
   private:
     ::B33::Rendering::EditorPushConstants m_Vpc = {};
+
+    ::VkShaderModule m_ShaderModule = VK_NULL_HANDLE;
 
     ::uint32_t m_uStorageBuffersFlags = 0;
 

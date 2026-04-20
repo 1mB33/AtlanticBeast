@@ -22,6 +22,12 @@ EditorPipeline::~EditorPipeline()
         vkDestroyImageView( GetAdaterInternal()->GetAdapterHandle(), m_ImageView, nullptr );
         m_ImageView = VK_NULL_HANDLE;
     }
+
+    if ( m_ShaderModule != VK_NULL_HANDLE )
+    {
+        vkDestroyShaderModule( GetAdaterInternal()->GetAdapterHandle(), m_ShaderModule, NULL );
+        m_ShaderModule = VK_NULL_HANDLE;
+    }
 }
 
 // Public // -----------------------------------------------------------------------------------------------------------
@@ -190,7 +196,7 @@ VkPipelineLayout EditorPipeline::CreatePipelineLayoutImpl()
 } // namespace B33::Rendering
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkShaderModule EditorPipeline::LoadShaderImpl( const string &strPath )
+VkShaderModule EditorPipeline::LoadShader( const string &strPath )
 {
     vector<char>   vBuffer;
     size_t         uFileSize;
@@ -229,11 +235,12 @@ VkPipeline EditorPipeline::CreatePipelineImpl()
 {
     const VkDevice device   = GetAdaterInternal()->GetAdapterHandle();
     VkPipeline     pipeline = VK_NULL_HANDLE;
+    m_ShaderModule = LoadShader( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Editor.spv" );
 
     VkPipelineShaderStageCreateInfo shaderStage = {};
     shaderStage.sType                           = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     shaderStage.stage                           = VK_SHADER_STAGE_COMPUTE_BIT;
-    shaderStage.module                          = GetShaderModuleInternal();
+    shaderStage.module                          = m_ShaderModule;
     shaderStage.pName                           = "main";
 
     VkComputePipelineCreateInfo pipelineInfo = {};
