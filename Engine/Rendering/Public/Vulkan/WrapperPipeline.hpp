@@ -17,12 +17,11 @@ class PipelineWrapper
   public:
     PipelineWrapper() = delete;
 
-    PipelineWrapper( const ::std::string &strShaderPath, VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
+    PipelineWrapper( VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
       : m_pDeviceAdapter( nullptr )
       , m_pMemory( nullptr )
       , m_pWindowDesc( nullptr )
       , m_pSwapChain()
-      , m_strShaderPath( strShaderPath )
       , m_StageBits( stage )
       , m_BindPoint( bindPoint )
     {
@@ -31,11 +30,6 @@ class PipelineWrapper
     ~PipelineWrapper()
     {
         B33_LOG( Core::Debug::Info, L"Destroying pipeline" );
-        if ( m_ShaderModule != VK_NULL_HANDLE )
-        {
-            vkDestroyShaderModule( GetAdaterInternal()->GetAdapterHandle(), m_ShaderModule, NULL );
-            m_ShaderModule = VK_NULL_HANDLE;
-        }
         if ( m_Pipeline != VK_NULL_HANDLE )
         {
             vkDestroyPipeline( GetAdaterInternal()->GetAdapterHandle(), m_Pipeline, NULL );
@@ -84,7 +78,6 @@ class PipelineWrapper
         m_pPushConstants         = pPipeline.GetPushConstants();
         m_DescriptorLayout       = pPipeline.CreateDescriptorLayout();
         m_DescriptorPool         = pPipeline.CreateDescriptorPool();
-        m_ShaderModule           = pPipeline.LoadShader( m_strShaderPath );
         m_DescriptorSet          = pPipeline.CreateDescriptorSet();
         m_PipelineLayout         = pPipeline.CreatePipelineLayout();
         m_Pipeline               = pPipeline.CreatePipeline();
@@ -156,11 +149,6 @@ class PipelineWrapper
         return m_pSwapChain;
     }
 
-    ::VkShaderModule GetShaderModuleInternal()
-    {
-        return m_ShaderModule;
-    }
-
     ::VkDescriptorSetLayout GetDescriptorLayoutInternal()
     {
         return m_DescriptorLayout;
@@ -177,14 +165,12 @@ class PipelineWrapper
     ::std::shared_ptr<const ::WindowDesc>                     m_pWindowDesc    = nullptr;
     ::std::weak_ptr<const ::B33::Rendering::Swapchain>        m_pSwapChain     = {};
 
-    const ::std::string m_strShaderPath          = {};
     ::size_t            m_uPushConstantsByteSize = 0;
     IPushConstants     *m_pPushConstants         = nullptr;
 
     ::VkPipelineStageFlagBits m_StageBits = {};
     ::VkPipelineBindPoint     m_BindPoint = {};
 
-    ::VkShaderModule        m_ShaderModule     = VK_NULL_HANDLE;
     ::VkDescriptorSetLayout m_DescriptorLayout = VK_NULL_HANDLE;
     ::VkDescriptorPool      m_DescriptorPool   = VK_NULL_HANDLE;
     ::VkDescriptorSet       m_DescriptorSet    = VK_NULL_HANDLE;

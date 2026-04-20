@@ -13,8 +13,8 @@ class IPipeline : public PipelineWrapper
   public:
     IPipeline() = delete;
 
-    IPipeline( const ::std::string &strPath, VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
-      : PipelineWrapper( strPath, stage, bindPoint )
+    IPipeline( VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
+      : PipelineWrapper( stage, bindPoint )
     {
     }
 
@@ -46,11 +46,6 @@ class IPipeline : public PipelineWrapper
     ::VkDescriptorPool CreateDescriptorPool()
     {
         return static_cast<Derived *>( this )->CreateDescriptorPoolImpl();
-    }
-
-    ::VkShaderModule LoadShader( const ::std::string &strPath )
-    {
-        return static_cast<Derived *>( this )->LoadShaderImpl( strPath );
     }
 
     ::VkDescriptorSet CreateDescriptorSet()

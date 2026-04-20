@@ -27,9 +27,8 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
 
   public:
     VoxelPipeline()
-      : IPipeline( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
-                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                   VK_PIPELINE_BIND_POINT_COMPUTE )
+      : IPipeline( VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_BIND_POINT_COMPUTE )
+      , m_ShaderModule( VK_NULL_HANDLE )
       , m_pVoxelGrid( nullptr )
     {
         B33_LOG( Core::Debug::Info, L"Creating a pipeline!" );
@@ -67,13 +66,13 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
 
     BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
-    BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
-
   private:
     UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
                                                  const EShaderResource                                      &sr );
 
     void LoadImage( VkImage image );
+
+    BEAST_API ::VkShaderModule LoadShader( const ::std::string &strPath );
 
   private:
     ::B33::Rendering::VoxelPushConstants m_Vpc = {};
@@ -90,6 +89,8 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer = nullptr;
 
     ::uint32_t m_uStorageBuffersFlags = 0;
+
+    ::VkShaderModule m_ShaderModule = VK_NULL_HANDLE;
 
     ::VkImageView m_ImageView = VK_NULL_HANDLE;
 };

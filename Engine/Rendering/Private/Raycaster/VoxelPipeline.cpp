@@ -32,6 +32,12 @@ VoxelPipeline::~VoxelPipeline()
     m_PositionsBuffer      = nullptr;
     m_RotationsBuffer      = nullptr;
     m_HalfSizesBuffer      = nullptr;
+
+    if ( m_ShaderModule != VK_NULL_HANDLE )
+    {
+        vkDestroyShaderModule( GetAdaterInternal()->GetAdapterHandle(), m_ShaderModule, NULL );
+        m_ShaderModule = VK_NULL_HANDLE;
+    }
 }
 
 // Public // -----------------------------------------------------------------------------------------------------------
@@ -437,7 +443,7 @@ VkPipelineLayout VoxelPipeline::CreatePipelineLayoutImpl()
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkShaderModule VoxelPipeline::LoadShaderImpl( const string &strPath )
+VkShaderModule VoxelPipeline::LoadShader( const string &strPath )
 {
     vector<char>   vBuffer;
     size_t         uFileSize;
@@ -476,11 +482,12 @@ VkPipeline VoxelPipeline::CreatePipelineImpl()
 {
     const VkDevice device   = GetAdaterInternal()->GetAdapterHandle();
     VkPipeline     pipeline = VK_NULL_HANDLE;
+    m_ShaderModule = LoadShader( ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv" );
 
     VkPipelineShaderStageCreateInfo shaderStage = {
         .sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
         .stage  = VK_SHADER_STAGE_COMPUTE_BIT,
-        .module = GetShaderModuleInternal(),
+        .module = m_ShaderModule,
         .pName  = "main",
     };
 
