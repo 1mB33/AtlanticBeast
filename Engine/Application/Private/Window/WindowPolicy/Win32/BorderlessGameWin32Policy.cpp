@@ -9,7 +9,7 @@ namespace B33::App
 
 using namespace B33::Core;
 
-void BorderlessGameWin32Policy::OnPreWcex() override
+void BorderlessGameWin32Policy::OnPreWcex() 
 {
     WindowDesc *pWd = this->GetWindowDesc();
 
@@ -36,7 +36,7 @@ void BorderlessGameWin32Policy::OnPreWcex() override
     }
 }
 
-void BorderlessGameWin32Policy::OnPreRegister() override
+void BorderlessGameWin32Policy::OnPreRegister()
 {
     WindowDesc *pWd = this->GetWindowDesc();
 
