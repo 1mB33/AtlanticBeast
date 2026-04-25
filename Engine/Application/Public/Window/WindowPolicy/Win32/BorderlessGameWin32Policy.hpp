@@ -16,9 +16,9 @@ namespace B33::App
 class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
 {
   public:
-    void OnPreWcex() override;
+    BEAST_API void OnPreWcex() override;
 
-    void OnPreRegister() override;
+    BEAST_API void OnPreRegister() override;
 };
 
 } // namespace B33::App
