@@ -58,24 +58,24 @@ VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
 {
     VkSurfaceKHR surface = VK_NULL_HANDLE;
 
-#ifdef _WIN32
-    VkWin32SurfaceCreateInfoKHR createInfo;
-    createInfo.sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-    createInfo.pNext     = NULL;
-    createInfo.flags     = 0;
-    createInfo.hinstance = GetModuleHandle( NULL );
-    createInfo.hwnd      = pWindowDesc->hWnd;
-
-    THROW_IF_FAILED( vkCreateWin32SurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) );
-#elif __linux__
-    VkXlibSurfaceCreateInfoKHR createInfo;
-    createInfo.sType  = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
-    createInfo.pNext  = NULL;
-    createInfo.flags  = 0;
-    createInfo.dpy    = pWindowDesc->pDisplayHandle;
-    createInfo.window = pWindowDesc->WindowHandle;
-
+#if defined( _WIN32 )
+    VkWin32SurfaceCreateInfoKHR createInfo = { .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+                                               .pNext     = NULL,
+                                               .flags     = 0,
+                                               .hinstance = GetModuleHandle( NULL ),
+                                               .hwnd      = pWindowDesc->hWnd };
+    THROW_IF_FAILED( vkCreateWin32SurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) )
+#elif defined( _X11 )
+    VkXlibSurfaceCreateInfoKHR createInfo = {
+        .sType  = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR,
+        .pNext  = NULL,
+        .flags  = 0,
+        .dpy    = pWindowDesc->pDisplayHandle,
+        .window = pWindowDesc->WindowHandle,
+    };
     THROW_IF_FAILED( vkCreateXlibSurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) );
+#elif defined( __APPLE__ )
+
 #endif // !_WIN32
 
     return surface;
@@ -139,20 +139,21 @@ VkSwapchainKHR Swapchain::CreateSwapChain( shared_ptr<const AdapterWrapper> &pAd
 {
     VkSwapchainKHR swapChain = VK_NULL_HANDLE;
 
-    VkSwapchainCreateInfoKHR swapchainInfo = {};
-    swapchainInfo.sType                    = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    swapchainInfo.surface                  = surface;
-    swapchainInfo.minImageCount            = uImageCount;
-    swapchainInfo.imageFormat              = surfaceFormat.format;
-    swapchainInfo.imageColorSpace          = surfaceFormat.colorSpace;
-    swapchainInfo.imageExtent              = extent2D;
-    swapchainInfo.imageArrayLayers         = 1;
-    swapchainInfo.imageUsage               = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_STORAGE_BIT;
-    swapchainInfo.imageSharingMode         = VK_SHARING_MODE_EXCLUSIVE;
-    swapchainInfo.preTransform             = capabilities.currentTransform;
-    swapchainInfo.compositeAlpha           = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-    swapchainInfo.presentMode              = presentMode;
-    swapchainInfo.clipped                  = VK_TRUE;
+    VkSwapchainCreateInfoKHR swapchainInfo = {
+        .sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+        .surface          = surface,
+        .minImageCount    = uImageCount,
+        .imageFormat      = surfaceFormat.format,
+        .imageColorSpace  = surfaceFormat.colorSpace,
+        .imageExtent      = extent2D,
+        .imageArrayLayers = 1,
+        .imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_STORAGE_BIT,
+        .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
+        .preTransform     = capabilities.currentTransform,
+        .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+        .presentMode      = presentMode,
+        .clipped          = VK_TRUE,
+    };
 
     THROW_IF_FAILED( vkCreateSwapchainKHR( pAdapter->GetAdapterHandle(), &swapchainInfo, NULL, &swapChain ) );
 

@@ -37,11 +37,11 @@ void EngineLoop::UpdateComponents( float fDelta )
 
 void EngineLoop::DestroyComponents()
 {
-    for ( auto component : m_AsyncComponents )
-        component->Destroy( m_ComponentBridge );
+    for ( int i = m_AsyncComponents.size() - 1; i >= 0; --i )
+        m_AsyncComponents[ i ]->Destroy( m_ComponentBridge );
 
-    for ( auto component : m_Components )
-        component->Destroy( m_ComponentBridge );
+    for ( int i = m_Components.size() - 1; i >= 0; --i )
+        m_Components[ i ]->Destroy( m_ComponentBridge );
 }
 
 void EngineLoop::AddComponentInternal( ::std::string_view componentName )

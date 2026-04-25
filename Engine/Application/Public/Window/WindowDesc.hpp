@@ -21,10 +21,10 @@ struct WindowDesc
     EAbWindowEventsFlags        LastEvent;
     ::std::queue<AbInputStruct> InputStruct;
 
-#ifdef _WIN32
+#if defined( _WIN32 )
     HWND       hWnd;
     WNDCLASSEX Wcex;
-#elif __linux__
+#elif defined( _X11 )
     Display *pDisplayHandle;
     Window   WindowHandle;
     int32_t  Screen;
@@ -43,10 +43,10 @@ WindowDesc CreateWindowDesc( U &&wstrName, int32_t width = 1200, int32_t height 
     wd.bIsAlive      = false;
     wd.LastEvent &= 0;
 
-#ifdef _WIN32
+#if defined( _WIN32 )
     wd.hWnd = NULL;
     wd.Wcex = {};
-#elif __linux__
+#elif defined( _X11 )
     wd.pDisplayHandle = NULL;
     wd.WindowHandle   = 0;
     wd.Screen         = 0;

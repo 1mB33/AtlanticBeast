@@ -23,7 +23,7 @@ AppResources &AppResources::Get()
     return instance;
 }
 
-#ifdef __linux__
+#if defined( __linux__ ) || defined( __APPLE__ )
 
 // ---------------------------------------------------------------------------------------------------------------------
 wstring AppResources::InternalGetExecutablePathW() const

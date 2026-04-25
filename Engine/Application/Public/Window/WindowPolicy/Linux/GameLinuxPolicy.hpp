@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined( _X11 )
 #    ifndef B33_GAME_WINDOW_POLICY_H
 #        define B33_GAME_WINDOW_POLICY_H
 

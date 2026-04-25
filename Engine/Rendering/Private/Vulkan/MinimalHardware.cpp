@@ -1,6 +1,7 @@
 #include "B33Rendering.hpp"
 
 #include "Vulkan/MinimalHardware.hpp"
+#include "Vulkan/ErrorHandling.hpp"
 
 namespace B33::Rendering
 {
@@ -8,18 +9,29 @@ namespace B33::Rendering
 using namespace std;
 
 // ---------------------------------------------------------------------------------------------------------------------
-MinimalHardware::MinimalHardware( shared_ptr<const Instance> pInstance )
-  : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
+MinimalHardware::MinimalHardware()
+  : IHardware()
 {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkPhysicalDevice MinimalHardware::ChooseGPU( const shared_ptr<const Instance> &pInstance )
+VkPhysicalDevice MinimalHardware::ChooseHardwareImpl( const shared_ptr<const Instance> &pInstance ) const
 {
-    VkPhysicalDevice         chosenPhysicalDevice = VK_NULL_HANDLE;
-    vector<VkPhysicalDevice> vPhysicalDevices     = GetPhysicalDevices( pInstance->GetInstance() );
-
+    uint32_t                   uDeviceCount;
+    vector<VkPhysicalDevice>   vPhysicalDevices;
+    VkPhysicalDevice           chosenPhysicalDevice = VK_NULL_HANDLE;
     VkPhysicalDeviceProperties deviceProperties;
+
+    THROW_IF_FAILED( vkEnumeratePhysicalDevices( pInstance->GetInstance(), &uDeviceCount, NULL ) );
+
+    vPhysicalDevices.resize( uDeviceCount );
+    if ( !uDeviceCount )
+    {
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! No GPU found!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+    }
+
+    THROW_IF_FAILED( vkEnumeratePhysicalDevices( pInstance->GetInstance(), &uDeviceCount, &vPhysicalDevices[ 0 ] ) );
 
     for ( const auto &pDevice : vPhysicalDevices )
     {

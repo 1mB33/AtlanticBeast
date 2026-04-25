@@ -1,10 +1,9 @@
 SET(BEE_RENDERING_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/Instance.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/WrapperHardware.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/WrapperAdapter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/MinimalHardware.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/RTXHardware.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/ComputeAdapter.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/GraphicsComputeAdapter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/RTXDeviceAdapter.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/SwapChain.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Vulkan/Memory.cpp"
@@ -22,7 +21,7 @@ SET(BEE_RENDERING_HEADRES
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/Instance.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/MinimalHardware.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/RTXHardware.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/ComputeAdapter.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/GraphicsComputeAdapter.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/RTXDeviceAdapter.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/SwapChain.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Public/Vulkan/Memory.hpp"
@@ -82,7 +81,7 @@ TARGET_LINK_LIBRARIES(B33Rendering PUBLIC
 
 TARGET_PRECOMPILE_HEADERS(B33Rendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp")
 
-TARGET_COMPILE_DEFINITIONS(B33Rendering PRIVATE _BEAST_EXPORTS)
+TARGET_COMPILE_DEFINITIONS(B33Rendering PRIVATE _BEAST_EXPORTS _UNICODE UNICODE)
 
 INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/shaders.cmake)
 

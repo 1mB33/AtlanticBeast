@@ -13,11 +13,8 @@ class IPipeline : public PipelineWrapper
   public:
     IPipeline() = delete;
 
-    IPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-               const ::std::string                                      &strPath,
-               VkPipelineStageFlagBits                                   stage,
-               VkPipelineBindPoint                                       bindPoint )
-      : PipelineWrapper( da, strPath, stage, bindPoint )
+    IPipeline( VkPipelineStageFlagBits stage, VkPipelineBindPoint bindPoint )
+      : PipelineWrapper( stage, bindPoint )
     {
     }
 
@@ -51,11 +48,6 @@ class IPipeline : public PipelineWrapper
         return static_cast<Derived *>( this )->CreateDescriptorPoolImpl();
     }
 
-    ::VkShaderModule LoadShader( const ::std::string &strPath )
-    {
-        return static_cast<Derived *>( this )->LoadShaderImpl( strPath );
-    }
-
     ::VkDescriptorSet CreateDescriptorSet()
     {
         return static_cast<Derived *>( this )->CreateDescriptorSetImpl();
@@ -79,8 +71,6 @@ class IPipeline : public PipelineWrapper
 
   protected:
     using PipelineWrapper::GetAdaterInternal;
-
-    using PipelineWrapper::GetShaderModuleInternal;
 
     using PipelineWrapper::GetDescriptorLayoutInternal;
 

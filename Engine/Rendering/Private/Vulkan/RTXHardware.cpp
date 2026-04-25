@@ -1,5 +1,6 @@
 #include "B33Rendering.hpp"
 
+#include "Vulkan/ErrorHandling.hpp"
 #include "Vulkan/RTXHardware.hpp"
 
 namespace B33::Rendering
@@ -8,19 +9,29 @@ namespace B33::Rendering
 using namespace std;
 
 // RTXHardware // ------------------------------------------------------------------------------------------------------
-RTXHardware::RTXHardware( shared_ptr<const Instance> pInstance )
-  : HardwareWrapper( pInstance, ChooseGPU( pInstance ) )
+RTXHardware::RTXHardware()
+  : IHardware()
 {
-    B33_LOG( Core::Debug::Info, L"Creating a hardware!" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-VkPhysicalDevice RTXHardware::ChooseGPU( const shared_ptr<const Instance> &pInstance )
+VkPhysicalDevice RTXHardware::ChooseHardwareImpl( const shared_ptr<const Instance> &pInstance )
 {
-    VkPhysicalDevice         chosenPhysicalDevice = VK_NULL_HANDLE;
-    vector<VkPhysicalDevice> vPhysicalDevices     = GetPhysicalDevices( pInstance->GetInstance() );
-
+    uint32_t                   uDeviceCount;
+    vector<VkPhysicalDevice>   vPhysicalDevices;
+    VkPhysicalDevice           chosenPhysicalDevice = VK_NULL_HANDLE;
     VkPhysicalDeviceProperties deviceProperties;
+
+    THROW_IF_FAILED( vkEnumeratePhysicalDevices( pInstance->GetInstance(), &uDeviceCount, NULL ) );
+
+    vPhysicalDevices.resize( uDeviceCount );
+    if ( !uDeviceCount )
+    {
+        B33_LOG( Core::Debug::Error, L"Ohh nooo... Vulkan isn't working!!! No GPU found!" );
+        throw B33_EXCEPT( "Ohh nooo... Vulkan isn't working!!!" );
+    }
+
+    THROW_IF_FAILED( vkEnumeratePhysicalDevices( pInstance->GetInstance(), &uDeviceCount, &vPhysicalDevices[ 0 ] ) );
 
     VkPhysicalDeviceRayTracingPipelineFeaturesKHR    rayTracingPipelineFeatures;
     VkPhysicalDeviceAccelerationStructureFeaturesKHR accelStructFeatures;

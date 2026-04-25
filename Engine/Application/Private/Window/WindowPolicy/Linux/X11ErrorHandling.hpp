@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined( _X11 )
 #    ifndef B33_X11_ERROR_HANDLING_H
 #        define B33_X11_ERROR_HANDLING_H
 

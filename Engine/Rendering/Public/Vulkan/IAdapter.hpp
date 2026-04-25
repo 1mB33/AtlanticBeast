@@ -1,27 +1,20 @@
 #ifndef B33_WRAPPER_H
 #define B33_WRAPPER_H
 
-#include "WrapperAdapter.hpp"
-
 namespace B33::Rendering
 {
 
 template <class Derived>
-class IAdapter : public AdapterWrapper
+class IAdapter
 {
   public:
-    IAdapter() = delete;
-
-    IAdapter( ::std::shared_ptr<const HardwareWrapper> pHardware, const uint32_t uFlags )
-      : AdapterWrapper( pHardware, uFlags, this )
-    {
-    }
+    IAdapter() = default;
 
     ~IAdapter() = default;
 
   public:
-    IAdapter( IAdapter && )      = default;
-    IAdapter( const IAdapter & ) = default;
+    IAdapter( IAdapter && ) noexcept      = default;
+    IAdapter( const IAdapter & ) noexcept = default;
 
     IAdapter &operator=( IAdapter && ) noexcept      = default;
     IAdapter &operator=( const IAdapter & ) noexcept = default;
@@ -35,6 +28,11 @@ class IAdapter : public AdapterWrapper
     void *GetFeatures() const
     {
         return static_cast<const Derived *>( this )->GetFeaturesImpl();
+    }
+
+    uint32_t GetQueueFlags() const
+    {
+        return static_cast<const Derived *>( this )->GetQueueFlagsImpl();
     }
 };
 

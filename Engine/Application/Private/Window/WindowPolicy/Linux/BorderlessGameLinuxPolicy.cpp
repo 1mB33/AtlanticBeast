@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined( _X11 )
 #    include "Window/WindowPolicy/Linux/BorderlessGameLinuxPolicy.hpp"
 
 #    include <X11/X.h>

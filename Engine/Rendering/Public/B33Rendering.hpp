@@ -1,9 +1,9 @@
 #ifndef B33_VOXELS_H
 #define B33_VOXELS_H
 
-#ifdef _WIN32
+#if defined( _WIN32 )
 #    define VK_USE_PLATFORM_WIN32_KHR
-#elif __linux
+#elif defined( _X11 )
 #    define VK_USE_PLATFORM_XLIB_KHR
 #endif
 
@@ -16,7 +16,6 @@
 #ifdef __cplusplus
 #    include "B33Math.hpp"
 
-#    include <vulkan/vulkan.hpp>
 #    ifdef _WIN32
 #        undef LoadImage
 #    endif // !_WIN32

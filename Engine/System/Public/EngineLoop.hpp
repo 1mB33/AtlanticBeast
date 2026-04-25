@@ -38,10 +38,21 @@ class EngineLoop
     }
 
   public:
+    /**
+     * @brief Initializes components in the order described in B33_ORDER_COMPONENTS
+     */
     BEAST_API void InitializeComponents();
 
+    /**
+     * @brief Updates components in the order described in B33_ORDER_COMPONENTS, every component gets last fDelta
+     *
+     * @param fDelta Time diffrence in ms between two subsequent calls
+     */
     BEAST_API void UpdateComponents( float fDelta );
 
+    /**
+     * @brief Destroys components in order reversed to the initialization order
+     */
     BEAST_API void DestroyComponents();
 
   private:

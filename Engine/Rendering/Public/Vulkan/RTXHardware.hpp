@@ -2,7 +2,7 @@
 #define B33_RTX_HARDWARE_H
 
 #include "Instance.hpp"
-#include "WrapperHardware.hpp"
+#include "Vulkan/IHardware.hpp"
 
 namespace B33::Rendering
 {
@@ -13,13 +13,13 @@ namespace B33::Rendering
  * - accelerationStructure
  * - bufferDeviceAddress
  **/
-class RTXHardware : public ::B33::Rendering::HardwareWrapper
+class RTXHardware : public ::B33::Rendering::IHardware<RTXHardware>
 {
   public:
-    BEAST_API RTXHardware( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance );
+    BEAST_API RTXHardware();
 
   private:
-    VkPhysicalDevice ChooseGPU( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance );
+    VkPhysicalDevice ChooseHardwareImpl( const ::std::shared_ptr<const ::B33::Rendering::Instance> &pInstance );
 };
 
 } // namespace B33::Rendering

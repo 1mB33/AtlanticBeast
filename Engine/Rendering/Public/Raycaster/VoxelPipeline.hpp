@@ -26,15 +26,9 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     };
 
   public:
-    VoxelPipeline( ::std::shared_ptr<const ::B33::Rendering::AdapterWrapper> da,
-                   ::std::shared_ptr<::B33::Rendering::Memory>               mem,
-                   ::std::shared_ptr<const ::WindowDesc>                     win )
-      : IPipeline( da,
-                   ::B33::App::AppResources::Get().GetExecutablePathA() + "/Assets/Shaders/Raycast.spv",
-                   VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                   VK_PIPELINE_BIND_POINT_COMPUTE )
-      , m_pMemory( mem )
-      , m_pWindowDesc( win )
+    VoxelPipeline()
+      : IPipeline( VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_BIND_POINT_COMPUTE )
+      , m_ShaderModule( VK_NULL_HANDLE )
       , m_pVoxelGrid( nullptr )
     {
         B33_LOG( Core::Debug::Info, L"Creating a pipeline!" );
@@ -49,8 +43,6 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
                                            VkCommandBuffer        &cmdBuffer ) override final;
 
     BEAST_API virtual void Reset() override final;
-
-    BEAST_API virtual void LoadImage( VkImage image ) override final;
 
     ::size_t GetPushConstantsByteSizeImpl()
     {
@@ -74,17 +66,15 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
 
     BEAST_API ::VkDescriptorPool CreateDescriptorPoolImpl();
 
-    BEAST_API ::VkShaderModule LoadShaderImpl( const ::std::string &strPath );
-
   private:
     UploadDescriptor GetUniformUploadDescriptor( const ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> &outBuffer,
                                                  const EShaderResource                                      &sr );
 
-  private:
-    ::std::shared_ptr<::B33::Rendering::Memory>          m_pMemory     = nullptr;
-    ::std::shared_ptr<const ::WindowDesc>                m_pWindowDesc = nullptr;
-    ::std::shared_ptr<const ::B33::Rendering::Swapchain> m_pSwapChain  = nullptr;
+    void LoadImage( VkImage image );
 
+    BEAST_API ::VkShaderModule LoadShader( const ::std::string &strPath );
+
+  private:
     ::B33::Rendering::VoxelPushConstants m_Vpc = {};
 
     // Shader uniforms
@@ -99,6 +89,8 @@ class VoxelPipeline : public IPipeline<VoxelPipeline>
     ::std::shared_ptr<::B33::Rendering::GPUStreamBuffer> m_StageHalfSizesBuffer = nullptr;
 
     ::uint32_t m_uStorageBuffersFlags = 0;
+
+    ::VkShaderModule m_ShaderModule = VK_NULL_HANDLE;
 
     ::VkImageView m_ImageView = VK_NULL_HANDLE;
 };
