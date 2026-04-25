@@ -188,7 +188,7 @@ bool MarchTheRay( in const float3 ro,
         tMin = int3(
             ( 1 - step(tMax.y, tMax.x) ) * ( 1 - step(tMax.z, tMax.x) ),
             ( 1 - step(tMax.x, tMax.y) ) * ( 1 - step(tMax.z, tMax.y) ),
-            ( 1 - step(tMax.x, tMax.z) ) * ( 1 - step(tMax.y, tMax.z) ),
+            ( 1 - step(tMax.x, tMax.z) ) * ( 1 - step(tMax.y, tMax.z) )
         );
 
         voxel += tMin * stepV;

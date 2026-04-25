@@ -8,6 +8,8 @@
 #    include "Window/WindowPolicy/Win32/WindowModeGameWin32Policy.hpp"
 #elif defined( __linux__ )
 #    include "Window/WindowPolicy/Linux/GameLinuxPolicy.hpp"
+#elif defined( __APPLE__ )
+#    include "Window/WindowPolicy/Apple/BasicApplePolicy.hpp"
 #endif // !_WIN32
 
 namespace B33::App
@@ -18,6 +20,8 @@ typedef
     WindowModeGameWin32WindowPolicy
 #elif defined( __linux__ )
     GameLinuxWindowPolicy
+#elif defined( __APPLE__ )
+    BasicAppleWindowPolicy
 #endif // !_WIN32
         DefaultGameSystemWindowPolicy;
 

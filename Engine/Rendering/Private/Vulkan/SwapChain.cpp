@@ -64,6 +64,7 @@ VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
                                                .flags     = 0,
                                                .hinstance = GetModuleHandle( NULL ),
                                                .hwnd      = pWindowDesc->hWnd };
+    THROW_IF_FAILED( vkCreateWin32SurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) )
 #elif defined( _X11 )
     VkXlibSurfaceCreateInfoKHR createInfo = {
         .sType  = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR,
@@ -72,9 +73,10 @@ VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
         .dpy    = pWindowDesc->pDisplayHandle,
         .window = pWindowDesc->WindowHandle,
     };
-#endif // !_WIN32
-
     THROW_IF_FAILED( vkCreateXlibSurfaceKHR( pInstance->GetInstance(), &createInfo, NULL, &surface ) );
+#elif defined( __APPLE__ )
+
+#endif // !_WIN32
 
     return surface;
 }

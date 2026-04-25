@@ -5,6 +5,8 @@
 #    include "Window/WindowPolicy/Win32/BorderlessGameWin32Policy.hpp"
 #elif defined( _X11 )
 #    include "Window/WindowPolicy/Linux/BorderlessGameLinuxPolicy.hpp"
+#elif defined( __APPLE__ )
+#    include "Window/WindowPolicy/Apple/BasicApplePolicy.hpp"
 #endif // !_WIN32
 
 namespace B33::App
@@ -15,6 +17,8 @@ typedef
     BorderlessGameWin32Policy
 #elif defined( _X11 )
     BorderlessGameLinuxWindowPolicy
+#elif defined( __APPLE__ )
+    BasicAppleWindowPolicy
 #endif // !_WIN32
         BorderlessGameSystemPolicy;
 
