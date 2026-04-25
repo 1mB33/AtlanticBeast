@@ -8,6 +8,7 @@ SET(BEE_APPLICATION_SOURCE
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Window/WindowPolicy/Linux/BorderlessGameLinuxPolicy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Window/WindowPolicy/Win32/BasicWin32Policy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Window/WindowPolicy/Win32/WindowModeGameWin32Policy.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Private/Window/WindowPolicy/Win32/BorderlessGameWin32Policy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Input/UserInput.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Input/IBindMap.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Private/Input/KeysMap.cpp"

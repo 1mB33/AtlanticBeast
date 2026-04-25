@@ -16,58 +16,9 @@ namespace B33::App
 class BorderlessGameWin32Policy : public WindowModeGameWin32WindowPolicy
 {
   public:
-    void OnPreWcex() override
-    {
-        WindowDesc *pWd = this->GetWindowDesc();
+    void OnPreWcex() override;
 
-        pWd->pwszClassName = L"BorderlessGameAtlanticClass";
-
-        memset( &pWd->Wcex, 0, sizeof( WNDCLASSEX ) );
-
-        pWd->Wcex.cbSize        = sizeof( WNDCLASSEX );
-        pWd->Wcex.style         = CS_HREDRAW | CS_VREDRAW;
-        pWd->Wcex.hInstance     = GetModuleHandle( NULL );
-        pWd->Wcex.hCursor       = LoadCursor( NULL, IDC_ARROW );
-        pWd->Wcex.lpszClassName = pWd->pwszClassName;
-        pWd->Wcex.lpfnWndProc   = WindowProc<WindowModeGameWin32WindowPolicy>;
-
-        HMONITOR    hMonitor = MonitorFromWindow( pWd->hWnd, MONITOR_DEFAULTTONEAREST );
-        MONITORINFO mi;
-
-        mi.cbSize = sizeof( mi );
-
-        if ( GetMonitorInfo( hMonitor, &mi ) )
-        {
-            pWd->Width  = mi.rcMonitor.right - mi.rcMonitor.left;
-            pWd->Height = mi.rcMonitor.bottom - mi.rcMonitor.top;
-        }
-    }
-
-    void OnPreRegister() override
-    {
-        WindowDesc *pWd = this->GetWindowDesc();
-
-        HWND hWnd = CreateWindowEx( WS_EX_APPWINDOW,
-                                    pWd->pwszClassName,
-                                    pWd->Name.c_str(),
-                                    WS_POPUP,
-                                    CW_USEDEFAULT,
-                                    CW_USEDEFAULT,
-                                    pWd->Width,
-                                    pWd->Height,
-                                    NULL,
-                                    NULL,
-                                    GetModuleHandle( NULL ),
-                                    this );
-
-        if ( hWnd == NULL )
-        {
-            B33_LOG( Core::Debug::Error, L"Couldn't CreateWindow(), last error %u", GetLastError() );
-            return;
-        }
-
-        pWd->hWnd = hWnd;
-    }
+    void OnPreRegister() override;
 };
 
 } // namespace B33::App
