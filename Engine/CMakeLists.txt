@@ -1,8 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
 
-IF (NOT (${CMAKE_CXX_STANDARD} STREQUAL "17"))
+IF (NOT (${CMAKE_CXX_STANDARD} STREQUAL "20"))
 
-    MESSAGE("CMAKE_CXX_STANDARD isn't C++17. This engine was build with C++17 in mind.")
+    MESSAGE("CMAKE_CXX_STANDARD isn't C++20. This engine was build with C++20 in mind.")
 
 ENDIF()
 
