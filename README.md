@@ -79,7 +79,7 @@ Z - Debug view<br>
 Build dependencies:
   - Vulkan SDK
   - CMake or Visual Studio with CMake support
-  - Compiler that supports at least C++17
+  - Compiler that supports at least C++20
   - Windows or Linux operating system
   - X11 libraries (linux only)
 
