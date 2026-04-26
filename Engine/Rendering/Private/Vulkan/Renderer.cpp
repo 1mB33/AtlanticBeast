@@ -56,9 +56,6 @@ void Renderer::Update( const float )
         return;
     }
 
-    THROW_IF_FAILED( vkWaitForFences( device, 1, &frame.InFlightFence, VK_TRUE, UINT64_MAX ) );
-    THROW_IF_FAILED( vkResetFences( device, 1, &frame.InFlightFence ) );
-
     m_LastResultState = vkAcquireNextImageKHR( device,
                                                m_pSwapChain->GetSwapChainHandle(),
                                                UINT64_MAX,
@@ -92,6 +89,14 @@ void Renderer::Render()
 
     VkDevice device = m_pDeviceAdapter->GetAdapterHandle();
     Frame   &frame  = ( *m_vFrames.get() )[ m_uCurrentFrame ];
+
+    THROW_IF_FAILED( vkWaitForFences( device, 1, &frame.InFlightFence, VK_TRUE, UINT64_MAX ) );
+    THROW_IF_FAILED( vkResetFences( device, 1, &frame.InFlightFence ) );
+
+    for ( auto &pipeline : m_vPipeline )
+    {
+        pipeline->UpdateOnRender();
+    }
 
     RecordCommands( frame.CommandBuffer );
 
