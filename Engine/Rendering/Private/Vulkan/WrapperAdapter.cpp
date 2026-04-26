@@ -1,3 +1,4 @@
+#include "B33Core.h"
 #include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
@@ -11,6 +12,7 @@ using namespace std;
 // --------------------------------------------------------------------------------------------------------------------
 uint32_t AdapterWrapper::ChooseQueueFamily( VkPhysicalDevice gpu, const uint32_t uFlags ) const
 {
+    B33_TRACE( L"AdapterWrapper::ChooseQueueFamily()" );
     uint32_t                        uFamilyCount;
     vector<VkQueueFamilyProperties> vProperties    = {};
     VkPhysicalDevice                physicalDevice = gpu;
@@ -44,6 +46,7 @@ VkDevice AdapterWrapper::CreateDevice( VkPhysicalDevice            gpu,
                                        const void                 *pFeatures,
                                        const uint32_t              uFamilyIndex ) const
 {
+    B33_TRACE( L"AdapterWrapper::CreateDevice()" );
     VkDevice device            = VK_NULL_HANDLE;
     float    queuePriorities[] = { 1. };
 
@@ -72,6 +75,7 @@ VkDevice AdapterWrapper::CreateDevice( VkPhysicalDevice            gpu,
 // --------------------------------------------------------------------------------------------------------------------
 VkQueue AdapterWrapper::CreateQueue( VkDevice dv, const uint32_t uQueueIndex ) const
 {
+    B33_TRACE( L"AdapterWrapper::CreateQueue()" );
     VkQueue graphicsQueue;
 
     vkGetDeviceQueue( dv, uQueueIndex, 0, &graphicsQueue );

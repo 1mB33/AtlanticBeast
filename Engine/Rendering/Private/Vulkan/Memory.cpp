@@ -1,3 +1,4 @@
+#include "B33Core.h"
 #include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
@@ -15,6 +16,7 @@ Memory::Memory( shared_ptr<const HardwareWrapper> pHardware, shared_ptr<const Ad
   : m_pHardware( pHardware )
   , m_pAdapter( pAdapter )
 {
+    B33_INFO( L"Initializing memory" );
 }
 
 // --------------------------------------------------------------------------------------------------------------------

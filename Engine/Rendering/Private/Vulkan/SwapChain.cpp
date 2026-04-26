@@ -1,3 +1,4 @@
+#include "B33Core.h"
 #include "B33Rendering.hpp"
 
 #include "Vulkan/ErrorHandling.hpp"
@@ -34,7 +35,6 @@ Swapchain::Swapchain( shared_ptr<const Instance>        pInst,
   , m_uCurrentImageIndex( 0 )
   , m_SwapChainImages( CreateSwapChainImages( m_pDeviceAdapter, m_pSwapChain, m_uImageCount ) )
 {
-    B33_LOG( Core::Debug::Info, L"Creating a swapchain!" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -56,6 +56,9 @@ Swapchain::~Swapchain()
 VkSurfaceKHR Swapchain::CreateSurface( shared_ptr<const Instance>   &pInstance,
                                        shared_ptr<const WindowDesc> &pWindowDesc )
 {
+    B33_LOG( Core::Debug::Info, L"Creating a swapchain!" ); // This is the first private method that
+                                                            // is called in the constructior, so we LOG here
+    B33_TRACE( L"Swapchain::CreateSurface" );
     VkSurfaceKHR surface = VK_NULL_HANDLE;
 
 #if defined( _WIN32 )
