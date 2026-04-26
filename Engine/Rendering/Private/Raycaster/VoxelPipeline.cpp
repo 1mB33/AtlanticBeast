@@ -100,7 +100,7 @@ void VoxelPipeline::Update()
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void VoxelPipeline::UpdateOnRender()
+void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
 {
     auto swapChain = GetSwapChainInternal().lock();
     if ( swapChain == nullptr )
@@ -110,10 +110,7 @@ void VoxelPipeline::UpdateOnRender()
     }
 
     this->LoadImage( swapChain->GetImage() );
-}
-// --------------------------------------------------------------------------------------------------------------------
-void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
-{
+
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),
                         VK_SHADER_STAGE_COMPUTE_BIT,

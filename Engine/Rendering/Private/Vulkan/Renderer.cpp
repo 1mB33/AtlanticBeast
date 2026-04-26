@@ -93,11 +93,6 @@ void Renderer::Render()
     THROW_IF_FAILED( vkWaitForFences( device, 1, &frame.InFlightFence, VK_TRUE, UINT64_MAX ) );
     THROW_IF_FAILED( vkResetFences( device, 1, &frame.InFlightFence ) );
 
-    for ( auto &pipeline : m_vPipeline )
-    {
-        pipeline->UpdateOnRender();
-    }
-
     RecordCommands( frame.CommandBuffer );
 
     VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };

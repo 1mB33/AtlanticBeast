@@ -27,8 +27,6 @@ class EditorPipeline : public IPipeline<EditorPipeline>
   public:
     BEAST_API virtual void Update() override final;
 
-    BEAST_API virtual void UpdateOnRender() override final {}
-
     BEAST_API virtual void RecordCommands( VkPipelineStageFlagBits lastStage,
                                            VkCommandBuffer        &cmdBuffer ) override final;
 
