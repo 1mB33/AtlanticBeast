@@ -10,8 +10,10 @@
 #include "B33App.h"
 #include "B33Core.h"
 
-#include <vulkan/vulkan.h>
-#include <vulkan/vulkan_core.h>
+#if defined( _WIN32 ) || defined( __linux__ ) || defined( __APPLE__ )
+#    include <vulkan/vulkan.h>
+#    include <vulkan/vulkan_core.h>
+#endif
 
 #ifdef __cplusplus
 #    include "B33Math.hpp"

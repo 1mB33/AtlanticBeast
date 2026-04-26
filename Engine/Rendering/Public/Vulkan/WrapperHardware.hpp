@@ -13,7 +13,6 @@ class HardwareWrapper
       : m_pInstance( nullptr )
       , m_PhysicalDevice( nullptr )
     {
-        B33_LOG( Core::Debug::Info, L"Initializing hardware" );
     }
 
     ~HardwareWrapper()
@@ -38,7 +37,7 @@ class HardwareWrapper
     template <class T>
     void Initialize( ::std::shared_ptr<const ::B33::Rendering::Instance> pInstance, const T &hardware )
     {
-        B33_LOG( Core::Debug::Info, L"Initializing adapter" );
+        B33_LOG( Core::Debug::Info, L"Initializing hardware" );
         m_pInstance      = pInstance;
         m_PhysicalDevice = hardware.ChooseHardware( pInstance );
     }
