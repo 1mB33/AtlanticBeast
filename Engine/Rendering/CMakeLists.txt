@@ -65,19 +65,57 @@ ELSE()
 
 ENDIF()
 
-FIND_PACKAGE(Vulkan REQUIRED)
+IF (CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-TARGET_INCLUDE_DIRECTORIES(B33Rendering PUBLIC
-    "${Vulkan_INCLUDE_DIRS}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/Public/"
-)
+    FIND_PACKAGE(Vulkan REQUIRED)
+    
+    TARGET_INCLUDE_DIRECTORIES(B33Rendering PUBLIC
+        "${Vulkan_INCLUDE_DIRS}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Public/"
+    )
+    
+    TARGET_LINK_LIBRARIES(B33Rendering PUBLIC
+        "${Vulkan_LIBRARIES}"
+        B33Core
+        B33Math
+        B33App
+    )
 
-TARGET_LINK_LIBRARIES(B33Rendering PUBLIC
-    "${Vulkan_LIBRARIES}"
-    B33Core
-    B33Math
-    B33App
-)
+ENDIF()
+
+# Macos uses molten-vk
+IF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+
+    FIND_PATH(MOLTENVK_INCLUDE_DIR vulkan/vulkan.h HINTS "/usr/local/include" "/usr/local/opt/molten-vk/include")
+    FIND_LIBRARY(MOLTENVK_LIB NAMES MoltenVK PATHS "/usr/local/lib" "/usr/local/opt/molten-vk/lib")
+    
+    IF (NOT MOLTENVK_INCLUDE_DIR OR NOT MOLTENVK_LIB)
+    
+        MESSAGE(FATAL_ERROR "Could not find MoltenVK. Please make sure it is installed.")
+    
+    ENDIF()
+
+    TARGET_INCLUDE_DIRECTORIES(B33Rendering PUBLIC
+        ${MOLTENVK_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Public/
+    )
+    
+    TARGET_LINK_LIBRARIES(B33Rendering PUBLIC
+        "-framework QuartzCore" 
+        "-framework Metal" 
+        "-framework Foundation" 
+        "-framework IOSurface" 
+        "-framework CoreGraphics" 
+        "-framework IOKit" 
+        "-framework AppKit" 
+        ${MOLTENVK_LIB}
+        B33Core
+        B33Math
+        B33App
+    )
+        
+ENDIF() 
+
 
 TARGET_PRECOMPILE_HEADERS(B33Rendering PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Public/B33Rendering.hpp")
 

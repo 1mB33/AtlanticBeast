@@ -24,7 +24,7 @@ void EngineLoop::UpdateComponents( float fDelta )
 {
     for ( IComponent *component : m_AsyncComponents )
         m_JobSystem.PushJob(
-            [ = ]()
+            [ & ]()
             {
                 component->Update( m_ComponentBridge, fDelta );
             } );

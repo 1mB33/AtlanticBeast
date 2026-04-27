@@ -80,16 +80,18 @@ VkInstance Instance::CreateInstance()
 #endif // !_DEBUG
 
     const vector<const char *> vpszValidationLayers = {
-#ifdef _DEBUG
+// This layer is present in Lunar SDK for windows and linux, but doesn't seem to be working on apple. 
+// I don't have energy to deal with it rigth now
+#if defined( _DEBUG ) && ( defined( _WIN32 ) || defined( __linux__ ) )
         "VK_LAYER_KHRONOS_validation",
 #endif // !_DEBUG
     };
 
     const vector<const char *> vpszExtensions = {
         VK_KHR_SURFACE_EXTENSION_NAME,
-#ifdef _WIN32
+#if defined( _WIN32 )
         VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
-#elif __linux__
+#elif defined( _X11 )
         VK_KHR_XLIB_SURFACE_EXTENSION_NAME,
 #endif // !_WIN32
 

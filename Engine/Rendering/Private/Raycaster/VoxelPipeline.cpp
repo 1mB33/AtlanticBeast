@@ -64,15 +64,6 @@ void VoxelPipeline::CreatePipelineResourcesImpl( ::std::shared_ptr<::B33::Render
 // --------------------------------------------------------------------------------------------------------------------
 void VoxelPipeline::Update()
 {
-    auto swapChain = GetSwapChainInternal().lock();
-    if ( swapChain == nullptr )
-    {
-        B33_ERROR( L"Swapchain unavilible for pipeline" );
-        return;
-    }
-
-    this->LoadImage( swapChain->GetImage() );
-
     if ( !( m_pVoxelGrid->ReuploadStatus() & EReupload::RequestStaging ) )
         return;
 
@@ -111,6 +102,15 @@ void VoxelPipeline::Update()
 // --------------------------------------------------------------------------------------------------------------------
 void VoxelPipeline::RecordCommands( VkPipelineStageFlagBits lastStage, VkCommandBuffer &cmdBuffer )
 {
+    auto swapChain = GetSwapChainInternal().lock();
+    if ( swapChain == nullptr )
+    {
+        B33_ERROR( L"Swapchain unavilible for pipeline" );
+        return;
+    }
+
+    this->LoadImage( swapChain->GetImage() );
+
     vkCmdPushConstants( cmdBuffer,
                         GetLayoutHandle(),
                         VK_SHADER_STAGE_COMPUTE_BIT,

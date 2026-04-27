@@ -13,18 +13,15 @@ namespace B33::App
 class BEAST_API BasicAppleWindowPolicy : public IWindowPolicy<BasicAppleWindowPolicy>
 {
   public:
-    uint32_t CreateImpl( WindowDesc *pWd )
-    {
-        return 0;
-    }
+    uint32_t CreateImpl( WindowDesc *pWd );
 
-    void ShowImpl( WindowDesc *pWd ) {}
+    void ShowImpl( WindowDesc *pWd );
 
-    void HideImpl( WindowDesc *pWd ) {}
+    void HideImpl( WindowDesc *pWd );
 
-    void DestroyImpl( WindowDesc *pWd ) {}
+    void DestroyImpl( WindowDesc *pWd );
 
-    void UpdateImpl( WindowDesc *pWd ) {}
+    void UpdateImpl( WindowDesc *pWd );
 };
 
 } // namespace B33::App
