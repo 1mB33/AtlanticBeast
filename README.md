@@ -18,6 +18,10 @@ Project is separated into several libraries. For demonstration purpose a Minecra
 - Math (vector math, geometric primitives, matrices and vector implementations)
 - Rendering (vulkan C++ wrappers, rendering logic, shaders)
 
+### Currently supported operating systems:
+- Windows
+- Linux
+- macOS (work in progress)
 
 Project uses voxel traversal algorithm implementation based on
 'A Fast Voxel Traversal Algorithm for Ray Tracing'
