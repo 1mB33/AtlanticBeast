@@ -106,7 +106,7 @@ VkInstance Instance::CreateInstance()
         .applicationVersion = VK_MAKE_VERSION( 0, 1, 5 ),
         .pEngineName        = "AtlanticBeast",
         .engineVersion      = VK_MAKE_VERSION( 0, 2, 0 ),
-        .apiVersion         = VK_API_VERSION_1_4,
+        .apiVersion         = VK_API_VERSION_1_1,
     };
 
     VkInstanceCreateInfo createInfo = {
